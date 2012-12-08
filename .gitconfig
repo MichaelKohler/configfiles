@@ -1,0 +1,7 @@
+[user]
+	name = Michael Kohler
+	email = michaelkohler@live.com
+[color]
+	ui = auto
+[core]
+	whitespace = cr-at-eol

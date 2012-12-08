@@ -1,0 +1,23 @@
+[ui]
+username = Michael Kohler <michaelkohler@live.com>
+
+[defaults]
+diff = -U 8 -p
+qdiff = -U 8 -p
+qseries = -v
+
+[hooks]
+# Prevent "hg pull" if MQ patches are applied.
+prechangegroup.mq-no-pull = ! hg qtop > /dev/null 2>&1
+
+[extensions]
+mq =
+hgext.purge =
+hgext.hbisect =
+color =
+hgext.fetch =
+progress =
+rebase =
+
+[paths]
+try = ssh://hg.mozilla.org/try
