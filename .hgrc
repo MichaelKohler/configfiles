@@ -19,5 +19,8 @@ hgext.fetch =
 progress =
 rebase =
 
+[diff]
+unified = 8
+
 [paths]
 try = ssh://hg.mozilla.org/try
