@@ -1,5 +1,5 @@
 [ui]
-username = Michael Kohler <michaelkohler@live.com>
+username = Michael Kohler <mkohler@picobudget.com>
 
 [defaults]
 diff = -U 8 -p
