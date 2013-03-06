@@ -18,6 +18,7 @@ alias goMC='cd ~/development/mozilla/mozilla-central'
 alias goMoz='cd ~/development/mozilla'
 alias goProj='cd ~/development/private'
 alias goPrivate='cd ~/Private'
+alias mountEntertainment='sudo mount -t cifs //mkohler.dyndns.org/entertainment /mnt/entertainment -o user=michael'
 
 alias prepareFirefox='export MOZCONFIG=/home/michael/development/mozilla/mozconfig-firefox'
 alias prepareFennec='export MOZCONFIG=/home/michael/development/mozilla/mozconfig-fennec'
