@@ -13,17 +13,17 @@ setxkbmap ch
 alias ..='cd ..'
 alias ls='ls -al --color=auto'
 alias goDrop='cd ~/Dropbox'
-alias goDev='cd ~/development'
-alias goMC='cd ~/development/mozilla/mozilla-central'
-alias goMoz='cd ~/development/mozilla'
-alias goProj='cd ~/development/private'
+alias goDev='cd /data/development'
+alias goMC='cd /data/development/mozilla/mozilla-central'
+alias goMoz='cd /data/development/mozilla'
+alias goProj='cd /data/development/private'
 alias goPrivate='cd ~/Private'
 alias mountEntertainment='sudo mount -t cifs //mkohler.dyndns.org/entertainment /mnt/entertainment -o user=michael'
 
-alias prepareFirefox='export MOZCONFIG=/home/michael/development/mozilla/mozconfig-firefox'
-alias prepareFennec='export MOZCONFIG=/home/michael/development/mozilla/mozconfig-fennec'
+alias prepareFirefox='export MOZCONFIG=/data/development/mozilla/mozconfig-firefox'
+alias prepareFennec='export MOZCONFIG=/data/development/mozilla/mozconfig-fennec'
 
 PS1='[\u@\h \W]\$ '
 
 
-export PATH=$PATH:/home/michael/development/mozilla/android-sdk-linux/platform-tools:/home/michael/development/mozilla/android-sdk-linux/tools
+export PATH=$PATH:/data/development/mozilla/android-sdk-linux/platform-tools:/data/development/mozilla/android-sdk-linux/tools
