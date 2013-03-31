@@ -11,13 +11,13 @@ setxkbmap ch
 
 ## ALIAS ##
 alias ..='cd ..'
-alias ls='ls -al --color=auto'
+alias ls='ls -al --color=auto | less'
 alias goDrop='cd ~/Dropbox'
 alias goDev='cd /data/development'
 alias goMC='cd /data/development/mozilla/mozilla-central'
 alias goMoz='cd /data/development/mozilla'
-alias goProj='cd /data/development/private'
-alias goPrivate='cd ~/Private'
+alias goPrivate='cd /data/development/private'
+alias goWork='cd ~/Private'
 alias mountEntertainment='sudo mount -t cifs //mkohler.dyndns.org/entertainment /mnt/entertainment -o user=michael'
 
 alias prepareFirefox='export MOZCONFIG=/data/development/mozilla/mozconfig-firefox'
