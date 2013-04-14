@@ -2,16 +2,12 @@
 # ~/.bashrc
 #
 
-## KEYBOARD LAYOUT ##
-setxkbmap ch
-
-
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
 ## ALIAS ##
 alias ..='cd ..'
-alias ls='ls -al --color=auto | less'
+alias ls='ls -al --color=auto'
 alias goDrop='cd ~/Dropbox'
 alias goDev='cd /data/development'
 alias goMC='cd /data/development/mozilla/mozilla-central'
