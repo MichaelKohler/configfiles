@@ -5,6 +5,8 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+source .inputrc
+
 ## ALIAS ##
 alias ..='cd ..'
 alias ls='ls -al --color=auto'
