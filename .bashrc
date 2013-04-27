@@ -10,6 +10,7 @@ source .inputrc
 ## ALIAS ##
 alias ..='cd ..'
 alias ls='ls -al --color=auto'
+alias grep='grep --color'
 alias goDrop='cd ~/Dropbox'
 alias goDev='cd /data/development'
 alias goMC='cd /data/development/mozilla/mozilla-central'

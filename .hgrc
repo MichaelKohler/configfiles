@@ -5,6 +5,7 @@ username = Michael Kohler <mkohler@picobudget.com>
 diff = -U 8 -p
 qdiff = -U 8 -p
 qseries = -v
+qnew = -Ue
 
 [hooks]
 # Prevent "hg pull" if MQ patches are applied.
@@ -20,6 +21,7 @@ progress =
 rebase =
 
 [diff]
+git = 1
 unified = 8
 
 [paths]
