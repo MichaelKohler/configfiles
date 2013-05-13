@@ -7,7 +7,7 @@ function get_nr_CPUs() {
 }
 
 PROMPT='%{$fg[cyan]%}%n%{$reset_color%}%{$fg[red]%}@%{$reset_color%}%{$fg[yellow]%}%m%{$reset_color%}%{$fg[red]%}:%{$reset_color%}%{$fg[cyan]%}%0~%{$reset_color%}%{$fg[red]%}|%{$reset_color%}$(git_prompt_info)$(git_prompt_short_sha)%{$fg[cyan]%}⇒%{$reset_color%}  '
-RPROMPT='%{$fg[yellow]%}[$(get_RAM)MB free RAM, $(get_nr_CPUs) CPUs: ] %{$fg[green]%}%*%{$reset_color%}'
+RPROMPT='%{$fg[yellow]%}[$(get_RAM)MB free RAM, $(get_nr_CPUs) CPUs] %{$fg[green]%}%*%{$reset_color%}'
 
 # git theming
 ZSH_THEME_GIT_PROMPT_PREFIX="%{$reset_color%}%{$fg[green]%}"
