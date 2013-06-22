@@ -1,5 +1,6 @@
 [ui]
 username = Michael Kohler <mkohler@picobudget.com>
+ignore = ~/.hgignore
 
 [defaults]
 diff = -U 8 -p
