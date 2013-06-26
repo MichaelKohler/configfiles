@@ -44,7 +44,7 @@ plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
 
-export PATH=$PATH:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/usr/bin/core_perl:/data/development/mozilla/android-sdk-linux/platform-tools:/data/development/mozilla/android-sdk-linux/tools
+export PATH=$PATH:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/usr/bin/core_perl:/data/development/mozilla/android-sdk-linux/platform-tools:/data/development/mozilla/android-sdk-linux/tools:~/.gem/ruby/2.0.0/bin:/usr/local/heroku/bin/
 
 ## ALIAS ##
 alias ls='ls -al --color=auto'
