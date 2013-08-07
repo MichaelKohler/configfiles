@@ -15,7 +15,7 @@ export PATH=$PATH:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/
 # commands #
 alias ls='ls -al --color=auto'
 alias grep='grep --color'
-alias sew="dmesg | grep -Ei \"error|warning\""
+alias sew="dmesg -H | grep -Ei \"error|warning\""
 
 # files and folders #
 alias goDrop='cd ~/Dropbox'
