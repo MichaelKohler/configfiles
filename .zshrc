@@ -16,6 +16,7 @@ export PATH=$PATH:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/
 alias ls='ls -al --color=auto'
 alias grep='grep --color'
 alias sew="dmesg -H | grep -Ei \"error|warning\""
+alias kk='setxkbmap ch'
 
 # files and folders #
 alias goDrop='cd ~/Dropbox'
@@ -26,7 +27,7 @@ alias goPrivate='cd /data/development/private'
 alias goWork='cd ~/Private'
 
 # network #
-alias mountEntertainment='sudo mount -t cifs //mkohler.dyndns.org/entertainment /mnt/entertainment -o user=michael'
+alias mountEntertainment='sudo mount -t cifs //mkohler.dyndns.org/entertainment /data/entertainment -o user=michael'
 
 # mozilla #
 alias prepareFirefox='export MOZCONFIG=/data/development/mozilla/mozconfig-firefox'
