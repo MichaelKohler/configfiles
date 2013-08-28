@@ -20,7 +20,7 @@ alias kk='setxkbmap ch'
 alias droid='java -jar /data/tools/droidAtScreen-1.0.1.jar'
 
 # files and folders #
-alias goDrop='cd ~/Dropbox'
+alias goFiles='cd ~/ownCloud'
 alias goDev='cd /data/development'
 alias goMC='cd /data/development/mozilla/mozilla-central'
 alias goMoz='cd /data/development/mozilla'
