@@ -18,6 +18,8 @@ alias grep='grep --color'
 alias sew="dmesg -H | grep -Ei \"error|warning\""
 alias kk='setxkbmap ch'
 alias droid='java -jar /data/tools/droidAtScreen-1.0.1.jar'
+alias mountWork='ecryptfs-mount-private'
+alias unmountWork='ecryptfs-umount-private'
 
 # files and folders #
 alias goFiles='cd ~/ownCloud'
