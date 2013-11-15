@@ -20,6 +20,7 @@ alias kk='setxkbmap ch'
 alias droid='java -jar /data/tools/droidAtScreen-1.0.1.jar'
 alias mountWork='ecryptfs-mount-private'
 alias unmountWork='ecryptfs-umount-private'
+alias doProjector='xrandr --output LVDS1 --mode 1024x768 --same-as LVDS1 --output DP1 --mode 1024x768'
 
 # files and folders #
 alias goFiles='cd ~/ownCloud'
