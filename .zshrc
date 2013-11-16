@@ -15,12 +15,11 @@ export PATH=$PATH:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/
 # commands #
 alias ls='ls -al --color=auto'
 alias grep='grep --color'
-alias sew="dmesg -H | grep -Ei \"error|warning\""
-alias kk='setxkbmap ch'
 alias droid='java -jar /data/tools/droidAtScreen-1.0.1.jar'
 alias mountWork='ecryptfs-mount-private'
 alias unmountWork='ecryptfs-umount-private'
-alias doProjector='xrandr --output LVDS1 --mode 1024x768 --same-as LVDS1 --output DP1 --mode 1024x768'
+alias getSyslog='tail -f /var/log/syslog'
+alias getDmesg='tail -f /var/log/dmesg'
 
 # files and folders #
 alias goFiles='cd ~/ownCloud'
