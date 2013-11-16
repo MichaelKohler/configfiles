@@ -27,6 +27,8 @@ alias goFiles='cd ~/ownCloud'
 alias goDev='cd /data/development'
 alias goMC='cd /data/development/mozilla/mozilla-central'
 alias goMoz='cd /data/development/mozilla'
+alias goGaia='cd /data/development/mozilla/gaia'
+alias goB2G='cd /data/development/mozilla/B2G'
 alias goPrivate='cd /data/development/private'
 alias goWork='cd ~/Private'
 
@@ -36,4 +38,4 @@ alias mountEntertainment='sudo mount -t cifs //mkohler.dyndns.org/entertainment 
 # mozilla #
 alias prepareFirefox='export MOZCONFIG=/data/development/mozilla/mozconfig-firefox'
 alias prepareFennec='export MOZCONFIG=/data/development/mozilla/mozconfig-fennec'
-
+alias b2g='nightly -profile /data/development/mozilla/gaia/profile-debug http://system.gaiamobile.org:8080 --no-remote'
