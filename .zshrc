@@ -20,6 +20,7 @@ alias mountWork='ecryptfs-mount-private'
 alias unmountWork='ecryptfs-umount-private'
 alias getSyslog='tail -f /var/log/syslog'
 alias getDmesg='tail -f /var/log/dmesg'
+alias buildKernel='fakeroot make-kpkg --initrd --append-to-version=-custom kernel_image kernel_headers'
 
 # files and folders #
 alias goFiles='cd ~/ownCloud'
