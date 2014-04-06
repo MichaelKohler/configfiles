@@ -7,7 +7,7 @@ plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
 
-export PATH=$PATH:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/usr/bin/core_perl:/data/development/android-sdk/platform-tools:/data/development/android-sdk/tools
+export PATH=$PATH:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/usr/bin/core_perl:/home/michael/development/android-sdk/platform-tools:/home/michael/development/android-sdk/tools
 
 ## ALIAS ##
 # ================================ #

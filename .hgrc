@@ -23,6 +23,7 @@ rebase =
 
 [diff]
 git = 1
+showfunc = 1
 unified = 8
 
 [paths]
