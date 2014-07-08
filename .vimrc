@@ -15,12 +15,6 @@ set title                " I wanna know what file I'm mistreating
 set ruler                " I wanna see current information about cursor position
 set encoding=utf8        " I wanna see Umlauts
 
-" While programming, I wanna stay inside the 80 columns
-au FileType c,cpp,java,sh,asm highlight OverLength ctermbg=red ctermfg=white
-au FileType c,cpp,java,sh,asm match OverLength /\%81v.\+/
-"au FileType php highlight OverLength ctermbg=red ctermfg=white
-"au FileType php match OverLength /\%81v.\+/
-
 set tabstop=22           " Four Spaces are just perfect...
 au FileType tex set tabstop=2     " ... except in LaTeX
 set expandtab            " set spaces
@@ -41,15 +35,6 @@ set ignorecase           " Ignore case...
 set smartcase            " ... except majuscule in search term
 
 set nrformats+=alpha     " Letters can also be manipulated with Ctrl-X/Ctrl-A
-
-" Auto completion (don't seem to work, but nevertheless posted)
-au FileType c set omnifunc=ccomplete#Complete
-au FileType css set omnifunc=csscomplete#CompleteCSS
-au FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-au FileType python set omnifunc=pythoncomplete#Complete
-au FileType xml set omnifunc=xmlcomplete#CompleteTags
-au FileType html set omnifunc=htmlcomplete#CompleteTags
-au FileType php set omnifunc=phpcomplete#CompletePHP
 
 " For long, wrapped lines the 'j' and 'k' buttons are a bit irritating. They
 " ignore the visual next/former line, causing the cursor to jump several lines
