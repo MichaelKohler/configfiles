@@ -8,6 +8,11 @@
 [alias]
     lol = log --graph --decorate --pretty=oneline --abbrev-commit
     lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
+    puma = pull origin master
+    st = status
+    co = commit -m 
+    fe = fetch
+    me = merge
 [color]
     branch = auto
     diff = auto
