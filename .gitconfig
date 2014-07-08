@@ -1,10 +1,16 @@
 [user]
-	name = Michael Kohler
-	email = mkohler@picobudget.com
-[color]
-	ui = auto
+    name = Michael Kohler
+    email = mkohler@picobudget.com
 [core]
-	whitespace = cr-at-eol
-	excludesfile = /home/michael/.gitignore_global
+    whitespace = cr-at-eol
 [diff]
-	algorithm = patience
+    algorithm = patience
+[alias]
+    lol = log --graph --decorate --pretty=oneline --abbrev-commit
+    lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
+[color]
+    branch = auto
+    diff = auto
+    interactive = auto
+    status = auto
+    ui = auto
