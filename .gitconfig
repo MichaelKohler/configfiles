@@ -13,6 +13,7 @@
     co = commit -m 
     fe = fetch
     me = merge
+    adda = add --all
 [color]
     branch = auto
     diff = auto
