@@ -7,5 +7,8 @@
   editor:
     invisibles: {}
     fontSize: 12
+    showInvisibles: true
+    showIndentGuide: true
+    softWrap: true
   whitespace:
-    removeTrailingWhitespace: false
+    ignoreWhitespaceOnCurrentLine: false
