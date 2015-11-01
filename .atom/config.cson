@@ -14,3 +14,8 @@
     tabLength: 1
   whitespace:
     ignoreWhitespaceOnCurrentLine: false
+  "atom-beautify":
+    css_indent_size: 2
+    css_newline_between_rules: true
+    html_indent_size: 2
+    js_indent_size: 2

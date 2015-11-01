@@ -68,6 +68,8 @@ Or Settings/Preferences ➔ Packages ➔ Search for `atom-beautify`
 - [x] [Vala](https://github.com/Glavin001/atom-beautify/issues/57)
   - Requires [Uncrustify](http://sourceforge.net/projects/uncrustify/)
 - [x] [TypeScript](https://github.com/Glavin001/atom-beautify/issues/49)
+- [x] [Haskell](https://github.com/Glavin001/atom-beautify/issues/628)
+  - Requires [stylish-haskell](https://github.com/jaspervdj/stylish-haskell)
 
 ## Usage
 
@@ -81,7 +83,7 @@ You can also type `ctrl-alt-b` as a shortcut or click `Packages > Beautify` in t
 
 #### Custom Keyboard Shortcuts
 
-See [Keymaps In-Depth](https://atom.io/docs/latest/advanced/keymaps) for more details.
+See [Keymaps In-Depth](https://atom.io/docs/latest/behind-atom-keymaps-in-depth) for more details.
 
 For example:
 
