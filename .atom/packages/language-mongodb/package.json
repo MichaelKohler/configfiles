@@ -1,6 +1,6 @@
 {
   "name": "language-mongodb",
-  "version": "0.2.0",
+  "version": "0.3.1",
   "description": "MongoDB language support in Atom.",
   "keywords": [
     "language",
@@ -32,10 +32,10 @@
   "dependencies": {},
   "readme": "# MongoDB language support in Atom\n\nAdds syntax highlighting and snippets to MongoDB scripts in Atom.\n\nOriginally [converted](http://atom.io/docs/latest/converting-a-text-mate-bundle)\nfrom the [mongoDB TextMate bundle](https://github.com/krismolendyke/mongoDB.tmbundle).\n\nContributions are greatly appreciated. Please fork this repository and open a\npull request to add snippets, make grammar tweaks, etc.\n",
   "readmeFilename": "README.md",
-  "_id": "language-mongodb@0.2.0",
-  "_shasum": "acea2c9ad83d53a57b9f3b65da8c9416c050d945",
-  "_resolved": "file:../d-115824-30170-k1fnps/package.tgz",
-  "_from": "../d-115824-30170-k1fnps/package.tgz",
+  "_id": "language-mongodb@0.3.1",
+  "_shasum": "b976a5d0b1ae496769119cb2492116af2200c0fd",
+  "_resolved": "file:../d-115113-1628-12o9onl/package.tgz",
+  "_from": "../d-115113-1628-12o9onl/package.tgz",
   "_atomModuleCache": {
     "version": 1,
     "dependencies": [],

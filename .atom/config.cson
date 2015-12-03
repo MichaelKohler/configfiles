@@ -19,3 +19,7 @@
     css_newline_between_rules: true
     html_indent_size: 2
     js_indent_size: 2
+    _analyticsUserId: "8f626438-5d4c-48c3-bed9-b311015abec2"
+  react: {}
+  pigments:
+    sortPaletteColors: "by color"
