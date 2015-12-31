@@ -72,7 +72,6 @@ atom-panel.modal {
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 2;
     border-radius: @border-radius--base;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
   }
@@ -98,8 +97,16 @@ atom-panel.modal {
   box-shadow: 0 0 0 1px @tab-bar-border-color-transparent;
 }
 
-.suggestion-list-scroller {
-  border-radius: @border-radius--base @border-radius--base 0 0;
+autocomplete-suggestion-list .suggestion-list-scroller {
+  border-radius: @border-radius--base;
+}
+
+autocomplete-suggestion-list .suggestion-description {
+  margin-top: -4px;
+  box-shadow: inset 0 5px 5px -5px black;
+  border-top: none;
+  min-height: auto;
+  padding: 7px 0;
 }
 
 // Don't display when no results
