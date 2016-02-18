@@ -1,8 +1,10 @@
 "*":
-  "exception-reporting":
-    userId: "8dc1d36d-cdd5-e9b0-c240-37ca6a3d638f"
-  welcome:
-    showOnStartup: false
+  "atom-beautify":
+    _analyticsUserId: "8f626438-5d4c-48c3-bed9-b311015abec2"
+    css_indent_size: 2
+    css_newline_between_rules: true
+    html_indent_size: 2
+    js_indent_size: 2
   core:
     themes: [
       "native-ui"
@@ -10,19 +12,17 @@
     ]
   editor:
     invisibles: {}
-    showInvisibles: true
-    showIndentGuide: true
-    softWrap: true
     scrollPastEnd: true
+    showIndentGuide: true
+    showInvisibles: true
+    softWrap: true
     tabType: "soft"
-  whitespace:
-    ignoreWhitespaceOnCurrentLine: false
-  "atom-beautify":
-    css_indent_size: 2
-    css_newline_between_rules: true
-    html_indent_size: 2
-    js_indent_size: 2
-    _analyticsUserId: "8f626438-5d4c-48c3-bed9-b311015abec2"
-  react: {}
+  "exception-reporting":
+    userId: "8dc1d36d-cdd5-e9b0-c240-37ca6a3d638f"
   pigments:
     sortPaletteColors: "by color"
+  react: {}
+  welcome:
+    showOnStartup: false
+  whitespace:
+    ignoreWhitespaceOnCurrentLine: false

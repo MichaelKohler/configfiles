@@ -5,14 +5,24 @@
 @tab-padding-sides: 6px;
 @tab-border: 1px solid @tab-border-color;
 
+@padding-top-close-icon: 3px;
+@dimensions-close-icon: 17px;
+
+@top-modified-icon: 9px;
+@left-modified-icon: 11px;
+
 .tab-bar {
   height: @tab-height;
   background: @tab-bar-background-color;
   padding: 0;
   overflow-x: auto;
   overflow-y: hidden;
-  box-shadow: 0 1px 0 @tab-bar-border-color-transparent;
+  border-bottom: 1px solid @tab-bar-border-color;
   z-index: 1;
+
+  .is-blurred & {
+    background-color: @tab-bar-background-color--blurred;
+  }
 
   // Adjust icon sizes to text
   .icon:before {
@@ -24,18 +34,15 @@
     text-align: center;
     top: 0;
     height: @tab-height;
+    background-color: @tab-background-color;
     border-right: 1px solid @tab-bar-border-color;
     line-height: @tab-height;
     color: @tab-text-color;
-    padding: 0 @tab-padding-sides;
+    padding: 0 0 0 @tab-padding-sides;
     margin: 0;
     max-width: 100%;
     flex-grow: 1;
-    transition: background-color @transition--default;
-
-    &.active {
-      flex: 1; // don't change tab size when selected
-    }
+    transition: background @transition--default;
 
     &:hover {
       background-color: @tab-background-color-hover;
@@ -49,8 +56,15 @@
       border-right: none;
     }
 
-    // Tab title
+    .is-blurred & {
+      opacity: @opacity-blurred;
+    }
 
+    &.active {
+      flex: 1; // don't change tab size when selected
+    }
+
+    // Tab title
     .title {
       text-overflow: hidden;
     }
@@ -65,30 +79,28 @@
 
     .close-icon {
       display: none;
-      left: 10px;
-      height: 16px;
-      width: 16px;
-      top: 50%;
-      transform: translateY(-50%);
-      border-radius: 3px;
+      top: @padding-top-close-icon;
+      left: 5px;
+      height: @dimensions-close-icon;
+      width: @dimensions-close-icon;
+      border-radius: 2px;
       z-index: 3;
       text-align: left;
       color: @text-color;
 
-      &:hover {
-        background: @background-close-button;
-      }
-
+      &:hover,
       &:active {
-        background-color: @background-close-button-hover;
+        background: @background-close-button-hover;
       }
 
-      &:before {
+      &:before { // the close icon itself
         content: "✕";
         position: absolute;
-        font-size: 11px;
-        line-height: 17px;
-        left: 4px;
+        display: block;
+        width: 100%;
+        font-size: 12px;
+        text-align: center;
+        line-height: 18px;
       }
     } // close-icon
 
@@ -97,7 +109,8 @@
     &.modified:not(:hover) {
       .close-icon {
         display: inline-block; // display modified indicator when close button is not there
-        top: 50%;
+        top: @top-modified-icon;
+        left: @left-modified-icon;
 
         &:before { // color of the close X
           color: @text-color-highlight;
@@ -110,9 +123,13 @@
       height: 6px;
     }
 
-    &:hover .close-icon {
+    &:hover .close-icon,
+    &.modified:hover .close-icon { // display of the close icon when modified icon is hovered
       display: inline-block;
-      left: 6px;
+      top: @padding-top-close-icon;
+      left: @tab-padding-sides;
+      width: @dimensions-close-icon;
+      height: @dimensions-close-icon;
     }
   } // tab
 
@@ -122,13 +139,13 @@
     z-index: 1;
     color: @text-color-highlight;
     background-color: @tab-background-color-active;
-    box-shadow: inset 0 1px rgba(255, 255, 255, 0.15);
 
     &.modified,
     &.modified:hover,
     &.modified:not(:hover) {
-      .close-icon {
+      .close-icon { // the modified bullet
         display: inline-block;
+        left: @left-modified-icon;
 
         &:before {
           color: @text-color-highlight;
@@ -144,9 +161,10 @@
        }
 
       &:hover .close-icon {
+        top: @padding-top-close-icon;
         left: @tab-padding-sides;
-        width: 16px;
-        height: 16px;
+        width: @dimensions-close-icon;
+        height: @dimensions-close-icon;
       }
     }
 
@@ -173,37 +191,40 @@
 
 // Change the modified icon
 .tab-bar .tab.modified:not(:hover) .close-icon {
-  border: 1px solid @background-color-selected;
+  border: none;
+  background-color: @text-color;
 }
+
+
 
 // Git status bullets for tabs
 .tab-git-status-bullet {
   content: "";
   position: absolute;
-  top: 9px;
-  right: 10px;
-  border-radius: 100%;
-  width: 6px;
-  height: 6px;
-  font-size: 8px;
+  top: 2px;
+  right: 2px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 7px 7px 0;
 }
 
+// Tab modified
 .tab .title.status-modified {
   color: @text-color;
 
   &:after {
     .tab-git-status-bullet;
-    background-color: @text-color-warning;
-    border: 1px solid darken(@text-color-warning, 10%);
+    border-color: transparent darken(desaturate(@text-color-modified, 20%), 15%) transparent transparent;
   }
 }
 
+// Tab added
 .tab .title.status-added {
   color: @text-color;
 
   &:after {
     .tab-git-status-bullet;
-    background-color: @text-color-success;
-    border: 1px solid darken(@text-color-success, 10%);
+    border-color: transparent darken(desaturate(@text-color-added, 20%), 10%) transparent transparent;
   }
 }
