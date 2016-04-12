@@ -1,7 +1,91 @@
 # Change Log
 
-## [1.3.1](https://github.com/AtomLinter/linter-jshint/tree/1.3.1) (2016-02-10)
-[Full Changelog](https://github.com/AtomLinter/linter-jshint/compare/v1.3.0...1.3.1)
+## [v2.1.0](https://github.com/AtomLinter/linter-jshint/tree/v2.1.0) (2016-04-08)
+[Full Changelog](https://github.com/AtomLinter/linter-jshint/compare/v2.0.4...v2.1.0)
+
+**Implemented enhancements:**
+
+- Provide explanation link to https://jslinterrors.com [\#246](https://github.com/AtomLinter/linter-jshint/issues/246)
+- eslint-plugin-react@4.3.0 untested ⚠️ [\#253](https://github.com/AtomLinter/linter-jshint/pull/253) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- Allow the ability to specify a custom jshintrc file [\#252](https://github.com/AtomLinter/linter-jshint/pull/252) ([jhalickman](https://github.com/jhalickman))
+- eslint@2.7.0 untested ⚠️ [\#251](https://github.com/AtomLinter/linter-jshint/pull/251) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- babel-eslint@6.0.2 untested ⚠️ [\#249](https://github.com/AtomLinter/linter-jshint/pull/249) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+
+**Closed issues:**
+
+- Makes atom very slow [\#254](https://github.com/AtomLinter/linter-jshint/issues/254)
+
+## [v2.0.4](https://github.com/AtomLinter/linter-jshint/tree/v2.0.4) (2016-03-31)
+[Full Changelog](https://github.com/AtomLinter/linter-jshint/compare/v2.0.3...v2.0.4)
+
+**Implemented enhancements:**
+
+- Provide a link to jslinterrors.com [\#247](https://github.com/AtomLinter/linter-jshint/pull/247) ([camlafit](https://github.com/camlafit))
+- Update babel-eslint to version 6.0.0 🚀 [\#244](https://github.com/AtomLinter/linter-jshint/pull/244) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+
+## [v2.0.3](https://github.com/AtomLinter/linter-jshint/tree/v2.0.3) (2016-03-11)
+[Full Changelog](https://github.com/AtomLinter/linter-jshint/compare/v2.0.2...v2.0.3)
+
+**Implemented enhancements:**
+
+- eslint-config-airbnb@6.1.0 untested ⚠️ [\#231](https://github.com/AtomLinter/linter-jshint/pull/231) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- atom-linter@4.6.1 untested ⚠️ [\#229](https://github.com/AtomLinter/linter-jshint/pull/229) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- Update eslint to version 2.2.0 🚀 [\#222](https://github.com/AtomLinter/linter-jshint/pull/222) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+
+**Fixed bugs:**
+
+- Workaround jshint\#2894 [\#234](https://github.com/AtomLinter/linter-jshint/pull/234) ([Arcanemagus](https://github.com/Arcanemagus))
+- Pin eslint to v2.2.0 [\#233](https://github.com/AtomLinter/linter-jshint/pull/233) ([Arcanemagus](https://github.com/Arcanemagus))
+
+**Closed issues:**
+
+- TypeError: Cannot read property 'length' of undefined [\#232](https://github.com/AtomLinter/linter-jshint/issues/232)
+- Failed to activate linter-jshint package [\#227](https://github.com/AtomLinter/linter-jshint/issues/227)
+
+## [v2.0.2](https://github.com/AtomLinter/linter-jshint/tree/v2.0.2) (2016-02-17)
+[Full Changelog](https://github.com/AtomLinter/linter-jshint/compare/v2.0.1...v2.0.2)
+
+**Fixed bugs:**
+
+- TypeError: Cannot read property 'length' of undefined [\#213](https://github.com/AtomLinter/linter-jshint/issues/213)
+- Don't go negative on line/col [\#220](https://github.com/AtomLinter/linter-jshint/pull/220) ([Arcanemagus](https://github.com/Arcanemagus))
+
+## [v2.0.1](https://github.com/AtomLinter/linter-jshint/tree/v2.0.1) (2016-02-17)
+[Full Changelog](https://github.com/AtomLinter/linter-jshint/compare/v2.0.0...v2.0.1)
+
+**Implemented enhancements:**
+
+- Install `linter` automatically. [\#167](https://github.com/AtomLinter/linter-jshint/issues/167)
+- Setting to not lint .jsx files? [\#165](https://github.com/AtomLinter/linter-jshint/issues/165)
+- Update babel-eslint to version 5.0.0 🚀 [\#217](https://github.com/AtomLinter/linter-jshint/pull/217) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- Update atom-package-deps to version 4.0.1 🚀 [\#216](https://github.com/AtomLinter/linter-jshint/pull/216) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- Automatically install linter [\#211](https://github.com/AtomLinter/linter-jshint/pull/211) ([steelbrain](https://github.com/steelbrain))
+
+**Fixed bugs:**
+
+- Circular structure error [\#218](https://github.com/AtomLinter/linter-jshint/issues/218)
+- Stopped working with v2.0.0 [\#214](https://github.com/AtomLinter/linter-jshint/issues/214)
+- inline ignore doesn't update until you restart atom [\#176](https://github.com/AtomLinter/linter-jshint/issues/176)
+- Add back a guard for the HTML JS extraction [\#219](https://github.com/AtomLinter/linter-jshint/pull/219) ([Arcanemagus](https://github.com/Arcanemagus))
+
+**Closed issues:**
+
+- gulpfile.babel.js error [\#209](https://github.com/AtomLinter/linter-jshint/issues/209)
+- No optional enable [\#161](https://github.com/AtomLinter/linter-jshint/issues/161)
+
+## [v2.0.0](https://github.com/AtomLinter/linter-jshint/tree/v2.0.0) (2016-02-15)
+[Full Changelog](https://github.com/AtomLinter/linter-jshint/compare/v1.3.1...v2.0.0)
+
+**Implemented enhancements:**
+
+- Rewrite in ES6+ [\#210](https://github.com/AtomLinter/linter-jshint/pull/210) ([steelbrain](https://github.com/steelbrain))
+
+**Merged pull requests:**
+
+- atom-linter@4.5.0 untested ⚠️ [\#208](https://github.com/AtomLinter/linter-jshint/pull/208) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+
+## [v1.3.1](https://github.com/AtomLinter/linter-jshint/tree/v1.3.1) (2016-02-10)
+[Full Changelog](https://github.com/AtomLinter/linter-jshint/compare/v1.3.0...v1.3.1)
 
 **Implemented enhancements:**
 
@@ -407,7 +491,7 @@
 
 **Merged pull requests:**
 
-- Added json to supported source languages [\#15](https://github.com/AtomLinter/linter-jshint/pull/15) ([jakekit](https://github.com/jakekit))
+- Added json to supported source languages [\#15](https://github.com/AtomLinter/linter-jshint/pull/15) ([kitch](https://github.com/kitch))
 
 ## [v0.0.15](https://github.com/AtomLinter/linter-jshint/tree/v0.0.15) (2014-05-16)
 [Full Changelog](https://github.com/AtomLinter/linter-jshint/compare/v0.0.14...v0.0.15)

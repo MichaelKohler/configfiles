@@ -5,11 +5,7 @@
     css_newline_between_rules: true
     html_indent_size: 2
     js_indent_size: 2
-  core:
-    themes: [
-      "native-ui"
-      "base16-tomorrow-dark-theme"
-    ]
+  core: {}
   editor:
     invisibles: {}
     scrollPastEnd: true

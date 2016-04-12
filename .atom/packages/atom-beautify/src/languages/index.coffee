@@ -12,10 +12,12 @@ module.exports = class Languages
   # Supported unique configuration keys
   # Used for detecting nested configurations in .jsbeautifyrc
   languageNames: [
+    "apex"
     "arduino"
     "c-sharp"
     "c"
     "coffeescript"
+    "coldfusion"
     "cpp"
     "css"
     "csv"
@@ -23,16 +25,19 @@ module.exports = class Languages
     "ejs"
     "elm"
     "erb"
+    "erlang"
     "gherkin"
     "go"
     "fortran"
     "handlebars"
     "haskell"
     "html"
+    "jade"
     "java"
     "javascript"
     "json"
     "jsx"
+    "latex"
     "less"
     "markdown"
     'marko'
@@ -43,6 +48,7 @@ module.exports = class Languages
     "php"
     "puppet"
     "python"
+    "riotjs"
     "ruby"
     "rust"
     "sass"
@@ -57,6 +63,7 @@ module.exports = class Languages
     "vala"
     "visualforce"
     "xml"
+    "xtemplate"
   ]
 
   ###
@@ -86,6 +93,6 @@ module.exports = class Languages
     _.union(
       _.filter(@languages, (language) -> _.isEqual(language.name, name))
       _.filter(@languages, (language) -> _.isEqual(language.namespace, namespace))
-      _.filter(@languages, (language) -> _.contains(language.grammars, grammar))
-      _.filter(@languages, (language) -> _.contains(language.extensions, extension))
+      _.filter(@languages, (language) -> _.includes(language.grammars, grammar))
+      _.filter(@languages, (language) -> _.includes(language.extensions, extension))
     )
