@@ -1,8 +1,8 @@
 {
   "name": "native-ui",
   "theme": "ui",
-  "version": "0.17.0",
-  "description": "Experience better coding in OSX El Capitan.",
+  "version": "0.18.2",
+  "description": "Experience better coding in OS X El Capitan.",
   "keywords": [
     "elcapitan",
     "macosx",
@@ -21,10 +21,10 @@
     "url": "https://github.com/fv0/native-ui/issues"
   },
   "homepage": "https://github.com/fv0/native-ui#readme",
-  "_id": "native-ui@0.17.0",
-  "_shasum": "ff3a2649f6252f36c38f60436e24eac86e2ba6f8",
-  "_resolved": "file:../d-116112-44348-1ayky06/package.tgz",
-  "_from": "../d-116112-44348-1ayky06/package.tgz",
+  "_id": "native-ui@0.18.2",
+  "_shasum": "704138e9ef2e782a325c0b09c71e039a4ce29813",
+  "_resolved": "file:../d-116413-1530-1mrxwsq/package.tgz",
+  "_from": "../d-116413-1530-1mrxwsq/package.tgz",
   "_atomModuleCache": {
     "version": 1,
     "dependencies": [],
