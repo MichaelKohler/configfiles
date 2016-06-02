@@ -8,7 +8,7 @@
     "restful",
     "http-request"
   ],
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A simple REST client for your favorite editor",
   "repository": {
     "type": "git",
@@ -22,16 +22,16 @@
     "atom-space-pen-views": "^2.0.3",
     "request": "*"
   },
-  "readme": "# REST Client [![Build Status](https://travis-ci.org/ddavison/rest-client.svg?branch=master)](https://travis-ci.org/ddavison/rest-client)\n\nA simple REST client for your favorite editor!\n\n![example](https://raw.githubusercontent.com/ddavison/rest-client/master/images/example.gif)\n",
+  "readme": "# REST Client [![star this repo](http://githubbadges.com/star.svg?user=ddavison&repo=rest-client&style=flat&color=fff&background=222)](https://github.com/ddavison/rest-client) [![fork this repo](http://githubbadges.com/fork.svg?user=ddavison&repo=rest-client&style=flat&color=fff&background=222)](https://github.com/ddavison/rest-client/fork) \n\nA simple REST client for your favorite editor!\n\n![example](https://raw.githubusercontent.com/ddavison/rest-client/master/images/example.gif)\n",
   "readmeFilename": "README.md",
   "bugs": {
     "url": "https://github.com/ddavison/rest-client/issues"
   },
   "homepage": "https://github.com/ddavison/rest-client#readme",
-  "_id": "rest-client@1.1.0",
-  "_shasum": "e8448c28c8d9ff42bdb6bb6328a921346a568e8c",
-  "_resolved": "file:../d-11645-98631-2rj2vz/package.tgz",
-  "_from": "../d-11645-98631-2rj2vz/package.tgz",
+  "_id": "rest-client@1.1.1",
+  "_shasum": "0966caa87897fe5032b58f13de7f536d1bbee3a5",
+  "_resolved": "file:../d-11652-38023-um5wy7/package.tgz",
+  "_from": "../d-11652-38023-um5wy7/package.tgz",
   "_atomModuleCache": {
     "version": 1,
     "dependencies": [
@@ -132,23 +132,8 @@
       },
       {
         "name": "aws4",
-        "version": "1.3.2",
+        "version": "1.4.1",
         "path": "node_modules/request/node_modules/aws4/aws4.js"
-      },
-      {
-        "name": "lru-cache",
-        "version": "4.0.1",
-        "path": "node_modules/request/node_modules/aws4/node_modules/lru-cache/lib/lru-cache.js"
-      },
-      {
-        "name": "pseudomap",
-        "version": "1.0.2",
-        "path": "node_modules/request/node_modules/aws4/node_modules/lru-cache/node_modules/pseudomap/map.js"
-      },
-      {
-        "name": "yallist",
-        "version": "2.0.0",
-        "path": "node_modules/request/node_modules/aws4/node_modules/lru-cache/node_modules/yallist/yallist.js"
       },
       {
         "name": "bl",
@@ -392,7 +377,7 @@
       },
       {
         "name": "dashdash",
-        "version": "1.13.1",
+        "version": "1.14.0",
         "path": "node_modules/request/node_modules/http-signature/node_modules/sshpk/node_modules/dashdash/lib/dashdash.js"
       },
       {
@@ -1030,10 +1015,7 @@
         "node_modules/request/lib/tunnel.js",
         "node_modules/request/node_modules/aws-sign2/index.js",
         "node_modules/request/node_modules/aws4/aws4.js",
-        "node_modules/request/node_modules/aws4/node_modules/lru-cache/lib/lru-cache.js",
-        "node_modules/request/node_modules/aws4/node_modules/lru-cache/node_modules/pseudomap/map.js",
-        "node_modules/request/node_modules/aws4/node_modules/lru-cache/node_modules/pseudomap/pseudomap.js",
-        "node_modules/request/node_modules/aws4/node_modules/lru-cache/node_modules/yallist/yallist.js",
+        "node_modules/request/node_modules/aws4/lru.js",
         "node_modules/request/node_modules/bl/bl.js",
         "node_modules/request/node_modules/bl/node_modules/readable-stream/duplex.js",
         "node_modules/request/node_modules/bl/node_modules/readable-stream/lib/_stream_duplex.js",
@@ -1226,9 +1208,6 @@
         "node_modules/atom-space-pen-views/node_modules/space-pen/package.json",
         "node_modules/atom-space-pen-views/package.json",
         "node_modules/request/node_modules/aws-sign2/package.json",
-        "node_modules/request/node_modules/aws4/node_modules/lru-cache/node_modules/pseudomap/package.json",
-        "node_modules/request/node_modules/aws4/node_modules/lru-cache/node_modules/yallist/package.json",
-        "node_modules/request/node_modules/aws4/node_modules/lru-cache/package.json",
         "node_modules/request/node_modules/aws4/package.json",
         "node_modules/request/node_modules/bl/node_modules/readable-stream/node_modules/core-util-is/package.json",
         "node_modules/request/node_modules/bl/node_modules/readable-stream/node_modules/inherits/package.json",
@@ -1652,24 +1631,6 @@
           "stringstream": "~0.0.4",
           "tough-cookie": "~2.2.0",
           "tunnel-agent": "~0.4.1"
-        }
-      },
-      {
-        "paths": [
-          "node_modules/request/node_modules/aws4"
-        ],
-        "dependencies": {
-          "lru-cache": "^4.0.0"
-        }
-      },
-      {
-        "paths": [
-          "node_modules/request/node_modules/aws4/node_modules/lru-cache/lib",
-          "node_modules/request/node_modules/aws4/node_modules/lru-cache"
-        ],
-        "dependencies": {
-          "pseudomap": "^1.0.1",
-          "yallist": "^2.0.0"
         }
       },
       {
