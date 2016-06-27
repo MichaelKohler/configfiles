@@ -27,6 +27,12 @@
   pigments:
     sortPaletteColors: "by color"
   react: {}
+  "split-diff":
+    diffWords: true
+    ignoreWhitespace: true
+    leftEditorColor: "red"
+    rightEditorColor: "green"
+    syncHorizontalScroll: true
   welcome:
     showOnStartup: false
   whitespace:
