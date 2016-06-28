@@ -9,11 +9,29 @@
       indent_size: 2
     js:
       indent_size: 2
+  "atom-material-ui":
+    colors:
+      abaseColor:
+        red: 37
+        green: 111
+        blue: 152
+        alpha: 1
+    tabs:
+      compactTabs: true
+    treeView:
+      blendTabs: true
+      compactList: true
+    ui:
+      panelShadows: true
   core:
     disabledPackages: [
       "atom-dxr-search"
     ]
     packagesWithKeymapsDisabled: []
+    themes: [
+      "atom-material-ui"
+      "one-dark-syntax"
+    ]
   editor:
     invisibles: {}
     scrollPastEnd: true
