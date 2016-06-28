@@ -21,3 +21,8 @@
   'Deep log':
     'prefix': 'deep',
     'body': 'console.log((require(\'util\')).inspect($1, showHidden=false, depth=10, colorize=true));'
+
+'*':
+  'At':
+    'prefix': 'at',
+    'body': '@'
