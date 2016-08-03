@@ -8,7 +8,7 @@
     "restful",
     "http-request"
   ],
-  "version": "1.1.1",
+  "version": "1.2.1",
   "description": "A simple REST client for your favorite editor",
   "repository": {
     "type": "git",
@@ -28,10 +28,10 @@
     "url": "https://github.com/ddavison/rest-client/issues"
   },
   "homepage": "https://github.com/ddavison/rest-client#readme",
-  "_id": "rest-client@1.1.1",
-  "_shasum": "0966caa87897fe5032b58f13de7f536d1bbee3a5",
-  "_resolved": "file:../d-11652-38023-um5wy7/package.tgz",
-  "_from": "../d-11652-38023-um5wy7/package.tgz",
+  "_id": "rest-client@1.2.1",
+  "_shasum": "ef5b92e1a14bc3f50a519dd83aae593eb36eac0a",
+  "_resolved": "file:../d-11673-1806-7x51v0/package.tgz",
+  "_from": "../d-11673-1806-7x51v0/package.tgz",
   "_atomModuleCache": {
     "version": 1,
     "dependencies": [
@@ -72,7 +72,7 @@
       },
       {
         "name": "es5-ext",
-        "version": "0.10.11",
+        "version": "0.10.12",
         "path": "node_modules/atom-space-pen-views/node_modules/space-pen/node_modules/grim/node_modules/emissary/node_modules/es6-weak-map/node_modules/es5-ext/index.js"
       },
       {
@@ -82,7 +82,7 @@
       },
       {
         "name": "es6-symbol",
-        "version": "3.0.2",
+        "version": "3.1.0",
         "path": "node_modules/atom-space-pen-views/node_modules/space-pen/node_modules/grim/node_modules/emissary/node_modules/es6-weak-map/node_modules/es5-ext/node_modules/es6-symbol/index.js"
       },
       {
@@ -122,7 +122,7 @@
       },
       {
         "name": "request",
-        "version": "2.72.0",
+        "version": "2.74.0",
         "path": "node_modules/request/index.js"
       },
       {
@@ -342,7 +342,7 @@
       },
       {
         "name": "jsprim",
-        "version": "1.2.2",
+        "version": "1.3.0",
         "path": "node_modules/request/node_modules/http-signature/node_modules/jsprim/lib/jsprim.js"
       },
       {
@@ -362,7 +362,7 @@
       },
       {
         "name": "sshpk",
-        "version": "1.8.3",
+        "version": "1.9.2",
         "path": "node_modules/request/node_modules/http-signature/node_modules/sshpk/lib/index.js"
       },
       {
@@ -442,7 +442,7 @@
       },
       {
         "name": "qs",
-        "version": "6.1.0",
+        "version": "6.2.1",
         "path": "node_modules/request/node_modules/qs/lib/index.js"
       },
       {
@@ -452,7 +452,7 @@
       },
       {
         "name": "tough-cookie",
-        "version": "2.2.2",
+        "version": "2.3.1",
         "path": "node_modules/request/node_modules/tough-cookie/lib/cookie.js"
       },
       {
@@ -1117,17 +1117,22 @@
         "node_modules/request/node_modules/http-signature/node_modules/jsprim/node_modules/verror/examples/werror.js",
         "node_modules/request/node_modules/http-signature/node_modules/jsprim/node_modules/verror/lib/verror.js",
         "node_modules/request/node_modules/http-signature/node_modules/sshpk/lib/algs.js",
+        "node_modules/request/node_modules/http-signature/node_modules/sshpk/lib/certificate.js",
         "node_modules/request/node_modules/http-signature/node_modules/sshpk/lib/dhe.js",
         "node_modules/request/node_modules/http-signature/node_modules/sshpk/lib/ed-compat.js",
         "node_modules/request/node_modules/http-signature/node_modules/sshpk/lib/errors.js",
         "node_modules/request/node_modules/http-signature/node_modules/sshpk/lib/fingerprint.js",
         "node_modules/request/node_modules/http-signature/node_modules/sshpk/lib/formats/auto.js",
+        "node_modules/request/node_modules/http-signature/node_modules/sshpk/lib/formats/openssh-cert.js",
         "node_modules/request/node_modules/http-signature/node_modules/sshpk/lib/formats/pem.js",
         "node_modules/request/node_modules/http-signature/node_modules/sshpk/lib/formats/pkcs1.js",
         "node_modules/request/node_modules/http-signature/node_modules/sshpk/lib/formats/pkcs8.js",
         "node_modules/request/node_modules/http-signature/node_modules/sshpk/lib/formats/rfc4253.js",
         "node_modules/request/node_modules/http-signature/node_modules/sshpk/lib/formats/ssh-private.js",
         "node_modules/request/node_modules/http-signature/node_modules/sshpk/lib/formats/ssh.js",
+        "node_modules/request/node_modules/http-signature/node_modules/sshpk/lib/formats/x509-pem.js",
+        "node_modules/request/node_modules/http-signature/node_modules/sshpk/lib/formats/x509.js",
+        "node_modules/request/node_modules/http-signature/node_modules/sshpk/lib/identity.js",
         "node_modules/request/node_modules/http-signature/node_modules/sshpk/lib/index.js",
         "node_modules/request/node_modules/http-signature/node_modules/sshpk/lib/key.js",
         "node_modules/request/node_modules/http-signature/node_modules/sshpk/lib/private-key.js",
@@ -1294,8 +1299,6 @@
         "node_modules/request/node_modules/node-uuid/component.json",
         "node_modules/request/node_modules/node-uuid/package.json",
         "node_modules/request/node_modules/oauth-sign/package.json",
-        "node_modules/request/node_modules/qs/bower.json",
-        "node_modules/request/node_modules/qs/component.json",
         "node_modules/request/node_modules/qs/package.json",
         "node_modules/request/node_modules/stringstream/package.json",
         "node_modules/request/node_modules/tough-cookie/package.json",
@@ -1536,7 +1539,7 @@
         ],
         "dependencies": {
           "es6-iterator": "2",
-          "es6-symbol": "~3.0.2"
+          "es6-symbol": "~3.1"
         }
       },
       {
@@ -1559,7 +1562,7 @@
         ],
         "dependencies": {
           "d": "~0.1.1",
-          "es5-ext": "~0.10.10"
+          "es5-ext": "~0.10.11"
         }
       },
       {
@@ -1617,7 +1620,7 @@
           "combined-stream": "~1.0.5",
           "extend": "~3.0.0",
           "forever-agent": "~0.6.1",
-          "form-data": "~1.0.0-rc3",
+          "form-data": "~1.0.0-rc4",
           "har-validator": "~2.0.6",
           "hawk": "~3.1.3",
           "http-signature": "~1.1.0",
@@ -1627,9 +1630,9 @@
           "mime-types": "~2.1.7",
           "node-uuid": "~1.4.7",
           "oauth-sign": "~0.8.1",
-          "qs": "~6.1.0",
+          "qs": "~6.2.0",
           "stringstream": "~0.0.4",
-          "tough-cookie": "~2.2.0",
+          "tough-cookie": "~2.3.0",
           "tunnel-agent": "~0.4.1"
         }
       },
