@@ -12,7 +12,7 @@
     last = log -1 HEAD
     puma = pull origin master
     st = status
-    co = commit -m 
+    co = commit -m
     fe = fetch
     me = merge
     adda = add --all
@@ -27,6 +27,3 @@
     interactive = auto
     status = auto
     ui = auto
-[bz]
-	apikey = IpPNRLTyLGKDh4OhkBQqRca34R6H9688txdN7vAp
-	username = me@michaelkohler.info
