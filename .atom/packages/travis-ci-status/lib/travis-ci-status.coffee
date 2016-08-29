@@ -12,14 +12,17 @@ module.exports =
   # Internal: The default configuration properties for the package.
   config:
     useTravisCiPro:
-        type: 'boolean'
-        default: false
+      type: 'boolean'
+      default: false
+      description: 'Check to enable Travis CI Pro support'
     personalAccessToken:
-        type: 'string'
-        default: '<Your personal GitHub access token>'
+      type: 'string'
+      default: ''
+      description: 'Your personal GitHub access token (required for Travis CI Pro)'
     travisCiRemoteName:
-        type: 'string'
-        default: 'origin'
+      type: 'string'
+      default: 'origin'
+      description: 'Enter the name of the remote used for Travis integration'
 
   # Internal: The build matrix bottom panel view.
   buildMatrixView: null

@@ -81,7 +81,8 @@ class BuildStatusView extends View
       name = atom.config.get('travis-ci-status.travisCiRemoteName')
 
       repo_list = repos.filter (r) ->
-        /(.)*github\.com/i.test(r.getConfigValue("remote.#{name}.url"))
+        if r?
+          /(.)*github\.com/i.test(r.getConfigValue("remote.#{name}.url"))
 
       @repo = repo_list[0]
       @repo.onDidChangeStatus(@update)
@@ -121,14 +122,28 @@ class BuildStatusView extends View
   #
   # Returns nothing.
   repoStatus: (err, data) =>
-    return @fallback() if err? and atom.travis?.pro?
-    return if data['files'] is 'not found'
-    return console.log "Error:", err if err?
+    if err? and atom.travis?.pro?
+      if err.file is "not found"
+        @matrix.info('not-found')
+        @status.removeClass('pending success fail')
+        @status.addClass('info')
+
+        return console.log "Error: Repository not found on Travis"
+      else
+        @status.removeClass('pending success fail')
+        @status.addClass('fail')
+
+        console.log "Error:", err if err?
+
+      return @fallback()
 
     data = data['repo']
     @status.removeClass('pending success fail')
 
-    if data and data['last_build_state'] is "passed"
+    if data and not data['active']?
+      @matrix.info('inactive')
+      @status.addClass('info')
+    else if data and data['last_build_state'] is "passed"
       @matrix.update(data['last_build_id'])
       @status.addClass('success')
     else
