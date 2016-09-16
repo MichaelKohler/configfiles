@@ -15,7 +15,7 @@ class BuildStatusView extends View
   #
   # nwo    - The string of the repo owner and name.
   # matrix - The build matrix view.
-  initialize: (@nwo, @matrix, @statusBar) ->
+  initialize: (@nwo, @matrix, @statusBar, @gfr) ->
     atom.commands.add 'atom-workspace', 'travis-ci-status:toggle', => @toggle()
     this.on 'click', => @matrix.toggle()
     @attach()
@@ -78,10 +78,9 @@ class BuildStatusView extends View
       ))
 
     @repoPromise.then (repos) =>
-      name = atom.config.get('travis-ci-status.travisCiRemoteName')
-
       repo_list = repos.filter (r) ->
         if r?
+          name = @gfr
           /(.)*github\.com/i.test(r.getConfigValue("remote.#{name}.url"))
 
       @repo = repo_list[0]
