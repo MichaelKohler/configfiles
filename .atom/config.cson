@@ -11,11 +11,7 @@
       indent_size: 2
   "atom-material-ui":
     colors:
-      abaseColor:
-        red: 37
-        green: 111
-        blue: 152
-        alpha: 1
+      abaseColor: "#256f98"
     tabs:
       compactTabs: true
     treeView:
@@ -28,6 +24,7 @@
       "atom-dxr-search"
     ]
     packagesWithKeymapsDisabled: []
+    telemetryConsent: "no"
     themes: [
       "atom-material-ui"
       "one-dark-syntax"
