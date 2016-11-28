@@ -2,40 +2,40 @@
   "_args": [
     [
       {
-        "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-11699-49455-gd4h2f/package.tgz",
+        "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-1161028-27648-1ck3wyf/package.tgz",
         "scope": null,
         "escapedName": null,
         "name": null,
-        "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-11699-49455-gd4h2f/package.tgz",
-        "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-11699-49455-gd4h2f/package.tgz",
+        "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-1161028-27648-1ck3wyf/package.tgz",
+        "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-1161028-27648-1ck3wyf/package.tgz",
         "type": "local"
       },
-      "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-11699-49455-1i3u7v9"
+      "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-1161028-27648-1v4wh6j"
     ]
   ],
-  "_from": "../d-11699-49455-gd4h2f/package.tgz",
-  "_id": "autoprefixer@3.3.0",
+  "_from": "../d-1161028-27648-1ck3wyf/package.tgz",
+  "_id": "autoprefixer@3.5.0",
   "_inCache": true,
   "_installable": true,
   "_location": "/autoprefixer",
   "_phantomChildren": {},
   "_requested": {
-    "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-11699-49455-gd4h2f/package.tgz",
+    "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-1161028-27648-1ck3wyf/package.tgz",
     "scope": null,
     "escapedName": null,
     "name": null,
-    "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-11699-49455-gd4h2f/package.tgz",
-    "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-11699-49455-gd4h2f/package.tgz",
+    "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-1161028-27648-1ck3wyf/package.tgz",
+    "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-1161028-27648-1ck3wyf/package.tgz",
     "type": "local"
   },
   "_requiredBy": [
     "#USER"
   ],
-  "_resolved": "file:../d-11699-49455-gd4h2f/package.tgz",
-  "_shasum": "7e50fe25afbad958e4b9b53cadada89929ecfd0e",
+  "_resolved": "file:../d-1161028-27648-1ck3wyf/package.tgz",
+  "_shasum": "c8ba2ac175db2d6de5b6b7550a6751ace656ed2f",
   "_shrinkwrap": null,
-  "_spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-11699-49455-gd4h2f/package.tgz",
-  "_where": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-11699-49455-1i3u7v9",
+  "_spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-1161028-27648-1ck3wyf/package.tgz",
+  "_where": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-1161028-27648-1v4wh6j",
   "activationCommands": {
     "atom-workspace": "autoprefixer"
   },
@@ -51,7 +51,7 @@
     "autoprefixer": "^6.3.1",
     "postcss": "^5.0.14",
     "postcss-safe-parser": "^2.0.0",
-    "postcss-scss": "^0.3.0"
+    "postcss-scss": "^0.4.0"
   },
   "description": "Prefix CSS and SCSS",
   "devDependencies": {
@@ -80,7 +80,7 @@
   "scripts": {
     "test": "xo"
   },
-  "version": "3.3.0",
+  "version": "3.5.0",
   "xo": {
     "esnext": true,
     "globals": [
