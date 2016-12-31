@@ -30,6 +30,7 @@
       "one-dark-syntax"
     ]
   editor:
+    fontFamily: "FiraCode-Light"
     invisibles: {}
     scrollPastEnd: true
     showIndentGuide: true
