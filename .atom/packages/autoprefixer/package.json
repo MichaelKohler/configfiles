@@ -2,42 +2,45 @@
   "_args": [
     [
       {
-        "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-1161028-27648-1ck3wyf/package.tgz",
+        "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-1161131-22649-zberee/package.tgz",
         "scope": null,
         "escapedName": null,
         "name": null,
-        "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-1161028-27648-1ck3wyf/package.tgz",
-        "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-1161028-27648-1ck3wyf/package.tgz",
+        "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-1161131-22649-zberee/package.tgz",
+        "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-1161131-22649-zberee/package.tgz",
         "type": "local"
       },
-      "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-1161028-27648-1v4wh6j"
+      "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-1161131-22649-12zl7rn"
     ]
   ],
-  "_from": "../d-1161028-27648-1ck3wyf/package.tgz",
-  "_id": "autoprefixer@3.5.0",
+  "_from": "../d-1161131-22649-zberee/package.tgz",
+  "_id": "autoprefixer@3.6.0",
   "_inCache": true,
   "_installable": true,
   "_location": "/autoprefixer",
   "_phantomChildren": {},
   "_requested": {
-    "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-1161028-27648-1ck3wyf/package.tgz",
+    "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-1161131-22649-zberee/package.tgz",
     "scope": null,
     "escapedName": null,
     "name": null,
-    "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-1161028-27648-1ck3wyf/package.tgz",
-    "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-1161028-27648-1ck3wyf/package.tgz",
+    "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-1161131-22649-zberee/package.tgz",
+    "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-1161131-22649-zberee/package.tgz",
     "type": "local"
   },
   "_requiredBy": [
     "#USER"
   ],
-  "_resolved": "file:../d-1161028-27648-1ck3wyf/package.tgz",
-  "_shasum": "c8ba2ac175db2d6de5b6b7550a6751ace656ed2f",
+  "_resolved": "file:../d-1161131-22649-zberee/package.tgz",
+  "_shasum": "fd1cd3a599d2355e5e02cbf146249843192813fe",
   "_shrinkwrap": null,
-  "_spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-1161028-27648-1ck3wyf/package.tgz",
-  "_where": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-1161028-27648-1v4wh6j",
+  "_spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-1161131-22649-zberee/package.tgz",
+  "_where": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-1161131-22649-12zl7rn",
   "activationCommands": {
-    "atom-workspace": "autoprefixer"
+    "atom-workspace": [
+      "core:save",
+      "autoprefixer"
+    ]
   },
   "author": {
     "name": "Sindre Sorhus",
@@ -71,7 +74,7 @@
   "name": "autoprefixer",
   "optionalDependencies": {},
   "private": true,
-  "readme": "# autoprefixer\n\n> Prefix CSS and SCSS with [Autoprefixer](https://github.com/postcss/autoprefixer)\n\n\n## Install\n\n```\n$ apm install autoprefixer\n```\n\nOr, Settings → Install → Search for `autoprefixer`\n\n\n## Usage\n\n- Open the Command Palette and type `autoprefixer`.\n\n\t![](https://f.cloud.github.com/assets/1223565/2284892/51b999b2-9fce-11e3-9e9d-5e6a9cb4e933.gif)\n\n- In an HTML file, select the CSS, open the Command Palette, and type `autoprefixer`.\n\n\t![](https://f.cloud.github.com/assets/1223565/2284893/51e4bd18-9fce-11e3-8b1a-282f664593e9.gif)\n\n\n## Keyboard shortcut\n\nSet the keyboard shortcut you want in your [keymap](http://flight-manual.atom.io/using-atom/sections/basic-customization/#customizing-keybindings):\n\n```cson\n'atom-text-editor':\n\t'cmd-shift-x': 'autoprefixer'\n```\n\n\n## License\n\nMIT © [Sindre Sorhus](https://sindresorhus.com)\n",
+  "readme": "# autoprefixer\n\n> Prefix CSS and SCSS with [Autoprefixer](https://github.com/postcss/autoprefixer)\n\n\n## Install\n\n```\n$ apm install autoprefixer\n```\n\nOr, Settings → Install → Search for `autoprefixer`\n\n\n## Usage\n\n- Open the Command Palette and type `autoprefixer`.\n\n\t![](https://f.cloud.github.com/assets/1223565/2284892/51b999b2-9fce-11e3-9e9d-5e6a9cb4e933.gif)\n\n- In an HTML file, select the CSS, open the Command Palette, and type `autoprefixer`.\n\n\t![](https://f.cloud.github.com/assets/1223565/2284893/51e4bd18-9fce-11e3-8b1a-282f664593e9.gif)\n\n\n## Settings\n\nThere's a `Run on Save` option and more in the settings.\n\n\n## Keyboard shortcut\n\nSet the keyboard shortcut you want in your [keymap](http://flight-manual.atom.io/using-atom/sections/basic-customization/#customizing-keybindings):\n\n```cson\n'atom-text-editor':\n\t'cmd-shift-x': 'autoprefixer'\n```\n\n\n## License\n\nMIT © [Sindre Sorhus](https://sindresorhus.com)\n",
   "readmeFilename": "readme.md",
   "repository": {
     "type": "git",
@@ -80,7 +83,7 @@
   "scripts": {
     "test": "xo"
   },
-  "version": "3.5.0",
+  "version": "3.6.0",
   "xo": {
     "esnext": true,
     "globals": [
