@@ -4,6 +4,7 @@
 export NVM_DIR="/Users/mkohler/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 
+export PATH=/usr/local/bin:$PATH
 
 umask 022
 
