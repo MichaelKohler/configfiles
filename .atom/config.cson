@@ -20,8 +20,22 @@
     ui:
       panelShadows: true
   core:
+    customFileTypes:
+      "source.ini": [
+        ".buckconfig"
+        ".hgrc"
+        ".flowconfig"
+      ]
+      "source.json": [
+        ".arcconfig"
+        "BUCK.autodeps"
+      ]
+      "source.python": [
+        "BUCK"
+      ]
     disabledPackages: [
       "atom-dxr-search"
+      "tree-view"
     ]
     packagesWithKeymapsDisabled: []
     telemetryConsent: "no"
