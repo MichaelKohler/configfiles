@@ -1,6 +1,4 @@
 blob-store
-node_modules
-packages
 storage
 compile-cache
 dev
