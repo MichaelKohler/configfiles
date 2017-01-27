@@ -407,6 +407,11 @@ class FileTreeEntryComponent extends _reactForAtom.React.Component {
 
     const fileIcon = target.cloneNode(false);
     fileIcon.style.cssText = 'position: absolute; top: 0; left: 0; color: #fff; opacity: .8;';
+
+    if (!(document.body != null)) {
+      throw new Error('Invariant violation: "document.body != null"');
+    }
+
     document.body.appendChild(fileIcon);
 
     const { dataTransfer } = event;
@@ -416,6 +421,10 @@ class FileTreeEntryComponent extends _reactForAtom.React.Component {
       dataTransfer.setData('initialPath', this.props.node.uri);
     }
     (_observable || _load_observable()).nextAnimationFrame.subscribe(() => {
+      if (!(document.body != null)) {
+        throw new Error('Invariant violation: "document.body != null"');
+      }
+
       document.body.removeChild(fileIcon);
     });
   }

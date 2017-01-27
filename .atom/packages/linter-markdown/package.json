@@ -2,40 +2,40 @@
   "_args": [
     [
       {
-        "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117015-49975-1r6ilwk/package.tgz",
+        "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117027-44055-ixragq/package.tgz",
         "scope": null,
         "escapedName": null,
         "name": null,
-        "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117015-49975-1r6ilwk/package.tgz",
-        "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117015-49975-1r6ilwk/package.tgz",
+        "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117027-44055-ixragq/package.tgz",
+        "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117027-44055-ixragq/package.tgz",
         "type": "local"
       },
-      "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-117015-49975-1244527"
+      "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-117027-44055-1tvgua0"
     ]
   ],
-  "_from": "../d-117015-49975-1r6ilwk/package.tgz",
-  "_id": "linter-markdown@3.0.2",
+  "_from": "../d-117027-44055-ixragq/package.tgz",
+  "_id": "linter-markdown@3.1.0",
   "_inCache": true,
   "_installable": true,
   "_location": "/linter-markdown",
   "_phantomChildren": {},
   "_requested": {
-    "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117015-49975-1r6ilwk/package.tgz",
+    "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117027-44055-ixragq/package.tgz",
     "scope": null,
     "escapedName": null,
     "name": null,
-    "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117015-49975-1r6ilwk/package.tgz",
-    "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117015-49975-1r6ilwk/package.tgz",
+    "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117027-44055-ixragq/package.tgz",
+    "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117027-44055-ixragq/package.tgz",
     "type": "local"
   },
   "_requiredBy": [
     "#USER"
   ],
-  "_resolved": "file:../d-117015-49975-1r6ilwk/package.tgz",
-  "_shasum": "ab05504fa56f1347e0145da92cc3b1bff8f5e5a3",
+  "_resolved": "file:../d-117027-44055-ixragq/package.tgz",
+  "_shasum": "e18d1923737c0b1cf9b50f96df7bd8d22c56fb57",
   "_shrinkwrap": null,
-  "_spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117015-49975-1r6ilwk/package.tgz",
-  "_where": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-117015-49975-1244527",
+  "_spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117027-44055-ixragq/package.tgz",
+  "_where": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-117027-44055-1tvgua0",
   "bugs": {
     "url": "https://github.com/AtomLinter/linter-markdown/issues"
   },
@@ -74,16 +74,16 @@
   },
   "dependencies": {
     "atom-package-deps": "^4.0.1",
-    "remark": "6.0.1",
+    "remark": "6.2.0",
     "remark-preset-lint-consistent": "^1.0.0",
     "remark-preset-lint-recommended": "^1.0.0",
     "unified-engine-atom": "^2.0.0"
   },
   "description": "Lint markdown on the fly, using remark-lint",
   "devDependencies": {
-    "eslint": "^3.5.0",
-    "eslint-config-airbnb-base": "^7.1.0",
-    "eslint-plugin-import": "^1.14.0",
+    "eslint": "^3.13.0",
+    "eslint-config-airbnb-base": "^11.0.1",
+    "eslint-plugin-import": "^2.2.0",
     "remark-cli": "^2.0.0"
   },
   "engines": {
@@ -139,5 +139,5 @@
     "lint": "remark README.md LICENSE.md && eslint lib spec",
     "test": "apm test"
   },
-  "version": "3.0.2"
+  "version": "3.1.0"
 }

@@ -112,7 +112,7 @@ class SearchResultManager {
     this._emitter = new _atom.Emitter();
     this._subscriptions = new _atom.CompositeDisposable();
     this._quickOpenProviderRegistry = quickOpenProviderRegistry;
-    this._subscriptions.add(atom.project.onDidChangePaths(this._debouncedUpdateDirectories), this._quickOpenProviderRegistry.observeProviders(this._registerProvider.bind(this)), this._quickOpenProviderRegistry.onDidRemoveProvider(this._deregisterProvider.bind(this)));
+    this._subscriptions.add(this._debouncedUpdateDirectories, atom.project.onDidChangePaths(this._debouncedUpdateDirectories), this._quickOpenProviderRegistry.observeProviders(this._registerProvider.bind(this)), this._quickOpenProviderRegistry.onDidRemoveProvider(this._deregisterProvider.bind(this)));
     this._debouncedUpdateDirectories();
   }
 

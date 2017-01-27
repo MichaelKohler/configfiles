@@ -120,7 +120,7 @@ class ClangServerManager {
           return server;
         }
       }
-      const [serverArgs, flagsResult] = yield Promise.all([(0, (_findClangServerArgs || _load_findClangServerArgs()).default)(), _this._getFlags(src, defaultFlags)]);
+      const [serverArgs, flagsResult] = yield Promise.all([(0, (_findClangServerArgs || _load_findClangServerArgs()).default)(src), _this._getFlags(src, defaultFlags)]);
       if (flagsResult == null) {
         return null;
       }

@@ -31,7 +31,7 @@ let killUnixProcessTree = exports.killUnixProcessTree = (() => {
     const descendants = yield getDescendantsOfProcess(childProcess.pid);
     // Kill the processes, starting with those of greatest depth.
     for (const info of descendants.reverse()) {
-      process.kill(info.pid);
+      killPid(info.pid);
     }
   });
 
@@ -168,6 +168,7 @@ exports.createArgsForScriptCommand = createArgsForScriptCommand;
 exports.scriptSafeSpawn = scriptSafeSpawn;
 exports.scriptSafeSpawnAndObserveOutput = scriptSafeSpawnAndObserveOutput;
 exports.killProcess = killProcess;
+exports.killPid = killPid;
 exports.createProcessStream = createProcessStream;
 exports.observeProcessExit = observeProcessExit;
 exports.getOutputStream = getOutputStream;
@@ -212,12 +213,6 @@ function _load_string() {
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
 
-var _semver;
-
-function _load_semver() {
-  return _semver = _interopRequireDefault(require('semver'));
-}
-
 var _shellQuote;
 
 function _load_shellQuote() {
@@ -233,15 +228,17 @@ function _load_performanceNow() {
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // Node crashes if we allow buffers that are too large.
-const DEFAULT_MAX_BUFFER = 100 * 1024 * 1024; /**
-                                               * Copyright (c) 2015-present, Facebook, Inc.
-                                               * All rights reserved.
-                                               *
-                                               * This source code is licensed under the license found in the LICENSE file in
-                                               * the root directory of this source tree.
-                                               *
-                                               * 
-                                               */
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ */
+
+const DEFAULT_MAX_BUFFER = 100 * 1024 * 1024;
 
 const MAX_LOGGED_CALLS = 100;
 const PREVERVED_HISTORY_CALLS = 50;
@@ -485,6 +482,16 @@ function killWindowsProcessTree(pid) {
   });
 }
 
+function killPid(pid) {
+  try {
+    process.kill(pid);
+  } catch (err) {
+    if (err.code !== 'ESRCH') {
+      throw err;
+    }
+  }
+}
+
 function createProcessStream(createProcess, killTreeOnComplete = false) {
   return _createProcessStream(createProcess, true, killTreeOnComplete);
 }
@@ -667,14 +674,12 @@ function writeToStdin(childProcess, options) {
 let cachedOriginalEnvironment = null;
 
 let loadedShellResolve;
-let loadedShellTimeout;
 const loadedShellPromise = new Promise(resolve => {
   loadedShellResolve = resolve;
 }).then(() => {
   // No need to include default paths now that the environment is loaded.
   DEFAULT_PATH_INCLUDE = [];
   cachedOriginalEnvironment = null;
-  loadedShellTimeout = null;
 });
 
 if (!loadedShellResolve) {
@@ -684,16 +689,9 @@ if (!loadedShellResolve) {
 if (typeof atom === 'undefined' || atom.inSpecMode()) {
   // This doesn't apply server-side or in tests, so just immediately resolve.
   loadedShellResolve();
-} else if ((_semver || _load_semver()).default.lt(atom.getVersion(), '1.12.7')) {
-  // Atom <= 1.12.6 has a bug where our hook won't trigger if we activate too late.
-  // Apply a 10 second timeout to prevent the case where this never resolves.
-  loadedShellTimeout = setTimeout(loadedShellResolve, 10000);
 }
 
 function loadedShellEnvironment() {
-  if (loadedShellTimeout != null) {
-    clearTimeout(loadedShellTimeout);
-  }
   loadedShellResolve();
 }
 

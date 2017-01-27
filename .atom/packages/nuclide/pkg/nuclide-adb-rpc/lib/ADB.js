@@ -24,8 +24,9 @@ let getDeviceList = exports.getDeviceList = (() => {
     return Promise.all(devices.map((() => {
       var _ref2 = (0, _asyncToGenerator.default)(function* (name) {
         const architecture = yield getDeviceArchitecture(adbPath, name);
+        const apiVersion = yield getAPIVersion(adbPath, name);
         const model = yield getDeviceModel(adbPath, name);
-        return { name, architecture, model };
+        return { name, architecture, apiVersion, model };
       });
 
       return function (_x2) {
@@ -41,7 +42,7 @@ let getDeviceList = exports.getDeviceList = (() => {
 
 let getPidFromPackageName = exports.getPidFromPackageName = (() => {
   var _ref3 = (0, _asyncToGenerator.default)(function* (adbPath, packageName) {
-    const pidLine = (yield (0, (_process || _load_process()).runCommand)(adbPath, ['shell', 'ps', packageName]).toPromise()).split(_os.EOL)[1]; // First line is output header.
+    const pidLine = (yield (0, (_process || _load_process()).runCommand)(adbPath, ['shell', 'ps', '|', 'grep', '-i', packageName]).toPromise()).split(_os.EOL)[0];
     if (pidLine == null) {
       throw new Error(`Can not find a running process with package name: ${ packageName }`);
     }
@@ -57,6 +58,7 @@ let getPidFromPackageName = exports.getPidFromPackageName = (() => {
 exports.startServer = startServer;
 exports.getDeviceArchitecture = getDeviceArchitecture;
 exports.getDeviceModel = getDeviceModel;
+exports.getAPIVersion = getAPIVersion;
 exports.forwardJdwpPortToPid = forwardJdwpPortToPid;
 
 var _process;
@@ -71,8 +73,8 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function startServer(adbPath) {
-  return (0, (_process || _load_process()).runCommand)(adbPath, ['start-server']).publish();
+function runAdbCommand(adbPath, device, command) {
+  return (0, (_process || _load_process()).runCommand)(adbPath, ['-s', device].concat(command));
 } /**
    * Copyright (c) 2015-present, Facebook, Inc.
    * All rights reserved.
@@ -83,25 +85,46 @@ function startServer(adbPath) {
    * 
    */
 
-function getDeviceArchitecture(adbPath, device) {
-  // SDB is a tool similar to ADB used with Tizen devices. `getprop` doesn't
-  // exist on Tizen, so we have to rely on uname instead.
-  return (0, (_process || _load_process()).runCommand)(adbPath, ['-s', device, 'shell'].concat(adbPath.endsWith('sdb') ? ['uname', '-m'] : ['getprop', 'ro.product.cpu.abi'])).map(s => s.trim()).toPromise();
+function getAndroidProp(adbPath, device, key) {
+  return runAdbCommand(adbPath, device, ['shell', 'getprop', key]).map(s => s.trim());
 }
 
 function getTizenModelConfigKey(adbPath, device, key) {
   const modelConfigPath = '/etc/config/model-config.xml';
-  return (0, (_process || _load_process()).runCommand)(adbPath, ['-s', device, 'shell', 'cat', modelConfigPath]).map(stdout => stdout.split(/\n+/g).filter(s => s.indexOf(key) !== -1)[0]).map(s => {
+
+  return runAdbCommand(adbPath, device, ['shell', 'cat', modelConfigPath]).map(stdout => stdout.split(/\n+/g).filter(s => s.indexOf(key) !== -1)[0]).map(s => {
     const regex = /.*<.*>(.*)<.*>/g;
     return regex.exec(s)[1];
   }).toPromise();
+}
+
+function startServer(adbPath) {
+  return (0, (_process || _load_process()).runCommand)(adbPath, ['start-server']).publish();
+}
+
+function getDeviceArchitecture(adbPath, device) {
+  // SDB is a tool similar to ADB used with Tizen devices. `getprop` doesn't
+  // exist on Tizen, so we have to rely on uname instead.
+  if (adbPath.endsWith('sdb')) {
+    return runAdbCommand(adbPath, device, ['shell', 'uname', '-m']).toPromise();
+  } else {
+    return getAndroidProp(adbPath, device, 'ro.product.cpu.abi').toPromise();
+  }
 }
 
 function getDeviceModel(adbPath, device) {
   if (adbPath.endsWith('sdb')) {
     return getTizenModelConfigKey(adbPath, device, 'tizen.org/system/model_name');
   } else {
-    return (0, (_process || _load_process()).runCommand)(adbPath, ['-s', device, 'shell', 'getprop', 'ro.product.model']).map(s => s.trim()).map(s => s === 'sdk' ? 'emulator' : s).toPromise();
+    return getAndroidProp(adbPath, device, 'ro.product.model').map(s => s === 'sdk' ? 'emulator' : s).toPromise();
+  }
+}
+
+function getAPIVersion(adbPath, device) {
+  if (adbPath.endsWith('sdb')) {
+    return getTizenModelConfigKey(adbPath, device, 'tizen.org/feature/platform.core.api.version');
+  } else {
+    return getAndroidProp(adbPath, device, 'ro.build.version.sdk').toPromise();
   }
 }
 

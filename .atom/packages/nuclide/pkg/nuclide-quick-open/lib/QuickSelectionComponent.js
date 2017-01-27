@@ -4,6 +4,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
+
 var _AtomInput;
 
 function _load_AtomInput() {
@@ -22,12 +24,16 @@ function _load_Tabs() {
   return _Tabs = _interopRequireDefault(require('../../nuclide-ui/Tabs'));
 }
 
-var _atom = require('atom');
+var _UniversalDisposable;
 
-var _debounce;
+function _load_UniversalDisposable() {
+  return _UniversalDisposable = _interopRequireDefault(require('../../commons-node/UniversalDisposable'));
+}
 
-function _load_debounce() {
-  return _debounce = _interopRequireDefault(require('../../commons-node/debounce'));
+var _event;
+
+function _load_event() {
+  return _event = require('../../commons-node/event');
 }
 
 var _humanizeKeystroke;
@@ -59,18 +65,6 @@ function _load_searchResultHelpers() {
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- */
-
-const RESULTS_CHANGED_DEBOUNCE_DELAY = 50;
-
-/**
  * Determine what the applicable shortcut for a given action is within this component's context.
  * For example, this will return different keybindings on windows vs linux.
  */
@@ -81,24 +75,40 @@ function _findKeybindingForAction(action, target) {
   });
   const keystroke = matchingKeyBindings.length && matchingKeyBindings[0].keystrokes || '';
   return (0, (_humanizeKeystroke || _load_humanizeKeystroke()).default)(keystroke);
-}
+} /**
+   * Copyright (c) 2015-present, Facebook, Inc.
+   * All rights reserved.
+   *
+   * This source code is licensed under the license found in the LICENSE file in
+   * the root directory of this source tree.
+   *
+   * 
+   */
 
 class QuickSelectionComponent extends _reactForAtom.React.Component {
 
   constructor(props) {
     super(props);
-    this._subscriptions = new _atom.CompositeDisposable();
-    this._isMounted = false;
+    this._subscriptions = new (_UniversalDisposable || _load_UniversalDisposable()).default();
+
+    const initialProviderName = this.props.searchResultManager.getActiveProviderName();
+    const initialActiveTab = this.props.searchResultManager.getProviderByName(initialProviderName);
+    const initialQuery = this.props.searchResultManager.getLastQuery() || '';
+    const initialResults = this.props.searchResultManager.getResults(initialQuery, initialProviderName);
+    const topOuterResult = (0, (_searchResultHelpers || _load_searchResultHelpers()).getOuterResults)('top', initialResults);
+
     this.state = {
-      activeTab: this.props.searchResultManager.getProviderByName(this.props.searchResultManager.getActiveProviderName()),
+      activeTab: initialActiveTab,
       // treated as immutable
-      resultsByService: {},
+      resultsByService: initialResults,
       renderableProviders: this.props.searchResultManager.getRenderableProviders(),
-      selectedService: '',
-      selectedDirectory: '',
-      selectedItemIndex: -1,
-      hasUserSelection: false
+      selectedService: topOuterResult != null ? topOuterResult.serviceName : '',
+      selectedDirectory: topOuterResult != null ? topOuterResult.directoryName : '',
+      selectedItemIndex: topOuterResult != null ? 0 : -1,
+      hasUserSelection: false,
+      initialQuery
     };
+
     this._handleClickOpenAll = this._handleClickOpenAll.bind(this);
     this._handleDocumentMouseDown = this._handleDocumentMouseDown.bind(this);
     this._handleKeyPress = this._handleKeyPress.bind(this);
@@ -122,20 +132,8 @@ class QuickSelectionComponent extends _reactForAtom.React.Component {
     this._getInputTextEditor().focus();
   }
 
-  blur() {
-    this._getInputTextEditor().blur();
-  }
-
   setInputValue(value) {
     this._getTextEditor().setText(value);
-  }
-
-  getInputValue() {
-    return this._getTextEditor().getText();
-  }
-
-  selectInput() {
-    this._getTextEditor().selectAll();
   }
 
   /**
@@ -149,7 +147,10 @@ class QuickSelectionComponent extends _reactForAtom.React.Component {
     // TODO: Find a better way to trigger an update.
     const nextProviderName = this.props.searchResultManager.getActiveProviderName();
     if (this.state.activeTab.name === nextProviderName) {
-      process.nextTick(() => this._setQuery(this.refs.queryInput.getText()));
+      process.nextTick(() => {
+        const query = this.refs.queryInput.getText();
+        this.props.quickSelectionActions.query(query);
+      });
     } else {
       const activeProvider = this.props.searchResultManager.getProviderByName(nextProviderName);
       const lastResults = this.props.searchResultManager.getResults(this.refs.queryInput.getText(), nextProviderName);
@@ -158,8 +159,10 @@ class QuickSelectionComponent extends _reactForAtom.React.Component {
         activeTab: activeProvider,
         resultsByService: lastResults
       }, () => {
-        process.nextTick(() => this._setQuery(this.refs.queryInput.getText()));
-        this._updateQueryHandler();
+        process.nextTick(() => {
+          const query = this.refs.queryInput.getText();
+          this.props.quickSelectionActions.query(query);
+        });
         if (this.props.onItemsChanged != null) {
           this.props.onItemsChanged(lastResults);
         }
@@ -179,25 +182,23 @@ class QuickSelectionComponent extends _reactForAtom.React.Component {
   }
 
   componentDidMount() {
-    this._isMounted = true;
-    this._modalNode = _reactForAtom.ReactDOM.findDOMNode(this);
-    this._subscriptions.add(atom.commands.add(this._modalNode, 'core:move-to-bottom', this._handleMoveToBottom), atom.commands.add(this._modalNode, 'core:move-to-top', this._handleMoveToTop), atom.commands.add(this._modalNode, 'core:move-down', this._handleMoveDown), atom.commands.add(this._modalNode, 'core:move-up', this._handleMoveUp), atom.commands.add(this._modalNode, 'core:confirm', this._select), atom.commands.add(this._modalNode, 'pane:show-previous-item', this._handleMovePreviousTab), atom.commands.add(this._modalNode, 'pane:show-next-item', this._handleMoveNextTab));
+    const modalNode = _reactForAtom.ReactDOM.findDOMNode(this);
+    this._subscriptions.add(atom.commands.add(modalNode, 'core:move-to-bottom', this._handleMoveToBottom), atom.commands.add(modalNode, 'core:move-to-top', this._handleMoveToTop), atom.commands.add(modalNode, 'core:move-down', this._handleMoveDown), atom.commands.add(modalNode, 'core:move-up', this._handleMoveUp), atom.commands.add(modalNode, 'core:confirm', this._select), atom.commands.add(modalNode, 'pane:show-previous-item', this._handleMovePreviousTab), atom.commands.add(modalNode, 'pane:show-next-item', this._handleMoveNextTab), atom.commands.add('body', 'core:cancel', () => {
+      this.props.onCancellation();
+    }), _rxjsBundlesRxMinJs.Observable.fromEvent(document, 'mousedown').subscribe(this._handleDocumentMouseDown), (0, (_event || _load_event()).observableFromSubscribeFunction)(cb => this._getTextEditor().onDidChange(cb))
+    // $FlowFixMe: Missing def for debounce and timer.
+    .debounce(() => _rxjsBundlesRxMinJs.Observable.timer(this.state.activeTab.debounceDelay || 0)).subscribe(this._handleTextInputChange), (0, (_event || _load_event()).observableFromSubscribeFunction)(cb => this.props.searchResultManager.onProvidersChanged(cb)).debounceTime(0, _rxjsBundlesRxMinJs.Scheduler.animationFrame).subscribe(this._handleProvidersChange), (0, (_event || _load_event()).observableFromSubscribeFunction)(cb => this.props.searchResultManager.onResultsChanged(cb)).debounceTime(50)
+    // debounceTime seems to have issues canceling scheduled work. So
+    // schedule it after we've debounced the events. See
+    // https://github.com/ReactiveX/rxjs/pull/2135
+    .debounceTime(0, _rxjsBundlesRxMinJs.Scheduler.animationFrame).subscribe(this._handleResultsChange));
 
-    // Close quick open if user clicks outside the frame.
-    document.addEventListener('mousedown', this._handleDocumentMouseDown);
-    this._subscriptions.add(new _atom.Disposable(() => {
-      document.removeEventListener('mousedown', this._handleDocumentMouseDown);
-    }));
-
-    this._subscriptions.add(this.props.searchResultManager.onProvidersChanged(this._handleProvidersChange), this.props.searchResultManager.onResultsChanged((0, (_debounce || _load_debounce()).default)(this._handleResultsChange, RESULTS_CHANGED_DEBOUNCE_DELAY, false)));
-
-    this._updateQueryHandler();
-    this._getTextEditor().onDidChange(this._handleTextInputChange);
-    this._getTextEditor().setText('');
+    // TODO: Find a better way to trigger an update.
+    this._getTextEditor().setText(this.refs.queryInput.getText());
+    this._getTextEditor().selectAll();
   }
 
   componentWillUnmount() {
-    this._isMounted = false;
     this._subscriptions.dispose();
   }
 
@@ -248,32 +249,24 @@ class QuickSelectionComponent extends _reactForAtom.React.Component {
   }
 
   _handleDocumentMouseDown(event) {
-    const modal = this.refs.modal;
     // If the click did not happen on the modal or on any of its descendants,
     // the click was elsewhere on the document and should close the modal.
-    if (event.target !== modal && !modal.contains(event.target)) {
+    // Otherwise, refocus the input box.
+    if (event.target !== this.refs.modal && !this.refs.modal.contains(event.target)) {
       this.props.onCancellation();
+    } else {
+      process.nextTick(() => this._getInputTextEditor().focus());
     }
-  }
-
-  _updateQueryHandler() {
-    this._debouncedQueryHandler = (0, (_debounce || _load_debounce()).default)(() => {
-      if (this._isMounted) {
-        this._setKeyboardQuery(this._getTextEditor().getText());
-      }
-    }, this.state.activeTab.debounceDelay || 0, false);
   }
 
   _handleTextInputChange() {
-    this._debouncedQueryHandler();
+    this.setState({ hasUserSelection: false });
+    const query = this._getTextEditor().getText();
+    this.props.quickSelectionActions.query(query);
   }
 
   _handleResultsChange() {
-    // This function is running on a timer (debounced), it is possible that it
-    // may be called after the component has unmounted.
-    if (this._isMounted) {
-      this._updateResults();
-    }
+    this._updateResults();
   }
 
   _handleProvidersChange() {
@@ -468,15 +461,6 @@ class QuickSelectionComponent extends _reactForAtom.React.Component {
     });
   }
 
-  _setKeyboardQuery(query) {
-    this.setState({ hasUserSelection: false });
-    this._setQuery(query);
-  }
-
-  _setQuery(query) {
-    this.props.quickSelectionActions.query(query);
-  }
-
   _getInputTextEditor() {
     return _reactForAtom.ReactDOM.findDOMNode(this.refs.queryInput);
   }
@@ -495,7 +479,6 @@ class QuickSelectionComponent extends _reactForAtom.React.Component {
     if (newProviderName !== currentProviderName) {
       this.props.quickSelectionActions.changeActiveProvider(newProviderName);
     }
-    this.refs.queryInput.focus();
   }
 
   _renderTabs() {
@@ -684,6 +667,7 @@ class QuickSelectionComponent extends _reactForAtom.React.Component {
         _reactForAtom.React.createElement((_AtomInput || _load_AtomInput()).AtomInput, {
           className: 'omnisearch-pane',
           ref: 'queryInput',
+          initialValue: this.state.initialQuery,
           placeholderText: this.state.activeTab.prompt
         }),
         _reactForAtom.React.createElement(

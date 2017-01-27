@@ -66,11 +66,13 @@ class ConfigObserver {
         return _this._fileExtensions.indexOf((_nuclideUri || _load_nuclideUri()).default.extname(filePath)) !== -1;
       }));
 
-      return new Set((yield Promise.all(paths.map(function (path) {
+      const result = new Set((yield Promise.all(paths.map(function (path) {
         return _this._findConfigDir(path);
       }))).filter(function (path) {
         return path != null;
       }));
+      // $FlowIssue Flow doesn't understand filter
+      return result;
     })();
   }
 

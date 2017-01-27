@@ -21,6 +21,12 @@ function _load_bindObservableAsProps() {
   return _bindObservableAsProps = require('../../nuclide-ui/bindObservableAsProps');
 }
 
+var _ResizableFlexContainer;
+
+function _load_ResizableFlexContainer() {
+  return _ResizableFlexContainer = require('../../nuclide-ui/ResizableFlexContainer');
+}
+
 var _WatchExpressionComponent;
 
 function _load_WatchExpressionComponent() {
@@ -57,16 +63,6 @@ function _load_DebuggerThreadsComponent() {
   return _DebuggerThreadsComponent = require('./DebuggerThreadsComponent');
 }
 
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- */
-
 class NewDebuggerView extends _reactForAtom.React.PureComponent {
 
   constructor(props) {
@@ -101,25 +97,28 @@ class NewDebuggerView extends _reactForAtom.React.PureComponent {
     const WatchExpressionComponentWrapped = this._watchExpressionComponentWrapped;
     const ScopesComponentWrapped = this._scopesComponentWrapped;
     const threadsSection = this.state.showThreadsWindow ? _reactForAtom.React.createElement(
-      (_Section || _load_Section()).Section,
-      { collapsable: true, headline: 'Threads',
-        className: 'nuclide-debugger-section-header' },
+      (_ResizableFlexContainer || _load_ResizableFlexContainer()).ResizableFlexItem,
+      { initialFlexScale: 1 },
       _reactForAtom.React.createElement(
-        'div',
-        { className: 'nuclide-debugger-section-content' },
-        _reactForAtom.React.createElement((_DebuggerThreadsComponent || _load_DebuggerThreadsComponent()).DebuggerThreadsComponent, {
-          bridge: this.props.model.getBridge(),
-          threadStore: model.getThreadStore()
-        })
+        (_Section || _load_Section()).Section,
+        { headline: 'Threads',
+          className: 'nuclide-debugger-section-header' },
+        _reactForAtom.React.createElement(
+          'div',
+          { className: 'nuclide-debugger-section-content' },
+          _reactForAtom.React.createElement((_DebuggerThreadsComponent || _load_DebuggerThreadsComponent()).DebuggerThreadsComponent, {
+            bridge: this.props.model.getBridge(),
+            threadStore: model.getThreadStore()
+          })
+        )
       )
     ) : null;
     return _reactForAtom.React.createElement(
       'div',
       { className: 'nuclide-debugger-container-new' },
       _reactForAtom.React.createElement(
-        (_Section || _load_Section()).Section,
-        { collapsable: true, headline: 'Debugger Controls',
-          className: 'nuclide-debugger-section-header' },
+        'div',
+        { className: 'nuclide-debugger-section-header nuclide-debugger-controls-section' },
         _reactForAtom.React.createElement(
           'div',
           { className: 'nuclide-debugger-section-content' },
@@ -129,59 +128,83 @@ class NewDebuggerView extends _reactForAtom.React.PureComponent {
           })
         )
       ),
-      threadsSection,
       _reactForAtom.React.createElement(
-        (_Section || _load_Section()).Section,
-        { collapsable: true, headline: 'Call Stack',
-          className: 'nuclide-debugger-section-header' },
+        (_ResizableFlexContainer || _load_ResizableFlexContainer()).ResizableFlexContainer,
+        { direction: (_ResizableFlexContainer || _load_ResizableFlexContainer()).FlexDirections.VERTICAL },
+        threadsSection,
         _reactForAtom.React.createElement(
-          'div',
-          { className: 'nuclide-debugger-section-content' },
-          _reactForAtom.React.createElement((_DebuggerCallstackComponent || _load_DebuggerCallstackComponent()).DebuggerCallstackComponent, {
-            actions: actions,
-            bridge: model.getBridge(),
-            callstackStore: model.getCallstackStore()
-          })
-        )
-      ),
-      _reactForAtom.React.createElement(
-        (_Section || _load_Section()).Section,
-        { collapsable: true, headline: 'Breakpoints',
-          className: 'nuclide-debugger-section-header' },
+          (_ResizableFlexContainer || _load_ResizableFlexContainer()).ResizableFlexItem,
+          { initialFlexScale: 1 },
+          _reactForAtom.React.createElement(
+            (_Section || _load_Section()).Section,
+            { headline: 'Call Stack',
+              key: 'callStack',
+              className: 'nuclide-debugger-section-header' },
+            _reactForAtom.React.createElement(
+              'div',
+              { className: 'nuclide-debugger-section-content' },
+              _reactForAtom.React.createElement((_DebuggerCallstackComponent || _load_DebuggerCallstackComponent()).DebuggerCallstackComponent, {
+                actions: actions,
+                bridge: model.getBridge(),
+                callstackStore: model.getCallstackStore()
+              })
+            )
+          )
+        ),
         _reactForAtom.React.createElement(
-          'div',
-          { className: 'nuclide-debugger-section-content' },
-          _reactForAtom.React.createElement((_BreakpointListComponent || _load_BreakpointListComponent()).BreakpointListComponent, {
-            actions: actions,
-            breakpointStore: model.getBreakpointStore()
-          })
-        )
-      ),
-      _reactForAtom.React.createElement(
-        (_Section || _load_Section()).Section,
-        { collapsable: true, headline: 'Scopes',
-          className: 'nuclide-debugger-section-header' },
+          (_ResizableFlexContainer || _load_ResizableFlexContainer()).ResizableFlexItem,
+          { initialFlexScale: 1 },
+          _reactForAtom.React.createElement(
+            (_Section || _load_Section()).Section,
+            { headline: 'Breakpoints',
+              key: 'breakpoints',
+              className: 'nuclide-debugger-section-header' },
+            _reactForAtom.React.createElement(
+              'div',
+              { className: 'nuclide-debugger-section-content' },
+              _reactForAtom.React.createElement((_BreakpointListComponent || _load_BreakpointListComponent()).BreakpointListComponent, {
+                actions: actions,
+                breakpointStore: model.getBreakpointStore()
+              })
+            )
+          )
+        ),
         _reactForAtom.React.createElement(
-          'div',
-          { className: 'nuclide-debugger-section-content' },
-          _reactForAtom.React.createElement(ScopesComponentWrapped, {
-            watchExpressionStore: model.getWatchExpressionStore()
-          })
-        )
-      ),
-      _reactForAtom.React.createElement(
-        (_Section || _load_Section()).Section,
-        { collapsable: true, headline: 'Watch Expressions',
-          className: 'nuclide-debugger-section-header' },
+          (_ResizableFlexContainer || _load_ResizableFlexContainer()).ResizableFlexItem,
+          { initialFlexScale: 1 },
+          _reactForAtom.React.createElement(
+            (_Section || _load_Section()).Section,
+            { headline: 'Scopes',
+              key: 'scopes',
+              className: 'nuclide-debugger-section-header' },
+            _reactForAtom.React.createElement(
+              'div',
+              { className: 'nuclide-debugger-section-content' },
+              _reactForAtom.React.createElement(ScopesComponentWrapped, {
+                watchExpressionStore: model.getWatchExpressionStore()
+              })
+            )
+          )
+        ),
         _reactForAtom.React.createElement(
-          'div',
-          { className: 'nuclide-debugger-section-content' },
-          _reactForAtom.React.createElement(WatchExpressionComponentWrapped, {
-            onAddWatchExpression: actions.addWatchExpression.bind(model),
-            onRemoveWatchExpression: actions.removeWatchExpression.bind(model),
-            onUpdateWatchExpression: actions.updateWatchExpression.bind(model),
-            watchExpressionStore: model.getWatchExpressionStore()
-          })
+          (_ResizableFlexContainer || _load_ResizableFlexContainer()).ResizableFlexItem,
+          { initialFlexScale: 1 },
+          _reactForAtom.React.createElement(
+            (_Section || _load_Section()).Section,
+            { headline: 'Watch Expressions',
+              key: 'watchExpressions',
+              className: 'nuclide-debugger-section-header' },
+            _reactForAtom.React.createElement(
+              'div',
+              { className: 'nuclide-debugger-section-content' },
+              _reactForAtom.React.createElement(WatchExpressionComponentWrapped, {
+                onAddWatchExpression: actions.addWatchExpression.bind(model),
+                onRemoveWatchExpression: actions.removeWatchExpression.bind(model),
+                onUpdateWatchExpression: actions.updateWatchExpression.bind(model),
+                watchExpressionStore: model.getWatchExpressionStore()
+              })
+            )
+          )
         )
       )
     );
@@ -191,4 +214,12 @@ class NewDebuggerView extends _reactForAtom.React.PureComponent {
     this._disposables.dispose();
   }
 }
-exports.NewDebuggerView = NewDebuggerView;
+exports.NewDebuggerView = NewDebuggerView; /**
+                                            * Copyright (c) 2015-present, Facebook, Inc.
+                                            * All rights reserved.
+                                            *
+                                            * This source code is licensed under the license found in the LICENSE file in
+                                            * the root directory of this source tree.
+                                            *
+                                            * 
+                                            */

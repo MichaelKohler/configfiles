@@ -6,6 +6,8 @@ Object.defineProperty(exports, "__esModule", {
 exports.startServer = startServer;
 exports.getDeviceList = getDeviceList;
 exports.getDeviceArchitecture = getDeviceArchitecture;
+exports.getDeviceModel = getDeviceModel;
+exports.getAPIVersion = getAPIVersion;
 exports.getPidFromPackageName = getPidFromPackageName;
 exports.forwardJdwpPortToPid = forwardJdwpPortToPid;
 
@@ -35,6 +37,14 @@ function getDeviceList(adbPath) {
 
 function getDeviceArchitecture(adbPath, device) {
   return (_ADB || _load_ADB()).getDeviceArchitecture(adbPath, device);
+}
+
+function getDeviceModel(adbPath, device) {
+  return (_ADB || _load_ADB()).getDeviceModel(adbPath, device);
+}
+
+function getAPIVersion(adbPath, device) {
+  return (_ADB || _load_ADB()).getAPIVersion(adbPath, device);
 }
 
 function getPidFromPackageName(adbPath, packageName) {

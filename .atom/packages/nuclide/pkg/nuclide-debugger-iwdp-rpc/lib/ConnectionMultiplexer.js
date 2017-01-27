@@ -77,19 +77,16 @@ const { log, logError } = (_logger || _load_logger()).logger;
  * 3. The `add` method can be called to add an additonal connection to be managed by the CM.
  */
 class ConnectionMultiplexer {
-
+  // Invariant: this._enabledConnection != null, if and only if that connection is paused.
   constructor(sendMessageToClient) {
     this._connections = new Set();
     this._sendMessageToClient = message => sendMessageToClient(message);
     this._fileCache = new (_FileCache || _load_FileCache()).FileCache();
-    this._setPauseOnExceptionsState = 'none';
     this._freshConnectionId = 0;
     this._newConnections = new _rxjsBundlesRxMinJs.Subject();
     this._breakpointManager = new (_BreakpointManager || _load_BreakpointManager()).BreakpointManager(this._fileCache, this._sendMessageToClient.bind(this));
     this._disposables = new (_UniversalDisposable || _load_UniversalDisposable()).default(this._newConnections.subscribe(this._handleNewConnection.bind(this)), this._breakpointManager);
   }
-  // Invariant: this._enabledConnection != null, if and only if that connection is paused.
-
 
   sendCommand(message) {
     const [domain, method] = message.method.split('.');
@@ -169,7 +166,7 @@ class ConnectionMultiplexer {
           }
         case 'setPauseOnExceptions':
           {
-            const response = yield _this._setPauseOnExceptions(message);
+            const response = yield _this._breakpointManager.setPauseOnExceptions(message);
             _this._sendMessageToClient(response);
             break;
           }
@@ -309,36 +306,12 @@ class ConnectionMultiplexer {
     })();
   }
 
-  _setPauseOnExceptions(message) {
+  add(deviceInfo) {
     var _this5 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      if (_this5._connections.size === 0) {
-        return { id: message.id, error: { message: 'setPauseOnExceptions sent with no connections.' } };
-      }
-      _this5._setPauseOnExceptionsState = message.params.state;
-      const responsePromises = [];
-      for (const connection of _this5._connections) {
-        responsePromises.push(connection.sendCommand(message));
-      }
-      const responses = yield Promise.all(responsePromises);
-      log(`setPauseOnExceptions yielded: ${ JSON.stringify(responses) }`);
-      for (const response of responses) {
-        // We can receive multiple responses, so just send the first non-error one.
-        if (response.result != null && response.error == null) {
-          return response;
-        }
-      }
-      return responses[0];
-    })();
-  }
-
-  add(deviceInfo) {
-    var _this6 = this;
-
-    return (0, _asyncToGenerator.default)(function* () {
-      const connection = _this6._connectToContext(deviceInfo);
-      _this6._newConnections.next(connection);
+      const connection = _this5._connectToContext(deviceInfo);
+      _this5._newConnections.next(connection);
     })();
   }
 
@@ -350,15 +323,14 @@ class ConnectionMultiplexer {
   }
 
   _handleNewConnection(connection) {
-    var _this7 = this;
+    var _this6 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
       // When a connection comes in, we need to do a few things:
       // 1. Exchange prelude messages, enabling the relevant domains, etc.
-      yield _this7._sendPreludeToTarget(connection);
+      yield _this6._sendPreludeToTarget(connection);
       // 2. Add this connection to the breakpoint manager so that will handle breakpoints.
-      yield _this7._breakpointManager.addConnection(connection);
-      yield _this7._sendSetPauseOnExceptionToTarget(connection);
+      yield _this6._breakpointManager.addConnection(connection);
     })();
   }
 
@@ -376,18 +348,6 @@ class ConnectionMultiplexer {
         logError(err);
         throw new Error(err);
       }
-    })();
-  }
-
-  _sendSetPauseOnExceptionToTarget(connection) {
-    var _this8 = this;
-
-    return (0, _asyncToGenerator.default)(function* () {
-      // Drop the responses on the floor, since setting initial pauseOnException is handled by CM.
-      yield connection.sendCommand({
-        method: 'Debugger.setPauseOnExceptions',
-        params: _this8._setPauseOnExceptionsState
-      });
     })();
   }
 

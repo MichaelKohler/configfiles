@@ -198,9 +198,7 @@ function decryptConfig(remoteProjectConfig) {
 function decryptString(text, password, salt) {
   const decipher = _crypto.default.createDecipheriv('aes-128-cbc', new Buffer(password, 'base64'), new Buffer(salt, 'base64'));
 
-  // $FlowIssue according to the Flow typedefs, 'base64' is not a valid input encoding
   let decryptedString = decipher.update(text, 'base64', 'utf8');
-  // $FlowIssue apparently 'utf8' is not a valid output encoding
   decryptedString += decipher.final('utf8');
 
   return decryptedString;

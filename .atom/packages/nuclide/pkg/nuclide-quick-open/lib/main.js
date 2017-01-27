@@ -99,6 +99,8 @@ class Activation {
   constructor() {
     this._analyticsSessionId = null;
     this._previousFocus = null;
+    this._searchComponent = null;
+    this._searchPanel = null;
     this._quickOpenProviderRegistry = new (_QuickOpenProviderRegistry || _load_QuickOpenProviderRegistry()).default();
     this._quickSelectionDispatcher = new (_QuickSelectionDispatcher || _load_QuickSelectionDispatcher()).default();
     this._quickSelectionActions = new (_QuickSelectionActions || _load_QuickSelectionActions()).default(this._quickSelectionDispatcher);
@@ -107,10 +109,6 @@ class Activation {
     this._subscriptions = new (_UniversalDisposable || _load_UniversalDisposable()).default(atom.commands.add('atom-workspace', {
       'nuclide-quick-open:find-anything-via-omni-search': () => {
         this._quickSelectionActions.changeActiveProvider('OmniSearchResultProvider');
-      }
-    }), atom.commands.add('body', 'core:cancel', () => {
-      if (this._searchPanel && this._searchPanel.isVisible()) {
-        this._closeSearchPanel();
       }
     }));
 
@@ -128,35 +126,6 @@ class Activation {
         this._searchResultManager.executeQuery(action.query);
         break;
     }
-  }
-
-  _render() {
-    if (this._searchPanel == null) {
-      this._searchPanel = atom.workspace.addModalPanel({
-        item: document.createElement('div'),
-        visible: false,
-        className: 'nuclide-quick-open'
-      });
-    }
-
-    const searchPanel = this._searchPanel;
-
-    if (!(searchPanel != null)) {
-      throw new Error('Invariant violation: "searchPanel != null"');
-    }
-
-    const _searchComponent = _reactForAtom.ReactDOM.render(_reactForAtom.React.createElement((_QuickSelectionComponent || _load_QuickSelectionComponent()).default, {
-      quickSelectionActions: this._quickSelectionActions,
-      searchResultManager: this._searchResultManager,
-      onSelection: this._handleSelection,
-      onCancellation: this._closeSearchPanel
-    }), searchPanel.getItem());
-
-    if (!(_searchComponent instanceof (_QuickSelectionComponent || _load_QuickSelectionComponent()).default)) {
-      throw new Error('Invariant violation: "_searchComponent instanceof QuickSelectionComponent"');
-    }
-
-    this._searchComponent = _searchComponent;
   }
 
   _handleSelection(selections, providerName, query) {
@@ -203,45 +172,83 @@ class Activation {
       this._closeSearchPanel();
     } else {
       this._searchResultManager.setActiveProvider(newProviderName);
-      this._render();
       this._showSearchPanel();
     }
   }
 
   _showSearchPanel(initialQuery) {
-    this._previousFocus = document.activeElement;
-    const { _searchComponent, _searchPanel } = this;
-    if (_searchComponent != null && _searchPanel != null) {
-      // Start a new search "session" for analytics purposes.
-      (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)('quickopen-open-panel', {
-        'quickopen-session': this._analyticsSessionId || ''
+    if (this._searchPanel == null) {
+      this._searchPanel = atom.workspace.addModalPanel({
+        item: document.createElement('div'),
+        visible: false,
+        className: 'nuclide-quick-open'
       });
-      // _showSearchPanel gets called when changing providers even if it's already shown.
-      const isAlreadyVisible = _searchPanel.isVisible();
-      _searchPanel.show();
-      _searchComponent.focus();
-      if (initialQuery != null) {
-        _searchComponent.setInputValue(initialQuery);
-      } else if ((_featureConfig || _load_featureConfig()).default.get('nuclide-quick-open.useSelection') && !isAlreadyVisible) {
-        const editor = atom.workspace.getActiveTextEditor();
-        const selectedText = editor != null && editor.getSelections()[0].getText();
-        if (selectedText && selectedText.length <= MAX_SELECTION_LENGTH) {
-          _searchComponent.setInputValue(selectedText.split('\n')[0]);
-        }
+    }
+
+    const searchPanel = this._searchPanel;
+
+    if (!(searchPanel != null)) {
+      throw new Error('Invariant violation: "searchPanel != null"');
+    }
+
+    const searchComponent = _reactForAtom.ReactDOM.render(_reactForAtom.React.createElement((_QuickSelectionComponent || _load_QuickSelectionComponent()).default, {
+      quickSelectionActions: this._quickSelectionActions,
+      searchResultManager: this._searchResultManager,
+      onSelection: this._handleSelection,
+      onCancellation: this._closeSearchPanel
+    }), searchPanel.getItem());
+
+    if (!(searchComponent instanceof (_QuickSelectionComponent || _load_QuickSelectionComponent()).default)) {
+      throw new Error('Invariant violation: "searchComponent instanceof QuickSelectionComponent"');
+    }
+
+    if (this._searchComponent != null && this._searchComponent !== searchComponent) {
+      throw new Error('Only one QuickSelectionComponent can be rendered at a time.');
+    }
+
+    // Start a new search "session" for analytics purposes.
+    (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)('quickopen-open-panel', {
+      'quickopen-session': this._analyticsSessionId || ''
+    });
+
+    if (this._searchComponent == null) {
+      this._searchComponent = searchComponent;
+      this._previousFocus = document.activeElement;
+    }
+
+    if (initialQuery != null) {
+      searchComponent.setInputValue(initialQuery);
+    } else if (!searchPanel.isVisible() && (_featureConfig || _load_featureConfig()).default.get('nuclide-quick-open.useSelection')) {
+      // Only on initial render should you use the current selection as a query.
+      const editor = atom.workspace.getActiveTextEditor();
+      const selectedText = editor != null && editor.getSelections()[0].getText();
+      if (selectedText && selectedText.length <= MAX_SELECTION_LENGTH) {
+        searchComponent.setInputValue(selectedText.split('\n')[0]);
       }
-      _searchComponent.selectInput();
+    }
+
+    if (!searchPanel.isVisible()) {
+      searchPanel.show();
+      searchComponent.focus();
     }
   }
 
   _closeSearchPanel() {
-    const { _searchComponent, _searchPanel } = this;
-    if (_searchComponent != null && _searchPanel != null && _searchPanel.isVisible()) {
+    if (this._searchComponent != null) {
+      if (!(this._searchPanel != null)) {
+        throw new Error('Invariant violation: "this._searchPanel != null"');
+      }
+
+      _reactForAtom.ReactDOM.unmountComponentAtNode(this._searchPanel.getItem());
+      this._searchComponent = null;
       (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)('quickopen-close-panel', {
         'quickopen-session': this._analyticsSessionId || ''
       });
-      _searchPanel.hide();
-      _searchComponent.blur();
       this._analyticsSessionId = null;
+    }
+
+    if (this._searchPanel != null && this._searchPanel.isVisible()) {
+      this._searchPanel.hide();
     }
 
     if (this._previousFocus != null) {
@@ -278,9 +285,6 @@ class Activation {
     const disposable = service.subscribeToPath('quick-open-query', params => {
       const { query } = params;
       if (typeof query === 'string') {
-        if (this._searchComponent == null) {
-          this._render();
-        }
         this._showSearchPanel(query);
       }
     });
@@ -291,16 +295,7 @@ class Activation {
   dispose() {
     this._subscriptions.dispose();
     this._quickSelectionDispatcher.unregister(this._dispatcherToken);
-    if (this._searchComponent != null) {
-      const searchPanel = this._searchPanel;
-
-      if (!(searchPanel != null)) {
-        throw new Error('Invariant violation: "searchPanel != null"');
-      }
-
-      _reactForAtom.ReactDOM.unmountComponentAtNode(searchPanel.getItem());
-      this._searchComponent = null;
-    }
+    this._closeSearchPanel();
     if (this._searchPanel != null) {
       this._searchPanel.destroy();
       this._searchPanel = null;

@@ -47,6 +47,10 @@ function dispatchKeyboardEvent(key, target, metaKeys = {}) {
     throw new Error('Invariant violation: "shift !== true || key.toUpperCase() === key"');
   }
 
+  if (!(target != null)) {
+    throw new Error('Invariant violation: "target != null"');
+  }
+
   const event = atom.keymaps.constructor.buildKeydownEvent(key, {
     target,
     alt: Boolean(alt),

@@ -70,7 +70,8 @@ class NodeDebuggerHost {
       // TODO: do we need to add webSocket into CompositeDisposable?
       const config = {
         debugPort,
-        preload: false };
+        preload: false, // This makes the node inspector not load all the source files on startup.
+        inject: false };
       const session = new (_Session || _load_Session()).Session(config, debugPort, websocket);
       _rxjsBundlesRxMinJs.Observable.fromEvent(session, 'close').subscribe(this._close$);
     });

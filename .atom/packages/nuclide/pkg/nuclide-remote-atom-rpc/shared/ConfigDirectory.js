@@ -127,12 +127,6 @@ function _load_fsPromise() {
   return _fsPromise = _interopRequireDefault(require('../../commons-node/fsPromise'));
 }
 
-var _userInfo;
-
-function _load_userInfo() {
-  return _userInfo = _interopRequireDefault(require('../../commons-node/userInfo'));
-}
-
 var _nuclideUri;
 
 function _load_nuclideUri() {
@@ -155,17 +149,15 @@ var _os = _interopRequireDefault(require('os'));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- */
-
-const logger = (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)();
+const logger = (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)(); /**
+                                                                              * Copyright (c) 2015-present, Facebook, Inc.
+                                                                              * All rights reserved.
+                                                                              *
+                                                                              * This source code is licensed under the license found in the LICENSE file in
+                                                                              * the root directory of this source tree.
+                                                                              *
+                                                                              * 
+                                                                              */
 
 const RPC_PROTOCOL = exports.RPC_PROTOCOL = 'atom_rpc_protocol';
 
@@ -178,7 +170,7 @@ function findPathToConfigDirectory(clearDirectory) {
   // because nuclide-server is local, so it should only write out its state to
   // a local directory.
 
-  const { homedir, username } = (0, (_userInfo || _load_userInfo()).default)();
+  const { homedir, username } = _os.default.userInfo();
 
   const candidateDirectories = [
   // Start with the tmpdir

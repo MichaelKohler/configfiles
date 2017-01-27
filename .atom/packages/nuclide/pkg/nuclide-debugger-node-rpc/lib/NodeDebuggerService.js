@@ -159,7 +159,7 @@ class NodeDebuggerService {
       logInfo(`Connecting debugger host with address: ${ serverAddress }`);
       const ws = new (_ws || _load_ws()).default(serverAddress);
       _this3._subscriptions.add(new (_eventKit || _load_eventKit()).Disposable(function () {
-        return ws.terminate();
+        return ws.close();
       }));
       return new Promise(function (resolve, reject) {
         ws.on('open', function () {
