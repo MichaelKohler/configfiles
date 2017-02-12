@@ -115,9 +115,9 @@ const REVISION_INFO_TEMPLATE = `{rev}
 {remotenames}
 {tags}
 {p1node|short} {p2node|short}
-{ifcontains(rev, revset('.'), '${ HEAD_MARKER }')}
+{ifcontains(rev, revset('.'), '${HEAD_MARKER}')}
 {desc}
-${ INFO_REV_END_MARK }
+${INFO_REV_END_MARK}
 `;
 
 /**
@@ -146,7 +146,7 @@ function expressionForRevisionsBeforeHead(numberOfRevsBefore_) {
 // Section: Revision Sets
 
 function expressionForCommonAncestor(revision) {
-  const commonAncestorExpression = `ancestor(${ revision }, ${ (_hgConstants || _load_hgConstants()).HEAD_REVISION_EXPRESSION })`;
+  const commonAncestorExpression = `ancestor(${revision}, ${(_hgConstants || _load_hgConstants()).HEAD_REVISION_EXPRESSION})`;
   // shell-escape does not wrap ancestorExpression in quotes without this toString conversion.
   return commonAncestorExpression.toString();
 }function fetchRevisionsInfo(revisionExpression, workingDirectory, options) {
@@ -164,8 +164,8 @@ function expressionForCommonAncestor(revision) {
     cwd: workingDirectory
   };
   return (0, (_hgUtils || _load_hgUtils()).hgRunCommand)(revisionLogArgs, hgOptions).map(stdout => parseRevisionInfoOutput(stdout)).catch(e => {
-    (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().warn('Failed to get revision info for revisions' + ` ${ revisionExpression }: ${ e.stderr || e }, ${ e.command }`);
-    throw new Error(`Could not fetch revision info for revisions: ${ revisionExpression }`);
+    (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().warn('Failed to get revision info for revisions' + ` ${revisionExpression}: ${e.stderr || e}, ${e.command}`);
+    throw new Error(`Could not fetch revision info for revisions: ${revisionExpression}`);
   });
 }
 
@@ -181,7 +181,7 @@ function expressionForCommonAncestor(revision) {
  * of bookmark names applied to that revision.
  */
 function fetchRevisionInfoBetweenRevisions(revisionFrom, revisionTo, workingDirectory) {
-  const revisionExpression = `${ revisionFrom }::${ revisionTo }`;
+  const revisionExpression = `${revisionFrom}::${revisionTo}`;
   return fetchRevisionsInfo(revisionExpression, workingDirectory).toPromise();
 }
 

@@ -140,7 +140,7 @@ function declarationReducer(textElements, p, index, declarations) {
       textElements.push((0, (_tokenizedText || _load_tokenizedText()).plain)('...'));
       return declarationReducer(textElements, p.argument, index, declarations);
     default:
-      throw new Error(`encountered unexpected argument type ${ p.type }`);
+      throw new Error(`encountered unexpected argument type ${p.type}`);
   }
   if (index < declarations.length - 1) {
     textElements.push((0, (_tokenizedText || _load_tokenizedText()).plain)(','));
@@ -296,7 +296,7 @@ function getFunctionName(callee) {
       if (callee.object.type !== 'Identifier' || callee.property.type !== 'Identifier') {
         return null;
       }
-      return `${ callee.object.name }.${ callee.property.name }`;
+      return `${callee.object.name}.${callee.property.name}`;
     default:
       return null;
   }

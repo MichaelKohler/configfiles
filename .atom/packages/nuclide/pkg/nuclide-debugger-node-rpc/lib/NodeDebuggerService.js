@@ -130,10 +130,10 @@ class NodeDebuggerService {
     return (0, _asyncToGenerator.default)(function* () {
       const nodeWebSocket = _this._webSocketClientToNode;
       if (nodeWebSocket != null) {
-        logInfo(`forward client message to node debugger: ${ message }`);
+        logInfo(`forward client message to node debugger: ${message}`);
         nodeWebSocket.send(message);
       } else {
-        logInfo(`Nuclide sent message to node debugger after socket closed: ${ message }`);
+        logInfo(`Nuclide sent message to node debugger after socket closed: ${message}`);
       }
     })();
   }
@@ -156,7 +156,7 @@ class NodeDebuggerService {
     var _this3 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      logInfo(`Connecting debugger host with address: ${ serverAddress }`);
+      logInfo(`Connecting debugger host with address: ${serverAddress}`);
       const ws = new (_ws || _load_ws()).default(serverAddress);
       _this3._subscriptions.add(new (_eventKit || _load_eventKit()).Disposable(function () {
         return ws.close();
@@ -174,7 +174,7 @@ class NodeDebuggerService {
   }
 
   _handleNodeDebuggerMessage(message) {
-    logInfo(`Node debugger message: ${ message }`);
+    logInfo(`Node debugger message: ${message}`);
     this._clientCallback.sendChromeMessage(message);
   }
 

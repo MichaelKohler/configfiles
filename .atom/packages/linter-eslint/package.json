@@ -2,40 +2,40 @@
   "_args": [
     [
       {
-        "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117015-49975-vjfh2m/package.tgz",
+        "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117112-1804-1x3e8qn/package.tgz",
         "scope": null,
         "escapedName": null,
         "name": null,
-        "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117015-49975-vjfh2m/package.tgz",
-        "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117015-49975-vjfh2m/package.tgz",
+        "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117112-1804-1x3e8qn/package.tgz",
+        "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117112-1804-1x3e8qn/package.tgz",
         "type": "local"
       },
-      "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-117015-49975-1g17jkc"
+      "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-117112-1804-10hkjho"
     ]
   ],
-  "_from": "../d-117015-49975-vjfh2m/package.tgz",
-  "_id": "linter-eslint@8.0.0",
+  "_from": "../d-117112-1804-1x3e8qn/package.tgz",
+  "_id": "linter-eslint@8.1.1",
   "_inCache": true,
   "_installable": true,
   "_location": "/linter-eslint",
   "_phantomChildren": {},
   "_requested": {
-    "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117015-49975-vjfh2m/package.tgz",
+    "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117112-1804-1x3e8qn/package.tgz",
     "scope": null,
     "escapedName": null,
     "name": null,
-    "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117015-49975-vjfh2m/package.tgz",
-    "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117015-49975-vjfh2m/package.tgz",
+    "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117112-1804-1x3e8qn/package.tgz",
+    "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117112-1804-1x3e8qn/package.tgz",
     "type": "local"
   },
   "_requiredBy": [
     "#USER"
   ],
-  "_resolved": "file:../d-117015-49975-vjfh2m/package.tgz",
-  "_shasum": "6a40e14c6d8e62359c1214824fa8c914e1f55965",
+  "_resolved": "file:../d-117112-1804-1x3e8qn/package.tgz",
+  "_shasum": "5cfe86bde5821308634f07f65e50faca0f816ffa",
   "_shrinkwrap": null,
-  "_spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117015-49975-vjfh2m/package.tgz",
-  "_where": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-117015-49975-1g17jkc",
+  "_spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117112-1804-1x3e8qn/package.tgz",
+  "_where": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-117112-1804-10hkjho",
   "bugs": {
     "url": "https://github.com/AtomLinter/linter-eslint/issues"
   },
@@ -125,6 +125,15 @@
       "items": {
         "type": "string"
       }
+    },
+    "rulesToDisableWhileFixing": {
+      "title": "Disable specific rules from fixes",
+      "description": "Prevent rules from being auto-fixed by ESLint. Applies to fixes made during saves as well as when running the `Linter Eslint: Fix File` command.",
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "string"
+      }
     }
   },
   "dependencies": {
@@ -135,17 +144,17 @@
     "eslint": "^3.6.0",
     "eslint-rule-documentation": "^1.0.0",
     "process-communication": "^1.1.0",
-    "resolve-env": "^1.0.0"
+    "resolve-env": "^1.0.0",
+    "user-home": "^2.0.0"
   },
   "description": "Lint JavaScript on the fly, using ESLint",
   "devDependencies": {
-    "babel-preset-steelbrain": "^4.0.2",
-    "eslint-config-airbnb-base": "^8.0.0",
-    "eslint-plugin-import": "^1.16.0",
-    "rimraf": "^2.5.4",
-    "ucompiler": "^3.2.0",
-    "ucompiler-plugin-babel": "^3.0.0",
-    "ucompiler-plugin-newline": "^3.0.0"
+    "babel-cli": "^6.18.0",
+    "babel-preset-node5": "^12.0.0",
+    "eslint": "^3.12.0",
+    "eslint-config-airbnb-base": "^11.0.0",
+    "eslint-plugin-import": "^2.2.0",
+    "rimraf": "^2.5.4"
   },
   "engines": {
     "atom": ">=1.10.0 <2.0.0"
@@ -181,13 +190,12 @@
       "atom": "true"
     },
     "env": {
-      "es6": true,
       "node": true
     }
   },
   "homepage": "https://github.com/AtomLinter/linter-eslint#readme",
   "license": "MIT",
-  "main": "./lib/main",
+  "main": "./lib/main.js",
   "name": "linter-eslint",
   "optionalDependencies": {},
   "package-deps": [
@@ -207,10 +215,11 @@
     "url": "git+https://github.com/AtomLinter/linter-eslint.git"
   },
   "scripts": {
-    "compile": "ucompiler go",
+    "clean": "rimraf lib",
+    "compile": "npm run clean && babel src --out-dir lib",
     "lint": "eslint .",
     "test": "apm test",
-    "watch": "ucompiler watch"
+    "watch": "npm run compile -- -w"
   },
-  "version": "8.0.0"
+  "version": "8.1.1"
 }

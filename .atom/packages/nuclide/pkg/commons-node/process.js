@@ -47,8 +47,8 @@ let checkOutput = exports.checkOutput = (() => {
   var _ref3 = (0, _asyncToGenerator.default)(function* (command, args, options = {}) {
     const result = yield asyncExecute((_nuclideUri || _load_nuclideUri()).default.expandHomeDir(command), args, options);
     if (result.exitCode !== 0) {
-      const reason = result.exitCode != null ? `exitCode: ${ result.exitCode }` : `error: ${ (0, (_string || _load_string()).maybeToString)(result.errorMessage) }`;
-      throw new Error(`asyncExecute "${ command }" failed with ${ reason }, ` + `stderr: ${ result.stderr }, stdout: ${ result.stdout }.`);
+      const reason = result.exitCode != null ? `exitCode: ${result.exitCode}` : `error: ${(0, (_string || _load_string()).maybeToString)(result.errorMessage)}`;
+      throw new Error(`asyncExecute "${command}" failed with ${reason}, ` + `stderr: ${result.stderr}, stdout: ${result.stdout}.`);
     }
     return result;
   });
@@ -260,7 +260,7 @@ function logCall(duration, command, args) {
 class ProcessSystemError extends Error {
 
   constructor(opts) {
-    super(`"${ opts.command }" failed with code ${ opts.code }`);
+    super(`"${opts.command}" failed with code ${opts.code}`);
     this.name = 'ProcessSystemError';
     this.command = opts.command;
     this.args = opts.args;
@@ -274,7 +274,7 @@ exports.ProcessSystemError = ProcessSystemError;
 class ProcessExitError extends Error {
 
   constructor(opts) {
-    super(`"${ opts.command }" failed with ${ exitEventToMessage(opts.exitMessage) }\n\n${ opts.stderr }`);
+    super(`"${opts.command}" failed with ${exitEventToMessage(opts.exitMessage)}\n\n${opts.stderr}`);
     this.name = 'ProcessExitError';
     this.command = opts.command;
     this.args = opts.args;
@@ -313,7 +313,7 @@ function monitorStreamErrors(process, command, args, options) {
     stream.on('error', error => {
       // This can happen without the full execution of the command to fail,
       // but we want to learn about it.
-      logError(`stream error on stream ${ streamName } with command:`, command, args, options, 'error:', error);
+      logError(`stream error on stream ${streamName} with command:`, command, args, options, 'error:', error);
     });
   });
 }
@@ -464,15 +464,15 @@ function _createProcessStream(createProcess, throwOnError, killTreeOnComplete) {
 }
 
 function killProcess(childProcess, killTree) {
-  log(`Ending process stream. Killing process ${ childProcess.pid }`);
+  log(`Ending process stream. Killing process ${childProcess.pid}`);
   _killProcess(childProcess, killTree).then(() => {}, error => {
-    logError(`Killing process ${ childProcess.pid } failed`, error);
+    logError(`Killing process ${childProcess.pid} failed`, error);
   });
 }
 
 function killWindowsProcessTree(pid) {
   return new Promise((resolve, reject) => {
-    _child_process.default.exec(`taskkill /pid ${ pid } /T /F`, error => {
+    _child_process.default.exec(`taskkill /pid ${pid} /T /F`, error => {
       if (error == null) {
         reject(error);
       } else {
@@ -697,13 +697,13 @@ function loadedShellEnvironment() {
 
 function exitEventToMessage(event) {
   if (event.exitCode != null) {
-    return `exit code ${ event.exitCode }`;
+    return `exit code ${event.exitCode}`;
   } else {
     if (!(event.signal != null)) {
       throw new Error('Invariant violation: "event.signal != null"');
     }
 
-    return `signal ${ event.signal }`;
+    return `signal ${event.signal}`;
   }
 }
 

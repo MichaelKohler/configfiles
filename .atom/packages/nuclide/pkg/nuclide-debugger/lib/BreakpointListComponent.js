@@ -96,7 +96,7 @@ class BreakpointListComponent extends _reactForAtom.React.Component {
         enabled,
         resolved
       } = breakpoint;
-      const label = `${ basename }:${ line + 1 }`;
+      const label = `${basename}:${line + 1}`;
       const content = _reactForAtom.React.createElement(
         'div',
         { className: 'nuclide-debugger-breakpoint', key: i },

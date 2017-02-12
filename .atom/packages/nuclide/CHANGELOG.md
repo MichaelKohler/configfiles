@@ -1,5 +1,70 @@
 # Nuclide Changelog
 
+## v0.205.0
+
+Hotfix for internal changes.
+
+
+## v0.204.0
+
+### Mobile JS
+
+* Improved disposal logic for the experimental debugger, resulting in fewer crashes.
+
+### Hack
+
+* With this week's HHVM release, asynchronous callstacks in the debugger will no longer be missing frames.
+
+### Improvements and Fixes
+
+* Improved Atom responsiveness when using flow by offloading more work to the nuclide-server.
+* Fixed issue with remote connection that would cause Atom to not be able to serialize state.
+* Improved task runner toolbar UI.
+
+
+## v0.203.0
+
+Hotfix for internal changes.
+
+
+## v0.202.0
+
+### Highlights
+
+* GraphQL Integration. Autocomplete, syntax errors, go to definition, outline and context views integrations... All you need for `.graphql` files!
+
+### HACK
+
+* Syntax highlighting fixed for methods that start with magic method names (eg `__getBlah()`).
+
+### Logcat
+
+* Fixed parsing for some versions of adb that included extra CRs (Thanks @fcFn!).
+* Added "unknown:React" to default tag whitelist.
+
+### Reason
+
+* Fixed slow syntax highlighting (Thanks @freebroccolo!).
+
+### Source Control
+
+* Fixed double context menu bug in source control sidebar.
+* Fix Diff View changed sections gutter highlighting.
+
+### Debugger
+
+* Watches in the debugger now have the 'x' on the left.
+* Clicking the selected frame in the debugger callstack window navigates to the expected file.
+
+### Misc
+
+* File permissions are preserved when using search and replace on remote files.
+* Bugfix for Xdebug on PHP 5.3 (Thanks @jesseschalken!)
+* Windows - fixed panel being stuck occasionally in an endless resize.
+* When opening a file from the CLI, prefer windows which already have the directory open.
+* Flow autocomplete will no longer work with Flow v0.19 and below.
+
+
 ## v0.201.0
 
 ### Highlights

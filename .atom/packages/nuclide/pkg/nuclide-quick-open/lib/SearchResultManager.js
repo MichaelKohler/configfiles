@@ -173,7 +173,7 @@ class SearchResultManager {
         providersByDirectories.set(directory, providersForDirectory);
         for (const provider of _this._quickOpenProviderRegistry.getDirectoryProviders()) {
           eligibilities.push(provider.isEligibleForDirectory(directory).catch(function (err) {
-            (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().warn(`isEligibleForDirectory failed for directory provider ${ provider.name }`, err);
+            (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().warn(`isEligibleForDirectory failed for directory provider ${provider.name}`, err);
             return false;
           }).then(function (isEligible) {
             if (isEligible) {
@@ -233,7 +233,7 @@ class SearchResultManager {
 
   _registerProvider(service) {
     if (this._providerSubscriptions.get(service)) {
-      throw new Error(`${ service.name } has already been registered.`);
+      throw new Error(`${service.name} has already been registered.`);
     }
 
     const subscriptions = new (_UniversalDisposable || _load_UniversalDisposable()).default();
@@ -247,7 +247,7 @@ class SearchResultManager {
   _deregisterProvider(service) {
     const subscriptions = this._providerSubscriptions.get(service);
     if (subscriptions == null) {
-      throw new Error(`${ service.name } has already been deregistered.`);
+      throw new Error(`${service.name} has already been deregistered.`);
     }
 
     subscriptions.dispose();
@@ -340,7 +340,7 @@ class SearchResultManager {
     const dirProvider = this._quickOpenProviderRegistry.getProviderByName(providerName);
 
     if (!(dirProvider != null)) {
-      throw new Error(`Provider ${ providerName } is not registered with quick-open.`);
+      throw new Error(`Provider ${providerName} is not registered with quick-open.`);
     }
 
     return dirProvider;
@@ -417,7 +417,7 @@ class SearchResultManager {
       name: provider.name,
       debounceDelay: provider.debounceDelay != null ? provider.debounceDelay : DEFAULT_QUERY_DEBOUNCE_DELAY,
       title: display != null ? display.title : provider.name,
-      prompt: display != null ? display.prompt : `Search ${ provider.name }`,
+      prompt: display != null ? display.prompt : `Search ${provider.name}`,
       action: display != null && display.action != null ? display.action : '',
       canOpenAll: display != null && display.canOpenAll != null ? display.canOpenAll : true,
       priority: provider.priority != null ? provider.priority : Number.POSITIVE_INFINITY

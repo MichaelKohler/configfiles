@@ -142,17 +142,17 @@ class RecordView extends _reactForAtom.React.Component {
 
   render() {
     const { record } = this.props;
-    const classNames = (0, (_classnames || _load_classnames()).default)('nuclide-console-record', `level-${ record.level || 'log' }`, {
+    const classNames = (0, (_classnames || _load_classnames()).default)('nuclide-console-record', `level-${record.level || 'log'}`, {
       request: record.kind === 'request',
       response: record.kind === 'response'
     });
 
     const iconName = getIconName(record);
-    const icon = iconName ? _reactForAtom.React.createElement('span', { className: `icon icon-${ iconName }` }) : null;
+    const icon = iconName ? _reactForAtom.React.createElement('span', { className: `icon icon-${iconName}` }) : null;
     const sourceLabel = this.props.showSourceLabel ? _reactForAtom.React.createElement(
       'span',
       {
-        className: `nuclide-console-record-source-label ${ getHighlightClassName(record.level) }` },
+        className: `nuclide-console-record-source-label ${getHighlightClassName(record.level)}` },
       record.sourceId
     ) : null;
 

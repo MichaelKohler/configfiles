@@ -39,7 +39,7 @@ function getConnectionDialogDefaultSettings() {
     // Do not use path.join() because we assume that the remote machine is *nix,
     // so we always want to use `/` as the path separator for cwd, even if Atom
     // is running on Windows.
-    cwd: `/home/${ username }/`,
+    cwd: `/home/${username}/`,
     pathToPrivateKey: (_nuclideUri || _load_nuclideUri()).default.join(homedir, '.ssh', 'id_rsa'),
     remoteServerCommand: 'nuclide-start-server',
     authMethod: (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).SshHandshake.SupportedMethods.PASSWORD,

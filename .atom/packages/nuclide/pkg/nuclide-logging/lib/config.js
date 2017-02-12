@@ -115,7 +115,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * 
  */
 
-const LOG_DIRECTORY = (_nuclideUri || _load_nuclideUri()).default.join(_os.default.tmpdir(), `/nuclide-${ _os.default.userInfo().username }-logs`);
+const LOG_DIRECTORY = (_nuclideUri || _load_nuclideUri()).default.join(_os.default.tmpdir(), `/nuclide-${_os.default.userInfo().username}-logs`);
 const LOG_FILE_PATH = exports.LOG_FILE_PATH = (_nuclideUri || _load_nuclideUri()).default.join(LOG_DIRECTORY, 'nuclide.log');
 
 let logDirectoryInitialized = false;
@@ -137,6 +137,6 @@ const FileAppender = exports.FileAppender = {
     type: 'pattern',
     // Format log in following pattern:
     // yyyy-MM-dd HH:mm:ss.mil $Level (pid:$pid) $categroy - $message.
-    pattern: `%d{ISO8601} %p (pid:${ process.pid }) %c - %m`
+    pattern: `%d{ISO8601} %p (pid:${process.pid}) %c - %m`
   }
 };

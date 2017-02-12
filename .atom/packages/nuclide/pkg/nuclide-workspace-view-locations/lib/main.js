@@ -97,7 +97,7 @@ class Activation {
         this._panelLocations.set(id, location);
         return location;
       }
-    })), ...(_PanelLocationIds || _load_PanelLocationIds()).default.map(id => atom.commands.add('atom-workspace', `nuclide-workspace-views:toggle-${ id }`, () => {
+    })), ...(_PanelLocationIds || _load_PanelLocationIds()).default.map(id => atom.commands.add('atom-workspace', `nuclide-workspace-views:toggle-${id}`, () => {
       this._toggleVisibility(id);
     })));
   }
@@ -111,7 +111,7 @@ class Activation {
   provideDistractionFreeModeProvider() {
     this._initialPanelVisibility = new Map((_PanelLocationIds || _load_PanelLocationIds()).default.map(id => [id, false]));
     return (_PanelLocationIds || _load_PanelLocationIds()).default.map(id => ({
-      name: `nuclide-workspace-view-locations:${ id }`,
+      name: `nuclide-workspace-view-locations:${id}`,
       isVisible: () => {
         const location = this._panelLocations.get(id);
         return location == null ? Boolean(this._initialPanelVisibility.get(id)) : location.isVisible();

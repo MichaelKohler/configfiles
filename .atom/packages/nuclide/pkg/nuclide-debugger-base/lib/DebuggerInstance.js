@@ -95,7 +95,7 @@ class DebuggerInstance extends DebuggerInstanceBase {
       this._disposables.add(subscriptions);
     }
     this._disposables.add(rpcService);
-    this._logger = (0, (_nuclideLogging || _load_nuclideLogging()).getCategoryLogger)(`nuclide-debugger-${ this.getProviderName() }`);
+    this._logger = (0, (_nuclideLogging || _load_nuclideLogging()).getCategoryLogger)(`nuclide-debugger-${this.getProviderName()}`);
     this._chromeWebSocketServer = new (_WebSocketServer || _load_WebSocketServer()).WebSocketServer();
     this._chromeWebSocket = null;
     this._emitter = new _atom.Emitter();
@@ -125,9 +125,9 @@ class DebuggerInstance extends DebuggerInstanceBase {
   }
 
   _handleWebSocketServerError(error) {
-    let errorMessage = `Server error: ${ JSON.stringify(error) }`;
+    let errorMessage = `Server error: ${JSON.stringify(error)}`;
     if (error.code === 'EADDRINUSE') {
-      errorMessage = `The debug port ${ error.port } is in use.
+      errorMessage = `The debug port ${error.port} is in use.
       Please choose a different port in the debugger config settings.`;
     }
     atom.notifications.addError(errorMessage);
@@ -219,7 +219,7 @@ class DebuggerInstance extends DebuggerInstanceBase {
   }
 
   _handleChromeSocketClose(code) {
-    this.getLogger().log(`Chrome webSocket closed: ${ code }`);
+    this.getLogger().log(`Chrome webSocket closed: ${code}`);
     this.dispose();
   }
 

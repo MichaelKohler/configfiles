@@ -252,7 +252,7 @@ function getFileStatusListMessage(fileChanges) {
       message += '\n' + (_vcs || _load_vcs()).FileChangeStatusToPrefix[statusCode] + atom.project.relativize(filePath);
     }
   } else {
-    message = `\n more than ${ MAX_DIALOG_FILE_STATUS_COUNT } files (check using \`hg status\`)`;
+    message = `\n more than ${MAX_DIALOG_FILE_STATUS_COUNT} files (check using \`hg status\`)`;
   }
   return message;
 }
@@ -305,7 +305,7 @@ function getSelectedFileChanges(repository, diffOption, revisions, compareCommit
 }
 
 function getSelectedFileChangesToCommit(repository, beforeCommitId) {
-  return repository.fetchFilesChangedSinceRevision(`${ beforeCommitId }`).map(fileStatusCodes => {
+  return repository.fetchFilesChangedSinceRevision(`${beforeCommitId}`).map(fileStatusCodes => {
     const fileChanges = new Map();
     for (const [filePath, statusCode] of fileStatusCodes) {
       fileChanges.set(filePath, (_vcs || _load_vcs()).HgStatusToFileChangeStatus[statusCode]);
@@ -338,15 +338,15 @@ function getHgDiff(repository, filePath, headToForkBaseRevisions, diffOption, co
       compareCommitId = compareId || headCommitId;
       break;
     default:
-      return _rxjsBundlesRxMinJs.Observable.throw(new Error(`Invalid Diff Option: ${ diffOption }`));
+      return _rxjsBundlesRxMinJs.Observable.throw(new Error(`Invalid Diff Option: ${diffOption}`));
   }
 
   const revisionInfo = headToForkBaseRevisions.find(revision => revision.id === compareCommitId);
   if (revisionInfo == null) {
-    return _rxjsBundlesRxMinJs.Observable.throw(new Error(`Diff Viw Fetcher: revision with id ${ compareCommitId } not found`));
+    return _rxjsBundlesRxMinJs.Observable.throw(new Error(`Diff Viw Fetcher: revision with id ${compareCommitId} not found`));
   }
 
-  return repository.fetchFileContentAtRevision(filePath, `${ compareCommitId }`)
+  return repository.fetchFileContentAtRevision(filePath, `${compareCommitId}`)
   // If the file didn't exist on the previous revision,
   // Return the no such file at revision message.
   .catch(error => _rxjsBundlesRxMinJs.Observable.of('')).map(committedContents => ({
@@ -357,7 +357,7 @@ function getHgDiff(repository, filePath, headToForkBaseRevisions, diffOption, co
 
 function formatFileDiffRevisionTitle(revisionInfo) {
   const { hash, bookmarks } = revisionInfo;
-  return `${ hash }` + (bookmarks.length === 0 ? '' : ` - (${ bookmarks.join(', ') })`);
+  return `${hash}` + (bookmarks.length === 0 ? '' : ` - (${bookmarks.join(', ')})`);
 }
 
 function getAmendMode(shouldRebaseOnAmend) {
@@ -371,7 +371,7 @@ function getAmendMode(shouldRebaseOnAmend) {
 function getRevisionUpdateMessage(phabricatorRevision) {
   return `
 
-# Updating ${ phabricatorRevision.name }
+# Updating ${phabricatorRevision.name}
 #
 # Enter a brief description of the changes included in this update.
 # The first line is used as subject, next lines as comment.`;
@@ -386,7 +386,7 @@ function viewModeToDiffOption(viewMode) {
     case (_constants || _load_constants()).DiffMode.BROWSE_MODE:
       return (_constants || _load_constants()).DiffOption.COMPARE_COMMIT;
     default:
-      (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error(`Unrecognized diff view mode: ${ viewMode }`);
+      (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error(`Unrecognized diff view mode: ${viewMode}`);
       return (_constants || _load_constants()).DiffOption.DIRTY;
   }
 }
@@ -454,20 +454,20 @@ function updatePhabricatorRevision(repository, publishUpdates, headCommitMessage
 
   const stream = (0, (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).getArcanistServiceByNuclideUri)(filePath).updatePhabricatorRevision(filePath, userUpdateMessage, allowUntracked, lintExcuse, verbatimModeEnabled).refCount();
 
-  return processArcanistOutput(stream).startWith({ level: 'info', text: `Updating revision \`${ phabricatorRevision.name }\`...\n` }).do({
+  return processArcanistOutput(stream).startWith({ level: 'info', text: `Updating revision \`${phabricatorRevision.name}\`...\n` }).do({
     next: message => publishUpdates.next(message),
     complete: () => notifyRevisionStatus(phabricatorRevision, 'updated')
   }).ignoreElements();
 }
 
 function notifyRevisionStatus(phabRevision, statusMessage) {
-  let message = `Revision ${ statusMessage }`;
+  let message = `Revision ${statusMessage}`;
   if (phabRevision == null) {
     atom.notifications.addSuccess(message, { nativeFriendly: true });
     return;
   }
   const { name, url: revisionUrl } = phabRevision;
-  message = `Revision '${ name }' ${ statusMessage }`;
+  message = `Revision '${name}' ${statusMessage}`;
   atom.notifications.addSuccess(message, {
     buttons: [{
       className: 'icon icon-globe',

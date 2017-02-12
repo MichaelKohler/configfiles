@@ -2,40 +2,40 @@
   "_args": [
     [
       {
-        "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117027-44055-1wpgl9k/package.tgz",
+        "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117112-1804-16bcrh4/package.tgz",
         "scope": null,
         "escapedName": null,
         "name": null,
-        "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117027-44055-1wpgl9k/package.tgz",
-        "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117027-44055-1wpgl9k/package.tgz",
+        "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117112-1804-16bcrh4/package.tgz",
+        "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117112-1804-16bcrh4/package.tgz",
         "type": "local"
       },
-      "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-117027-44055-lhah2m"
+      "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-117112-1804-u1dq5"
     ]
   ],
-  "_from": "../d-117027-44055-1wpgl9k/package.tgz",
-  "_id": "nuclide@0.201.0",
+  "_from": "../d-117112-1804-16bcrh4/package.tgz",
+  "_id": "nuclide@0.205.0",
   "_inCache": true,
   "_installable": true,
   "_location": "/nuclide",
   "_phantomChildren": {},
   "_requested": {
-    "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117027-44055-1wpgl9k/package.tgz",
+    "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117112-1804-16bcrh4/package.tgz",
     "scope": null,
     "escapedName": null,
     "name": null,
-    "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117027-44055-1wpgl9k/package.tgz",
-    "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117027-44055-1wpgl9k/package.tgz",
+    "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117112-1804-16bcrh4/package.tgz",
+    "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117112-1804-16bcrh4/package.tgz",
     "type": "local"
   },
   "_requiredBy": [
     "#USER"
   ],
-  "_resolved": "file:../d-117027-44055-1wpgl9k/package.tgz",
-  "_shasum": "0eeee9f1143f05e49ce1b1745aacb4b4c8094341",
+  "_resolved": "file:../d-117112-1804-16bcrh4/package.tgz",
+  "_shasum": "2c016784608cd47f420ed87f268e07ff155ed760",
   "_shrinkwrap": {
     "name": "nuclide",
-    "version": "0.201.0",
+    "version": "0.205.0",
     "dependencies": {
       "ansi-regex": {
         "version": "2.1.1",
@@ -159,9 +159,9 @@
         "resolved": "https://registry.npmjs.org/brace-expansion/-/brace-expansion-1.1.6.tgz"
       },
       "bser": {
-        "version": "1.0.2",
+        "version": "1.0.3",
         "from": "bser@>=1.0.2 <2.0.0",
-        "resolved": "https://registry.npmjs.org/bser/-/bser-1.0.2.tgz"
+        "resolved": "https://registry.npmjs.org/bser/-/bser-1.0.3.tgz"
       },
       "buffer-shims": {
         "version": "1.0.0",
@@ -379,9 +379,9 @@
         "resolved": "https://registry.npmjs.org/fb-watchman/-/fb-watchman-1.9.0.tgz"
       },
       "fbjs": {
-        "version": "0.8.8",
+        "version": "0.8.9",
         "from": "fbjs@>=0.8.4 <0.9.0",
-        "resolved": "https://registry.npmjs.org/fbjs/-/fbjs-0.8.8.tgz",
+        "resolved": "https://registry.npmjs.org/fbjs/-/fbjs-0.8.9.tgz",
         "dependencies": {
           "core-js": {
             "version": "1.2.7",
@@ -586,9 +586,9 @@
         "optional": true
       },
       "js-tokens": {
-        "version": "3.0.0",
+        "version": "3.0.1",
         "from": "js-tokens@>=3.0.0 <4.0.0",
-        "resolved": "https://registry.npmjs.org/js-tokens/-/js-tokens-3.0.0.tgz"
+        "resolved": "https://registry.npmjs.org/js-tokens/-/js-tokens-3.0.1.tgz"
       },
       "js-yaml": {
         "version": "3.7.0",
@@ -1245,10 +1245,15 @@
         "from": "verror@1.3.6",
         "resolved": "https://registry.npmjs.org/verror/-/verror-1.3.6.tgz"
       },
+      "vscode-jsonrpc": {
+        "version": "3.0.3",
+        "from": "vscode-jsonrpc@3.0.3",
+        "resolved": "https://registry.npmjs.org/vscode-jsonrpc/-/vscode-jsonrpc-3.0.3.tgz"
+      },
       "whatwg-fetch": {
-        "version": "2.0.1",
+        "version": "2.0.2",
         "from": "whatwg-fetch@>=0.10.0",
-        "resolved": "https://registry.npmjs.org/whatwg-fetch/-/whatwg-fetch-2.0.1.tgz"
+        "resolved": "https://registry.npmjs.org/whatwg-fetch/-/whatwg-fetch-2.0.2.tgz"
       },
       "window-size": {
         "version": "0.1.4",
@@ -1314,8 +1319,8 @@
       }
     }
   },
-  "_spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117027-44055-1wpgl9k/package.tgz",
-  "_where": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-117027-44055-lhah2m",
+  "_spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117112-1804-16bcrh4/package.tgz",
+  "_where": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-117112-1804-u1dq5",
   "atomTestRunner": "./lib/test-runner-entry.js",
   "bin": {
     "nuclide-start-server": "./pkg/nuclide-server/nuclide-start-server"
@@ -1375,6 +1380,7 @@
     "temp": "0.8.3",
     "urlregexp": "1.0.2",
     "uuid": "3.0.1",
+    "vscode-jsonrpc": "3.0.3",
     "ws": "1.1.1",
     "xml2js": "0.4.17",
     "yargs": "3.32.0"
@@ -1382,21 +1388,21 @@
   "description": "A unified developer experience for web and mobile development, built as a suite of features on top of Atom to provide hackability and the support of an active community.",
   "devDependencies": {
     "atom-grammar-test": "0.6.3",
-    "babel-core": "6.21.0",
+    "babel-core": "6.22.1",
     "babel-eslint": "7.1.1",
-    "babel-generator": "6.21.0",
+    "babel-generator": "6.22.0",
     "babel-plugin-add-module-exports": "0.2.1",
-    "babel-plugin-check-es2015-constants": "6.8.0",
-    "babel-plugin-transform-async-to-module-method": "6.16.0",
-    "babel-plugin-transform-class-properties": "6.19.0",
-    "babel-plugin-transform-es2015-modules-commonjs": "6.18.0",
-    "babel-plugin-transform-flow-strip-types": "6.21.0",
+    "babel-plugin-check-es2015-constants": "6.22.0",
+    "babel-plugin-transform-async-to-module-method": "6.22.0",
+    "babel-plugin-transform-class-properties": "6.22.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "6.22.0",
+    "babel-plugin-transform-flow-strip-types": "6.22.0",
     "babel-plugin-transform-inline-imports-commonjs": "1.2.0",
-    "babel-plugin-transform-object-rest-spread": "6.20.2",
-    "babel-plugin-transform-react-display-name": "6.8.0",
-    "babel-plugin-transform-react-jsx": "6.8.0",
-    "babel-plugin-transform-strict-mode": "6.18.0",
-    "babel-types": "6.21.0",
+    "babel-plugin-transform-object-rest-spread": "6.22.0",
+    "babel-plugin-transform-react-display-name": "6.22.0",
+    "babel-plugin-transform-react-jsx": "6.22.0",
+    "babel-plugin-transform-strict-mode": "6.22.0",
+    "babel-types": "6.22.0",
     "eslint": "3.12.0",
     "eslint-plugin-dependencies": "2.2.0",
     "eslint-plugin-flowtype": "2.29.1",
@@ -1455,7 +1461,7 @@
     "set-syntax",
     "sort-lines"
   ],
-  "readme": "# Nuclide\n\n[![Circle Status](https://circleci.com/gh/facebook/nuclide/tree/master.svg?style=shield&circle-token=a805ec51c07ae99799ce548795383dd1f1e4dc76)](https://circleci.com/gh/facebook/nuclide)\n\n[Nuclide](http://nuclide.io/) is a collection of features for [Atom](https://atom.io/) to provide\nIDE-like functionality for a variety of programming languages and technologies.\n\n---\n\n## Documentation\n\nThe [full documentation](http://nuclide.io/docs) for Nuclide provides information for:\n\n- [Client Installation](http://nuclide.io/docs/editor/setup) ([Mac](http://nuclide.io/docs/editor/setup/#mac) | [Linux](http://nuclide.io/docs/editor/setup/#linux) | [Windows is not supported](http://nuclide.io/docs/editor/setup/#windows))\n- [Server Installation](http://nuclide.io/docs/editor/setup/#installing-nuclide-server)\n- [Getting Started Feature Walkthrough](http://nuclide.io/docs/quick-start/getting-started/)\n- [Building from Source](http://nuclide.io/docs/advanced-topics/building-from-source/)\n",
+  "readme": "# Nuclide\n\n[![Circle Status](https://circleci.com/gh/facebook/nuclide/tree/master.svg?style=shield&circle-token=a805ec51c07ae99799ce548795383dd1f1e4dc76)](https://circleci.com/gh/facebook/nuclide)\n\n[Nuclide](http://nuclide.io/) is a collection of features for [Atom](https://atom.io/) to provide IDE-like functionality for a variety of programming languages and technologies.\n\nThe [Nuclide license](https://github.com/facebook/nuclide/blob/master/LICENSE) has certain limitations around distribution and should not be considered an [open source license](https://opensource.org/licenses/alphabetical). However, this does not affect your ability to [fork the project and make contributions](https://github.com/facebook/nuclide/blob/master/CONTRIBUTING.md).\n\n---\n\n## Documentation\n\nThe [full documentation](http://nuclide.io/docs) for Nuclide provides information for:\n\n- [Client Installation](http://nuclide.io/docs/editor/setup) ([Mac](http://nuclide.io/docs/editor/setup/#mac) | [Linux](http://nuclide.io/docs/editor/setup/#linux) | [Windows is not supported](http://nuclide.io/docs/editor/setup/#windows))\n- [Server Installation](http://nuclide.io/docs/editor/setup/#installing-nuclide-server)\n- [Getting Started Feature Walkthrough](http://nuclide.io/docs/quick-start/getting-started/)\n- [Building from Source](http://nuclide.io/docs/advanced-topics/building-from-source/)\n",
   "readmeFilename": "README.md",
   "repository": {
     "type": "git",
@@ -1469,7 +1475,7 @@
     "test": "npm run lint-all && npm run flow"
   },
   "urlMain": "./lib/url-main-entry.js",
-  "version": "0.201.0",
+  "version": "0.205.0",
   "warnings": [
     {
       "code": "ENOTSUP",
@@ -1477,7 +1483,7 @@
         "atom": ">=1.13.0",
         "node": ">=6.5.0"
       },
-      "pkgid": "nuclide@0.201.0"
+      "pkgid": "nuclide@0.205.0"
     },
     {
       "code": "ENOTSUP",
@@ -1485,7 +1491,7 @@
         "atom": ">=1.13.0",
         "node": ">=6.5.0"
       },
-      "pkgid": "nuclide@0.201.0"
+      "pkgid": "nuclide@0.205.0"
     }
   ]
 }

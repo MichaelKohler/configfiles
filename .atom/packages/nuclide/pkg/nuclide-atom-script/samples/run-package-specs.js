@@ -34,7 +34,7 @@ if (!(ipcRenderer != null && remote != null)) {
 exports.default = (() => {
   var _ref = (0, _asyncToGenerator.default)(function* (args) {
     if (typeof args[0] !== 'string') {
-      console.error(`Usage: atom-script ${ __filename } <spec file>`);
+      console.error(`Usage: atom-script ${__filename} <spec file>`);
       return 1;
     }
 

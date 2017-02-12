@@ -72,16 +72,16 @@ function escapeName(name) {
 }
 
 function paramSignature(params) {
-  const paramStrings = params.map(param => `${ param.type } ${ param.name }`);
-  return `(${ paramStrings.join(', ') })`;
+  const paramStrings = params.map(param => `${param.type} ${param.name}`);
+  return `(${paramStrings.join(', ')})`;
 }
 
 function matchSnippet(name, params) {
   const escapedName = escapeName(name);
   if (params != null) {
     // Construct the snippet: e.g. myFunction(${1:$arg1}, ${2:$arg2});
-    const paramsString = params.map((param, index) => `\${${ index + 1 }:${ param.name }}`).join(', ');
-    return `${ escapedName }(${ paramsString })`;
+    const paramsString = params.map((param, index) => `\${${index + 1}:${param.name}}`).join(', ');
+    return `${escapedName}(${paramsString})`;
   } else {
     return escapedName;
   }
@@ -116,17 +116,22 @@ function processCompletions(completionsResponse, contents, offset, defaultPrefix
       replacementPrefix: resultPrefix === '' ? defaultPrefix : resultPrefix,
       description: matchTypeOfType(type)
     };
+    // The typechecker only gives us suggestions that are valid in the
+    // current scope - so, if what the user typed didn't start with the
+    // namespace (which would lead to us having a resultPrefix), we don't
+    // want to put the namespace in the replacement.
+    const scopedName = resultPrefix === '' ? name.split('\\').pop() : name;
     if (func_details != null) {
       const completionParams = alreadyHasParams ? null : func_details.params;
       return Object.assign({}, commonResult, {
-        snippet: matchSnippet(name, completionParams),
+        snippet: matchSnippet(scopedName, completionParams),
         leftLabel: func_details.return_type,
         rightLabel: paramSignature(func_details.params),
         type: 'function'
       });
     } else {
       return Object.assign({}, commonResult, {
-        snippet: matchSnippet(name),
+        snippet: matchSnippet(scopedName),
         rightLabel: matchTypeOfType(type)
       });
     }

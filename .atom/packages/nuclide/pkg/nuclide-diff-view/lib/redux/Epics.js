@@ -138,7 +138,7 @@ function trackComplete(eventName, operation) {
 function notifyCwdMismatch(newRepository, cwdApi, filePath) {
   const newDirectoryPath = newRepository.getProjectDirectory();
   const actionSubject = new _rxjsBundlesRxMinJs.Subject();
-  const notification = atom.notifications.addWarning('Cannot show diff for a non-working directory\n' + 'Would you like to switch your working directory to ' + `\`${ (_nuclideUri || _load_nuclideUri()).default.basename(newDirectoryPath) }\` to be able to diff that file?`, {
+  const notification = atom.notifications.addWarning('Cannot show diff for a non-working directory\n' + 'Would you like to switch your working directory to ' + `\`${(_nuclideUri || _load_nuclideUri()).default.basename(newDirectoryPath)}\` to be able to diff that file?`, {
     buttons: [{
       text: 'Switch & Show Diff',
       className: 'icon icon-git-branch',
@@ -337,7 +337,7 @@ function diffFileEpic(actions, store) {
 
     if (repository == null || repository.getType() !== 'hg') {
       const repositoryType = repository == null ? 'no repository' : repository.getType();
-      (0, (_notifications || _load_notifications()).notifyInternalError)(new Error(`Diff View only supports Mercurial repositories - found: ${ repositoryType }`));
+      (0, (_notifications || _load_notifications()).notifyInternalError)(new Error(`Diff View only supports Mercurial repositories - found: ${repositoryType}`));
       return clearActiveDiffObservable;
     }
 
@@ -469,7 +469,7 @@ function setViewModeEpic(actions, store) {
               }
             default:
               {
-                (0, (_notifications || _load_notifications()).notifyInternalError)(new Error(`Invalid Commit Mode: ${ commitMode }`));
+                (0, (_notifications || _load_notifications()).notifyInternalError)(new Error(`Invalid Commit Mode: ${commitMode}`));
                 return _rxjsBundlesRxMinJs.Observable.empty();
               }
           }
@@ -521,7 +521,7 @@ function setViewModeEpic(actions, store) {
         }));
       }
 
-      (0, (_notifications || _load_notifications()).notifyInternalError)(new Error(`Invalid Diff View Mode: ${ viewMode }`));
+      (0, (_notifications || _load_notifications()).notifyInternalError)(new Error(`Invalid Diff View Mode: ${viewMode}`));
       return _rxjsBundlesRxMinJs.Observable.empty();
     });
   });
@@ -580,7 +580,7 @@ function commit(actions, store) {
           (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)('diff-view-commit-amend');
           return repository.amend(message, (0, (_utils || _load_utils()).getAmendMode)(shouldRebaseOnAmend));
         default:
-          return _rxjsBundlesRxMinJs.Observable.throw(new Error(`Invalid Commit Mode ${ mode }`));
+          return _rxjsBundlesRxMinJs.Observable.throw(new Error(`Invalid Commit Mode ${mode}`));
       }
     })).do(processMessage => {
       (0, (_streamProcessToConsoleMessages || _load_streamProcessToConsoleMessages()).pipeProcessMessagesToConsole)(mode, publishUpdates, processMessage);
@@ -653,7 +653,7 @@ function publishDiff(actions, store) {
             (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)('diff-view-publish-update');
             return trackComplete('diff-view.publish-diff', (0, (_utils || _load_utils()).updatePhabricatorRevision)(repository, publishUpdates, headRevision.description, message, allowUntracked, lintExcuse, verbatimModeEnabled));
           default:
-            (0, (_notifications || _load_notifications()).notifyInternalError)(new Error(`Invalid Publish Mode: ${ mode }`));
+            (0, (_notifications || _load_notifications()).notifyInternalError)(new Error(`Invalid Publish Mode: ${mode}`));
             return _rxjsBundlesRxMinJs.Observable.empty();
         }
       }).ignoreElements().concat(_rxjsBundlesRxMinJs.Observable.of((_Actions || _load_Actions()).updatePublishState((0, (_createEmptyAppState || _load_createEmptyAppState()).getEmptyPublishState)()), (_Actions || _load_Actions()).setViewMode((_constants || _load_constants()).DiffMode.BROWSE_MODE)));

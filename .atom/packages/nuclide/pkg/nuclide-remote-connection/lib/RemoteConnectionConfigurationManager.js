@@ -12,7 +12,7 @@ let clearConnectionConfig = exports.clearConnectionConfig = (() => {
     try {
       localStorage.removeItem(getStorageKey(host));
     } catch (e) {
-      logger.error(`Failed to clear configuration for ${ host }.`, e);
+      logger.error(`Failed to clear configuration for ${host}.`, e);
     }
   });
 
@@ -75,7 +75,7 @@ function isInsecure(config) {
 }
 
 function getStorageKey(host) {
-  return `${ CONFIG_DIR }:${ host }`;
+  return `${CONFIG_DIR}:${host}`;
 }
 
 function getConnectionConfig(host) {
@@ -86,7 +86,7 @@ function getConnectionConfig(host) {
   try {
     return decryptConfig(JSON.parse(storedConfig));
   } catch (e) {
-    logger.error(`The configuration file for ${ host } is corrupted.`, e);
+    logger.error(`The configuration file for ${host} is corrupted.`, e);
     return null;
   }
 }
@@ -105,13 +105,13 @@ function setConnectionConfig(config, ipAddress) {
     // This way, multiple aliases for the same hostname can reuse a single connection.
     localStorage.setItem(getStorageKey(ipAddress), encrypted);
   } catch (e) {
-    logger.error(`Failed to store configuration file for ${ config.host }.`, e);
+    logger.error(`Failed to store configuration file for ${config.host}.`, e);
   }
 }
 
 function encryptConfig(remoteProjectConfig) {
   const sha1 = _crypto.default.createHash('sha1');
-  sha1.update(`${ remoteProjectConfig.host }:${ remoteProjectConfig.port }`);
+  sha1.update(`${remoteProjectConfig.host}:${remoteProjectConfig.port}`);
   const sha1sum = sha1.digest('hex');
 
   const { certificateAuthorityCertificate, clientCertificate, clientKey } = remoteProjectConfig;
@@ -150,7 +150,7 @@ function encryptConfig(remoteProjectConfig) {
  */
 function decryptConfig(remoteProjectConfig) {
   const sha1 = _crypto.default.createHash('sha1');
-  sha1.update(`${ remoteProjectConfig.host }:${ remoteProjectConfig.port }`);
+  sha1.update(`${remoteProjectConfig.host}:${remoteProjectConfig.port}`);
   const sha1sum = sha1.digest('hex');
 
   const password = (_keytarWrapper || _load_keytarWrapper()).default.getPassword('nuclide.remoteProjectConfig', sha1sum);
@@ -175,7 +175,7 @@ function decryptConfig(remoteProjectConfig) {
   //  "nolint" is to suppress ArcanistPrivateKeyLinter errors
   if (!restoredClientKey.startsWith('-----BEGIN RSA PRIVATE KEY-----')) {
     /* nolint */
-    (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error(`decrypted client key did not start with expected header: ${ restoredClientKey }`);
+    (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error(`decrypted client key did not start with expected header: ${restoredClientKey}`);
   }
 
   if (!certificateAuthorityCertificate) {

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.flowGetCoverage = exports.flowGetType = exports.initialize = undefined;
+exports.flowFindRefs = exports.flowGetCoverage = exports.flowGetType = exports.initialize = undefined;
 
 var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
 
@@ -38,6 +38,18 @@ let flowGetCoverage = exports.flowGetCoverage = (() => {
 
   return function flowGetCoverage(_x6) {
     return _ref3.apply(this, arguments);
+  };
+})();
+
+let flowFindRefs = exports.flowFindRefs = (() => {
+  var _ref4 = (0, _asyncToGenerator.default)(function* (file, currentContents, position) {
+    return getState().getRootContainer().runWithRoot(file, function (root) {
+      return root.flowFindRefs(file, currentContents, position);
+    });
+  });
+
+  return function flowFindRefs(_x7, _x8, _x9) {
+    return _ref4.apply(this, arguments);
   };
 })();
 
@@ -82,16 +94,6 @@ function _load_FlowServiceState() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// Diagnostic information, returned from findDiagnostics.
-
-
-/*
- * Each error or warning can consist of any number of different messages from
- * Flow to help explain the problem and point to different locations that may be
- * of interest.
- */
-
-
 // If types are added here, make sure to also add them to FlowConstants.js. This needs to be the
 // canonical type definition so that we can use these in the service framework.
 let state = null; /**
@@ -124,15 +126,18 @@ class FlowSingleFileLanguageService {
   dispose() {}
 
   getDiagnostics(filePath, buffer) {
-    throw new Error('Not Yet Implemented');
+    return flowFindDiagnostics(filePath, null);
   }
 
   observeDiagnostics() {
     throw new Error('Not Yet Implemented');
   }
 
-  getAutocompleteSuggestions(filePath, buffer, position, activatedManually) {
-    throw new Error('Not Yet Implemented');
+  getAutocompleteSuggestions(filePath, buffer, position, activatedManually, prefix) {
+    return (0, _asyncToGenerator.default)(function* () {
+      const results = yield flowGetAutocompleteSuggestions(filePath, buffer.getText(), position, activatedManually, prefix);
+      return (0, (_nuclideFlowCommon || _load_nuclideFlowCommon()).filterResultsByPrefix)(prefix, results);
+    })();
   }
 
   getDefinition(filePath, buffer, position) {
@@ -177,7 +182,7 @@ class FlowSingleFileLanguageService {
   }
 
   highlight(filePath, buffer, position) {
-    throw new Error('Not Yet Implemented');
+    return flowFindRefs(filePath, buffer.getText(), position);
   }
 
   formatSource(filePath, buffer, range) {
@@ -193,7 +198,10 @@ class FlowSingleFileLanguageService {
   }
 
   getProjectRoot(fileUri) {
-    throw new Error('Not Yet Implemented');
+    return (0, _asyncToGenerator.default)(function* () {
+      const flowRoot = yield getState().getRootContainer().getRootForPath(fileUri);
+      return flowRoot == null ? null : flowRoot.getPathToRoot();
+    })();
   }
 
   isFileInProject(fileUri) {
@@ -213,8 +221,8 @@ function flowFindDiagnostics(file, currentContents) {
   return getState().getRootContainer().runWithRoot(file, root => root.flowFindDiagnostics(file, currentContents));
 }
 
-function flowGetAutocompleteSuggestions(file, currentContents, position, prefix) {
-  return getState().getRootContainer().runWithRoot(file, root => root.flowGetAutocompleteSuggestions(file, currentContents, position, prefix));
+function flowGetAutocompleteSuggestions(file, currentContents, position, activatedManually, prefix) {
+  return getState().getRootContainer().runWithRoot(file, root => root.flowGetAutocompleteSuggestions(file, currentContents, position, activatedManually, prefix));
 }
 
 function flowGetOutline(file, currentContents) {

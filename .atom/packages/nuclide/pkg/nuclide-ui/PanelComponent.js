@@ -96,7 +96,7 @@ class PanelComponent extends _reactForAtom.React.Component {
     // is resizing the panel, even if their mouse leaves the handle.
     let resizeCursorOverlay = null;
     if (this.state.isResizing) {
-      resizeCursorOverlay = _reactForAtom.React.createElement('div', { className: `nuclide-ui-panel-component-resize-cursor-overlay ${ this.props.dock }` });
+      resizeCursorOverlay = _reactForAtom.React.createElement('div', { className: `nuclide-ui-panel-component-resize-cursor-overlay ${this.props.dock}` });
     }
 
     let containerStyle;
@@ -130,10 +130,10 @@ class PanelComponent extends _reactForAtom.React.Component {
     return _reactForAtom.React.createElement(
       'div',
       {
-        className: `nuclide-ui-panel-component ${ this.props.dock }`,
+        className: `nuclide-ui-panel-component ${this.props.dock}`,
         hidden: this.props.hidden,
         style: containerStyle },
-      _reactForAtom.React.createElement('div', { className: `nuclide-ui-panel-component-resize-handle ${ this.props.dock }`,
+      _reactForAtom.React.createElement('div', { className: `nuclide-ui-panel-component-resize-handle ${this.props.dock}`,
         ref: 'handle',
         onMouseDown: this._handleMouseDown,
         onDoubleClick: this._handleDoubleClick
@@ -182,6 +182,12 @@ class PanelComponent extends _reactForAtom.React.Component {
   }
 
   _handleMouseMove(event) {
+    if (event.buttons === 0) {
+      // We missed the mouseup event. For some reason it happens on Windows
+      this._handleMouseUp(event);
+      return;
+    }
+
     const containerEl = _reactForAtom.ReactDOM.findDOMNode(this);
     let length = 0;
     switch (this.props.dock) {

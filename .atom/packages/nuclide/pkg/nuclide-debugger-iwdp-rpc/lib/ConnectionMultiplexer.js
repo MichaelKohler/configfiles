@@ -108,7 +108,7 @@ class ConnectionMultiplexer {
         }
       default:
         {
-          this._replyWithError(message.id, `Unhandled message: ${ JSON.stringify(message) }`);
+          this._replyWithError(message.id, `Unhandled message: ${JSON.stringify(message)}`);
         }
     }
   }
@@ -195,7 +195,7 @@ class ConnectionMultiplexer {
 
         default:
           {
-            _this._replyWithError(message.id, `Unhandled message: ${ JSON.stringify(message) }`);
+            _this._replyWithError(message.id, `Unhandled message: ${JSON.stringify(message)}`);
           }
       }
     })();
@@ -215,7 +215,7 @@ class ConnectionMultiplexer {
         }
       default:
         {
-          this._replyWithError(message.id, `Unhandled message: ${ JSON.stringify(message) }`);
+          this._replyWithError(message.id, `Unhandled message: ${JSON.stringify(message)}`);
         }
     }
   }
@@ -229,7 +229,7 @@ class ConnectionMultiplexer {
         }
       default:
         {
-          this._replyWithError(message.id, `Unhandled message: ${ JSON.stringify(message) }`);
+          this._replyWithError(message.id, `Unhandled message: ${JSON.stringify(message)}`);
         }
     }
   }
@@ -284,7 +284,7 @@ class ConnectionMultiplexer {
         const response = yield _this3._enabledConnection.sendCommand(message);
         _this3._sendMessageToClient(response);
       } else {
-        _this3._replyWithError(message.id, `${ message.method } sent to running connection`);
+        _this3._replyWithError(message.id, `${message.method} sent to running connection`);
       }
     })();
   }
@@ -296,11 +296,11 @@ class ConnectionMultiplexer {
       if (_this4._enabledConnection != null) {
         const response = yield _this4._enabledConnection.sendCommand({
           id,
-          method: `Debugger.${ method }`
+          method: `Debugger.${method}`
         });
         _this4._sendMessageToClient(response);
       } else {
-        _this4._replyWithError(id, `Debugger.${ method } sent to running connection`);
+        _this4._replyWithError(id, `Debugger.${method} sent to running connection`);
       }
       return Promise.resolve();
     })();
@@ -317,7 +317,10 @@ class ConnectionMultiplexer {
 
   _connectToContext(deviceInfo) {
     const connection = new (_DebuggerConnection || _load_DebuggerConnection()).DebuggerConnection(this._freshConnectionId++, deviceInfo);
-    this._disposables.add(connection.getStatusChanges().subscribe(status => this._handleStatusChange(status, connection)), connection.subscribeToEvents(this.sendCommand.bind(this)));
+    // While it is the CM's responsibility to create these subscriptions, their lifetimes are the
+    // same as the connection, so their disposal will be handled by the connection.
+    connection.onDispose(connection.getStatusChanges().subscribe(status => this._handleStatusChange(status, connection)), connection.subscribeToEvents(this.sendCommand.bind(this)));
+    this._disposables.add(connection);
     this._connections.add(connection);
     return connection;
   }
@@ -344,7 +347,7 @@ class ConnectionMultiplexer {
       if (!responses.every(function (response) {
         return response.result != null && response.error == null;
       })) {
-        const err = `A prelude message response was an error: ${ JSON.stringify(responses) }`;
+        const err = `A prelude message response was an error: ${JSON.stringify(responses)}`;
         logError(err);
         throw new Error(err);
       }
@@ -363,14 +366,19 @@ class ConnectionMultiplexer {
           this._handlePausedMode(connection);
           break;
         }
+      case (_constants || _load_constants()).ENDED:
+        {
+          this._handleEndedMode(connection);
+          break;
+        }
       default:
         {
           if (!false) {
-            throw new Error(`Unknown status: ${ status }`);
+            throw new Error(`Unknown status: ${status}`);
           }
         }
     }
-    log(`Switching status to: ${ status }`);
+    log(`Switching status to: ${status}`);
   }
 
   _handleRunningMode(connection) {
@@ -387,6 +395,15 @@ class ConnectionMultiplexer {
   _handlePausedMode(connection) {
     if (this._enabledConnection == null) {
       this._enabledConnection = connection;
+    }
+  }
+
+  _handleEndedMode(connection) {
+    this._breakpointManager.removeConnection(connection);
+    const wasFound = this._connections.delete(connection);
+    if (wasFound) {
+      this._disposables.remove(connection);
+      connection.dispose();
     }
   }
 

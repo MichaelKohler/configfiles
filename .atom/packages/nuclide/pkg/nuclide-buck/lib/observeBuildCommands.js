@@ -88,7 +88,7 @@ function observeBuildCommands(store) {
       (_featureConfig || _load_featureConfig()).default.set(CONFIG_KEY, false);
     }
     (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)('buck-prompt.shown', { buildTarget: args[0] });
-    const notification = atom.notifications.addInfo(`You recently ran \`buck build ${ args.join(' ') }\` from the command line.<br />` + 'Would you like to try building from the Task Runner?', {
+    const notification = atom.notifications.addInfo(`You recently ran \`buck build ${args.join(' ')}\` from the command line.<br />` + 'Would you like to try building from the Task Runner?', {
       dismissable: true,
       icon: 'nuclicon-buck',
       buttons: [{

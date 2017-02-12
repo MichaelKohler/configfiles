@@ -86,7 +86,7 @@ function patchAtomWorkspaceReplace() {
     remotePaths.forEach((paths, service) => {
       promises.push(service.grepReplace(paths, regex, replacementText).refCount().do(result => {
         if (result.type === 'error') {
-          iterator(null, new Error(`${ result.filePath }: ${ result.message }`));
+          iterator(null, new Error(`${result.filePath}: ${result.message}`));
         } else {
           iterator(result);
         }

@@ -175,7 +175,7 @@ class ServerConnection {
   }
 
   getUriOfRemotePath(remotePath) {
-    return `nuclide://${ this.getRemoteHostname() }${ remotePath }`;
+    return `nuclide://${this.getRemoteHostname()}${remotePath}`;
   }
 
   getPathOfUri(uri) {
@@ -211,7 +211,7 @@ class ServerConnection {
       const clientVersion = (0, (_nuclideVersion || _load_nuclideVersion()).getVersion)();
 
       function throwVersionMismatch(version) {
-        const err = new Error(`Version mismatch. Client at ${ clientVersion } while server at ${ version }.`);
+        const err = new Error(`Version mismatch. Client at ${clientVersion} while server at ${version}.`);
         err.name = 'VersionMismatchError';
         throw err;
       }
@@ -289,10 +289,10 @@ class ServerConnection {
         cert: this._config.clientCertificate,
         key: this._config.clientKey
       };
-      uri = `https://${ this.getRemoteHostname() }:${ this.getPort() }`;
+      uri = `https://${this.getRemoteHostname()}:${this.getPort()}`;
     } else {
       options = null;
-      uri = `http://${ this.getRemoteHostname() }:${ this.getPort() }`;
+      uri = `http://${this.getRemoteHostname()}:${this.getPort()}`;
     }
 
     const socket = new (_NuclideSocket || _load_NuclideSocket()).NuclideSocket(uri, options);

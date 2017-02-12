@@ -3,6 +3,20 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
+
+let copyPermissions = (() => {
+  var _ref = (0, _asyncToGenerator.default)(function* (from, to) {
+    const { mode } = yield (_fsPromise || _load_fsPromise()).default.stat(from);
+    yield (_fsPromise || _load_fsPromise()).default.chmod(to, mode);
+  });
+
+  return function copyPermissions(_x, _x2) {
+    return _ref.apply(this, arguments);
+  };
+})();
+
 exports.default = replaceInFile;
 
 var _fs = _interopRequireDefault(require('fs'));
@@ -49,6 +63,9 @@ function replaceInFile(path, regex, replacement) {
     // We'll overwrite the original when we're done.
     const tempStream = (_temp || _load_temp()).default.createWriteStream();
 
+    // $FlowIssue: fs.WriteStream contains a path.
+    const tempPath = tempStream.path;
+
     return _rxjsBundlesRxMinJs.Observable.concat(
     // Replace the output line-by-line. This obviously doesn't work for multi-line regexes,
     // but this mimics the behavior of Atom's `scandal` find-and-replace backend.
@@ -72,12 +89,13 @@ function replaceInFile(path, regex, replacement) {
       return () => disposable.dispose();
     }),
 
+    // Copy the permissions from the orignal file.
+    _rxjsBundlesRxMinJs.Observable.defer(() => copyPermissions(path, tempPath)).ignoreElements(),
+
     // Overwrite the original file with the temporary file.
-    // $FlowIssue: fs.WriteStream contains a path.
-    _rxjsBundlesRxMinJs.Observable.fromPromise((_fsPromise || _load_fsPromise()).default.rename(tempStream.path, path)).ignoreElements()).catch(err => {
+    _rxjsBundlesRxMinJs.Observable.defer(() => (_fsPromise || _load_fsPromise()).default.rename(tempPath, path)).ignoreElements()).catch(err => {
       // Make sure we clean up the temporary file if an error occurs.
-      // $FlowIssue: fs.WriteStream contains a path.
-      (_fsPromise || _load_fsPromise()).default.unlink(tempStream.path).catch(() => {});
+      (_fsPromise || _load_fsPromise()).default.unlink(tempPath).catch(() => {});
       return _rxjsBundlesRxMinJs.Observable.throw(err);
     });
   });

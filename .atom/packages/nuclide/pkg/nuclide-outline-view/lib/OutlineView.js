@@ -156,7 +156,7 @@ class OutlineViewComponent extends _reactForAtom.React.Component {
       case 'outline':
         return renderTrees(outline.editor, outline.outlineTrees);
       default:
-        const errorText = `Encountered unexpected outline kind ${ outline.kind }`;
+        const errorText = `Encountered unexpected outline kind ${outline.kind}`;
         logger.error(errorText);
         return _reactForAtom.React.createElement(
           'span',

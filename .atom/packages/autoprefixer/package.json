@@ -2,40 +2,40 @@
   "_args": [
     [
       {
-        "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-1161131-22649-zberee/package.tgz",
+        "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117112-1804-pjg8ey/package.tgz",
         "scope": null,
         "escapedName": null,
         "name": null,
-        "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-1161131-22649-zberee/package.tgz",
-        "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-1161131-22649-zberee/package.tgz",
+        "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117112-1804-pjg8ey/package.tgz",
+        "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117112-1804-pjg8ey/package.tgz",
         "type": "local"
       },
-      "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-1161131-22649-12zl7rn"
+      "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-117112-1804-795cci"
     ]
   ],
-  "_from": "../d-1161131-22649-zberee/package.tgz",
-  "_id": "autoprefixer@3.6.0",
+  "_from": "../d-117112-1804-pjg8ey/package.tgz",
+  "_id": "autoprefixer@3.6.1",
   "_inCache": true,
   "_installable": true,
   "_location": "/autoprefixer",
   "_phantomChildren": {},
   "_requested": {
-    "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-1161131-22649-zberee/package.tgz",
+    "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117112-1804-pjg8ey/package.tgz",
     "scope": null,
     "escapedName": null,
     "name": null,
-    "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-1161131-22649-zberee/package.tgz",
-    "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-1161131-22649-zberee/package.tgz",
+    "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117112-1804-pjg8ey/package.tgz",
+    "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117112-1804-pjg8ey/package.tgz",
     "type": "local"
   },
   "_requiredBy": [
     "#USER"
   ],
-  "_resolved": "file:../d-1161131-22649-zberee/package.tgz",
-  "_shasum": "fd1cd3a599d2355e5e02cbf146249843192813fe",
+  "_resolved": "file:../d-117112-1804-pjg8ey/package.tgz",
+  "_shasum": "971adbda999d3985d4891796e3ebe84f3560e4d2",
   "_shrinkwrap": null,
-  "_spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-1161131-22649-zberee/package.tgz",
-  "_where": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-1161131-22649-12zl7rn",
+  "_spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117112-1804-pjg8ey/package.tgz",
+  "_where": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-117112-1804-795cci",
   "activationCommands": {
     "atom-workspace": [
       "core:save",
@@ -61,7 +61,7 @@
     "xo": "*"
   },
   "engines": {
-    "atom": ">=1.0.0"
+    "atom": ">=1.13.0"
   },
   "homepage": "https://github.com/sindresorhus/atom-autoprefixer#readme",
   "keywords": [
@@ -83,7 +83,7 @@
   "scripts": {
     "test": "xo"
   },
-  "version": "3.6.0",
+  "version": "3.6.1",
   "xo": {
     "esnext": true,
     "globals": [

@@ -96,7 +96,9 @@ let createLanguageService = (() => {
         suggestionPriority: 3,
         disableForSelector: null,
         excludeLowerPriority: false,
-        analyticsEventName: 'hack.getAutocompleteSuggestions'
+        analyticsEventName: 'hack.getAutocompleteSuggestions',
+        autocompleteCacherConfig: null,
+        onDidInsertSuggestionAnalyticsEventName: 'hack.autocomplete-chosen'
       },
       diagnostics: diagnosticsConfig
     };

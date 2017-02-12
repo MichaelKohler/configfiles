@@ -122,7 +122,7 @@ class DebuggerActions {
       } catch (err) {
         (0, (_AnalyticsHelper || _load_AnalyticsHelper()).failTimerTracking)(err);
         (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)(AnalyticsEvents.DEBUGGER_START_FAIL, {});
-        const errorMessage = `Failed to start debugger process: ${ err }`;
+        const errorMessage = `Failed to start debugger process: ${err}`;
         _this.setError(errorMessage);
         atom.notifications.addError(errorMessage);
         _this.stopDebugging();

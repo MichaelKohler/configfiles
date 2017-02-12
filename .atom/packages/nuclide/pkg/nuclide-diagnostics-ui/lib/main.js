@@ -229,7 +229,7 @@ function addAtomCommands(diagnosticUpdater) {
       const errorsToOpen = getTopMostErrorLocationsByFilePath(messages);
 
       if (errorsToOpen.size > MAX_OPEN_ALL_FILES) {
-        atom.notifications.addError(`Diagnostics: Will not open more than ${ MAX_OPEN_ALL_FILES } files`);
+        atom.notifications.addError(`Diagnostics: Will not open more than ${MAX_OPEN_ALL_FILES} files`);
         return;
       }
 

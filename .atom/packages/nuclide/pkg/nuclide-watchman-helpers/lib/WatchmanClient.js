@@ -170,7 +170,7 @@ class WatchmanClient {
     }
     if (!Array.isArray(response.files)) {
       if (response.canceled === true) {
-        logger.info(`Watch for ${ response.root } was deleted.`);
+        logger.info(`Watch for ${response.root} was deleted.`);
         // Ending the client will trigger a reconnect.
         this._clientPromise.then(client => client.end());
         return;
@@ -178,8 +178,8 @@ class WatchmanClient {
       // TODO(most): use state messages to decide on when to send updates.
       const stateEnter = response['state-enter'];
       const stateLeave = response['state-leave'];
-      const stateMessage = stateEnter != null ? `Entering ${ stateEnter }` : `Leaving ${ (0, (_string || _load_string()).maybeToString)(stateLeave) }`;
-      logger.info(`Subscription state: ${ stateMessage }`);
+      const stateMessage = stateEnter != null ? `Entering ${stateEnter}` : `Leaving ${(0, (_string || _load_string()).maybeToString)(stateLeave)}`;
+      logger.info(`Subscription state: ${stateMessage}`);
       return;
     }
     subscription.emit('change', response.files);

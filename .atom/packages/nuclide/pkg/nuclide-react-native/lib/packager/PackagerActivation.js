@@ -80,7 +80,7 @@ class PackagerActivation {
               throw new Error('Invariant violation: "err instanceof PackagerError"');
             }
 
-            atom.notifications.addError(`Packager exited with ${ err.exitMessage }`, {
+            atom.notifications.addError(`Packager exited with ${err.exitMessage}`, {
               dismissable: true,
               detail: err.stderr.trim() === '' ? undefined : err.stderr
             });

@@ -54,6 +54,10 @@ class BreakpointManager {
     this._sendSetPauseOnExceptionToTarget(connection)]);
   }
 
+  removeConnection(connection) {
+    this._connections.delete(connection);
+  }
+
   _sendLineBreakpointsToTarget(connection) {
     var _this = this;
 
@@ -122,7 +126,7 @@ class BreakpointManager {
 
     return (0, _asyncToGenerator.default)(function* () {
       const responses = yield _this3._sendMessageToAllTargets(message);
-      log(`setPauseOnExceptions yielded: ${ JSON.stringify(responses) }`);
+      log(`setPauseOnExceptions yielded: ${JSON.stringify(responses)}`);
       for (const response of responses) {
         // We can receive multiple responses, so just send the first non-error one.
         if (response.result != null && response.error == null) {
@@ -184,7 +188,7 @@ class BreakpointManager {
         })
       });
       const responses = yield _this4._sendMessageToAllTargets(targetMessage);
-      log(`setBreakpointByUrl yielded: ${ JSON.stringify(responses) }`);
+      log(`setBreakpointByUrl yielded: ${JSON.stringify(responses)}`);
       for (const response of responses) {
         // We will receive multiple responses, so just send the first non-error one.
         if (response.result != null && response.error == null && response.result.breakpointId != null) {
@@ -216,7 +220,7 @@ class BreakpointManager {
         }
       });
       const responses = yield _this5._sendMessageToAllTargets(targetMessage);
-      log(`removeBreakpoint yielded: ${ JSON.stringify(responses) }`);
+      log(`removeBreakpoint yielded: ${JSON.stringify(responses)}`);
       _this5._breakpoints.delete(breakpoint.nuclideId);
       return { id };
     })();
@@ -237,5 +241,5 @@ class BreakpointManager {
 
 exports.BreakpointManager = BreakpointManager;
 function createNuclideId(params) {
-  return `${ BREAKPOINT_ID_PREFIX }_${ params.url }:${ params.lineNumber }`;
+  return `${BREAKPOINT_ID_PREFIX}_${params.url}:${params.lineNumber}`;
 }

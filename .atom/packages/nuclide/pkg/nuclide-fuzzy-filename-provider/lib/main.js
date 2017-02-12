@@ -88,7 +88,7 @@ class Activation {
         // Wait a bit before starting the initial search, since it's a heavy op.
         (0, (_scheduleIdleCallback || _load_scheduleIdleCallback()).default)(() => {
           this._initialSearch(projectPath).catch(err => {
-            logger.error(`Error starting fuzzy filename search for ${ projectPath }`, err);
+            logger.error(`Error starting fuzzy filename search for ${projectPath}: ${err}`);
             this._disposeSearch(projectPath);
           });
         }, { timeout: 5000 }));
@@ -120,7 +120,7 @@ class Activation {
         throw new Error('Invariant violation: "disposables != null"');
       }
 
-      const busySignalDisposable = _this._busySignalProvider.displayMessage(`File search: indexing ${ projectPath }`);
+      const busySignalDisposable = _this._busySignalProvider.displayMessage(`File search: indexing ${projectPath}`);
       disposables.add(busySignalDisposable);
 
       // It doesn't matter what the search term is. Empirically, doing an initial
@@ -142,7 +142,7 @@ class Activation {
       const service = (0, (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).getFuzzyFileSearchServiceByNuclideUri)(projectPath);
       service.disposeFuzzySearch(projectPath);
     } catch (err) {
-      logger.error(`Error disposing fuzzy filename service for ${ projectPath }`, err);
+      logger.error(`Error disposing fuzzy filename service for ${projectPath}`, err);
     } finally {
       const disposables = this._subscriptionsByRoot.get(projectPath);
       if (disposables != null) {

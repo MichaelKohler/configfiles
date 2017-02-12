@@ -173,9 +173,9 @@ class BreakpointStore {
     if (!(lineMap != null)) {
       throw new Error((_dedent || _load_dedent()).default`
         Expected a non-null lineMap.
-        path: ${ path },
-        line: ${ line },
-        userAction: ${ userAction }
+        path: ${path},
+        line: ${line},
+        userAction: ${userAction}
       `);
     }
 

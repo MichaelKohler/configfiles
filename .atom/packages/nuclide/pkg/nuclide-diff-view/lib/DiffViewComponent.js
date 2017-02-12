@@ -206,7 +206,7 @@ function renderFileChanges(diffModel) {
 
   const getCompareRevision = () => {
     const { compareRevisionId } = diffModel.getState().activeRepositoryState;
-    return compareRevisionId == null ? null : `${ compareRevisionId }`;
+    return compareRevisionId == null ? null : `${compareRevisionId}`;
   };
 
   return _reactForAtom.React.createElement(

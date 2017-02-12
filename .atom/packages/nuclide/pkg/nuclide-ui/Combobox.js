@@ -355,7 +355,7 @@ class Combobox extends _reactForAtom.React.Component {
       width
     } = this.props;
     const wrapperStyle = {
-      width: width == null ? undefined : `${ width }px`
+      width: width == null ? undefined : `${width}px`
     };
     return _reactForAtom.React.createElement(
       'div',

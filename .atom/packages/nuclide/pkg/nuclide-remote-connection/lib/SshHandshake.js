@@ -137,7 +137,7 @@ class SshHandshake {
   }
 
   _error(message, errorType, error) {
-    logger.error(`SshHandshake failed: ${ errorType }, ${ message }`, error);
+    logger.error(`SshHandshake failed: ${errorType}, ${message}`, error);
     this._delegate.onError(errorType, error, this._config);
   }
 
@@ -149,7 +149,7 @@ class SshHandshake {
       const retryText = this._passwordRetryCount ? ' again' : '';
       this._delegate.onKeyboardInteractive('', '', '', // ignored
       [{
-        prompt: `Authentication failed. Try entering your password${ retryText }:`,
+        prompt: `Authentication failed. Try entering your password${retryText}:`,
         echo: true
       }], ([password]) => {
         this._connection.connect({
@@ -313,10 +313,10 @@ class SshHandshake {
     let sftpTimer = null;
     return new Promise((resolve, reject) => {
       let stdOut = '';
-      const remoteTempFile = `/tmp/nuclide-sshhandshake-${ Math.random() }`;
+      const remoteTempFile = `/tmp/nuclide-sshhandshake-${Math.random()}`;
       // TODO: escape any single quotes
       // TODO: the timeout value shall be configurable using .json file too (t6904691).
-      const cmd = `${ this._config.remoteServerCommand } --workspace=${ this._config.cwd }` + ` --common-name=${ this._config.host } --json-output-file=${ remoteTempFile } -t 60`;
+      const cmd = `${this._config.remoteServerCommand} --workspace=${this._config.cwd}` + ` --common-name=${this._config.host} --json-output-file=${remoteTempFile} -t 60`;
 
       this._connection.exec(cmd, { pty: { term: 'nuclide' } }, (err, stream) => {
         if (err) {

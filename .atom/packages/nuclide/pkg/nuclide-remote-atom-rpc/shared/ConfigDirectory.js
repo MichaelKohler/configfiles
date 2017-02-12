@@ -55,7 +55,7 @@ let createNewEntry = exports.createNewEntry = (() => {
     yield (_fsPromise || _load_fsPromise()).default.mkdir(subdir);
     yield (_fsPromise || _load_fsPromise()).default.writeFile((_nuclideUri || _load_nuclideUri()).default.join(subdir, SERVER_INFO_FILE), JSON.stringify(info));
 
-    logger.debug(`Created new remote atom config at ${ subdir } for port ${ commandPort } family ${ family }`);
+    logger.debug(`Created new remote atom config at ${subdir} for port ${commandPort} family ${family}`);
   });
 
   return function createNewEntry(_x2, _x3) {
@@ -78,7 +78,7 @@ let getServer = exports.getServer = (() => {
     // to use.
     if (serverInfos.length > 0) {
       const { commandPort, family } = serverInfos[0];
-      logger.debug(`Read remote atom config at ${ configDirectory } for port ${ commandPort } family ${ family }`);
+      logger.debug(`Read remote atom config at ${configDirectory} for port ${commandPort} family ${family}`);
       return serverInfos[0];
     } else {
       return null;
@@ -180,7 +180,7 @@ function findPathToConfigDirectory(clearDirectory) {
   homedir,
 
   // If the user's home directory is on NFS, we try /data/users/$USER as a backup.
-  `/data/users/${ username }`];
+  `/data/users/${username}`];
 
   return (0, (_promise || _load_promise()).asyncFind)(candidateDirectories, (() => {
     var _ref6 = (0, _asyncToGenerator.default)(function* (directory) {

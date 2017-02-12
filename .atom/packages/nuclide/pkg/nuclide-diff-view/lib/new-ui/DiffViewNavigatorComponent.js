@@ -107,7 +107,7 @@ class DiffViewNavigatorComponent extends _reactForAtom.React.Component {
           'Changed Sections: '
         ),
         _reactForAtom.React.createElement((_SectionDirectionNavigator || _load_SectionDirectionNavigator()).default, {
-          commandTarget: `.${ (_constants || _load_constants()).DIFF_EDITOR_MARKER_CLASS }`,
+          commandTarget: `.${(_constants || _load_constants()).DIFF_EDITOR_MARKER_CLASS}`,
           filePath: filePath,
           navigationSections: navigationSections,
           selectedNavigationSectionIndex: activeSectionIndex,
@@ -149,7 +149,7 @@ class DiffViewNavigatorComponent extends _reactForAtom.React.Component {
       case (_constants || _load_constants()).DiffMode.PUBLISH_MODE:
         return this._renderPublishView();
       default:
-        throw new Error(`Invalid Diff Mode: ${ viewMode }`);
+        throw new Error(`Invalid Diff Mode: ${viewMode}`);
     }
   }
 

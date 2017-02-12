@@ -49,7 +49,7 @@ function findArcProjectIdAndDirectory(src) {
     cached = arcService.findArcProjectIdAndDirectory(src).then(result => {
       // Store the path in local storage for `getLastProjectPath`.
       if (result != null) {
-        localStorage.setItem(`${ STORAGE_KEY }.${ result.projectId }`, result.directory);
+        localStorage.setItem(`${STORAGE_KEY}.${result.projectId}`, result.directory);
       }
       arcInfoResultCache.set(src, result);
       return result;
@@ -73,5 +73,5 @@ function getCachedArcProjectIdAndDirectory(src) {
 }
 
 function getLastProjectPath(projectId) {
-  return localStorage.getItem(`${ STORAGE_KEY }.${ projectId }`);
+  return localStorage.getItem(`${STORAGE_KEY}.${projectId}`);
 }

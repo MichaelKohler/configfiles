@@ -123,7 +123,7 @@ function setLocalProject(projectPath) {
  * Can only be used in a Jasmine context.
  */
 function waitsForFile(filename, timeoutMs = 10000) {
-  waitsFor(`${ filename } to become active`, timeoutMs, () => {
+  waitsFor(`${filename} to become active`, timeoutMs, () => {
     const editor = atom.workspace.getActiveTextEditor();
     if (editor == null) {
       return false;
@@ -137,7 +137,7 @@ function waitsForFile(filename, timeoutMs = 10000) {
 }
 
 function waitsForFilePosition(filename, row, column, timeoutMs = 10000) {
-  waitsFor(`${ filename } to become active at ${ row }:${ column }`, timeoutMs, () => {
+  waitsFor(`${filename} to become active at ${row}:${column}`, timeoutMs, () => {
     const editor = atom.workspace.getActiveTextEditor();
     if (editor == null) {
       return false;
