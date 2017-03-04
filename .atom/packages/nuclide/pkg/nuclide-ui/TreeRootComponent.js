@@ -425,7 +425,7 @@ class TreeRootComponent extends _reactForAtom.React.Component {
         this._rejectDidUpdateListenerPromise = null;
       }
       this._rejectDidUpdateListenerPromise = () => {
-        reject(undefined);
+        reject(new Error());
         didUpdateDisposable.dispose();
       };
     });
@@ -505,7 +505,7 @@ class TreeRootComponent extends _reactForAtom.React.Component {
    */
   selectNodeKey(nodeKey) {
     if (!this.getNodeForKey(nodeKey)) {
-      return Promise.reject();
+      return Promise.reject(new Error());
     }
 
     // We have to create the listener before setting the state so it can pick

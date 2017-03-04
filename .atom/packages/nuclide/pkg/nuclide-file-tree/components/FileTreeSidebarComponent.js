@@ -523,4 +523,3 @@ function showMenuForEvent(event, menuTemplate) {
   atom.contextMenu.showForEvent(event);
   return new (_UniversalDisposable || _load_UniversalDisposable()).default(restore);
 }
-module.exports = exports['default'];

@@ -37,7 +37,7 @@ function getApmNodeModulesPath() {
 
 function runScriptInApmNode(script) {
   const args = ['-e', script];
-  const options = { env: { NODE_PATH: getApmNodeModulesPath() } };
+  const options = { env: Object.assign({}, process.env, { NODE_PATH: getApmNodeModulesPath() }) };
   const output = _child_process.default.spawnSync(getApmNodePath(), args, options);
   return output.stdout.toString();
 }

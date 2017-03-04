@@ -90,7 +90,7 @@ const DID_CHANGE_CONFLICT_STATE = 'did-change-conflict-state';
 function getRevisionStatusCache(revisionsCache, workingDirectoryPath) {
   try {
     // $FlowFB
-    const FbRevisionStatusCache = require('./fb/RevisionStatusCache');
+    const FbRevisionStatusCache = require('./fb/RevisionStatusCache').default;
     return new FbRevisionStatusCache(revisionsCache, workingDirectoryPath);
   } catch (e) {
     return {
@@ -827,16 +827,16 @@ class HgRepositoryClient {
     return this._service.add(filePaths);
   }
 
-  commit(message) {
-    return this._service.commit(message).refCount().do(this._clearOnSuccessExit.bind(this));
+  commit(message, isInteractive = false) {
+    return this._service.commit(message, isInteractive).refCount().do(this._clearOnSuccessExit.bind(this, isInteractive));
   }
 
-  amend(message, amendMode) {
-    return this._service.amend(message, amendMode).refCount().do(this._clearOnSuccessExit.bind(this));
+  amend(message, amendMode, isInteractive = false) {
+    return this._service.amend(message, amendMode, isInteractive).refCount().do(this._clearOnSuccessExit.bind(this, isInteractive));
   }
 
-  _clearOnSuccessExit(message) {
-    if (message.kind === 'exit' && message.exitCode === 0) {
+  _clearOnSuccessExit(isInteractive, message) {
+    if (!isInteractive && message.kind === 'exit' && message.exitCode === 0) {
       this._clearClientCache();
     }
   }

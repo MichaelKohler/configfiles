@@ -698,4 +698,3 @@ class QuickSelectionComponent extends _reactForAtom.React.Component {
   }
 }
 exports.default = QuickSelectionComponent;
-module.exports = exports['default'];

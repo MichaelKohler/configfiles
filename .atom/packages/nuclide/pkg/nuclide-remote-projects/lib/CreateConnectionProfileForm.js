@@ -175,4 +175,3 @@ class CreateConnectionProfileForm extends _reactForAtom.React.Component {
   }
 }
 exports.default = CreateConnectionProfileForm;
-module.exports = exports['default'];

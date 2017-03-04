@@ -445,4 +445,3 @@ class ConnectionDetailsForm extends _reactForAtom.React.Component {
   }
 }
 exports.default = ConnectionDetailsForm;
-module.exports = exports['default'];

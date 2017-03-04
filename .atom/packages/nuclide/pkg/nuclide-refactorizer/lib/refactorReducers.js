@@ -127,4 +127,3 @@ function executeRefactor(state, action) {
     }
   };
 }
-module.exports = exports['default'];

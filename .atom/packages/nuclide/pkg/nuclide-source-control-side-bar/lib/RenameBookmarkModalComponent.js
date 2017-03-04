@@ -103,4 +103,3 @@ class RenameBookmarkModal extends _reactForAtom.React.Component {
   }
 }
 exports.default = RenameBookmarkModal;
-module.exports = exports['default'];

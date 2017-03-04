@@ -685,7 +685,11 @@ class HgService {
     })();
   }
 
-  _commitCode(message, args) {
+  _commitCode(message, args, isInteractive) {
+    if (isInteractive) {
+      args.push('--interactive');
+    }
+
     let tempFile = null;
     let editMergeConfigs;
 
@@ -718,8 +722,8 @@ class HgService {
    * Commit code to version control.
    * @param message Commit message.
    */
-  commit(message) {
-    return this._commitCode(message, ['commit']).publish();
+  commit(message, isInteractive = false) {
+    return this._commitCode(message, ['commit'], isInteractive).publish();
   }
 
   /**
@@ -730,7 +734,7 @@ class HgService {
    *  Rebase to amend and rebase the stacked diffs.
    *  Fixup to fix the stacked commits, rebasing them on top of this commit.
    */
-  amend(message, amendMode) {
+  amend(message, amendMode, isInteractive = false) {
     const args = ['amend'];
     switch (amendMode) {
       case (_hgConstants || _load_hgConstants()).AmendMode.CLEAN:
@@ -744,7 +748,7 @@ class HgService {
       default:
         throw new Error('Unexpected AmendMode');
     }
-    return this._commitCode(message, args).publish();
+    return this._commitCode(message, args, isInteractive).publish();
   }
 
   revert(filePaths, toRevision) {

@@ -155,4 +155,3 @@ exports.default = FileDialogComponent; /**
 FileDialogComponent.defaultProps = {
   additionalOptions: {}
 };
-module.exports = exports['default'];

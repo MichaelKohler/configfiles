@@ -282,4 +282,3 @@ class NuclideTextBuffer extends _atom.TextBuffer {
   }
 }
 exports.default = NuclideTextBuffer;
-module.exports = exports['default'];

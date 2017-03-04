@@ -213,4 +213,3 @@ class SuggestionList extends _reactForAtom.React.Component {
 exports.default = document.registerElement('hyperclick-suggestion-list', {
   prototype: SuggestionListElement.prototype
 });
-module.exports = exports['default'];

@@ -130,6 +130,7 @@ let _getAttachProcessInfoFromPid = (() => {
 
 exports.getDeployBuildEvents = getDeployBuildEvents;
 exports.getDeployInstallEvents = getDeployInstallEvents;
+exports.getDeployTestEvents = getDeployTestEvents;
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
 
@@ -200,18 +201,18 @@ function getDeployBuildEvents(processStream, buckService, buckRoot, buildTarget,
   return processStream.filter(message => message.kind === 'exit' && message.exitCode === 0).switchMap(() => {
     return _rxjsBundlesRxMinJs.Observable.fromPromise(debugBuckTarget(buckService, buckRoot, buildTarget, runArguments)).map(path => ({
       type: 'log',
-      message: `Launched LLDB debugger with ${path}`,
+      message: `Launched debugger with ${path}`,
       level: 'info'
     })).catch(err => {
-      (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error(`Failed to launch LLDB debugger for ${buildTarget}`, err);
+      (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error(`Failed to launch debugger for ${buildTarget}`, err);
       return _rxjsBundlesRxMinJs.Observable.of({
         type: 'log',
-        message: `Failed to launch LLDB debugger: ${err.message}`,
+        message: `Failed to launch debugger: ${err.message}`,
         level: 'error'
       });
     }).startWith({
       type: 'log',
-      message: `Launching LLDB debugger for ${buildTarget}...`,
+      message: `Launching debugger for ${buildTarget}...`,
       level: 'log'
     }, {
       type: 'progress',
@@ -258,6 +259,25 @@ function getDeployInstallEvents(processStream, buckRoot) {
       }
 
       return _rxjsBundlesRxMinJs.Observable.throw(new Error('Unexpected target type'));
+    });
+  });
+}
+
+function getDeployTestEvents(processStream, buckRoot) {
+  return processStream.flatMap(message => {
+    if (message.kind !== 'stderr') {
+      return _rxjsBundlesRxMinJs.Observable.empty();
+    }
+    const pidMatch = message.data.match(LLDB_PROCESS_ID_REGEX);
+    if (pidMatch == null) {
+      return _rxjsBundlesRxMinJs.Observable.empty();
+    }
+    return _rxjsBundlesRxMinJs.Observable.of(pidMatch[1]);
+  }).switchMap(pid => {
+    return _rxjsBundlesRxMinJs.Observable.fromPromise(debugPidWithLLDB(parseInt(pid, 10), buckRoot)).ignoreElements().startWith({
+      type: 'log',
+      message: `Attaching LLDB debugger to pid ${pid}...`,
+      level: 'info'
     });
   });
 }

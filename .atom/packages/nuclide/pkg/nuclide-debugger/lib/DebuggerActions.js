@@ -104,6 +104,10 @@ class DebuggerActions {
         _this._registerConsole();
         const supportThreadsWindow = processInfo.supportThreads() && (yield (0, (_passesGK || _load_passesGK()).default)(GK_DEBUGGER_THREADS_WINDOW)) && (yield _this._allowThreadsForPhp(processInfo));
         _this._store.getSettings().set('SupportThreadsWindow', supportThreadsWindow);
+        if (supportThreadsWindow) {
+          const customColumns = processInfo.getThreadColumns();
+          _this._store.getSettings().set('CustomThreadColumns', customColumns);
+        }
         const singleThreadStepping = processInfo.supportSingleThreadStepping();
         if (singleThreadStepping) {
           _this._store.getSettings().set('SingleThreadStepping', singleThreadStepping);
@@ -218,8 +222,6 @@ class DebuggerActions {
     if (!(this._store.getDebuggerInstance() == null)) {
       throw new Error('Invariant violation: "this._store.getDebuggerInstance() == null"');
     }
-
-    atom.commands.dispatch(atom.views.getView(atom.workspace), 'nuclide-debugger:hide');
   }
 
   _registerConsole() {
@@ -588,4 +590,3 @@ class DebuggerActions {
   }
 }
 exports.default = DebuggerActions;
-module.exports = exports['default'];

@@ -31,7 +31,23 @@ function _load_ListView() {
   return _ListView = require('../../nuclide-ui/ListView');
 }
 
+var _classnames;
+
+function _load_classnames() {
+  return _classnames = _interopRequireDefault(require('classnames'));
+}
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ */
 
 class BreakpointListComponent extends _reactForAtom.React.Component {
 
@@ -106,7 +122,8 @@ class BreakpointListComponent extends _reactForAtom.React.Component {
           indeterminate: !resolved,
           disabled: !resolved,
           onChange: this._handleBreakpointEnabledChange.bind(this, breakpoint),
-          title: resolved ? null : 'Unresolved Breakpoint'
+          title: resolved ? null : 'Unresolved Breakpoint',
+          className: (0, (_classnames || _load_classnames()).default)(resolved ? '' : 'nuclide-debugger-breakpoint-unresolved')
         })
       );
       return _reactForAtom.React.createElement(
@@ -125,12 +142,4 @@ class BreakpointListComponent extends _reactForAtom.React.Component {
     );
   }
 }
-exports.BreakpointListComponent = BreakpointListComponent; /**
-                                                            * Copyright (c) 2015-present, Facebook, Inc.
-                                                            * All rights reserved.
-                                                            *
-                                                            * This source code is licensed under the license found in the LICENSE file in
-                                                            * the root directory of this source tree.
-                                                            *
-                                                            * 
-                                                            */
+exports.BreakpointListComponent = BreakpointListComponent;

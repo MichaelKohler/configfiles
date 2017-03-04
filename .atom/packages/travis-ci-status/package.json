@@ -2,40 +2,40 @@
   "_args": [
     [
       {
-        "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-116816-8564-fwsq8p/package.tgz",
+        "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-11724-18647-1tmqgsl/package.tgz",
         "scope": null,
         "escapedName": null,
         "name": null,
-        "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-116816-8564-fwsq8p/package.tgz",
-        "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-116816-8564-fwsq8p/package.tgz",
+        "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-11724-18647-1tmqgsl/package.tgz",
+        "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-11724-18647-1tmqgsl/package.tgz",
         "type": "local"
       },
-      "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-116816-8564-1lhpjnj"
+      "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-11724-18647-18ad4pw"
     ]
   ],
-  "_from": "../d-116816-8564-fwsq8p/package.tgz",
-  "_id": "travis-ci-status@1.3.0",
+  "_from": "../d-11724-18647-1tmqgsl/package.tgz",
+  "_id": "travis-ci-status@1.3.1",
   "_inCache": true,
   "_installable": true,
   "_location": "/travis-ci-status",
   "_phantomChildren": {},
   "_requested": {
-    "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-116816-8564-fwsq8p/package.tgz",
+    "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-11724-18647-1tmqgsl/package.tgz",
     "scope": null,
     "escapedName": null,
     "name": null,
-    "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-116816-8564-fwsq8p/package.tgz",
-    "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-116816-8564-fwsq8p/package.tgz",
+    "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-11724-18647-1tmqgsl/package.tgz",
+    "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-11724-18647-1tmqgsl/package.tgz",
     "type": "local"
   },
   "_requiredBy": [
     "#USER"
   ],
-  "_resolved": "file:../d-116816-8564-fwsq8p/package.tgz",
-  "_shasum": "7101d6e912b845a571ad5431421c79b6f7b91b80",
+  "_resolved": "file:../d-11724-18647-1tmqgsl/package.tgz",
+  "_shasum": "775a352f09d66dce7116fc55d937df6caf62b44f",
   "_shrinkwrap": null,
-  "_spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-116816-8564-fwsq8p/package.tgz",
-  "_where": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-116816-8564-1lhpjnj",
+  "_spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-11724-18647-1tmqgsl/package.tgz",
+  "_where": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-11724-18647-18ad4pw",
   "author": {
     "name": "Tom Bell",
     "email": "tomb@tomb.io",
@@ -83,5 +83,5 @@
     "type": "git",
     "url": "git+https://github.com/tombell/travis-ci-status.git"
   },
-  "version": "1.3.0"
+  "version": "1.3.1"
 }

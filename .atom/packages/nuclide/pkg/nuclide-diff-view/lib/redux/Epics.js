@@ -536,13 +536,20 @@ function commit(actions, store) {
     (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)('diff-view-commit');
     const { message, repository, publishUpdates, bookmarkName } = action.payload;
     const {
+      activeRepositoryState: { dirtyFiles },
       commit: { mode },
       isPrepareMode,
+      lintExcuse,
       publish,
+      shouldCommitInteractively,
       shouldPublishOnCommit,
       shouldRebaseOnAmend
     } = store.getState();
     let consoleShown = false;
+
+    // Trying to amend a commit interactively with no uncommitted changes
+    // will instantly return and not allow the commit message to update
+    const isInteractive = shouldCommitInteractively && dirtyFiles.size > 0;
 
     // If the commit/amend and publish option are chosen
     function getPublishActions() {
@@ -558,7 +565,7 @@ function commit(actions, store) {
 
       return _rxjsBundlesRxMinJs.Observable.of((_Actions || _load_Actions()).updatePublishState(Object.assign({}, publish, {
         mode: publishMode
-      })), (_Actions || _load_Actions()).publishDiff(repository, publishUpdateMessage, isPrepareMode, null, publishUpdates));
+      })), (_Actions || _load_Actions()).publishDiff(repository, publishUpdateMessage, isPrepareMode, lintExcuse, publishUpdates));
     }
 
     const resetCommitAction = (_Actions || _load_Actions()).updateCommitState({
@@ -575,10 +582,10 @@ function commit(actions, store) {
       switch (mode) {
         case (_constants || _load_constants()).CommitMode.COMMIT:
           (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)('diff-view-commit-commit');
-          return _rxjsBundlesRxMinJs.Observable.concat(bookmarkName != null && bookmarkName.length > 0 ? _rxjsBundlesRxMinJs.Observable.fromPromise(repository.createBookmark(bookmarkName)).ignoreElements() : _rxjsBundlesRxMinJs.Observable.empty(), repository.commit(message));
+          return _rxjsBundlesRxMinJs.Observable.concat(bookmarkName != null && bookmarkName.length > 0 ? _rxjsBundlesRxMinJs.Observable.fromPromise(repository.createBookmark(bookmarkName)).ignoreElements() : _rxjsBundlesRxMinJs.Observable.empty(), repository.commit(message, isInteractive));
         case (_constants || _load_constants()).CommitMode.AMEND:
           (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)('diff-view-commit-amend');
-          return repository.amend(message, (0, (_utils || _load_utils()).getAmendMode)(shouldRebaseOnAmend));
+          return repository.amend(message, (0, (_utils || _load_utils()).getAmendMode)(shouldRebaseOnAmend), isInteractive);
         default:
           return _rxjsBundlesRxMinJs.Observable.throw(new Error(`Invalid Commit Mode ${mode}`));
       }
@@ -594,11 +601,10 @@ function commit(actions, store) {
       } else if (processMessage.exitCode !== 0) {
         return _rxjsBundlesRxMinJs.Observable.of(resetCommitAction);
       }
-      const resetFromCommitViewActions = _rxjsBundlesRxMinJs.Observable.of((_Actions || _load_Actions()).setViewMode((_constants || _load_constants()).DiffMode.BROWSE_MODE), (_Actions || _load_Actions()).updateCommitState((0, (_createEmptyAppState || _load_createEmptyAppState()).getEmptyCommitState)()));
       if (shouldPublishOnCommit) {
-        return resetFromCommitViewActions.concat(getPublishActions());
+        return getPublishActions();
       } else {
-        return resetFromCommitViewActions;
+        return _rxjsBundlesRxMinJs.Observable.of((_Actions || _load_Actions()).setViewMode((_constants || _load_constants()).DiffMode.BROWSE_MODE), (_Actions || _load_Actions()).updateCommitState((0, (_createEmptyAppState || _load_createEmptyAppState()).getEmptyCommitState)()));
       }
     }).catch(error => {
       atom.notifications.addError('Couldn\'t commit code', {

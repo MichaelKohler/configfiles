@@ -48,10 +48,14 @@ class DebuggerThreadsComponent extends _reactForAtom.React.Component {
   constructor(props) {
     super(props);
     this._handleSelectThread = this._handleSelectThread.bind(this);
+    this._handleSort = this._handleSort.bind(this);
+    this._sortRows = this._sortRows.bind(this);
     this._disposables = new (_UniversalDisposable || _load_UniversalDisposable()).default();
     this.state = {
       threadList: props.threadStore.getThreadList(),
-      selectedThreadId: props.threadStore.getSelectedThreadId()
+      selectedThreadId: props.threadStore.getSelectedThreadId(),
+      sortedColumn: null,
+      sortDescending: false
     };
   }
 
@@ -73,17 +77,43 @@ class DebuggerThreadsComponent extends _reactForAtom.React.Component {
     this.props.bridge.selectThread(data.id);
   }
 
+  _handleSort(sortedColumn, sortDescending) {
+    this.setState({ sortedColumn, sortDescending });
+  }
+
+  _sortRows(threads, sortedColumnName, sortDescending) {
+    if (sortedColumnName == null) {
+      return threads;
+    }
+
+    // Use a numerical comparison for the ID column, string compare for all the others.
+    const compare = sortedColumnName.toLowerCase() === 'id' ? (a, b, isAsc) => {
+      const cmp = (a || 0) - (b || 0);
+      return isAsc ? cmp : -cmp;
+    } : (a, b, isAsc) => {
+      const cmp = a.toLowerCase().localeCompare(b.toLowerCase());
+      return isAsc ? cmp : -cmp;
+    };
+
+    const getter = row => row.data[sortedColumnName];
+    return [...threads].sort((a, b) => {
+      return compare(getter(a), getter(b), !sortDescending);
+    });
+  }
+
   render() {
     const {
       threadList,
       selectedThreadId
     } = this.state;
-    const columns = [{
+    const activeThreadCol = {
       component: activeThreadIndicatorComponent,
       title: '',
       key: 'isSelected',
       width: 0.05
-    }, {
+    };
+
+    const defaultColumns = [activeThreadCol, {
       title: 'ID',
       key: 'id',
       width: 0.15
@@ -96,6 +126,14 @@ class DebuggerThreadsComponent extends _reactForAtom.React.Component {
       key: 'stopReason',
       width: 0.25
     }];
+
+    // Individual debuggers can override the displayed columns.
+    const customColumns = this.props.customThreadColumns.length === 0 ? [] : [activeThreadCol].concat(this.props.customThreadColumns.map(col => ({
+      title: col.title,
+      key: col.key
+    })));
+
+    const columns = customColumns.length > 0 ? customColumns : defaultColumns;
     const emptyComponent = () => _reactForAtom.React.createElement(
       'div',
       { className: 'nuclide-debugger-thread-list-empty' },
@@ -116,9 +154,14 @@ class DebuggerThreadsComponent extends _reactForAtom.React.Component {
     return _reactForAtom.React.createElement((_Table || _load_Table()).Table, {
       columns: columns,
       emptyComponent: emptyComponent,
-      rows: rows,
+      rows: this._sortRows(rows, this.state.sortedColumn, this.state.sortDescending),
       selectable: true,
-      onSelect: this._handleSelectThread
+      resizable: true,
+      onSelect: this._handleSelectThread,
+      sortable: true,
+      onSort: this._handleSort,
+      sortedColumn: this.state.sortedColumn,
+      sortDescending: this.state.sortDescending
     });
   }
 }

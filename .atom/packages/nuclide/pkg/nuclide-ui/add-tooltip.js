@@ -56,5 +56,3 @@ function addTooltip(options) {
    *
    * 
    */
-
-module.exports = exports['default'];

@@ -18,7 +18,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "FlowService.js",
-          line: 77
+          line: 81
         },
         kind: "named",
         name: "FileNotifier"
@@ -30,581 +30,872 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "FlowService.js",
-          line: 78
+          line: 82
         },
         kind: "named",
-        name: "LanguageService"
+        name: "FlowLanguageServiceType"
       });
     });
   };
 
-  remoteModule.getServerStatusUpdates = function () {
-    return Observable.fromPromise(_client.marshalArguments(Array.from(arguments), []).then(args => {
-      return _client.callRemoteFunction("FlowService/getServerStatusUpdates", "observable", args);
-    })).concatMap(id => id).concatMap(value => {
-      return _client.unmarshal(value, {
-        location: {
-          type: "source",
-          fileName: "FlowService.js",
-          line: 231
-        },
-        kind: "named",
-        name: "ServerStatusUpdate"
-      });
-    }).publish();
-  };
-
-  remoteModule.flowFindDefinition = function (arg0, arg1, arg2, arg3) {
-    return _client.marshalArguments(Array.from(arguments), [{
-      name: "file",
-      type: {
-        location: {
-          type: "source",
-          fileName: "FlowService.js",
-          line: 236
-        },
-        kind: "named",
-        name: "NuclideUri"
-      }
-    }, {
-      name: "currentContents",
-      type: {
-        location: {
-          type: "source",
-          fileName: "FlowService.js",
-          line: 237
-        },
-        kind: "string"
-      }
-    }, {
-      name: "line",
-      type: {
-        location: {
-          type: "source",
-          fileName: "FlowService.js",
-          line: 238
-        },
-        kind: "number"
-      }
-    }, {
-      name: "column",
-      type: {
-        location: {
-          type: "source",
-          fileName: "FlowService.js",
-          line: 239
-        },
-        kind: "number"
-      }
-    }]).then(args => {
-      return _client.callRemoteFunction("FlowService/flowFindDefinition", "promise", args);
-    }).then(value => {
-      return _client.unmarshal(value, {
-        location: {
-          type: "source",
-          fileName: "FlowService.js",
-          line: 240
-        },
-        kind: "nullable",
-        type: {
-          location: {
-            type: "source",
-            fileName: "FlowService.js",
-            line: 240
-          },
-          kind: "named",
-          name: "Loc"
-        }
-      });
-    });
-  };
-
-  remoteModule.flowFindDiagnostics = function (arg0, arg1) {
-    return _client.marshalArguments(Array.from(arguments), [{
-      name: "file",
-      type: {
-        location: {
-          type: "source",
-          fileName: "FlowService.js",
-          line: 253
-        },
-        kind: "named",
-        name: "NuclideUri"
-      }
-    }, {
-      name: "currentContents",
-      type: {
-        location: {
-          type: "source",
-          fileName: "FlowService.js",
-          line: 254
-        },
-        kind: "nullable",
-        type: {
-          location: {
-            type: "source",
-            fileName: "FlowService.js",
-            line: 254
-          },
-          kind: "string"
-        }
-      }
-    }]).then(args => {
-      return _client.callRemoteFunction("FlowService/flowFindDiagnostics", "promise", args);
-    }).then(value => {
-      return _client.unmarshal(value, {
-        location: {
-          type: "source",
-          fileName: "FlowService.js",
-          line: 255
-        },
-        kind: "nullable",
-        type: {
-          location: {
-            type: "source",
-            fileName: "FlowService.js",
-            line: 255
-          },
-          kind: "named",
-          name: "DiagnosticProviderUpdate"
-        }
-      });
-    });
-  };
-
-  remoteModule.flowGetAutocompleteSuggestions = function (arg0, arg1, arg2, arg3, arg4) {
-    return _client.marshalArguments(Array.from(arguments), [{
-      name: "file",
-      type: {
-        location: {
-          type: "source",
-          fileName: "FlowService.js",
-          line: 266
-        },
-        kind: "named",
-        name: "NuclideUri"
-      }
-    }, {
-      name: "currentContents",
-      type: {
-        location: {
-          type: "source",
-          fileName: "FlowService.js",
-          line: 267
-        },
-        kind: "string"
-      }
-    }, {
-      name: "position",
-      type: {
-        location: {
-          type: "source",
-          fileName: "FlowService.js",
-          line: 268
-        },
-        kind: "named",
-        name: "atom$Point"
-      }
-    }, {
-      name: "activatedManually",
-      type: {
-        location: {
-          type: "source",
-          fileName: "FlowService.js",
-          line: 269
-        },
-        kind: "nullable",
-        type: {
-          location: {
-            type: "source",
-            fileName: "FlowService.js",
-            line: 269
-          },
-          kind: "boolean"
-        }
-      }
-    }, {
-      name: "prefix",
-      type: {
-        location: {
-          type: "source",
-          fileName: "FlowService.js",
-          line: 270
-        },
-        kind: "string"
-      }
-    }]).then(args => {
-      return _client.callRemoteFunction("FlowService/flowGetAutocompleteSuggestions", "promise", args);
-    }).then(value => {
-      return _client.unmarshal(value, {
-        location: {
-          type: "source",
-          fileName: "FlowService.js",
-          line: 271
-        },
-        kind: "nullable",
-        type: {
-          location: {
-            type: "source",
-            fileName: "FlowService.js",
-            line: 271
-          },
-          kind: "array",
-          type: {
-            location: {
-              type: "source",
-              fileName: "FlowService.js",
-              line: 271
-            },
-            kind: "named",
-            name: "Completion"
-          }
-        }
-      });
-    });
-  };
-
-  remoteModule.flowGetType = function (arg0, arg1, arg2, arg3) {
-    return _client.marshalArguments(Array.from(arguments), [{
-      name: "file",
-      type: {
-        location: {
-          type: "source",
-          fileName: "FlowService.js",
-          line: 285
-        },
-        kind: "named",
-        name: "NuclideUri"
-      }
-    }, {
-      name: "currentContents",
-      type: {
-        location: {
-          type: "source",
-          fileName: "FlowService.js",
-          line: 286
-        },
-        kind: "string"
-      }
-    }, {
-      name: "line",
-      type: {
-        location: {
-          type: "source",
-          fileName: "FlowService.js",
-          line: 287
-        },
-        kind: "number"
-      }
-    }, {
-      name: "column",
-      type: {
-        location: {
-          type: "source",
-          fileName: "FlowService.js",
-          line: 288
-        },
-        kind: "number"
-      }
-    }]).then(args => {
-      return _client.callRemoteFunction("FlowService/flowGetType", "promise", args);
-    }).then(value => {
-      return _client.unmarshal(value, {
-        location: {
-          type: "source",
-          fileName: "FlowService.js",
-          line: 289
-        },
-        kind: "nullable",
-        type: {
-          location: {
-            type: "source",
-            fileName: "FlowService.js",
-            line: 289
-          },
-          kind: "string"
-        }
-      });
-    });
-  };
-
-  remoteModule.flowGetCoverage = function (arg0) {
-    return _client.marshalArguments(Array.from(arguments), [{
-      name: "file",
-      type: {
-        location: {
-          type: "source",
-          fileName: "FlowService.js",
-          line: 302
-        },
-        kind: "named",
-        name: "NuclideUri"
-      }
-    }]).then(args => {
-      return _client.callRemoteFunction("FlowService/flowGetCoverage", "promise", args);
-    }).then(value => {
-      return _client.unmarshal(value, {
-        location: {
-          type: "source",
-          fileName: "FlowService.js",
-          line: 303
-        },
-        kind: "nullable",
-        type: {
-          location: {
-            type: "source",
-            fileName: "FlowService.js",
-            line: 303
-          },
-          kind: "named",
-          name: "CoverageResult"
-        }
-      });
-    });
-  };
-
-  remoteModule.flowGetOutline = function (arg0, arg1) {
-    return _client.marshalArguments(Array.from(arguments), [{
-      name: "file",
-      type: {
-        location: {
-          type: "source",
-          fileName: "FlowService.js",
-          line: 311
-        },
-        kind: "nullable",
-        type: {
-          location: {
-            type: "source",
-            fileName: "FlowService.js",
-            line: 311
-          },
-          kind: "named",
-          name: "NuclideUri"
-        }
-      }
-    }, {
-      name: "currentContents",
-      type: {
-        location: {
-          type: "source",
-          fileName: "FlowService.js",
-          line: 312
-        },
-        kind: "string"
-      }
-    }]).then(args => {
-      return _client.callRemoteFunction("FlowService/flowGetOutline", "promise", args);
-    }).then(value => {
-      return _client.unmarshal(value, {
-        location: {
-          type: "source",
-          fileName: "FlowService.js",
-          line: 313
-        },
-        kind: "nullable",
-        type: {
-          location: {
-            type: "source",
-            fileName: "FlowService.js",
-            line: 313
-          },
-          kind: "named",
-          name: "Outline"
-        }
-      });
-    });
-  };
-
-  remoteModule.flowGetAst = function (arg0, arg1) {
-    return _client.marshalArguments(Array.from(arguments), [{
-      name: "file",
-      type: {
-        location: {
-          type: "source",
-          fileName: "FlowService.js",
-          line: 321
-        },
-        kind: "nullable",
-        type: {
-          location: {
-            type: "source",
-            fileName: "FlowService.js",
-            line: 321
-          },
-          kind: "named",
-          name: "NuclideUri"
-        }
-      }
-    }, {
-      name: "currentContents",
-      type: {
-        location: {
-          type: "source",
-          fileName: "FlowService.js",
-          line: 322
-        },
-        kind: "string"
-      }
-    }]).then(args => {
-      return _client.callRemoteFunction("FlowService/flowGetAst", "promise", args);
-    }).then(value => {
-      return _client.unmarshal(value, {
-        location: {
-          type: "source",
-          fileName: "FlowService.js",
-          line: 323
-        },
-        kind: "any"
-      });
-    });
-  };
-
-  remoteModule.flowFindRefs = function (arg0, arg1, arg2) {
-    return _client.marshalArguments(Array.from(arguments), [{
-      name: "file",
-      type: {
-        location: {
-          type: "source",
-          fileName: "FlowService.js",
-          line: 331
-        },
-        kind: "named",
-        name: "NuclideUri"
-      }
-    }, {
-      name: "currentContents",
-      type: {
-        location: {
-          type: "source",
-          fileName: "FlowService.js",
-          line: 332
-        },
-        kind: "string"
-      }
-    }, {
-      name: "position",
-      type: {
-        location: {
-          type: "source",
-          fileName: "FlowService.js",
-          line: 333
-        },
-        kind: "named",
-        name: "atom$Point"
-      }
-    }]).then(args => {
-      return _client.callRemoteFunction("FlowService/flowFindRefs", "promise", args);
-    }).then(value => {
-      return _client.unmarshal(value, {
-        location: {
-          type: "source",
-          fileName: "FlowService.js",
-          line: 334
-        },
-        kind: "nullable",
-        type: {
-          location: {
-            type: "source",
-            fileName: "FlowService.js",
-            line: 334
-          },
-          kind: "array",
-          type: {
-            location: {
-              type: "source",
-              fileName: "FlowService.js",
-              line: 334
-            },
-            kind: "named",
-            name: "atom$Range"
-          }
-        }
-      });
-    });
-  };
-
-  remoteModule.allowServerRestart = function () {
-    return _client.marshalArguments(Array.from(arguments), []).then(args => {
-      return _client.callRemoteFunction("FlowService/allowServerRestart", "void", args);
-    });
-  };
-
-  remoteModule.FileNotifier = class {
-    onFileEvent(arg0) {
+  remoteModule.FlowLanguageServiceType = class {
+    getDiagnostics(arg0) {
       return _client.marshalArguments(Array.from(arguments), [{
-        name: "event",
+        name: "fileVersion",
         type: {
           location: {
             type: "source",
-            fileName: "rpc-types.js",
-            line: 47
+            fileName: "FlowService.js",
+            line: 147
           },
           kind: "named",
-          name: "FileEvent"
+          name: "FileVersion"
         }
       }]).then(args => {
         return _client.marshal(this, {
           kind: "named",
           location: {
             type: "source",
-            fileName: "rpc-types.js",
-            line: 46
+            fileName: "FlowService.js",
+            line: 145
           },
-          name: "FileNotifier"
+          name: "FlowLanguageServiceType"
         }).then(id => {
-          return _client.callRemoteMethod(id, "onFileEvent", "promise", args);
+          return _client.callRemoteMethod(id, "getDiagnostics", "promise", args);
         });
       }).then(value => {
         return _client.unmarshal(value, {
           location: {
             type: "source",
-            fileName: "rpc-types.js",
-            line: 47
+            fileName: "FlowService.js",
+            line: 148
           },
-          kind: "void"
+          kind: "nullable",
+          type: {
+            location: {
+              type: "source",
+              fileName: "FlowService.js",
+              line: 148
+            },
+            kind: "named",
+            name: "DiagnosticProviderUpdate"
+          }
         });
       });
     }
 
-    onDirectoriesChanged(arg0) {
+    observeDiagnostics() {
+      return Observable.fromPromise(_client.marshalArguments(Array.from(arguments), []).then(args => {
+        return _client.marshal(this, {
+          kind: "named",
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 145
+          },
+          name: "FlowLanguageServiceType"
+        }).then(id => {
+          return _client.callRemoteMethod(id, "observeDiagnostics", "observable", args);
+        });
+      })).concatMap(id => id).concatMap(value => {
+        return _client.unmarshal(value, {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 150
+          },
+          kind: "named",
+          name: "FileDiagnosticUpdate"
+        });
+      }).publish();
+    }
+
+    getAutocompleteSuggestions(arg0, arg1, arg2, arg3) {
       return _client.marshalArguments(Array.from(arguments), [{
-        name: "openDirectories",
+        name: "fileVersion",
         type: {
           location: {
             type: "source",
-            fileName: "rpc-types.js",
-            line: 48
+            fileName: "FlowService.js",
+            line: 153
           },
-          kind: "set",
-          type: {
-            location: {
-              type: "source",
-              fileName: "rpc-types.js",
-              line: 48
-            },
-            kind: "named",
-            name: "NuclideUri"
-          }
+          kind: "named",
+          name: "FileVersion"
+        }
+      }, {
+        name: "position",
+        type: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 154
+          },
+          kind: "named",
+          name: "atom$Point"
+        }
+      }, {
+        name: "activatedManually",
+        type: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 155
+          },
+          kind: "boolean"
+        }
+      }, {
+        name: "prefix",
+        type: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 156
+          },
+          kind: "string"
         }
       }]).then(args => {
         return _client.marshal(this, {
           kind: "named",
           location: {
             type: "source",
-            fileName: "rpc-types.js",
-            line: 46
+            fileName: "FlowService.js",
+            line: 145
           },
-          name: "FileNotifier"
+          name: "FlowLanguageServiceType"
         }).then(id => {
-          return _client.callRemoteMethod(id, "onDirectoriesChanged", "promise", args);
+          return _client.callRemoteMethod(id, "getAutocompleteSuggestions", "promise", args);
         });
       }).then(value => {
         return _client.unmarshal(value, {
           location: {
             type: "source",
-            fileName: "rpc-types.js",
-            line: 48
+            fileName: "FlowService.js",
+            line: 157
+          },
+          kind: "nullable",
+          type: {
+            location: {
+              type: "source",
+              fileName: "FlowService.js",
+              line: 157
+            },
+            kind: "array",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 157
+              },
+              kind: "named",
+              name: "Completion"
+            }
+          }
+        });
+      });
+    }
+
+    getDefinition(arg0, arg1) {
+      return _client.marshalArguments(Array.from(arguments), [{
+        name: "fileVersion",
+        type: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 160
+          },
+          kind: "named",
+          name: "FileVersion"
+        }
+      }, {
+        name: "position",
+        type: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 161
+          },
+          kind: "named",
+          name: "atom$Point"
+        }
+      }]).then(args => {
+        return _client.marshal(this, {
+          kind: "named",
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 145
+          },
+          name: "FlowLanguageServiceType"
+        }).then(id => {
+          return _client.callRemoteMethod(id, "getDefinition", "promise", args);
+        });
+      }).then(value => {
+        return _client.unmarshal(value, {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 162
+          },
+          kind: "nullable",
+          type: {
+            location: {
+              type: "source",
+              fileName: "FlowService.js",
+              line: 162
+            },
+            kind: "named",
+            name: "DefinitionQueryResult"
+          }
+        });
+      });
+    }
+
+    getDefinitionById(arg0, arg1) {
+      return _client.marshalArguments(Array.from(arguments), [{
+        name: "file",
+        type: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 165
+          },
+          kind: "named",
+          name: "NuclideUri"
+        }
+      }, {
+        name: "id",
+        type: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 166
+          },
+          kind: "string"
+        }
+      }]).then(args => {
+        return _client.marshal(this, {
+          kind: "named",
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 145
+          },
+          name: "FlowLanguageServiceType"
+        }).then(id => {
+          return _client.callRemoteMethod(id, "getDefinitionById", "promise", args);
+        });
+      }).then(value => {
+        return _client.unmarshal(value, {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 167
+          },
+          kind: "nullable",
+          type: {
+            location: {
+              type: "source",
+              fileName: "FlowService.js",
+              line: 167
+            },
+            kind: "named",
+            name: "Definition"
+          }
+        });
+      });
+    }
+
+    findReferences(arg0, arg1) {
+      return _client.marshalArguments(Array.from(arguments), [{
+        name: "fileVersion",
+        type: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 170
+          },
+          kind: "named",
+          name: "FileVersion"
+        }
+      }, {
+        name: "position",
+        type: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 171
+          },
+          kind: "named",
+          name: "atom$Point"
+        }
+      }]).then(args => {
+        return _client.marshal(this, {
+          kind: "named",
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 145
+          },
+          name: "FlowLanguageServiceType"
+        }).then(id => {
+          return _client.callRemoteMethod(id, "findReferences", "promise", args);
+        });
+      }).then(value => {
+        return _client.unmarshal(value, {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 172
+          },
+          kind: "nullable",
+          type: {
+            location: {
+              type: "source",
+              fileName: "FlowService.js",
+              line: 172
+            },
+            kind: "named",
+            name: "FindReferencesReturn"
+          }
+        });
+      });
+    }
+
+    getCoverage(arg0) {
+      return _client.marshalArguments(Array.from(arguments), [{
+        name: "filePath",
+        type: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 175
+          },
+          kind: "named",
+          name: "NuclideUri"
+        }
+      }]).then(args => {
+        return _client.marshal(this, {
+          kind: "named",
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 145
+          },
+          name: "FlowLanguageServiceType"
+        }).then(id => {
+          return _client.callRemoteMethod(id, "getCoverage", "promise", args);
+        });
+      }).then(value => {
+        return _client.unmarshal(value, {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 176
+          },
+          kind: "nullable",
+          type: {
+            location: {
+              type: "source",
+              fileName: "FlowService.js",
+              line: 176
+            },
+            kind: "named",
+            name: "CoverageResult"
+          }
+        });
+      });
+    }
+
+    getOutline(arg0) {
+      return _client.marshalArguments(Array.from(arguments), [{
+        name: "fileVersion",
+        type: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 179
+          },
+          kind: "named",
+          name: "FileVersion"
+        }
+      }]).then(args => {
+        return _client.marshal(this, {
+          kind: "named",
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 145
+          },
+          name: "FlowLanguageServiceType"
+        }).then(id => {
+          return _client.callRemoteMethod(id, "getOutline", "promise", args);
+        });
+      }).then(value => {
+        return _client.unmarshal(value, {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 180
+          },
+          kind: "nullable",
+          type: {
+            location: {
+              type: "source",
+              fileName: "FlowService.js",
+              line: 180
+            },
+            kind: "named",
+            name: "Outline"
+          }
+        });
+      });
+    }
+
+    typeHint(arg0, arg1) {
+      return _client.marshalArguments(Array.from(arguments), [{
+        name: "fileVersion",
+        type: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 182
+          },
+          kind: "named",
+          name: "FileVersion"
+        }
+      }, {
+        name: "position",
+        type: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 182
+          },
+          kind: "named",
+          name: "atom$Point"
+        }
+      }]).then(args => {
+        return _client.marshal(this, {
+          kind: "named",
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 145
+          },
+          name: "FlowLanguageServiceType"
+        }).then(id => {
+          return _client.callRemoteMethod(id, "typeHint", "promise", args);
+        });
+      }).then(value => {
+        return _client.unmarshal(value, {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 182
+          },
+          kind: "nullable",
+          type: {
+            location: {
+              type: "source",
+              fileName: "FlowService.js",
+              line: 182
+            },
+            kind: "named",
+            name: "TypeHint"
+          }
+        });
+      });
+    }
+
+    highlight(arg0, arg1) {
+      return _client.marshalArguments(Array.from(arguments), [{
+        name: "fileVersion",
+        type: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 185
+          },
+          kind: "named",
+          name: "FileVersion"
+        }
+      }, {
+        name: "position",
+        type: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 186
+          },
+          kind: "named",
+          name: "atom$Point"
+        }
+      }]).then(args => {
+        return _client.marshal(this, {
+          kind: "named",
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 145
+          },
+          name: "FlowLanguageServiceType"
+        }).then(id => {
+          return _client.callRemoteMethod(id, "highlight", "promise", args);
+        });
+      }).then(value => {
+        return _client.unmarshal(value, {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 187
+          },
+          kind: "nullable",
+          type: {
+            location: {
+              type: "source",
+              fileName: "FlowService.js",
+              line: 187
+            },
+            kind: "array",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 187
+              },
+              kind: "named",
+              name: "atom$Range"
+            }
+          }
+        });
+      });
+    }
+
+    formatSource(arg0, arg1) {
+      return _client.marshalArguments(Array.from(arguments), [{
+        name: "fileVersion",
+        type: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 190
+          },
+          kind: "named",
+          name: "FileVersion"
+        }
+      }, {
+        name: "range",
+        type: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 191
+          },
+          kind: "named",
+          name: "atom$Range"
+        }
+      }]).then(args => {
+        return _client.marshal(this, {
+          kind: "named",
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 145
+          },
+          name: "FlowLanguageServiceType"
+        }).then(id => {
+          return _client.callRemoteMethod(id, "formatSource", "promise", args);
+        });
+      }).then(value => {
+        return _client.unmarshal(value, {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 192
+          },
+          kind: "nullable",
+          type: {
+            location: {
+              type: "source",
+              fileName: "FlowService.js",
+              line: 192
+            },
+            kind: "string"
+          }
+        });
+      });
+    }
+
+    formatEntireFile(arg0, arg1) {
+      return _client.marshalArguments(Array.from(arguments), [{
+        name: "fileVersion",
+        type: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 194
+          },
+          kind: "named",
+          name: "FileVersion"
+        }
+      }, {
+        name: "range",
+        type: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 194
+          },
+          kind: "named",
+          name: "atom$Range"
+        }
+      }]).then(args => {
+        return _client.marshal(this, {
+          kind: "named",
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 145
+          },
+          name: "FlowLanguageServiceType"
+        }).then(id => {
+          return _client.callRemoteMethod(id, "formatEntireFile", "promise", args);
+        });
+      }).then(value => {
+        return _client.unmarshal(value, {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 194
+          },
+          kind: "nullable",
+          type: {
+            location: {
+              type: "source",
+              fileName: "FlowService.js",
+              line: 194
+            },
+            kind: "object",
+            fields: [{
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 195
+              },
+              name: "newCursor",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "FlowService.js",
+                  line: 195
+                },
+                kind: "number"
+              },
+              optional: true
+            }, {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 196
+              },
+              name: "formatted",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "FlowService.js",
+                  line: 196
+                },
+                kind: "string"
+              },
+              optional: false
+            }]
+          }
+        });
+      });
+    }
+
+    getEvaluationExpression(arg0, arg1) {
+      return _client.marshalArguments(Array.from(arguments), [{
+        name: "fileVersion",
+        type: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 200
+          },
+          kind: "named",
+          name: "FileVersion"
+        }
+      }, {
+        name: "position",
+        type: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 201
+          },
+          kind: "named",
+          name: "atom$Point"
+        }
+      }]).then(args => {
+        return _client.marshal(this, {
+          kind: "named",
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 145
+          },
+          name: "FlowLanguageServiceType"
+        }).then(id => {
+          return _client.callRemoteMethod(id, "getEvaluationExpression", "promise", args);
+        });
+      }).then(value => {
+        return _client.unmarshal(value, {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 202
+          },
+          kind: "nullable",
+          type: {
+            location: {
+              type: "source",
+              fileName: "FlowService.js",
+              line: 202
+            },
+            kind: "named",
+            name: "NuclideEvaluationExpression"
+          }
+        });
+      });
+    }
+
+    getProjectRoot(arg0) {
+      return _client.marshalArguments(Array.from(arguments), [{
+        name: "fileUri",
+        type: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 204
+          },
+          kind: "named",
+          name: "NuclideUri"
+        }
+      }]).then(args => {
+        return _client.marshal(this, {
+          kind: "named",
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 145
+          },
+          name: "FlowLanguageServiceType"
+        }).then(id => {
+          return _client.callRemoteMethod(id, "getProjectRoot", "promise", args);
+        });
+      }).then(value => {
+        return _client.unmarshal(value, {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 204
+          },
+          kind: "nullable",
+          type: {
+            location: {
+              type: "source",
+              fileName: "FlowService.js",
+              line: 204
+            },
+            kind: "named",
+            name: "NuclideUri"
+          }
+        });
+      });
+    }
+
+    isFileInProject(arg0) {
+      return _client.marshalArguments(Array.from(arguments), [{
+        name: "fileUri",
+        type: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 206
+          },
+          kind: "named",
+          name: "NuclideUri"
+        }
+      }]).then(args => {
+        return _client.marshal(this, {
+          kind: "named",
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 145
+          },
+          name: "FlowLanguageServiceType"
+        }).then(id => {
+          return _client.callRemoteMethod(id, "isFileInProject", "promise", args);
+        });
+      }).then(value => {
+        return _client.unmarshal(value, {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 206
+          },
+          kind: "boolean"
+        });
+      });
+    }
+
+    getServerStatusUpdates() {
+      return Observable.fromPromise(_client.marshalArguments(Array.from(arguments), []).then(args => {
+        return _client.marshal(this, {
+          kind: "named",
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 145
+          },
+          name: "FlowLanguageServiceType"
+        }).then(id => {
+          return _client.callRemoteMethod(id, "getServerStatusUpdates", "observable", args);
+        });
+      })).concatMap(id => id).concatMap(value => {
+        return _client.unmarshal(value, {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 208
+          },
+          kind: "named",
+          name: "ServerStatusUpdate"
+        });
+      }).publish();
+    }
+
+    allowServerRestart() {
+      return _client.marshalArguments(Array.from(arguments), []).then(args => {
+        return _client.marshal(this, {
+          kind: "named",
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 145
+          },
+          name: "FlowLanguageServiceType"
+        }).then(id => {
+          return _client.callRemoteMethod(id, "allowServerRestart", "promise", args);
+        });
+      }).then(value => {
+        return _client.unmarshal(value, {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 210
           },
           kind: "void"
         });
@@ -616,6 +907,59 @@ module.exports = _client => {
     }
 
   };
+
+  remoteModule.flowGetAst = function (arg0, arg1) {
+    return _client.marshalArguments(Array.from(arguments), [{
+      name: "file",
+      type: {
+        location: {
+          type: "source",
+          fileName: "FlowService.js",
+          line: 216
+        },
+        kind: "nullable",
+        type: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 216
+          },
+          kind: "named",
+          name: "NuclideUri"
+        }
+      }
+    }, {
+      name: "currentContents",
+      type: {
+        location: {
+          type: "source",
+          fileName: "FlowService.js",
+          line: 217
+        },
+        kind: "string"
+      }
+    }]).then(args => {
+      return _client.callRemoteFunction("FlowService/flowGetAst", "promise", args);
+    }).then(value => {
+      return _client.unmarshal(value, {
+        location: {
+          type: "source",
+          fileName: "FlowService.js",
+          line: 218
+        },
+        kind: "nullable",
+        type: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 218
+          },
+          kind: "any"
+        }
+      });
+    });
+  };
+
   remoteModule.LanguageService = class {
     getDiagnostics(arg0) {
       return _client.marshalArguments(Array.from(arguments), [{
@@ -1434,6 +1778,92 @@ module.exports = _client => {
     }
 
   };
+  remoteModule.FileNotifier = class {
+    onFileEvent(arg0) {
+      return _client.marshalArguments(Array.from(arguments), [{
+        name: "event",
+        type: {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 47
+          },
+          kind: "named",
+          name: "FileEvent"
+        }
+      }]).then(args => {
+        return _client.marshal(this, {
+          kind: "named",
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 46
+          },
+          name: "FileNotifier"
+        }).then(id => {
+          return _client.callRemoteMethod(id, "onFileEvent", "promise", args);
+        });
+      }).then(value => {
+        return _client.unmarshal(value, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 47
+          },
+          kind: "void"
+        });
+      });
+    }
+
+    onDirectoriesChanged(arg0) {
+      return _client.marshalArguments(Array.from(arguments), [{
+        name: "openDirectories",
+        type: {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 48
+          },
+          kind: "set",
+          type: {
+            location: {
+              type: "source",
+              fileName: "rpc-types.js",
+              line: 48
+            },
+            kind: "named",
+            name: "NuclideUri"
+          }
+        }
+      }]).then(args => {
+        return _client.marshal(this, {
+          kind: "named",
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 46
+          },
+          name: "FileNotifier"
+        }).then(id => {
+          return _client.callRemoteMethod(id, "onDirectoriesChanged", "promise", args);
+        });
+      }).then(value => {
+        return _client.unmarshal(value, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 48
+          },
+          kind: "void"
+        });
+      });
+    }
+
+    dispose() {
+      return _client.disposeRemoteObject(this);
+    }
+
+  };
   return remoteModule;
 };
 
@@ -1505,28 +1935,28 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "FlowService.js",
-        line: 36
+        line: 40
       },
       name: "Loc",
       definition: {
         location: {
           type: "source",
           fileName: "FlowService.js",
-          line: 36
+          line: 40
         },
         kind: "object",
         fields: [{
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 37
+            line: 41
           },
           name: "file",
           type: {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 37
+              line: 41
             },
             kind: "named",
             name: "NuclideUri"
@@ -1536,14 +1966,14 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 38
+            line: 42
           },
           name: "point",
           type: {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 38
+              line: 42
             },
             kind: "named",
             name: "atom$Point"
@@ -1557,21 +1987,21 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "FlowService.js",
-        line: 43
+        line: 47
       },
       name: "ServerStatusType",
       definition: {
         location: {
           type: "source",
           fileName: "FlowService.js",
-          line: 44
+          line: 48
         },
         kind: "union",
         types: [{
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 44
+            line: 48
           },
           kind: "string-literal",
           value: "failed"
@@ -1579,7 +2009,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 45
+            line: 49
           },
           kind: "string-literal",
           value: "unknown"
@@ -1587,7 +2017,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 46
+            line: 50
           },
           kind: "string-literal",
           value: "not running"
@@ -1595,7 +2025,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 47
+            line: 51
           },
           kind: "string-literal",
           value: "not installed"
@@ -1603,7 +2033,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 48
+            line: 52
           },
           kind: "string-literal",
           value: "busy"
@@ -1611,7 +2041,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 49
+            line: 53
           },
           kind: "string-literal",
           value: "init"
@@ -1619,7 +2049,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 50
+            line: 54
           },
           kind: "string-literal",
           value: "ready"
@@ -1631,28 +2061,28 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "FlowService.js",
-        line: 52
+        line: 56
       },
       name: "ServerStatusUpdate",
       definition: {
         location: {
           type: "source",
           fileName: "FlowService.js",
-          line: 52
+          line: 56
         },
         kind: "object",
         fields: [{
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 53
+            line: 57
           },
           name: "pathToRoot",
           type: {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 53
+              line: 57
             },
             kind: "named",
             name: "NuclideUri"
@@ -1662,14 +2092,14 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 54
+            line: 58
           },
           name: "status",
           type: {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 54
+              line: 58
             },
             kind: "named",
             name: "ServerStatusType"
@@ -1684,13 +2114,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "FlowService.js",
-        line: 69
+        line: 73
       },
       type: {
         location: {
           type: "source",
           fileName: "FlowService.js",
-          line: 69
+          line: 73
         },
         kind: "function",
         argumentTypes: [],
@@ -1698,7 +2128,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 69
+            line: 73
           },
           kind: "void"
         }
@@ -1710,13 +2140,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "FlowService.js",
-        line: 76
+        line: 80
       },
       type: {
         location: {
           type: "source",
           fileName: "FlowService.js",
-          line: 76
+          line: 80
         },
         kind: "function",
         argumentTypes: [{
@@ -1725,7 +2155,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 77
+              line: 81
             },
             kind: "named",
             name: "FileNotifier"
@@ -1735,528 +2165,910 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 78
+            line: 82
           },
           kind: "promise",
           type: {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 78
+              line: 82
             },
             kind: "named",
-            name: "LanguageService"
+            name: "FlowLanguageServiceType"
           }
         }
       }
     },
-    getServerStatusUpdates: {
-      kind: "function",
-      name: "getServerStatusUpdates",
+    FlowLanguageServiceType: {
+      kind: "interface",
+      name: "FlowLanguageServiceType",
       location: {
         type: "source",
         fileName: "FlowService.js",
-        line: 231
+        line: 145
       },
-      type: {
-        location: {
-          type: "source",
-          fileName: "FlowService.js",
-          line: 231
-        },
-        kind: "function",
-        argumentTypes: [],
-        returnType: {
+      constructorArgs: null,
+      staticMethods: {},
+      instanceMethods: {
+        getDiagnostics: {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 231
+            line: 146
           },
-          kind: "observable",
-          type: {
-            location: {
-              type: "source",
-              fileName: "FlowService.js",
-              line: 231
-            },
-            kind: "named",
-            name: "ServerStatusUpdate"
-          }
-        }
-      }
-    },
-    flowFindDefinition: {
-      kind: "function",
-      name: "flowFindDefinition",
-      location: {
-        type: "source",
-        fileName: "FlowService.js",
-        line: 235
-      },
-      type: {
-        location: {
-          type: "source",
-          fileName: "FlowService.js",
-          line: 235
-        },
-        kind: "function",
-        argumentTypes: [{
-          name: "file",
-          type: {
-            location: {
-              type: "source",
-              fileName: "FlowService.js",
-              line: 236
-            },
-            kind: "named",
-            name: "NuclideUri"
-          }
-        }, {
-          name: "currentContents",
-          type: {
-            location: {
-              type: "source",
-              fileName: "FlowService.js",
-              line: 237
-            },
-            kind: "string"
-          }
-        }, {
-          name: "line",
-          type: {
-            location: {
-              type: "source",
-              fileName: "FlowService.js",
-              line: 238
-            },
-            kind: "number"
-          }
-        }, {
-          name: "column",
-          type: {
-            location: {
-              type: "source",
-              fileName: "FlowService.js",
-              line: 239
-            },
-            kind: "number"
-          }
-        }],
-        returnType: {
-          location: {
-            type: "source",
-            fileName: "FlowService.js",
-            line: 240
-          },
-          kind: "promise",
-          type: {
-            location: {
-              type: "source",
-              fileName: "FlowService.js",
-              line: 240
-            },
-            kind: "nullable",
+          kind: "function",
+          argumentTypes: [{
+            name: "fileVersion",
             type: {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 240
+                line: 147
               },
               kind: "named",
-              name: "Loc"
+              name: "FileVersion"
             }
-          }
-        }
-      }
-    },
-    flowFindDiagnostics: {
-      kind: "function",
-      name: "flowFindDiagnostics",
-      location: {
-        type: "source",
-        fileName: "FlowService.js",
-        line: 252
-      },
-      type: {
-        location: {
-          type: "source",
-          fileName: "FlowService.js",
-          line: 252
-        },
-        kind: "function",
-        argumentTypes: [{
-          name: "file",
-          type: {
+          }],
+          returnType: {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 253
+              line: 148
             },
-            kind: "named",
-            name: "NuclideUri"
-          }
-        }, {
-          name: "currentContents",
-          type: {
-            location: {
-              type: "source",
-              fileName: "FlowService.js",
-              line: 254
-            },
-            kind: "nullable",
+            kind: "promise",
             type: {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 254
+                line: 148
               },
-              kind: "string"
-            }
-          }
-        }],
-        returnType: {
-          location: {
-            type: "source",
-            fileName: "FlowService.js",
-            line: 255
-          },
-          kind: "promise",
-          type: {
-            location: {
-              type: "source",
-              fileName: "FlowService.js",
-              line: 255
-            },
-            kind: "nullable",
-            type: {
-              location: {
-                type: "source",
-                fileName: "FlowService.js",
-                line: 255
-              },
-              kind: "named",
-              name: "DiagnosticProviderUpdate"
-            }
-          }
-        }
-      }
-    },
-    flowGetAutocompleteSuggestions: {
-      kind: "function",
-      name: "flowGetAutocompleteSuggestions",
-      location: {
-        type: "source",
-        fileName: "FlowService.js",
-        line: 265
-      },
-      type: {
-        location: {
-          type: "source",
-          fileName: "FlowService.js",
-          line: 265
-        },
-        kind: "function",
-        argumentTypes: [{
-          name: "file",
-          type: {
-            location: {
-              type: "source",
-              fileName: "FlowService.js",
-              line: 266
-            },
-            kind: "named",
-            name: "NuclideUri"
-          }
-        }, {
-          name: "currentContents",
-          type: {
-            location: {
-              type: "source",
-              fileName: "FlowService.js",
-              line: 267
-            },
-            kind: "string"
-          }
-        }, {
-          name: "position",
-          type: {
-            location: {
-              type: "source",
-              fileName: "FlowService.js",
-              line: 268
-            },
-            kind: "named",
-            name: "atom$Point"
-          }
-        }, {
-          name: "activatedManually",
-          type: {
-            location: {
-              type: "source",
-              fileName: "FlowService.js",
-              line: 269
-            },
-            kind: "nullable",
-            type: {
-              location: {
-                type: "source",
-                fileName: "FlowService.js",
-                line: 269
-              },
-              kind: "boolean"
-            }
-          }
-        }, {
-          name: "prefix",
-          type: {
-            location: {
-              type: "source",
-              fileName: "FlowService.js",
-              line: 270
-            },
-            kind: "string"
-          }
-        }],
-        returnType: {
-          location: {
-            type: "source",
-            fileName: "FlowService.js",
-            line: 271
-          },
-          kind: "promise",
-          type: {
-            location: {
-              type: "source",
-              fileName: "FlowService.js",
-              line: 271
-            },
-            kind: "nullable",
-            type: {
-              location: {
-                type: "source",
-                fileName: "FlowService.js",
-                line: 271
-              },
-              kind: "array",
+              kind: "nullable",
               type: {
                 location: {
                   type: "source",
                   fileName: "FlowService.js",
-                  line: 271
+                  line: 148
                 },
                 kind: "named",
-                name: "Completion"
+                name: "DiagnosticProviderUpdate"
               }
             }
           }
-        }
-      }
-    },
-    flowGetType: {
-      kind: "function",
-      name: "flowGetType",
-      location: {
-        type: "source",
-        fileName: "FlowService.js",
-        line: 284
-      },
-      type: {
-        location: {
-          type: "source",
-          fileName: "FlowService.js",
-          line: 284
         },
-        kind: "function",
-        argumentTypes: [{
-          name: "file",
-          type: {
-            location: {
-              type: "source",
-              fileName: "FlowService.js",
-              line: 285
-            },
-            kind: "named",
-            name: "NuclideUri"
-          }
-        }, {
-          name: "currentContents",
-          type: {
-            location: {
-              type: "source",
-              fileName: "FlowService.js",
-              line: 286
-            },
-            kind: "string"
-          }
-        }, {
-          name: "line",
-          type: {
-            location: {
-              type: "source",
-              fileName: "FlowService.js",
-              line: 287
-            },
-            kind: "number"
-          }
-        }, {
-          name: "column",
-          type: {
-            location: {
-              type: "source",
-              fileName: "FlowService.js",
-              line: 288
-            },
-            kind: "number"
-          }
-        }],
-        returnType: {
+        observeDiagnostics: {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 289
+            line: 150
           },
-          kind: "promise",
-          type: {
+          kind: "function",
+          argumentTypes: [],
+          returnType: {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 289
+              line: 150
             },
-            kind: "nullable",
+            kind: "observable",
             type: {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 289
+                line: 150
+              },
+              kind: "named",
+              name: "FileDiagnosticUpdate"
+            }
+          }
+        },
+        getAutocompleteSuggestions: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 152
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "fileVersion",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 153
+              },
+              kind: "named",
+              name: "FileVersion"
+            }
+          }, {
+            name: "position",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 154
+              },
+              kind: "named",
+              name: "atom$Point"
+            }
+          }, {
+            name: "activatedManually",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 155
+              },
+              kind: "boolean"
+            }
+          }, {
+            name: "prefix",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 156
               },
               kind: "string"
             }
-          }
-        }
-      }
-    },
-    flowGetCoverage: {
-      kind: "function",
-      name: "flowGetCoverage",
-      location: {
-        type: "source",
-        fileName: "FlowService.js",
-        line: 301
-      },
-      type: {
-        location: {
-          type: "source",
-          fileName: "FlowService.js",
-          line: 301
-        },
-        kind: "function",
-        argumentTypes: [{
-          name: "file",
-          type: {
+          }],
+          returnType: {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 302
+              line: 157
             },
-            kind: "named",
-            name: "NuclideUri"
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 157
+              },
+              kind: "nullable",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "FlowService.js",
+                  line: 157
+                },
+                kind: "array",
+                type: {
+                  location: {
+                    type: "source",
+                    fileName: "FlowService.js",
+                    line: 157
+                  },
+                  kind: "named",
+                  name: "Completion"
+                }
+              }
+            }
           }
-        }],
-        returnType: {
+        },
+        getDefinition: {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 303
+            line: 159
           },
-          kind: "promise",
-          type: {
-            location: {
-              type: "source",
-              fileName: "FlowService.js",
-              line: 303
-            },
-            kind: "nullable",
+          kind: "function",
+          argumentTypes: [{
+            name: "fileVersion",
             type: {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 303
+                line: 160
               },
               kind: "named",
-              name: "CoverageResult"
+              name: "FileVersion"
             }
-          }
-        }
-      }
-    },
-    flowGetOutline: {
-      kind: "function",
-      name: "flowGetOutline",
-      location: {
-        type: "source",
-        fileName: "FlowService.js",
-        line: 310
-      },
-      type: {
-        location: {
-          type: "source",
-          fileName: "FlowService.js",
-          line: 310
-        },
-        kind: "function",
-        argumentTypes: [{
-          name: "file",
-          type: {
-            location: {
-              type: "source",
-              fileName: "FlowService.js",
-              line: 311
-            },
-            kind: "nullable",
+          }, {
+            name: "position",
             type: {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 311
+                line: 161
+              },
+              kind: "named",
+              name: "atom$Point"
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "FlowService.js",
+              line: 162
+            },
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 162
+              },
+              kind: "nullable",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "FlowService.js",
+                  line: 162
+                },
+                kind: "named",
+                name: "DefinitionQueryResult"
+              }
+            }
+          }
+        },
+        getDefinitionById: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 164
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "file",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 165
               },
               kind: "named",
               name: "NuclideUri"
             }
-          }
-        }, {
-          name: "currentContents",
-          type: {
-            location: {
-              type: "source",
-              fileName: "FlowService.js",
-              line: 312
-            },
-            kind: "string"
-          }
-        }],
-        returnType: {
-          location: {
-            type: "source",
-            fileName: "FlowService.js",
-            line: 313
-          },
-          kind: "promise",
-          type: {
-            location: {
-              type: "source",
-              fileName: "FlowService.js",
-              line: 313
-            },
-            kind: "nullable",
+          }, {
+            name: "id",
             type: {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 313
+                line: 166
+              },
+              kind: "string"
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "FlowService.js",
+              line: 167
+            },
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 167
+              },
+              kind: "nullable",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "FlowService.js",
+                  line: 167
+                },
+                kind: "named",
+                name: "Definition"
+              }
+            }
+          }
+        },
+        findReferences: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 169
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "fileVersion",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 170
               },
               kind: "named",
-              name: "Outline"
+              name: "FileVersion"
             }
+          }, {
+            name: "position",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 171
+              },
+              kind: "named",
+              name: "atom$Point"
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "FlowService.js",
+              line: 172
+            },
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 172
+              },
+              kind: "nullable",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "FlowService.js",
+                  line: 172
+                },
+                kind: "named",
+                name: "FindReferencesReturn"
+              }
+            }
+          }
+        },
+        getCoverage: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 174
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "filePath",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 175
+              },
+              kind: "named",
+              name: "NuclideUri"
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "FlowService.js",
+              line: 176
+            },
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 176
+              },
+              kind: "nullable",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "FlowService.js",
+                  line: 176
+                },
+                kind: "named",
+                name: "CoverageResult"
+              }
+            }
+          }
+        },
+        getOutline: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 178
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "fileVersion",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 179
+              },
+              kind: "named",
+              name: "FileVersion"
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "FlowService.js",
+              line: 180
+            },
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 180
+              },
+              kind: "nullable",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "FlowService.js",
+                  line: 180
+                },
+                kind: "named",
+                name: "Outline"
+              }
+            }
+          }
+        },
+        typeHint: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 182
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "fileVersion",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 182
+              },
+              kind: "named",
+              name: "FileVersion"
+            }
+          }, {
+            name: "position",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 182
+              },
+              kind: "named",
+              name: "atom$Point"
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "FlowService.js",
+              line: 182
+            },
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 182
+              },
+              kind: "nullable",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "FlowService.js",
+                  line: 182
+                },
+                kind: "named",
+                name: "TypeHint"
+              }
+            }
+          }
+        },
+        highlight: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 184
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "fileVersion",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 185
+              },
+              kind: "named",
+              name: "FileVersion"
+            }
+          }, {
+            name: "position",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 186
+              },
+              kind: "named",
+              name: "atom$Point"
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "FlowService.js",
+              line: 187
+            },
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 187
+              },
+              kind: "nullable",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "FlowService.js",
+                  line: 187
+                },
+                kind: "array",
+                type: {
+                  location: {
+                    type: "source",
+                    fileName: "FlowService.js",
+                    line: 187
+                  },
+                  kind: "named",
+                  name: "atom$Range"
+                }
+              }
+            }
+          }
+        },
+        formatSource: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 189
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "fileVersion",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 190
+              },
+              kind: "named",
+              name: "FileVersion"
+            }
+          }, {
+            name: "range",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 191
+              },
+              kind: "named",
+              name: "atom$Range"
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "FlowService.js",
+              line: 192
+            },
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 192
+              },
+              kind: "nullable",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "FlowService.js",
+                  line: 192
+                },
+                kind: "string"
+              }
+            }
+          }
+        },
+        formatEntireFile: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 194
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "fileVersion",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 194
+              },
+              kind: "named",
+              name: "FileVersion"
+            }
+          }, {
+            name: "range",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 194
+              },
+              kind: "named",
+              name: "atom$Range"
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "FlowService.js",
+              line: 194
+            },
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 194
+              },
+              kind: "nullable",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "FlowService.js",
+                  line: 194
+                },
+                kind: "object",
+                fields: [{
+                  location: {
+                    type: "source",
+                    fileName: "FlowService.js",
+                    line: 195
+                  },
+                  name: "newCursor",
+                  type: {
+                    location: {
+                      type: "source",
+                      fileName: "FlowService.js",
+                      line: 195
+                    },
+                    kind: "number"
+                  },
+                  optional: true
+                }, {
+                  location: {
+                    type: "source",
+                    fileName: "FlowService.js",
+                    line: 196
+                  },
+                  name: "formatted",
+                  type: {
+                    location: {
+                      type: "source",
+                      fileName: "FlowService.js",
+                      line: 196
+                    },
+                    kind: "string"
+                  },
+                  optional: false
+                }]
+              }
+            }
+          }
+        },
+        getEvaluationExpression: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 199
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "fileVersion",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 200
+              },
+              kind: "named",
+              name: "FileVersion"
+            }
+          }, {
+            name: "position",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 201
+              },
+              kind: "named",
+              name: "atom$Point"
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "FlowService.js",
+              line: 202
+            },
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 202
+              },
+              kind: "nullable",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "FlowService.js",
+                  line: 202
+                },
+                kind: "named",
+                name: "NuclideEvaluationExpression"
+              }
+            }
+          }
+        },
+        getProjectRoot: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 204
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "fileUri",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 204
+              },
+              kind: "named",
+              name: "NuclideUri"
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "FlowService.js",
+              line: 204
+            },
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 204
+              },
+              kind: "nullable",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "FlowService.js",
+                  line: 204
+                },
+                kind: "named",
+                name: "NuclideUri"
+              }
+            }
+          }
+        },
+        isFileInProject: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 206
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "fileUri",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 206
+              },
+              kind: "named",
+              name: "NuclideUri"
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "FlowService.js",
+              line: 206
+            },
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 206
+              },
+              kind: "boolean"
+            }
+          }
+        },
+        getServerStatusUpdates: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 208
+          },
+          kind: "function",
+          argumentTypes: [],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "FlowService.js",
+              line: 208
+            },
+            kind: "observable",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 208
+              },
+              kind: "named",
+              name: "ServerStatusUpdate"
+            }
+          }
+        },
+        allowServerRestart: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 210
+          },
+          kind: "function",
+          argumentTypes: [],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "FlowService.js",
+              line: 210
+            },
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 210
+              },
+              kind: "void"
+            }
+          }
+        },
+        dispose: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 212
+          },
+          kind: "function",
+          argumentTypes: [],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "FlowService.js",
+              line: 212
+            },
+            kind: "void"
           }
         }
       }
@@ -2267,13 +3079,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "FlowService.js",
-        line: 320
+        line: 215
       },
       type: {
         location: {
           type: "source",
           fileName: "FlowService.js",
-          line: 320
+          line: 215
         },
         kind: "function",
         argumentTypes: [{
@@ -2282,14 +3094,14 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 321
+              line: 216
             },
             kind: "nullable",
             type: {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 321
+                line: 216
               },
               kind: "named",
               name: "NuclideUri"
@@ -2301,7 +3113,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 322
+              line: 217
             },
             kind: "string"
           }
@@ -2310,127 +3122,204 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 323
+            line: 218
           },
           kind: "promise",
           type: {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 323
-            },
-            kind: "any"
-          }
-        }
-      }
-    },
-    flowFindRefs: {
-      kind: "function",
-      name: "flowFindRefs",
-      location: {
-        type: "source",
-        fileName: "FlowService.js",
-        line: 330
-      },
-      type: {
-        location: {
-          type: "source",
-          fileName: "FlowService.js",
-          line: 330
-        },
-        kind: "function",
-        argumentTypes: [{
-          name: "file",
-          type: {
-            location: {
-              type: "source",
-              fileName: "FlowService.js",
-              line: 331
-            },
-            kind: "named",
-            name: "NuclideUri"
-          }
-        }, {
-          name: "currentContents",
-          type: {
-            location: {
-              type: "source",
-              fileName: "FlowService.js",
-              line: 332
-            },
-            kind: "string"
-          }
-        }, {
-          name: "position",
-          type: {
-            location: {
-              type: "source",
-              fileName: "FlowService.js",
-              line: 333
-            },
-            kind: "named",
-            name: "atom$Point"
-          }
-        }],
-        returnType: {
-          location: {
-            type: "source",
-            fileName: "FlowService.js",
-            line: 334
-          },
-          kind: "promise",
-          type: {
-            location: {
-              type: "source",
-              fileName: "FlowService.js",
-              line: 334
+              line: 218
             },
             kind: "nullable",
             type: {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 334
+                line: 218
               },
-              kind: "array",
-              type: {
-                location: {
-                  type: "source",
-                  fileName: "FlowService.js",
-                  line: 334
-                },
-                kind: "named",
-                name: "atom$Range"
-              }
+              kind: "any"
             }
           }
         }
       }
     },
-    allowServerRestart: {
-      kind: "function",
-      name: "allowServerRestart",
+    NuclideEvaluationExpression: {
+      kind: "alias",
       location: {
         type: "source",
-        fileName: "FlowService.js",
-        line: 345
+        fileName: "rpc-types.js",
+        line: 11
       },
-      type: {
+      name: "NuclideEvaluationExpression",
+      definition: {
         location: {
           type: "source",
-          fileName: "FlowService.js",
-          line: 345
+          fileName: "rpc-types.js",
+          line: 11
         },
-        kind: "function",
-        argumentTypes: [],
-        returnType: {
+        kind: "object",
+        fields: [{
           location: {
             type: "source",
-            fileName: "FlowService.js",
-            line: 345
+            fileName: "rpc-types.js",
+            line: 12
           },
-          kind: "void"
-        }
+          name: "range",
+          type: {
+            location: {
+              type: "source",
+              fileName: "rpc-types.js",
+              line: 12
+            },
+            kind: "named",
+            name: "atom$Range"
+          },
+          optional: false
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 13
+          },
+          name: "expression",
+          type: {
+            location: {
+              type: "source",
+              fileName: "rpc-types.js",
+              line: 13
+            },
+            kind: "string"
+          },
+          optional: false
+        }]
+      }
+    },
+    HintTree: {
+      kind: "alias",
+      location: {
+        type: "source",
+        fileName: "rpc-types.js",
+        line: 11
+      },
+      name: "HintTree",
+      definition: {
+        location: {
+          type: "source",
+          fileName: "rpc-types.js",
+          line: 11
+        },
+        kind: "object",
+        fields: [{
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 12
+          },
+          name: "value",
+          type: {
+            location: {
+              type: "source",
+              fileName: "rpc-types.js",
+              line: 12
+            },
+            kind: "string"
+          },
+          optional: false
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 13
+          },
+          name: "children",
+          type: {
+            location: {
+              type: "source",
+              fileName: "rpc-types.js",
+              line: 13
+            },
+            kind: "array",
+            type: {
+              location: {
+                type: "source",
+                fileName: "rpc-types.js",
+                line: 13
+              },
+              kind: "named",
+              name: "HintTree"
+            }
+          },
+          optional: true
+        }]
+      }
+    },
+    TypeHint: {
+      kind: "alias",
+      location: {
+        type: "source",
+        fileName: "rpc-types.js",
+        line: 16
+      },
+      name: "TypeHint",
+      definition: {
+        location: {
+          type: "source",
+          fileName: "rpc-types.js",
+          line: 16
+        },
+        kind: "object",
+        fields: [{
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 20
+          },
+          name: "hint",
+          type: {
+            location: {
+              type: "source",
+              fileName: "rpc-types.js",
+              line: 20
+            },
+            kind: "string"
+          },
+          optional: true
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 25
+          },
+          name: "hintTree",
+          type: {
+            location: {
+              type: "source",
+              fileName: "rpc-types.js",
+              line: 25
+            },
+            kind: "named",
+            name: "HintTree"
+          },
+          optional: true
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 26
+          },
+          name: "range",
+          type: {
+            location: {
+              type: "source",
+              fileName: "rpc-types.js",
+              line: 26
+            },
+            kind: "named",
+            name: "atom$Range"
+          },
+          optional: false
+        }]
       }
     },
     OutlineTree: {
@@ -2877,6 +3766,1727 @@ Object.defineProperty(module.exports, "defs", {
           },
           optional: false
         }]
+      }
+    },
+    Reference: {
+      kind: "alias",
+      location: {
+        type: "source",
+        fileName: "rpc-types.js",
+        line: 13
+      },
+      name: "Reference",
+      definition: {
+        location: {
+          type: "source",
+          fileName: "rpc-types.js",
+          line: 13
+        },
+        kind: "object",
+        fields: [{
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 14
+          },
+          name: "uri",
+          type: {
+            location: {
+              type: "source",
+              fileName: "rpc-types.js",
+              line: 14
+            },
+            kind: "named",
+            name: "NuclideUri"
+          },
+          optional: false
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 15
+          },
+          name: "name",
+          type: {
+            location: {
+              type: "source",
+              fileName: "rpc-types.js",
+              line: 15
+            },
+            kind: "nullable",
+            type: {
+              location: {
+                type: "source",
+                fileName: "rpc-types.js",
+                line: 15
+              },
+              kind: "string"
+            }
+          },
+          optional: false
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 16
+          },
+          name: "range",
+          type: {
+            location: {
+              type: "source",
+              fileName: "rpc-types.js",
+              line: 16
+            },
+            kind: "named",
+            name: "atom$Range"
+          },
+          optional: false
+        }]
+      }
+    },
+    FindReferencesData: {
+      kind: "alias",
+      location: {
+        type: "source",
+        fileName: "rpc-types.js",
+        line: 19
+      },
+      name: "FindReferencesData",
+      definition: {
+        location: {
+          type: "source",
+          fileName: "rpc-types.js",
+          line: 19
+        },
+        kind: "object",
+        fields: [{
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 20
+          },
+          name: "type",
+          type: {
+            location: {
+              type: "source",
+              fileName: "rpc-types.js",
+              line: 20
+            },
+            kind: "string-literal",
+            value: "data"
+          },
+          optional: false
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 21
+          },
+          name: "baseUri",
+          type: {
+            location: {
+              type: "source",
+              fileName: "rpc-types.js",
+              line: 21
+            },
+            kind: "named",
+            name: "NuclideUri"
+          },
+          optional: false
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 22
+          },
+          name: "referencedSymbolName",
+          type: {
+            location: {
+              type: "source",
+              fileName: "rpc-types.js",
+              line: 22
+            },
+            kind: "string"
+          },
+          optional: false
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 23
+          },
+          name: "references",
+          type: {
+            location: {
+              type: "source",
+              fileName: "rpc-types.js",
+              line: 23
+            },
+            kind: "array",
+            type: {
+              location: {
+                type: "source",
+                fileName: "rpc-types.js",
+                line: 23
+              },
+              kind: "named",
+              name: "Reference"
+            }
+          },
+          optional: false
+        }]
+      }
+    },
+    FindReferencesError: {
+      kind: "alias",
+      location: {
+        type: "source",
+        fileName: "rpc-types.js",
+        line: 26
+      },
+      name: "FindReferencesError",
+      definition: {
+        location: {
+          type: "source",
+          fileName: "rpc-types.js",
+          line: 26
+        },
+        kind: "object",
+        fields: [{
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 27
+          },
+          name: "type",
+          type: {
+            location: {
+              type: "source",
+              fileName: "rpc-types.js",
+              line: 27
+            },
+            kind: "string-literal",
+            value: "error"
+          },
+          optional: false
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 28
+          },
+          name: "message",
+          type: {
+            location: {
+              type: "source",
+              fileName: "rpc-types.js",
+              line: 28
+            },
+            kind: "string"
+          },
+          optional: false
+        }]
+      }
+    },
+    FindReferencesReturn: {
+      kind: "alias",
+      location: {
+        type: "source",
+        fileName: "rpc-types.js",
+        line: 31
+      },
+      name: "FindReferencesReturn",
+      definition: {
+        location: {
+          type: "source",
+          fileName: "rpc-types.js",
+          line: 31
+        },
+        kind: "union",
+        types: [{
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 19
+          },
+          kind: "object",
+          fields: [{
+            location: {
+              type: "source",
+              fileName: "rpc-types.js",
+              line: 20
+            },
+            name: "type",
+            type: {
+              location: {
+                type: "source",
+                fileName: "rpc-types.js",
+                line: 20
+              },
+              kind: "string-literal",
+              value: "data"
+            },
+            optional: false
+          }, {
+            location: {
+              type: "source",
+              fileName: "rpc-types.js",
+              line: 21
+            },
+            name: "baseUri",
+            type: {
+              location: {
+                type: "source",
+                fileName: "rpc-types.js",
+                line: 21
+              },
+              kind: "named",
+              name: "NuclideUri"
+            },
+            optional: false
+          }, {
+            location: {
+              type: "source",
+              fileName: "rpc-types.js",
+              line: 22
+            },
+            name: "referencedSymbolName",
+            type: {
+              location: {
+                type: "source",
+                fileName: "rpc-types.js",
+                line: 22
+              },
+              kind: "string"
+            },
+            optional: false
+          }, {
+            location: {
+              type: "source",
+              fileName: "rpc-types.js",
+              line: 23
+            },
+            name: "references",
+            type: {
+              location: {
+                type: "source",
+                fileName: "rpc-types.js",
+                line: 23
+              },
+              kind: "array",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "rpc-types.js",
+                  line: 23
+                },
+                kind: "named",
+                name: "Reference"
+              }
+            },
+            optional: false
+          }]
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 26
+          },
+          kind: "object",
+          fields: [{
+            location: {
+              type: "source",
+              fileName: "rpc-types.js",
+              line: 27
+            },
+            name: "type",
+            type: {
+              location: {
+                type: "source",
+                fileName: "rpc-types.js",
+                line: 27
+              },
+              kind: "string-literal",
+              value: "error"
+            },
+            optional: false
+          }, {
+            location: {
+              type: "source",
+              fileName: "rpc-types.js",
+              line: 28
+            },
+            name: "message",
+            type: {
+              location: {
+                type: "source",
+                fileName: "rpc-types.js",
+                line: 28
+              },
+              kind: "string"
+            },
+            optional: false
+          }]
+        }],
+        discriminantField: "type"
+      }
+    },
+    Definition: {
+      kind: "alias",
+      location: {
+        type: "source",
+        fileName: "rpc-types.js",
+        line: 23
+      },
+      name: "Definition",
+      definition: {
+        location: {
+          type: "source",
+          fileName: "rpc-types.js",
+          line: 23
+        },
+        kind: "object",
+        fields: [{
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 24
+          },
+          name: "path",
+          type: {
+            location: {
+              type: "source",
+              fileName: "rpc-types.js",
+              line: 24
+            },
+            kind: "named",
+            name: "NuclideUri"
+          },
+          optional: false
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 25
+          },
+          name: "position",
+          type: {
+            location: {
+              type: "source",
+              fileName: "rpc-types.js",
+              line: 25
+            },
+            kind: "named",
+            name: "atom$Point"
+          },
+          optional: false
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 26
+          },
+          name: "range",
+          type: {
+            location: {
+              type: "source",
+              fileName: "rpc-types.js",
+              line: 26
+            },
+            kind: "named",
+            name: "atom$Range"
+          },
+          optional: true
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 27
+          },
+          name: "id",
+          type: {
+            location: {
+              type: "source",
+              fileName: "rpc-types.js",
+              line: 27
+            },
+            kind: "string"
+          },
+          optional: true
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 28
+          },
+          name: "name",
+          type: {
+            location: {
+              type: "source",
+              fileName: "rpc-types.js",
+              line: 28
+            },
+            kind: "string"
+          },
+          optional: true
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 29
+          },
+          name: "language",
+          type: {
+            location: {
+              type: "source",
+              fileName: "rpc-types.js",
+              line: 29
+            },
+            kind: "string"
+          },
+          optional: false
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 30
+          },
+          name: "projectRoot",
+          type: {
+            location: {
+              type: "source",
+              fileName: "rpc-types.js",
+              line: 30
+            },
+            kind: "named",
+            name: "NuclideUri"
+          },
+          optional: true
+        }]
+      }
+    },
+    DefinitionQueryResult: {
+      kind: "alias",
+      location: {
+        type: "source",
+        fileName: "rpc-types.js",
+        line: 36
+      },
+      name: "DefinitionQueryResult",
+      definition: {
+        location: {
+          type: "source",
+          fileName: "rpc-types.js",
+          line: 36
+        },
+        kind: "object",
+        fields: [{
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 37
+          },
+          name: "queryRange",
+          type: {
+            location: {
+              type: "source",
+              fileName: "rpc-types.js",
+              line: 37
+            },
+            kind: "array",
+            type: {
+              location: {
+                type: "source",
+                fileName: "rpc-types.js",
+                line: 37
+              },
+              kind: "named",
+              name: "atom$Range"
+            }
+          },
+          optional: false
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 38
+          },
+          name: "definitions",
+          type: {
+            location: {
+              type: "source",
+              fileName: "rpc-types.js",
+              line: 38
+            },
+            kind: "array",
+            type: {
+              location: {
+                type: "source",
+                fileName: "rpc-types.js",
+                line: 38
+              },
+              kind: "named",
+              name: "Definition"
+            }
+          },
+          optional: false
+        }]
+      }
+    },
+    Completion: {
+      kind: "alias",
+      location: {
+        type: "source",
+        fileName: "LanguageService.js",
+        line: 31
+      },
+      name: "Completion",
+      definition: {
+        location: {
+          type: "source",
+          fileName: "LanguageService.js",
+          line: 31
+        },
+        kind: "object",
+        fields: [{
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 32
+          },
+          name: "text",
+          type: {
+            location: {
+              type: "source",
+              fileName: "LanguageService.js",
+              line: 32
+            },
+            kind: "string"
+          },
+          optional: true
+        }, {
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 33
+          },
+          name: "snippet",
+          type: {
+            location: {
+              type: "source",
+              fileName: "LanguageService.js",
+              line: 33
+            },
+            kind: "string"
+          },
+          optional: true
+        }, {
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 34
+          },
+          name: "displayText",
+          type: {
+            location: {
+              type: "source",
+              fileName: "LanguageService.js",
+              line: 34
+            },
+            kind: "string"
+          },
+          optional: true
+        }, {
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 35
+          },
+          name: "replacementPrefix",
+          type: {
+            location: {
+              type: "source",
+              fileName: "LanguageService.js",
+              line: 35
+            },
+            kind: "string"
+          },
+          optional: true
+        }, {
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 36
+          },
+          name: "type",
+          type: {
+            location: {
+              type: "source",
+              fileName: "LanguageService.js",
+              line: 36
+            },
+            kind: "nullable",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 36
+              },
+              kind: "string"
+            }
+          },
+          optional: true
+        }, {
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 37
+          },
+          name: "leftLabel",
+          type: {
+            location: {
+              type: "source",
+              fileName: "LanguageService.js",
+              line: 37
+            },
+            kind: "nullable",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 37
+              },
+              kind: "string"
+            }
+          },
+          optional: true
+        }, {
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 38
+          },
+          name: "leftLabelHTML",
+          type: {
+            location: {
+              type: "source",
+              fileName: "LanguageService.js",
+              line: 38
+            },
+            kind: "nullable",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 38
+              },
+              kind: "string"
+            }
+          },
+          optional: true
+        }, {
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 39
+          },
+          name: "rightLabel",
+          type: {
+            location: {
+              type: "source",
+              fileName: "LanguageService.js",
+              line: 39
+            },
+            kind: "nullable",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 39
+              },
+              kind: "string"
+            }
+          },
+          optional: true
+        }, {
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 40
+          },
+          name: "rightLabelHTML",
+          type: {
+            location: {
+              type: "source",
+              fileName: "LanguageService.js",
+              line: 40
+            },
+            kind: "nullable",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 40
+              },
+              kind: "string"
+            }
+          },
+          optional: true
+        }, {
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 41
+          },
+          name: "className",
+          type: {
+            location: {
+              type: "source",
+              fileName: "LanguageService.js",
+              line: 41
+            },
+            kind: "nullable",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 41
+              },
+              kind: "string"
+            }
+          },
+          optional: true
+        }, {
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 42
+          },
+          name: "iconHTML",
+          type: {
+            location: {
+              type: "source",
+              fileName: "LanguageService.js",
+              line: 42
+            },
+            kind: "nullable",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 42
+              },
+              kind: "string"
+            }
+          },
+          optional: true
+        }, {
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 43
+          },
+          name: "description",
+          type: {
+            location: {
+              type: "source",
+              fileName: "LanguageService.js",
+              line: 43
+            },
+            kind: "nullable",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 43
+              },
+              kind: "string"
+            }
+          },
+          optional: true
+        }, {
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 44
+          },
+          name: "descriptionMoreURL",
+          type: {
+            location: {
+              type: "source",
+              fileName: "LanguageService.js",
+              line: 44
+            },
+            kind: "nullable",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 44
+              },
+              kind: "string"
+            }
+          },
+          optional: true
+        }, {
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 45
+          },
+          name: "extraData",
+          type: {
+            location: {
+              type: "source",
+              fileName: "LanguageService.js",
+              line: 45
+            },
+            kind: "mixed"
+          },
+          optional: true
+        }]
+      }
+    },
+    LanguageService: {
+      kind: "interface",
+      name: "LanguageService",
+      location: {
+        type: "source",
+        fileName: "LanguageService.js",
+        line: 52
+      },
+      constructorArgs: null,
+      staticMethods: {},
+      instanceMethods: {
+        getDiagnostics: {
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 54
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "fileVersion",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 55
+              },
+              kind: "named",
+              name: "FileVersion"
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "LanguageService.js",
+              line: 56
+            },
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 56
+              },
+              kind: "nullable",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "LanguageService.js",
+                  line: 56
+                },
+                kind: "named",
+                name: "DiagnosticProviderUpdate"
+              }
+            }
+          }
+        },
+        observeDiagnostics: {
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 58
+          },
+          kind: "function",
+          argumentTypes: [],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "LanguageService.js",
+              line: 58
+            },
+            kind: "observable",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 58
+              },
+              kind: "named",
+              name: "FileDiagnosticUpdate"
+            }
+          }
+        },
+        getAutocompleteSuggestions: {
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 60
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "fileVersion",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 61
+              },
+              kind: "named",
+              name: "FileVersion"
+            }
+          }, {
+            name: "position",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 62
+              },
+              kind: "named",
+              name: "atom$Point"
+            }
+          }, {
+            name: "activatedManually",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 63
+              },
+              kind: "boolean"
+            }
+          }, {
+            name: "prefix",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 64
+              },
+              kind: "string"
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "LanguageService.js",
+              line: 65
+            },
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 65
+              },
+              kind: "nullable",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "LanguageService.js",
+                  line: 65
+                },
+                kind: "array",
+                type: {
+                  location: {
+                    type: "source",
+                    fileName: "LanguageService.js",
+                    line: 65
+                  },
+                  kind: "named",
+                  name: "Completion"
+                }
+              }
+            }
+          }
+        },
+        getDefinition: {
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 67
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "fileVersion",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 68
+              },
+              kind: "named",
+              name: "FileVersion"
+            }
+          }, {
+            name: "position",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 69
+              },
+              kind: "named",
+              name: "atom$Point"
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "LanguageService.js",
+              line: 70
+            },
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 70
+              },
+              kind: "nullable",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "LanguageService.js",
+                  line: 70
+                },
+                kind: "named",
+                name: "DefinitionQueryResult"
+              }
+            }
+          }
+        },
+        getDefinitionById: {
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 72
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "file",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 73
+              },
+              kind: "named",
+              name: "NuclideUri"
+            }
+          }, {
+            name: "id",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 74
+              },
+              kind: "string"
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "LanguageService.js",
+              line: 75
+            },
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 75
+              },
+              kind: "nullable",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "LanguageService.js",
+                  line: 75
+                },
+                kind: "named",
+                name: "Definition"
+              }
+            }
+          }
+        },
+        findReferences: {
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 77
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "fileVersion",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 78
+              },
+              kind: "named",
+              name: "FileVersion"
+            }
+          }, {
+            name: "position",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 79
+              },
+              kind: "named",
+              name: "atom$Point"
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "LanguageService.js",
+              line: 80
+            },
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 80
+              },
+              kind: "nullable",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "LanguageService.js",
+                  line: 80
+                },
+                kind: "named",
+                name: "FindReferencesReturn"
+              }
+            }
+          }
+        },
+        getCoverage: {
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 82
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "filePath",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 83
+              },
+              kind: "named",
+              name: "NuclideUri"
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "LanguageService.js",
+              line: 84
+            },
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 84
+              },
+              kind: "nullable",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "LanguageService.js",
+                  line: 84
+                },
+                kind: "named",
+                name: "CoverageResult"
+              }
+            }
+          }
+        },
+        getOutline: {
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 86
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "fileVersion",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 87
+              },
+              kind: "named",
+              name: "FileVersion"
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "LanguageService.js",
+              line: 88
+            },
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 88
+              },
+              kind: "nullable",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "LanguageService.js",
+                  line: 88
+                },
+                kind: "named",
+                name: "Outline"
+              }
+            }
+          }
+        },
+        typeHint: {
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 90
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "fileVersion",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 90
+              },
+              kind: "named",
+              name: "FileVersion"
+            }
+          }, {
+            name: "position",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 90
+              },
+              kind: "named",
+              name: "atom$Point"
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "LanguageService.js",
+              line: 90
+            },
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 90
+              },
+              kind: "nullable",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "LanguageService.js",
+                  line: 90
+                },
+                kind: "named",
+                name: "TypeHint"
+              }
+            }
+          }
+        },
+        highlight: {
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 92
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "fileVersion",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 93
+              },
+              kind: "named",
+              name: "FileVersion"
+            }
+          }, {
+            name: "position",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 94
+              },
+              kind: "named",
+              name: "atom$Point"
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "LanguageService.js",
+              line: 95
+            },
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 95
+              },
+              kind: "nullable",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "LanguageService.js",
+                  line: 95
+                },
+                kind: "array",
+                type: {
+                  location: {
+                    type: "source",
+                    fileName: "LanguageService.js",
+                    line: 95
+                  },
+                  kind: "named",
+                  name: "atom$Range"
+                }
+              }
+            }
+          }
+        },
+        formatSource: {
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 97
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "fileVersion",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 98
+              },
+              kind: "named",
+              name: "FileVersion"
+            }
+          }, {
+            name: "range",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 99
+              },
+              kind: "named",
+              name: "atom$Range"
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "LanguageService.js",
+              line: 100
+            },
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 100
+              },
+              kind: "nullable",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "LanguageService.js",
+                  line: 100
+                },
+                kind: "string"
+              }
+            }
+          }
+        },
+        formatEntireFile: {
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 102
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "fileVersion",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 102
+              },
+              kind: "named",
+              name: "FileVersion"
+            }
+          }, {
+            name: "range",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 102
+              },
+              kind: "named",
+              name: "atom$Range"
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "LanguageService.js",
+              line: 102
+            },
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 102
+              },
+              kind: "nullable",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "LanguageService.js",
+                  line: 102
+                },
+                kind: "object",
+                fields: [{
+                  location: {
+                    type: "source",
+                    fileName: "LanguageService.js",
+                    line: 103
+                  },
+                  name: "newCursor",
+                  type: {
+                    location: {
+                      type: "source",
+                      fileName: "LanguageService.js",
+                      line: 103
+                    },
+                    kind: "number"
+                  },
+                  optional: true
+                }, {
+                  location: {
+                    type: "source",
+                    fileName: "LanguageService.js",
+                    line: 104
+                  },
+                  name: "formatted",
+                  type: {
+                    location: {
+                      type: "source",
+                      fileName: "LanguageService.js",
+                      line: 104
+                    },
+                    kind: "string"
+                  },
+                  optional: false
+                }]
+              }
+            }
+          }
+        },
+        getEvaluationExpression: {
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 107
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "fileVersion",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 108
+              },
+              kind: "named",
+              name: "FileVersion"
+            }
+          }, {
+            name: "position",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 109
+              },
+              kind: "named",
+              name: "atom$Point"
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "LanguageService.js",
+              line: 110
+            },
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 110
+              },
+              kind: "nullable",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "LanguageService.js",
+                  line: 110
+                },
+                kind: "named",
+                name: "NuclideEvaluationExpression"
+              }
+            }
+          }
+        },
+        getProjectRoot: {
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 112
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "fileUri",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 112
+              },
+              kind: "named",
+              name: "NuclideUri"
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "LanguageService.js",
+              line: 112
+            },
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 112
+              },
+              kind: "nullable",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "LanguageService.js",
+                  line: 112
+                },
+                kind: "named",
+                name: "NuclideUri"
+              }
+            }
+          }
+        },
+        isFileInProject: {
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 114
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "fileUri",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 114
+              },
+              kind: "named",
+              name: "NuclideUri"
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "LanguageService.js",
+              line: 114
+            },
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 114
+              },
+              kind: "boolean"
+            }
+          }
+        },
+        dispose: {
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 116
+          },
+          kind: "function",
+          argumentTypes: [],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "LanguageService.js",
+              line: 116
+            },
+            kind: "void"
+          }
+        }
       }
     },
     InvalidationMessage: {
@@ -4778,1889 +7388,6 @@ Object.defineProperty(module.exports, "defs", {
               line: 55
             },
             kind: "number"
-          },
-          optional: false
-        }]
-      }
-    },
-    Completion: {
-      kind: "alias",
-      location: {
-        type: "source",
-        fileName: "LanguageService.js",
-        line: 31
-      },
-      name: "Completion",
-      definition: {
-        location: {
-          type: "source",
-          fileName: "LanguageService.js",
-          line: 31
-        },
-        kind: "object",
-        fields: [{
-          location: {
-            type: "source",
-            fileName: "LanguageService.js",
-            line: 32
-          },
-          name: "text",
-          type: {
-            location: {
-              type: "source",
-              fileName: "LanguageService.js",
-              line: 32
-            },
-            kind: "string"
-          },
-          optional: true
-        }, {
-          location: {
-            type: "source",
-            fileName: "LanguageService.js",
-            line: 33
-          },
-          name: "snippet",
-          type: {
-            location: {
-              type: "source",
-              fileName: "LanguageService.js",
-              line: 33
-            },
-            kind: "string"
-          },
-          optional: true
-        }, {
-          location: {
-            type: "source",
-            fileName: "LanguageService.js",
-            line: 34
-          },
-          name: "displayText",
-          type: {
-            location: {
-              type: "source",
-              fileName: "LanguageService.js",
-              line: 34
-            },
-            kind: "string"
-          },
-          optional: true
-        }, {
-          location: {
-            type: "source",
-            fileName: "LanguageService.js",
-            line: 35
-          },
-          name: "replacementPrefix",
-          type: {
-            location: {
-              type: "source",
-              fileName: "LanguageService.js",
-              line: 35
-            },
-            kind: "string"
-          },
-          optional: true
-        }, {
-          location: {
-            type: "source",
-            fileName: "LanguageService.js",
-            line: 36
-          },
-          name: "type",
-          type: {
-            location: {
-              type: "source",
-              fileName: "LanguageService.js",
-              line: 36
-            },
-            kind: "nullable",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 36
-              },
-              kind: "string"
-            }
-          },
-          optional: true
-        }, {
-          location: {
-            type: "source",
-            fileName: "LanguageService.js",
-            line: 37
-          },
-          name: "leftLabel",
-          type: {
-            location: {
-              type: "source",
-              fileName: "LanguageService.js",
-              line: 37
-            },
-            kind: "nullable",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 37
-              },
-              kind: "string"
-            }
-          },
-          optional: true
-        }, {
-          location: {
-            type: "source",
-            fileName: "LanguageService.js",
-            line: 38
-          },
-          name: "leftLabelHTML",
-          type: {
-            location: {
-              type: "source",
-              fileName: "LanguageService.js",
-              line: 38
-            },
-            kind: "nullable",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 38
-              },
-              kind: "string"
-            }
-          },
-          optional: true
-        }, {
-          location: {
-            type: "source",
-            fileName: "LanguageService.js",
-            line: 39
-          },
-          name: "rightLabel",
-          type: {
-            location: {
-              type: "source",
-              fileName: "LanguageService.js",
-              line: 39
-            },
-            kind: "nullable",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 39
-              },
-              kind: "string"
-            }
-          },
-          optional: true
-        }, {
-          location: {
-            type: "source",
-            fileName: "LanguageService.js",
-            line: 40
-          },
-          name: "rightLabelHTML",
-          type: {
-            location: {
-              type: "source",
-              fileName: "LanguageService.js",
-              line: 40
-            },
-            kind: "nullable",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 40
-              },
-              kind: "string"
-            }
-          },
-          optional: true
-        }, {
-          location: {
-            type: "source",
-            fileName: "LanguageService.js",
-            line: 41
-          },
-          name: "className",
-          type: {
-            location: {
-              type: "source",
-              fileName: "LanguageService.js",
-              line: 41
-            },
-            kind: "nullable",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 41
-              },
-              kind: "string"
-            }
-          },
-          optional: true
-        }, {
-          location: {
-            type: "source",
-            fileName: "LanguageService.js",
-            line: 42
-          },
-          name: "iconHTML",
-          type: {
-            location: {
-              type: "source",
-              fileName: "LanguageService.js",
-              line: 42
-            },
-            kind: "nullable",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 42
-              },
-              kind: "string"
-            }
-          },
-          optional: true
-        }, {
-          location: {
-            type: "source",
-            fileName: "LanguageService.js",
-            line: 43
-          },
-          name: "description",
-          type: {
-            location: {
-              type: "source",
-              fileName: "LanguageService.js",
-              line: 43
-            },
-            kind: "nullable",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 43
-              },
-              kind: "string"
-            }
-          },
-          optional: true
-        }, {
-          location: {
-            type: "source",
-            fileName: "LanguageService.js",
-            line: 44
-          },
-          name: "descriptionMoreURL",
-          type: {
-            location: {
-              type: "source",
-              fileName: "LanguageService.js",
-              line: 44
-            },
-            kind: "nullable",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 44
-              },
-              kind: "string"
-            }
-          },
-          optional: true
-        }]
-      }
-    },
-    LanguageService: {
-      kind: "interface",
-      name: "LanguageService",
-      location: {
-        type: "source",
-        fileName: "LanguageService.js",
-        line: 52
-      },
-      constructorArgs: null,
-      staticMethods: {},
-      instanceMethods: {
-        getDiagnostics: {
-          location: {
-            type: "source",
-            fileName: "LanguageService.js",
-            line: 54
-          },
-          kind: "function",
-          argumentTypes: [{
-            name: "fileVersion",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 55
-              },
-              kind: "named",
-              name: "FileVersion"
-            }
-          }],
-          returnType: {
-            location: {
-              type: "source",
-              fileName: "LanguageService.js",
-              line: 56
-            },
-            kind: "promise",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 56
-              },
-              kind: "nullable",
-              type: {
-                location: {
-                  type: "source",
-                  fileName: "LanguageService.js",
-                  line: 56
-                },
-                kind: "named",
-                name: "DiagnosticProviderUpdate"
-              }
-            }
-          }
-        },
-        observeDiagnostics: {
-          location: {
-            type: "source",
-            fileName: "LanguageService.js",
-            line: 58
-          },
-          kind: "function",
-          argumentTypes: [],
-          returnType: {
-            location: {
-              type: "source",
-              fileName: "LanguageService.js",
-              line: 58
-            },
-            kind: "observable",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 58
-              },
-              kind: "named",
-              name: "FileDiagnosticUpdate"
-            }
-          }
-        },
-        getAutocompleteSuggestions: {
-          location: {
-            type: "source",
-            fileName: "LanguageService.js",
-            line: 60
-          },
-          kind: "function",
-          argumentTypes: [{
-            name: "fileVersion",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 61
-              },
-              kind: "named",
-              name: "FileVersion"
-            }
-          }, {
-            name: "position",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 62
-              },
-              kind: "named",
-              name: "atom$Point"
-            }
-          }, {
-            name: "activatedManually",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 63
-              },
-              kind: "boolean"
-            }
-          }, {
-            name: "prefix",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 64
-              },
-              kind: "string"
-            }
-          }],
-          returnType: {
-            location: {
-              type: "source",
-              fileName: "LanguageService.js",
-              line: 65
-            },
-            kind: "promise",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 65
-              },
-              kind: "nullable",
-              type: {
-                location: {
-                  type: "source",
-                  fileName: "LanguageService.js",
-                  line: 65
-                },
-                kind: "array",
-                type: {
-                  location: {
-                    type: "source",
-                    fileName: "LanguageService.js",
-                    line: 65
-                  },
-                  kind: "named",
-                  name: "Completion"
-                }
-              }
-            }
-          }
-        },
-        getDefinition: {
-          location: {
-            type: "source",
-            fileName: "LanguageService.js",
-            line: 67
-          },
-          kind: "function",
-          argumentTypes: [{
-            name: "fileVersion",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 68
-              },
-              kind: "named",
-              name: "FileVersion"
-            }
-          }, {
-            name: "position",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 69
-              },
-              kind: "named",
-              name: "atom$Point"
-            }
-          }],
-          returnType: {
-            location: {
-              type: "source",
-              fileName: "LanguageService.js",
-              line: 70
-            },
-            kind: "promise",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 70
-              },
-              kind: "nullable",
-              type: {
-                location: {
-                  type: "source",
-                  fileName: "LanguageService.js",
-                  line: 70
-                },
-                kind: "named",
-                name: "DefinitionQueryResult"
-              }
-            }
-          }
-        },
-        getDefinitionById: {
-          location: {
-            type: "source",
-            fileName: "LanguageService.js",
-            line: 72
-          },
-          kind: "function",
-          argumentTypes: [{
-            name: "file",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 73
-              },
-              kind: "named",
-              name: "NuclideUri"
-            }
-          }, {
-            name: "id",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 74
-              },
-              kind: "string"
-            }
-          }],
-          returnType: {
-            location: {
-              type: "source",
-              fileName: "LanguageService.js",
-              line: 75
-            },
-            kind: "promise",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 75
-              },
-              kind: "nullable",
-              type: {
-                location: {
-                  type: "source",
-                  fileName: "LanguageService.js",
-                  line: 75
-                },
-                kind: "named",
-                name: "Definition"
-              }
-            }
-          }
-        },
-        findReferences: {
-          location: {
-            type: "source",
-            fileName: "LanguageService.js",
-            line: 77
-          },
-          kind: "function",
-          argumentTypes: [{
-            name: "fileVersion",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 78
-              },
-              kind: "named",
-              name: "FileVersion"
-            }
-          }, {
-            name: "position",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 79
-              },
-              kind: "named",
-              name: "atom$Point"
-            }
-          }],
-          returnType: {
-            location: {
-              type: "source",
-              fileName: "LanguageService.js",
-              line: 80
-            },
-            kind: "promise",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 80
-              },
-              kind: "nullable",
-              type: {
-                location: {
-                  type: "source",
-                  fileName: "LanguageService.js",
-                  line: 80
-                },
-                kind: "named",
-                name: "FindReferencesReturn"
-              }
-            }
-          }
-        },
-        getCoverage: {
-          location: {
-            type: "source",
-            fileName: "LanguageService.js",
-            line: 82
-          },
-          kind: "function",
-          argumentTypes: [{
-            name: "filePath",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 83
-              },
-              kind: "named",
-              name: "NuclideUri"
-            }
-          }],
-          returnType: {
-            location: {
-              type: "source",
-              fileName: "LanguageService.js",
-              line: 84
-            },
-            kind: "promise",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 84
-              },
-              kind: "nullable",
-              type: {
-                location: {
-                  type: "source",
-                  fileName: "LanguageService.js",
-                  line: 84
-                },
-                kind: "named",
-                name: "CoverageResult"
-              }
-            }
-          }
-        },
-        getOutline: {
-          location: {
-            type: "source",
-            fileName: "LanguageService.js",
-            line: 86
-          },
-          kind: "function",
-          argumentTypes: [{
-            name: "fileVersion",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 87
-              },
-              kind: "named",
-              name: "FileVersion"
-            }
-          }],
-          returnType: {
-            location: {
-              type: "source",
-              fileName: "LanguageService.js",
-              line: 88
-            },
-            kind: "promise",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 88
-              },
-              kind: "nullable",
-              type: {
-                location: {
-                  type: "source",
-                  fileName: "LanguageService.js",
-                  line: 88
-                },
-                kind: "named",
-                name: "Outline"
-              }
-            }
-          }
-        },
-        typeHint: {
-          location: {
-            type: "source",
-            fileName: "LanguageService.js",
-            line: 90
-          },
-          kind: "function",
-          argumentTypes: [{
-            name: "fileVersion",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 90
-              },
-              kind: "named",
-              name: "FileVersion"
-            }
-          }, {
-            name: "position",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 90
-              },
-              kind: "named",
-              name: "atom$Point"
-            }
-          }],
-          returnType: {
-            location: {
-              type: "source",
-              fileName: "LanguageService.js",
-              line: 90
-            },
-            kind: "promise",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 90
-              },
-              kind: "nullable",
-              type: {
-                location: {
-                  type: "source",
-                  fileName: "LanguageService.js",
-                  line: 90
-                },
-                kind: "named",
-                name: "TypeHint"
-              }
-            }
-          }
-        },
-        highlight: {
-          location: {
-            type: "source",
-            fileName: "LanguageService.js",
-            line: 92
-          },
-          kind: "function",
-          argumentTypes: [{
-            name: "fileVersion",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 93
-              },
-              kind: "named",
-              name: "FileVersion"
-            }
-          }, {
-            name: "position",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 94
-              },
-              kind: "named",
-              name: "atom$Point"
-            }
-          }],
-          returnType: {
-            location: {
-              type: "source",
-              fileName: "LanguageService.js",
-              line: 95
-            },
-            kind: "promise",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 95
-              },
-              kind: "nullable",
-              type: {
-                location: {
-                  type: "source",
-                  fileName: "LanguageService.js",
-                  line: 95
-                },
-                kind: "array",
-                type: {
-                  location: {
-                    type: "source",
-                    fileName: "LanguageService.js",
-                    line: 95
-                  },
-                  kind: "named",
-                  name: "atom$Range"
-                }
-              }
-            }
-          }
-        },
-        formatSource: {
-          location: {
-            type: "source",
-            fileName: "LanguageService.js",
-            line: 97
-          },
-          kind: "function",
-          argumentTypes: [{
-            name: "fileVersion",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 98
-              },
-              kind: "named",
-              name: "FileVersion"
-            }
-          }, {
-            name: "range",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 99
-              },
-              kind: "named",
-              name: "atom$Range"
-            }
-          }],
-          returnType: {
-            location: {
-              type: "source",
-              fileName: "LanguageService.js",
-              line: 100
-            },
-            kind: "promise",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 100
-              },
-              kind: "nullable",
-              type: {
-                location: {
-                  type: "source",
-                  fileName: "LanguageService.js",
-                  line: 100
-                },
-                kind: "string"
-              }
-            }
-          }
-        },
-        formatEntireFile: {
-          location: {
-            type: "source",
-            fileName: "LanguageService.js",
-            line: 102
-          },
-          kind: "function",
-          argumentTypes: [{
-            name: "fileVersion",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 102
-              },
-              kind: "named",
-              name: "FileVersion"
-            }
-          }, {
-            name: "range",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 102
-              },
-              kind: "named",
-              name: "atom$Range"
-            }
-          }],
-          returnType: {
-            location: {
-              type: "source",
-              fileName: "LanguageService.js",
-              line: 102
-            },
-            kind: "promise",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 102
-              },
-              kind: "nullable",
-              type: {
-                location: {
-                  type: "source",
-                  fileName: "LanguageService.js",
-                  line: 102
-                },
-                kind: "object",
-                fields: [{
-                  location: {
-                    type: "source",
-                    fileName: "LanguageService.js",
-                    line: 103
-                  },
-                  name: "newCursor",
-                  type: {
-                    location: {
-                      type: "source",
-                      fileName: "LanguageService.js",
-                      line: 103
-                    },
-                    kind: "number"
-                  },
-                  optional: true
-                }, {
-                  location: {
-                    type: "source",
-                    fileName: "LanguageService.js",
-                    line: 104
-                  },
-                  name: "formatted",
-                  type: {
-                    location: {
-                      type: "source",
-                      fileName: "LanguageService.js",
-                      line: 104
-                    },
-                    kind: "string"
-                  },
-                  optional: false
-                }]
-              }
-            }
-          }
-        },
-        getEvaluationExpression: {
-          location: {
-            type: "source",
-            fileName: "LanguageService.js",
-            line: 107
-          },
-          kind: "function",
-          argumentTypes: [{
-            name: "fileVersion",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 108
-              },
-              kind: "named",
-              name: "FileVersion"
-            }
-          }, {
-            name: "position",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 109
-              },
-              kind: "named",
-              name: "atom$Point"
-            }
-          }],
-          returnType: {
-            location: {
-              type: "source",
-              fileName: "LanguageService.js",
-              line: 110
-            },
-            kind: "promise",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 110
-              },
-              kind: "nullable",
-              type: {
-                location: {
-                  type: "source",
-                  fileName: "LanguageService.js",
-                  line: 110
-                },
-                kind: "named",
-                name: "NuclideEvaluationExpression"
-              }
-            }
-          }
-        },
-        getProjectRoot: {
-          location: {
-            type: "source",
-            fileName: "LanguageService.js",
-            line: 112
-          },
-          kind: "function",
-          argumentTypes: [{
-            name: "fileUri",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 112
-              },
-              kind: "named",
-              name: "NuclideUri"
-            }
-          }],
-          returnType: {
-            location: {
-              type: "source",
-              fileName: "LanguageService.js",
-              line: 112
-            },
-            kind: "promise",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 112
-              },
-              kind: "nullable",
-              type: {
-                location: {
-                  type: "source",
-                  fileName: "LanguageService.js",
-                  line: 112
-                },
-                kind: "named",
-                name: "NuclideUri"
-              }
-            }
-          }
-        },
-        isFileInProject: {
-          location: {
-            type: "source",
-            fileName: "LanguageService.js",
-            line: 114
-          },
-          kind: "function",
-          argumentTypes: [{
-            name: "fileUri",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 114
-              },
-              kind: "named",
-              name: "NuclideUri"
-            }
-          }],
-          returnType: {
-            location: {
-              type: "source",
-              fileName: "LanguageService.js",
-              line: 114
-            },
-            kind: "promise",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 114
-              },
-              kind: "boolean"
-            }
-          }
-        },
-        dispose: {
-          location: {
-            type: "source",
-            fileName: "LanguageService.js",
-            line: 116
-          },
-          kind: "function",
-          argumentTypes: [],
-          returnType: {
-            location: {
-              type: "source",
-              fileName: "LanguageService.js",
-              line: 116
-            },
-            kind: "void"
-          }
-        }
-      }
-    },
-    NuclideEvaluationExpression: {
-      kind: "alias",
-      location: {
-        type: "source",
-        fileName: "rpc-types.js",
-        line: 11
-      },
-      name: "NuclideEvaluationExpression",
-      definition: {
-        location: {
-          type: "source",
-          fileName: "rpc-types.js",
-          line: 11
-        },
-        kind: "object",
-        fields: [{
-          location: {
-            type: "source",
-            fileName: "rpc-types.js",
-            line: 12
-          },
-          name: "range",
-          type: {
-            location: {
-              type: "source",
-              fileName: "rpc-types.js",
-              line: 12
-            },
-            kind: "named",
-            name: "atom$Range"
-          },
-          optional: false
-        }, {
-          location: {
-            type: "source",
-            fileName: "rpc-types.js",
-            line: 13
-          },
-          name: "expression",
-          type: {
-            location: {
-              type: "source",
-              fileName: "rpc-types.js",
-              line: 13
-            },
-            kind: "string"
-          },
-          optional: false
-        }]
-      }
-    },
-    HintTree: {
-      kind: "alias",
-      location: {
-        type: "source",
-        fileName: "rpc-types.js",
-        line: 11
-      },
-      name: "HintTree",
-      definition: {
-        location: {
-          type: "source",
-          fileName: "rpc-types.js",
-          line: 11
-        },
-        kind: "object",
-        fields: [{
-          location: {
-            type: "source",
-            fileName: "rpc-types.js",
-            line: 12
-          },
-          name: "value",
-          type: {
-            location: {
-              type: "source",
-              fileName: "rpc-types.js",
-              line: 12
-            },
-            kind: "string"
-          },
-          optional: false
-        }, {
-          location: {
-            type: "source",
-            fileName: "rpc-types.js",
-            line: 13
-          },
-          name: "children",
-          type: {
-            location: {
-              type: "source",
-              fileName: "rpc-types.js",
-              line: 13
-            },
-            kind: "array",
-            type: {
-              location: {
-                type: "source",
-                fileName: "rpc-types.js",
-                line: 13
-              },
-              kind: "named",
-              name: "HintTree"
-            }
-          },
-          optional: true
-        }]
-      }
-    },
-    TypeHint: {
-      kind: "alias",
-      location: {
-        type: "source",
-        fileName: "rpc-types.js",
-        line: 16
-      },
-      name: "TypeHint",
-      definition: {
-        location: {
-          type: "source",
-          fileName: "rpc-types.js",
-          line: 16
-        },
-        kind: "object",
-        fields: [{
-          location: {
-            type: "source",
-            fileName: "rpc-types.js",
-            line: 20
-          },
-          name: "hint",
-          type: {
-            location: {
-              type: "source",
-              fileName: "rpc-types.js",
-              line: 20
-            },
-            kind: "string"
-          },
-          optional: true
-        }, {
-          location: {
-            type: "source",
-            fileName: "rpc-types.js",
-            line: 25
-          },
-          name: "hintTree",
-          type: {
-            location: {
-              type: "source",
-              fileName: "rpc-types.js",
-              line: 25
-            },
-            kind: "named",
-            name: "HintTree"
-          },
-          optional: true
-        }, {
-          location: {
-            type: "source",
-            fileName: "rpc-types.js",
-            line: 26
-          },
-          name: "range",
-          type: {
-            location: {
-              type: "source",
-              fileName: "rpc-types.js",
-              line: 26
-            },
-            kind: "named",
-            name: "atom$Range"
-          },
-          optional: false
-        }]
-      }
-    },
-    Reference: {
-      kind: "alias",
-      location: {
-        type: "source",
-        fileName: "rpc-types.js",
-        line: 13
-      },
-      name: "Reference",
-      definition: {
-        location: {
-          type: "source",
-          fileName: "rpc-types.js",
-          line: 13
-        },
-        kind: "object",
-        fields: [{
-          location: {
-            type: "source",
-            fileName: "rpc-types.js",
-            line: 14
-          },
-          name: "uri",
-          type: {
-            location: {
-              type: "source",
-              fileName: "rpc-types.js",
-              line: 14
-            },
-            kind: "named",
-            name: "NuclideUri"
-          },
-          optional: false
-        }, {
-          location: {
-            type: "source",
-            fileName: "rpc-types.js",
-            line: 15
-          },
-          name: "name",
-          type: {
-            location: {
-              type: "source",
-              fileName: "rpc-types.js",
-              line: 15
-            },
-            kind: "nullable",
-            type: {
-              location: {
-                type: "source",
-                fileName: "rpc-types.js",
-                line: 15
-              },
-              kind: "string"
-            }
-          },
-          optional: false
-        }, {
-          location: {
-            type: "source",
-            fileName: "rpc-types.js",
-            line: 16
-          },
-          name: "range",
-          type: {
-            location: {
-              type: "source",
-              fileName: "rpc-types.js",
-              line: 16
-            },
-            kind: "named",
-            name: "atom$Range"
-          },
-          optional: false
-        }]
-      }
-    },
-    FindReferencesData: {
-      kind: "alias",
-      location: {
-        type: "source",
-        fileName: "rpc-types.js",
-        line: 19
-      },
-      name: "FindReferencesData",
-      definition: {
-        location: {
-          type: "source",
-          fileName: "rpc-types.js",
-          line: 19
-        },
-        kind: "object",
-        fields: [{
-          location: {
-            type: "source",
-            fileName: "rpc-types.js",
-            line: 20
-          },
-          name: "type",
-          type: {
-            location: {
-              type: "source",
-              fileName: "rpc-types.js",
-              line: 20
-            },
-            kind: "string-literal",
-            value: "data"
-          },
-          optional: false
-        }, {
-          location: {
-            type: "source",
-            fileName: "rpc-types.js",
-            line: 21
-          },
-          name: "baseUri",
-          type: {
-            location: {
-              type: "source",
-              fileName: "rpc-types.js",
-              line: 21
-            },
-            kind: "named",
-            name: "NuclideUri"
-          },
-          optional: false
-        }, {
-          location: {
-            type: "source",
-            fileName: "rpc-types.js",
-            line: 22
-          },
-          name: "referencedSymbolName",
-          type: {
-            location: {
-              type: "source",
-              fileName: "rpc-types.js",
-              line: 22
-            },
-            kind: "string"
-          },
-          optional: false
-        }, {
-          location: {
-            type: "source",
-            fileName: "rpc-types.js",
-            line: 23
-          },
-          name: "references",
-          type: {
-            location: {
-              type: "source",
-              fileName: "rpc-types.js",
-              line: 23
-            },
-            kind: "array",
-            type: {
-              location: {
-                type: "source",
-                fileName: "rpc-types.js",
-                line: 23
-              },
-              kind: "named",
-              name: "Reference"
-            }
-          },
-          optional: false
-        }]
-      }
-    },
-    FindReferencesError: {
-      kind: "alias",
-      location: {
-        type: "source",
-        fileName: "rpc-types.js",
-        line: 26
-      },
-      name: "FindReferencesError",
-      definition: {
-        location: {
-          type: "source",
-          fileName: "rpc-types.js",
-          line: 26
-        },
-        kind: "object",
-        fields: [{
-          location: {
-            type: "source",
-            fileName: "rpc-types.js",
-            line: 27
-          },
-          name: "type",
-          type: {
-            location: {
-              type: "source",
-              fileName: "rpc-types.js",
-              line: 27
-            },
-            kind: "string-literal",
-            value: "error"
-          },
-          optional: false
-        }, {
-          location: {
-            type: "source",
-            fileName: "rpc-types.js",
-            line: 28
-          },
-          name: "message",
-          type: {
-            location: {
-              type: "source",
-              fileName: "rpc-types.js",
-              line: 28
-            },
-            kind: "string"
-          },
-          optional: false
-        }]
-      }
-    },
-    FindReferencesReturn: {
-      kind: "alias",
-      location: {
-        type: "source",
-        fileName: "rpc-types.js",
-        line: 31
-      },
-      name: "FindReferencesReturn",
-      definition: {
-        location: {
-          type: "source",
-          fileName: "rpc-types.js",
-          line: 31
-        },
-        kind: "union",
-        types: [{
-          location: {
-            type: "source",
-            fileName: "rpc-types.js",
-            line: 19
-          },
-          kind: "object",
-          fields: [{
-            location: {
-              type: "source",
-              fileName: "rpc-types.js",
-              line: 20
-            },
-            name: "type",
-            type: {
-              location: {
-                type: "source",
-                fileName: "rpc-types.js",
-                line: 20
-              },
-              kind: "string-literal",
-              value: "data"
-            },
-            optional: false
-          }, {
-            location: {
-              type: "source",
-              fileName: "rpc-types.js",
-              line: 21
-            },
-            name: "baseUri",
-            type: {
-              location: {
-                type: "source",
-                fileName: "rpc-types.js",
-                line: 21
-              },
-              kind: "named",
-              name: "NuclideUri"
-            },
-            optional: false
-          }, {
-            location: {
-              type: "source",
-              fileName: "rpc-types.js",
-              line: 22
-            },
-            name: "referencedSymbolName",
-            type: {
-              location: {
-                type: "source",
-                fileName: "rpc-types.js",
-                line: 22
-              },
-              kind: "string"
-            },
-            optional: false
-          }, {
-            location: {
-              type: "source",
-              fileName: "rpc-types.js",
-              line: 23
-            },
-            name: "references",
-            type: {
-              location: {
-                type: "source",
-                fileName: "rpc-types.js",
-                line: 23
-              },
-              kind: "array",
-              type: {
-                location: {
-                  type: "source",
-                  fileName: "rpc-types.js",
-                  line: 23
-                },
-                kind: "named",
-                name: "Reference"
-              }
-            },
-            optional: false
-          }]
-        }, {
-          location: {
-            type: "source",
-            fileName: "rpc-types.js",
-            line: 26
-          },
-          kind: "object",
-          fields: [{
-            location: {
-              type: "source",
-              fileName: "rpc-types.js",
-              line: 27
-            },
-            name: "type",
-            type: {
-              location: {
-                type: "source",
-                fileName: "rpc-types.js",
-                line: 27
-              },
-              kind: "string-literal",
-              value: "error"
-            },
-            optional: false
-          }, {
-            location: {
-              type: "source",
-              fileName: "rpc-types.js",
-              line: 28
-            },
-            name: "message",
-            type: {
-              location: {
-                type: "source",
-                fileName: "rpc-types.js",
-                line: 28
-              },
-              kind: "string"
-            },
-            optional: false
-          }]
-        }],
-        discriminantField: "type"
-      }
-    },
-    Definition: {
-      kind: "alias",
-      location: {
-        type: "source",
-        fileName: "rpc-types.js",
-        line: 23
-      },
-      name: "Definition",
-      definition: {
-        location: {
-          type: "source",
-          fileName: "rpc-types.js",
-          line: 23
-        },
-        kind: "object",
-        fields: [{
-          location: {
-            type: "source",
-            fileName: "rpc-types.js",
-            line: 24
-          },
-          name: "path",
-          type: {
-            location: {
-              type: "source",
-              fileName: "rpc-types.js",
-              line: 24
-            },
-            kind: "named",
-            name: "NuclideUri"
-          },
-          optional: false
-        }, {
-          location: {
-            type: "source",
-            fileName: "rpc-types.js",
-            line: 25
-          },
-          name: "position",
-          type: {
-            location: {
-              type: "source",
-              fileName: "rpc-types.js",
-              line: 25
-            },
-            kind: "named",
-            name: "atom$Point"
-          },
-          optional: false
-        }, {
-          location: {
-            type: "source",
-            fileName: "rpc-types.js",
-            line: 26
-          },
-          name: "range",
-          type: {
-            location: {
-              type: "source",
-              fileName: "rpc-types.js",
-              line: 26
-            },
-            kind: "named",
-            name: "atom$Range"
-          },
-          optional: true
-        }, {
-          location: {
-            type: "source",
-            fileName: "rpc-types.js",
-            line: 27
-          },
-          name: "id",
-          type: {
-            location: {
-              type: "source",
-              fileName: "rpc-types.js",
-              line: 27
-            },
-            kind: "string"
-          },
-          optional: true
-        }, {
-          location: {
-            type: "source",
-            fileName: "rpc-types.js",
-            line: 28
-          },
-          name: "name",
-          type: {
-            location: {
-              type: "source",
-              fileName: "rpc-types.js",
-              line: 28
-            },
-            kind: "string"
-          },
-          optional: true
-        }, {
-          location: {
-            type: "source",
-            fileName: "rpc-types.js",
-            line: 29
-          },
-          name: "language",
-          type: {
-            location: {
-              type: "source",
-              fileName: "rpc-types.js",
-              line: 29
-            },
-            kind: "string"
-          },
-          optional: false
-        }, {
-          location: {
-            type: "source",
-            fileName: "rpc-types.js",
-            line: 30
-          },
-          name: "projectRoot",
-          type: {
-            location: {
-              type: "source",
-              fileName: "rpc-types.js",
-              line: 30
-            },
-            kind: "named",
-            name: "NuclideUri"
-          },
-          optional: true
-        }]
-      }
-    },
-    DefinitionQueryResult: {
-      kind: "alias",
-      location: {
-        type: "source",
-        fileName: "rpc-types.js",
-        line: 36
-      },
-      name: "DefinitionQueryResult",
-      definition: {
-        location: {
-          type: "source",
-          fileName: "rpc-types.js",
-          line: 36
-        },
-        kind: "object",
-        fields: [{
-          location: {
-            type: "source",
-            fileName: "rpc-types.js",
-            line: 37
-          },
-          name: "queryRange",
-          type: {
-            location: {
-              type: "source",
-              fileName: "rpc-types.js",
-              line: 37
-            },
-            kind: "array",
-            type: {
-              location: {
-                type: "source",
-                fileName: "rpc-types.js",
-                line: 37
-              },
-              kind: "named",
-              name: "atom$Range"
-            }
-          },
-          optional: false
-        }, {
-          location: {
-            type: "source",
-            fileName: "rpc-types.js",
-            line: 38
-          },
-          name: "definitions",
-          type: {
-            location: {
-              type: "source",
-              fileName: "rpc-types.js",
-              line: 38
-            },
-            kind: "array",
-            type: {
-              location: {
-                type: "source",
-                fileName: "rpc-types.js",
-                line: 38
-              },
-              kind: "named",
-              name: "Definition"
-            }
           },
           optional: false
         }]

@@ -187,4 +187,3 @@ class ThreadStore {
   }
 }
 exports.default = ThreadStore;
-module.exports = exports['default'];

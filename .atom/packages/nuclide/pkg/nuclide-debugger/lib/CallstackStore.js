@@ -153,5 +153,3 @@ exports.default = CallstackStore; /**
                                    *
                                    * 
                                    */
-
-module.exports = exports['default'];
