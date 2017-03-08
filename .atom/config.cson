@@ -41,7 +41,7 @@
     telemetryConsent: "no"
     themes: [
       "atom-material-ui"
-      "atom-material-syntax-dark"
+      "nord-atom-syntax"
     ]
   editor:
     fontSize: 13
