@@ -22,6 +22,12 @@ function _load_simpleTextBuffer() {
   return _simpleTextBuffer = require('simple-text-buffer');
 }
 
+var _config;
+
+function _load_config() {
+  return _config = require('./config');
+}
+
 var _nuclideFlowCommon;
 
 function _load_nuclideFlowCommon() {
@@ -72,17 +78,15 @@ function _load_diagnosticsParser() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- */
-
-const logger = (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)();
+const logger = (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)(); /**
+                                                                              * Copyright (c) 2015-present, Facebook, Inc.
+                                                                              * All rights reserved.
+                                                                              *
+                                                                              * This source code is licensed under the license found in the LICENSE file in
+                                                                              * the root directory of this source tree.
+                                                                              *
+                                                                              * 
+                                                                              */
 
 /** Encapsulates all of the state information we need about a specific Flow root */
 class FlowSingleProjectLanguageService {
@@ -540,11 +544,18 @@ function processAutocompleteItem(replacementPrefix, flowItem) {
   if (funcDetails) {
     // The parameters in human-readable form for use on the right label.
     const rightParamStrings = funcDetails.params.map(param => `${param.name}: ${param.type}`);
-    const snippetString = getSnippetString(funcDetails.params.map(param => param.name));
+    let snippetArgs = `(${getSnippetString(funcDetails.params.map(param => param.name))})`;
+    let leftLabel = funcDetails.return_type;
+    let rightLabel = `(${rightParamStrings.join(', ')})`;
+    if (!(0, (_config || _load_config()).getConfig)('functionSnippetShouldIncludeArguments')) {
+      snippetArgs = '';
+      leftLabel = undefined;
+      rightLabel += ` => ${funcDetails.return_type}`;
+    }
     result = Object.assign({}, result, {
-      leftLabel: funcDetails.return_type,
-      rightLabel: `(${rightParamStrings.join(', ')})`,
-      snippet: `${flowItem.name}(${snippetString})`,
+      leftLabel,
+      rightLabel,
+      snippet: `${flowItem.name}${snippetArgs}`,
       type: 'function'
     });
   } else {

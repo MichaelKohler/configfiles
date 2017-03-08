@@ -2,40 +2,40 @@
   "_args": [
     [
       {
-        "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-11724-18647-1copvta/package.tgz",
+        "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-11729-89998-122066n/package.tgz",
         "scope": null,
         "escapedName": null,
         "name": null,
-        "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-11724-18647-1copvta/package.tgz",
-        "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-11724-18647-1copvta/package.tgz",
+        "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-11729-89998-122066n/package.tgz",
+        "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-11729-89998-122066n/package.tgz",
         "type": "local"
       },
-      "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-11724-18647-tzzkal"
+      "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-11729-89998-1jma123"
     ]
   ],
-  "_from": "../d-11724-18647-1copvta/package.tgz",
-  "_id": "nuclide@0.208.0",
+  "_from": "../d-11729-89998-122066n/package.tgz",
+  "_id": "nuclide@0.209.0",
   "_inCache": true,
   "_installable": true,
   "_location": "/nuclide",
   "_phantomChildren": {},
   "_requested": {
-    "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-11724-18647-1copvta/package.tgz",
+    "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-11729-89998-122066n/package.tgz",
     "scope": null,
     "escapedName": null,
     "name": null,
-    "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-11724-18647-1copvta/package.tgz",
-    "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-11724-18647-1copvta/package.tgz",
+    "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-11729-89998-122066n/package.tgz",
+    "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-11729-89998-122066n/package.tgz",
     "type": "local"
   },
   "_requiredBy": [
     "#USER"
   ],
-  "_resolved": "file:../d-11724-18647-1copvta/package.tgz",
-  "_shasum": "fcf77b2e99643ea66fe2e4fd900a74e107ca08be",
+  "_resolved": "file:../d-11729-89998-122066n/package.tgz",
+  "_shasum": "31e23d596a033b2f4b73e2f2fe28145c3ea77d30",
   "_shrinkwrap": {
     "name": "nuclide",
-    "version": "0.208.0",
+    "version": "0.209.0",
     "dependencies": {
       "adm-zip": {
         "version": "0.4.7",
@@ -279,6 +279,11 @@
             "resolved": "https://registry.npmjs.org/assert-plus/-/assert-plus-1.0.0.tgz"
           }
         }
+      },
+      "date-format": {
+        "version": "0.0.0",
+        "from": "date-format@>=0.0.0 <0.0.1",
+        "resolved": "https://registry.npmjs.org/date-format/-/date-format-0.0.0.tgz"
       },
       "debug": {
         "version": "2.2.0",
@@ -560,9 +565,9 @@
         "resolved": "https://registry.npmjs.org/is-fullwidth-code-point/-/is-fullwidth-code-point-1.0.0.tgz"
       },
       "is-my-json-valid": {
-        "version": "2.15.0",
+        "version": "2.16.0",
         "from": "is-my-json-valid@>=2.12.4 <3.0.0",
-        "resolved": "https://registry.npmjs.org/is-my-json-valid/-/is-my-json-valid-2.15.0.tgz"
+        "resolved": "https://registry.npmjs.org/is-my-json-valid/-/is-my-json-valid-2.16.0.tgz"
       },
       "is-property": {
         "version": "1.0.2",
@@ -757,26 +762,9 @@
         "resolved": "https://registry.npmjs.org/lodash.uniq/-/lodash.uniq-4.5.0.tgz"
       },
       "log4js": {
-        "version": "0.6.38",
-        "from": "log4js@0.6.38",
-        "resolved": "https://registry.npmjs.org/log4js/-/log4js-0.6.38.tgz",
-        "dependencies": {
-          "isarray": {
-            "version": "0.0.1",
-            "from": "isarray@0.0.1",
-            "resolved": "https://registry.npmjs.org/isarray/-/isarray-0.0.1.tgz"
-          },
-          "readable-stream": {
-            "version": "1.0.34",
-            "from": "readable-stream@>=1.0.2 <1.1.0",
-            "resolved": "https://registry.npmjs.org/readable-stream/-/readable-stream-1.0.34.tgz"
-          },
-          "semver": {
-            "version": "4.3.6",
-            "from": "semver@>=4.3.3 <4.4.0",
-            "resolved": "https://registry.npmjs.org/semver/-/semver-4.3.6.tgz"
-          }
-        }
+        "version": "1.1.1",
+        "from": "log4js@1.1.1",
+        "resolved": "https://registry.npmjs.org/log4js/-/log4js-1.1.1.tgz"
       },
       "loose-envify": {
         "version": "1.3.1",
@@ -1136,9 +1124,9 @@
         "resolved": "https://registry.npmjs.org/ssh2-streams/-/ssh2-streams-0.1.16.tgz"
       },
       "sshpk": {
-        "version": "1.10.2",
+        "version": "1.11.0",
         "from": "sshpk@>=1.7.0 <2.0.0",
-        "resolved": "https://registry.npmjs.org/sshpk/-/sshpk-1.10.2.tgz",
+        "resolved": "https://registry.npmjs.org/sshpk/-/sshpk-1.11.0.tgz",
         "dependencies": {
           "assert-plus": {
             "version": "1.0.0",
@@ -1151,6 +1139,28 @@
         "version": "1.3.1",
         "from": "statuses@>=1.3.0 <1.4.0",
         "resolved": "https://registry.npmjs.org/statuses/-/statuses-1.3.1.tgz"
+      },
+      "streamroller": {
+        "version": "0.4.0",
+        "from": "streamroller@>=0.4.0 <0.5.0",
+        "resolved": "https://registry.npmjs.org/streamroller/-/streamroller-0.4.0.tgz",
+        "dependencies": {
+          "debug": {
+            "version": "0.7.4",
+            "from": "debug@>=0.7.2 <0.8.0",
+            "resolved": "https://registry.npmjs.org/debug/-/debug-0.7.4.tgz"
+          },
+          "isarray": {
+            "version": "0.0.1",
+            "from": "isarray@0.0.1",
+            "resolved": "https://registry.npmjs.org/isarray/-/isarray-0.0.1.tgz"
+          },
+          "readable-stream": {
+            "version": "1.1.14",
+            "from": "readable-stream@>=1.1.7 <2.0.0",
+            "resolved": "https://registry.npmjs.org/readable-stream/-/readable-stream-1.1.14.tgz"
+          }
+        }
       },
       "streamsearch": {
         "version": "0.1.2",
@@ -1349,8 +1359,8 @@
       }
     }
   },
-  "_spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-11724-18647-1copvta/package.tgz",
-  "_where": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-11724-18647-tzzkal",
+  "_spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-11729-89998-122066n/package.tgz",
+  "_where": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-11729-89998-1jma123",
   "atomTestRunner": "./lib/test-runner-entry.js",
   "bin": {
     "nuclide-start-server": "./pkg/nuclide-server/nuclide-start-server"
@@ -1386,7 +1396,7 @@
     "jest-editor-support": "19.0.2",
     "js-yaml": "3.7.0",
     "lodash.memoize": "3.0.4",
-    "log4js": "0.6.38",
+    "log4js": "1.1.1",
     "lru-cache": "4.0.2",
     "marked": "0.3.6",
     "minimatch": "3.0.3",
@@ -1444,7 +1454,7 @@
     "eslint-plugin-nuclide-internal": "file:resources/eslint-plugin-nuclide-internal",
     "eslint-plugin-prefer-object-spread": "1.1.0",
     "eslint-plugin-react": "6.8.0",
-    "flow-bin": "0.40.0",
+    "flow-bin": "0.41.0",
     "fs-extra": "2.0.0",
     "jasmine-node": "1.14.5",
     "mock-spawn": "0.2.6",
@@ -1509,7 +1519,7 @@
     "test": "npm run lint-all && npm run flow"
   },
   "urlMain": "./lib/url-main-entry.js",
-  "version": "0.208.0",
+  "version": "0.209.0",
   "warnings": [
     {
       "code": "ENOTSUP",
@@ -1517,7 +1527,7 @@
         "atom": ">=1.14.1",
         "node": ">=6.5.0"
       },
-      "pkgid": "nuclide@0.208.0"
+      "pkgid": "nuclide@0.209.0"
     },
     {
       "code": "ENOTSUP",
@@ -1525,7 +1535,7 @@
         "atom": ">=1.14.1",
         "node": ">=6.5.0"
       },
-      "pkgid": "nuclide@0.208.0"
+      "pkgid": "nuclide@0.209.0"
     }
   ]
 }

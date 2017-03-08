@@ -1014,6 +1014,32 @@ module.exports = _client => {
       }).publish();
     }
 
+    splitRevision() {
+      return Observable.fromPromise(_client.marshalArguments(Array.from(arguments), []).then(args => {
+        return _client.marshal(this, {
+          kind: "named",
+          location: {
+            type: "source",
+            fileName: "HgService.js",
+            line: 211
+          },
+          name: "HgService"
+        }).then(id => {
+          return _client.callRemoteMethod(id, "splitRevision", "observable", args);
+        });
+      })).concatMap(id => id).concatMap(value => {
+        return _client.unmarshal(value, {
+          location: {
+            type: "source",
+            fileName: "HgService.js",
+            line: 838
+          },
+          kind: "named",
+          name: "ProcessMessage"
+        });
+      }).publish();
+    }
+
     revert(arg0, arg1) {
       return _client.marshalArguments(Array.from(arguments), [{
         name: "filePaths",
@@ -1021,14 +1047,14 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "HgService.js",
-            line: 838
+            line: 858
           },
           kind: "array",
           type: {
             location: {
               type: "source",
               fileName: "HgService.js",
-              line: 838
+              line: 858
             },
             kind: "named",
             name: "NuclideUri"
@@ -1040,14 +1066,14 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "HgService.js",
-            line: 838
+            line: 858
           },
           kind: "nullable",
           type: {
             location: {
               type: "source",
               fileName: "HgService.js",
-              line: 838
+              line: 858
             },
             kind: "string"
           }
@@ -1069,7 +1095,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "HgService.js",
-            line: 838
+            line: 858
           },
           kind: "void"
         });
@@ -1083,7 +1109,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "HgService.js",
-            line: 874
+            line: 894
           },
           kind: "string"
         }
@@ -1093,7 +1119,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "HgService.js",
-            line: 875
+            line: 895
           },
           kind: "boolean"
         }
@@ -1103,14 +1129,14 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "HgService.js",
-            line: 876
+            line: 896
           },
           kind: "nullable",
           type: {
             location: {
               type: "source",
               fileName: "HgService.js",
-              line: 876
+              line: 896
             },
             kind: "named",
             name: "CheckoutOptions"
@@ -1133,7 +1159,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "HgService.js",
-            line: 877
+            line: 897
           },
           kind: "void"
         });
@@ -1147,7 +1173,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "HgService.js",
-            line: 885
+            line: 905
           },
           kind: "number"
         }
@@ -1168,7 +1194,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "HgService.js",
-            line: 885
+            line: 905
           },
           kind: "named",
           name: "RevisionShowInfo"
@@ -1194,7 +1220,32 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "HgService.js",
-            line: 900
+            line: 920
+          },
+          kind: "void"
+        });
+      });
+    }
+
+    uncommit() {
+      return _client.marshalArguments(Array.from(arguments), []).then(args => {
+        return _client.marshal(this, {
+          kind: "named",
+          location: {
+            type: "source",
+            fileName: "HgService.js",
+            line: 211
+          },
+          name: "HgService"
+        }).then(id => {
+          return _client.callRemoteMethod(id, "uncommit", "promise", args);
+        });
+      }).then(value => {
+        return _client.unmarshal(value, {
+          location: {
+            type: "source",
+            fileName: "HgService.js",
+            line: 927
           },
           kind: "void"
         });
@@ -1208,7 +1259,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "HgService.js",
-            line: 907
+            line: 934
           },
           kind: "string"
         }
@@ -1229,7 +1280,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "HgService.js",
-            line: 907
+            line: 934
           },
           kind: "void"
         });
@@ -1254,7 +1305,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "HgService.js",
-            line: 915
+            line: 942
           },
           kind: "void"
         });
@@ -1268,14 +1319,14 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "HgService.js",
-            line: 937
+            line: 964
           },
           kind: "array",
           type: {
             location: {
               type: "source",
               fileName: "HgService.js",
-              line: 937
+              line: 964
             },
             kind: "named",
             name: "NuclideUri"
@@ -1287,7 +1338,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "HgService.js",
-            line: 938
+            line: 965
           },
           kind: "named",
           name: "NuclideUri"
@@ -1298,14 +1349,14 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "HgService.js",
-            line: 939
+            line: 966
           },
           kind: "nullable",
           type: {
             location: {
               type: "source",
               fileName: "HgService.js",
-              line: 939
+              line: 966
             },
             kind: "boolean"
           }
@@ -1327,7 +1378,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "HgService.js",
-            line: 940
+            line: 967
           },
           kind: "void"
         });
@@ -1341,14 +1392,14 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "HgService.js",
-            line: 963
+            line: 990
           },
           kind: "array",
           type: {
             location: {
               type: "source",
               fileName: "HgService.js",
-              line: 963
+              line: 990
             },
             kind: "named",
             name: "NuclideUri"
@@ -1360,14 +1411,14 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "HgService.js",
-            line: 963
+            line: 990
           },
           kind: "nullable",
           type: {
             location: {
               type: "source",
               fileName: "HgService.js",
-              line: 963
+              line: 990
             },
             kind: "boolean"
           }
@@ -1389,7 +1440,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "HgService.js",
-            line: 963
+            line: 990
           },
           kind: "void"
         });
@@ -1403,14 +1454,14 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "HgService.js",
-            line: 984
+            line: 1011
           },
           kind: "array",
           type: {
             location: {
               type: "source",
               fileName: "HgService.js",
-              line: 984
+              line: 1011
             },
             kind: "named",
             name: "NuclideUri"
@@ -1433,7 +1484,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "HgService.js",
-            line: 984
+            line: 1011
           },
           kind: "void"
         });
@@ -1458,14 +1509,14 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "HgService.js",
-            line: 988
+            line: 1015
           },
           kind: "nullable",
           type: {
             location: {
               type: "source",
               fileName: "HgService.js",
-              line: 988
+              line: 1015
             },
             kind: "string"
           }
@@ -1491,14 +1542,14 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "HgService.js",
-            line: 1004
+            line: 1031
           },
           kind: "nullable",
           type: {
             location: {
               type: "source",
               fileName: "HgService.js",
-              line: 1004
+              line: 1031
             },
             kind: "string"
           }
@@ -1513,14 +1564,14 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "HgService.js",
-            line: 1024
+            line: 1051
           },
           kind: "array",
           type: {
             location: {
               type: "source",
               fileName: "HgService.js",
-              line: 1024
+              line: 1051
             },
             kind: "named",
             name: "NuclideUri"
@@ -1532,14 +1583,14 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "HgService.js",
-            line: 1024
+            line: 1051
           },
           kind: "nullable",
           type: {
             location: {
               type: "source",
               fileName: "HgService.js",
-              line: 1024
+              line: 1051
             },
             kind: "number"
           }
@@ -1561,7 +1612,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "HgService.js",
-            line: 1024
+            line: 1051
           },
           kind: "named",
           name: "VcsLogResponse"
@@ -1587,14 +1638,14 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "HgService.js",
-            line: 1041
+            line: 1068
           },
           kind: "array",
           type: {
             location: {
               type: "source",
               fileName: "HgService.js",
-              line: 1041
+              line: 1068
             },
             kind: "named",
             name: "MergeConflict"
@@ -1610,7 +1661,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "HgService.js",
-            line: 1086
+            line: 1113
           },
           kind: "named",
           name: "NuclideUri"
@@ -1632,7 +1683,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "HgService.js",
-            line: 1086
+            line: 1113
           },
           kind: "void"
         });
@@ -1657,7 +1708,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "HgService.js",
-            line: 1090
+            line: 1117
           },
           kind: "void"
         });
@@ -1682,7 +1733,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "HgService.js",
-            line: 1094
+            line: 1121
           },
           kind: "void"
         });
@@ -1696,7 +1747,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "HgService.js",
-            line: 1099
+            line: 1126
           },
           kind: "string"
         }
@@ -1706,14 +1757,14 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "HgService.js",
-            line: 1100
+            line: 1127
           },
           kind: "nullable",
           type: {
             location: {
               type: "source",
               fileName: "HgService.js",
-              line: 1100
+              line: 1127
             },
             kind: "string"
           }
@@ -1735,7 +1786,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "HgService.js",
-            line: 1101
+            line: 1128
           },
           kind: "named",
           name: "ProcessMessage"
@@ -1750,14 +1801,14 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "HgService.js",
-            line: 1121
+            line: 1148
           },
           kind: "array",
           type: {
             location: {
               type: "source",
               fileName: "HgService.js",
-              line: 1121
+              line: 1148
             },
             kind: "string"
           }
@@ -1779,7 +1830,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "HgService.js",
-            line: 1121
+            line: 1148
           },
           kind: "named",
           name: "ProcessMessage"
@@ -1794,14 +1845,14 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "HgService.js",
-            line: 1139
+            line: 1166
           },
           kind: "array",
           type: {
             location: {
               type: "source",
               fileName: "HgService.js",
-              line: 1139
+              line: 1166
             },
             kind: "named",
             name: "NuclideUri"
@@ -1813,7 +1864,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "HgService.js",
-            line: 1140
+            line: 1167
           },
           kind: "named",
           name: "NuclideUri"
@@ -1824,14 +1875,14 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "HgService.js",
-            line: 1141
+            line: 1168
           },
           kind: "nullable",
           type: {
             location: {
               type: "source",
               fileName: "HgService.js",
-              line: 1141
+              line: 1168
             },
             kind: "boolean"
           }
@@ -1853,7 +1904,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "HgService.js",
-            line: 1142
+            line: 1169
           },
           kind: "void"
         });
@@ -4348,11 +4399,37 @@ Object.defineProperty(module.exports, "defs", {
             }
           }
         },
-        revert: {
+        splitRevision: {
           location: {
             type: "source",
             fileName: "HgService.js",
             line: 838
+          },
+          kind: "function",
+          argumentTypes: [],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "HgService.js",
+              line: 838
+            },
+            kind: "observable",
+            type: {
+              location: {
+                type: "source",
+                fileName: "HgService.js",
+                line: 838
+              },
+              kind: "named",
+              name: "ProcessMessage"
+            }
+          }
+        },
+        revert: {
+          location: {
+            type: "source",
+            fileName: "HgService.js",
+            line: 858
           },
           kind: "function",
           argumentTypes: [{
@@ -4361,14 +4438,14 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "HgService.js",
-                line: 838
+                line: 858
               },
               kind: "array",
               type: {
                 location: {
                   type: "source",
                   fileName: "HgService.js",
-                  line: 838
+                  line: 858
                 },
                 kind: "named",
                 name: "NuclideUri"
@@ -4380,14 +4457,14 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "HgService.js",
-                line: 838
+                line: 858
               },
               kind: "nullable",
               type: {
                 location: {
                   type: "source",
                   fileName: "HgService.js",
-                  line: 838
+                  line: 858
                 },
                 kind: "string"
               }
@@ -4397,14 +4474,14 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "HgService.js",
-              line: 838
+              line: 858
             },
             kind: "promise",
             type: {
               location: {
                 type: "source",
                 fileName: "HgService.js",
-                line: 838
+                line: 858
               },
               kind: "void"
             }
@@ -4414,7 +4491,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "HgService.js",
-            line: 873
+            line: 893
           },
           kind: "function",
           argumentTypes: [{
@@ -4423,7 +4500,7 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "HgService.js",
-                line: 874
+                line: 894
               },
               kind: "string"
             }
@@ -4433,7 +4510,7 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "HgService.js",
-                line: 875
+                line: 895
               },
               kind: "boolean"
             }
@@ -4443,14 +4520,14 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "HgService.js",
-                line: 876
+                line: 896
               },
               kind: "nullable",
               type: {
                 location: {
                   type: "source",
                   fileName: "HgService.js",
-                  line: 876
+                  line: 896
                 },
                 kind: "named",
                 name: "CheckoutOptions"
@@ -4461,14 +4538,14 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "HgService.js",
-              line: 877
+              line: 897
             },
             kind: "promise",
             type: {
               location: {
                 type: "source",
                 fileName: "HgService.js",
-                line: 877
+                line: 897
               },
               kind: "void"
             }
@@ -4478,7 +4555,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "HgService.js",
-            line: 885
+            line: 905
           },
           kind: "function",
           argumentTypes: [{
@@ -4487,7 +4564,7 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "HgService.js",
-                line: 885
+                line: 905
               },
               kind: "number"
             }
@@ -4496,14 +4573,14 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "HgService.js",
-              line: 885
+              line: 905
             },
             kind: "observable",
             type: {
               location: {
                 type: "source",
                 fileName: "HgService.js",
-                line: 885
+                line: 905
               },
               kind: "named",
               name: "RevisionShowInfo"
@@ -4514,7 +4591,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "HgService.js",
-            line: 900
+            line: 920
           },
           kind: "function",
           argumentTypes: [],
@@ -4522,14 +4599,39 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "HgService.js",
-              line: 900
+              line: 920
             },
             kind: "promise",
             type: {
               location: {
                 type: "source",
                 fileName: "HgService.js",
-                line: 900
+                line: 920
+              },
+              kind: "void"
+            }
+          }
+        },
+        uncommit: {
+          location: {
+            type: "source",
+            fileName: "HgService.js",
+            line: 927
+          },
+          kind: "function",
+          argumentTypes: [],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "HgService.js",
+              line: 927
+            },
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "HgService.js",
+                line: 927
               },
               kind: "void"
             }
@@ -4539,7 +4641,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "HgService.js",
-            line: 907
+            line: 934
           },
           kind: "function",
           argumentTypes: [{
@@ -4548,7 +4650,7 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "HgService.js",
-                line: 907
+                line: 934
               },
               kind: "string"
             }
@@ -4557,14 +4659,14 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "HgService.js",
-              line: 907
+              line: 934
             },
             kind: "promise",
             type: {
               location: {
                 type: "source",
                 fileName: "HgService.js",
-                line: 907
+                line: 934
               },
               kind: "void"
             }
@@ -4574,7 +4676,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "HgService.js",
-            line: 915
+            line: 942
           },
           kind: "function",
           argumentTypes: [],
@@ -4582,93 +4684,20 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "HgService.js",
-              line: 915
+              line: 942
             },
             kind: "promise",
             type: {
               location: {
                 type: "source",
                 fileName: "HgService.js",
-                line: 915
+                line: 942
               },
               kind: "void"
             }
           }
         },
         rename: {
-          location: {
-            type: "source",
-            fileName: "HgService.js",
-            line: 936
-          },
-          kind: "function",
-          argumentTypes: [{
-            name: "filePaths",
-            type: {
-              location: {
-                type: "source",
-                fileName: "HgService.js",
-                line: 937
-              },
-              kind: "array",
-              type: {
-                location: {
-                  type: "source",
-                  fileName: "HgService.js",
-                  line: 937
-                },
-                kind: "named",
-                name: "NuclideUri"
-              }
-            }
-          }, {
-            name: "destPath",
-            type: {
-              location: {
-                type: "source",
-                fileName: "HgService.js",
-                line: 938
-              },
-              kind: "named",
-              name: "NuclideUri"
-            }
-          }, {
-            name: "after",
-            type: {
-              location: {
-                type: "source",
-                fileName: "HgService.js",
-                line: 939
-              },
-              kind: "nullable",
-              type: {
-                location: {
-                  type: "source",
-                  fileName: "HgService.js",
-                  line: 939
-                },
-                kind: "boolean"
-              }
-            }
-          }],
-          returnType: {
-            location: {
-              type: "source",
-              fileName: "HgService.js",
-              line: 940
-            },
-            kind: "promise",
-            type: {
-              location: {
-                type: "source",
-                fileName: "HgService.js",
-                line: 940
-              },
-              kind: "void"
-            }
-          }
-        },
-        remove: {
           location: {
             type: "source",
             fileName: "HgService.js",
@@ -4681,467 +4710,14 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "HgService.js",
-                line: 963
+                line: 964
               },
               kind: "array",
               type: {
                 location: {
                   type: "source",
                   fileName: "HgService.js",
-                  line: 963
-                },
-                kind: "named",
-                name: "NuclideUri"
-              }
-            }
-          }, {
-            name: "after",
-            type: {
-              location: {
-                type: "source",
-                fileName: "HgService.js",
-                line: 963
-              },
-              kind: "nullable",
-              type: {
-                location: {
-                  type: "source",
-                  fileName: "HgService.js",
-                  line: 963
-                },
-                kind: "boolean"
-              }
-            }
-          }],
-          returnType: {
-            location: {
-              type: "source",
-              fileName: "HgService.js",
-              line: 963
-            },
-            kind: "promise",
-            type: {
-              location: {
-                type: "source",
-                fileName: "HgService.js",
-                line: 963
-              },
-              kind: "void"
-            }
-          }
-        },
-        add: {
-          location: {
-            type: "source",
-            fileName: "HgService.js",
-            line: 984
-          },
-          kind: "function",
-          argumentTypes: [{
-            name: "filePaths",
-            type: {
-              location: {
-                type: "source",
-                fileName: "HgService.js",
-                line: 984
-              },
-              kind: "array",
-              type: {
-                location: {
-                  type: "source",
-                  fileName: "HgService.js",
-                  line: 984
-                },
-                kind: "named",
-                name: "NuclideUri"
-              }
-            }
-          }],
-          returnType: {
-            location: {
-              type: "source",
-              fileName: "HgService.js",
-              line: 984
-            },
-            kind: "promise",
-            type: {
-              location: {
-                type: "source",
-                fileName: "HgService.js",
-                line: 984
-              },
-              kind: "void"
-            }
-          }
-        },
-        getTemplateCommitMessage: {
-          location: {
-            type: "source",
-            fileName: "HgService.js",
-            line: 988
-          },
-          kind: "function",
-          argumentTypes: [],
-          returnType: {
-            location: {
-              type: "source",
-              fileName: "HgService.js",
-              line: 988
-            },
-            kind: "promise",
-            type: {
-              location: {
-                type: "source",
-                fileName: "HgService.js",
-                line: 988
-              },
-              kind: "nullable",
-              type: {
-                location: {
-                  type: "source",
-                  fileName: "HgService.js",
-                  line: 988
-                },
-                kind: "string"
-              }
-            }
-          }
-        },
-        getHeadCommitMessage: {
-          location: {
-            type: "source",
-            fileName: "HgService.js",
-            line: 1004
-          },
-          kind: "function",
-          argumentTypes: [],
-          returnType: {
-            location: {
-              type: "source",
-              fileName: "HgService.js",
-              line: 1004
-            },
-            kind: "promise",
-            type: {
-              location: {
-                type: "source",
-                fileName: "HgService.js",
-                line: 1004
-              },
-              kind: "nullable",
-              type: {
-                location: {
-                  type: "source",
-                  fileName: "HgService.js",
-                  line: 1004
-                },
-                kind: "string"
-              }
-            }
-          }
-        },
-        log: {
-          location: {
-            type: "source",
-            fileName: "HgService.js",
-            line: 1024
-          },
-          kind: "function",
-          argumentTypes: [{
-            name: "filePaths",
-            type: {
-              location: {
-                type: "source",
-                fileName: "HgService.js",
-                line: 1024
-              },
-              kind: "array",
-              type: {
-                location: {
-                  type: "source",
-                  fileName: "HgService.js",
-                  line: 1024
-                },
-                kind: "named",
-                name: "NuclideUri"
-              }
-            }
-          }, {
-            name: "limit",
-            type: {
-              location: {
-                type: "source",
-                fileName: "HgService.js",
-                line: 1024
-              },
-              kind: "nullable",
-              type: {
-                location: {
-                  type: "source",
-                  fileName: "HgService.js",
-                  line: 1024
-                },
-                kind: "number"
-              }
-            }
-          }],
-          returnType: {
-            location: {
-              type: "source",
-              fileName: "HgService.js",
-              line: 1024
-            },
-            kind: "promise",
-            type: {
-              location: {
-                type: "source",
-                fileName: "HgService.js",
-                line: 1024
-              },
-              kind: "named",
-              name: "VcsLogResponse"
-            }
-          }
-        },
-        fetchMergeConflicts: {
-          location: {
-            type: "source",
-            fileName: "HgService.js",
-            line: 1041
-          },
-          kind: "function",
-          argumentTypes: [],
-          returnType: {
-            location: {
-              type: "source",
-              fileName: "HgService.js",
-              line: 1041
-            },
-            kind: "promise",
-            type: {
-              location: {
-                type: "source",
-                fileName: "HgService.js",
-                line: 1041
-              },
-              kind: "array",
-              type: {
-                location: {
-                  type: "source",
-                  fileName: "HgService.js",
-                  line: 1041
-                },
-                kind: "named",
-                name: "MergeConflict"
-              }
-            }
-          }
-        },
-        resolveConflictedFile: {
-          location: {
-            type: "source",
-            fileName: "HgService.js",
-            line: 1086
-          },
-          kind: "function",
-          argumentTypes: [{
-            name: "filePath",
-            type: {
-              location: {
-                type: "source",
-                fileName: "HgService.js",
-                line: 1086
-              },
-              kind: "named",
-              name: "NuclideUri"
-            }
-          }],
-          returnType: {
-            location: {
-              type: "source",
-              fileName: "HgService.js",
-              line: 1086
-            },
-            kind: "promise",
-            type: {
-              location: {
-                type: "source",
-                fileName: "HgService.js",
-                line: 1086
-              },
-              kind: "void"
-            }
-          }
-        },
-        continueRebase: {
-          location: {
-            type: "source",
-            fileName: "HgService.js",
-            line: 1090
-          },
-          kind: "function",
-          argumentTypes: [],
-          returnType: {
-            location: {
-              type: "source",
-              fileName: "HgService.js",
-              line: 1090
-            },
-            kind: "promise",
-            type: {
-              location: {
-                type: "source",
-                fileName: "HgService.js",
-                line: 1090
-              },
-              kind: "void"
-            }
-          }
-        },
-        abortRebase: {
-          location: {
-            type: "source",
-            fileName: "HgService.js",
-            line: 1094
-          },
-          kind: "function",
-          argumentTypes: [],
-          returnType: {
-            location: {
-              type: "source",
-              fileName: "HgService.js",
-              line: 1094
-            },
-            kind: "promise",
-            type: {
-              location: {
-                type: "source",
-                fileName: "HgService.js",
-                line: 1094
-              },
-              kind: "void"
-            }
-          }
-        },
-        rebase: {
-          location: {
-            type: "source",
-            fileName: "HgService.js",
-            line: 1098
-          },
-          kind: "function",
-          argumentTypes: [{
-            name: "destination",
-            type: {
-              location: {
-                type: "source",
-                fileName: "HgService.js",
-                line: 1099
-              },
-              kind: "string"
-            }
-          }, {
-            name: "source",
-            type: {
-              location: {
-                type: "source",
-                fileName: "HgService.js",
-                line: 1100
-              },
-              kind: "nullable",
-              type: {
-                location: {
-                  type: "source",
-                  fileName: "HgService.js",
-                  line: 1100
-                },
-                kind: "string"
-              }
-            }
-          }],
-          returnType: {
-            location: {
-              type: "source",
-              fileName: "HgService.js",
-              line: 1101
-            },
-            kind: "observable",
-            type: {
-              location: {
-                type: "source",
-                fileName: "HgService.js",
-                line: 1101
-              },
-              kind: "named",
-              name: "ProcessMessage"
-            }
-          }
-        },
-        pull: {
-          location: {
-            type: "source",
-            fileName: "HgService.js",
-            line: 1121
-          },
-          kind: "function",
-          argumentTypes: [{
-            name: "options",
-            type: {
-              location: {
-                type: "source",
-                fileName: "HgService.js",
-                line: 1121
-              },
-              kind: "array",
-              type: {
-                location: {
-                  type: "source",
-                  fileName: "HgService.js",
-                  line: 1121
-                },
-                kind: "string"
-              }
-            }
-          }],
-          returnType: {
-            location: {
-              type: "source",
-              fileName: "HgService.js",
-              line: 1121
-            },
-            kind: "observable",
-            type: {
-              location: {
-                type: "source",
-                fileName: "HgService.js",
-                line: 1121
-              },
-              kind: "named",
-              name: "ProcessMessage"
-            }
-          }
-        },
-        copy: {
-          location: {
-            type: "source",
-            fileName: "HgService.js",
-            line: 1138
-          },
-          kind: "function",
-          argumentTypes: [{
-            name: "filePaths",
-            type: {
-              location: {
-                type: "source",
-                fileName: "HgService.js",
-                line: 1139
-              },
-              kind: "array",
-              type: {
-                location: {
-                  type: "source",
-                  fileName: "HgService.js",
-                  line: 1139
+                  line: 964
                 },
                 kind: "named",
                 name: "NuclideUri"
@@ -5153,7 +4729,7 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "HgService.js",
-                line: 1140
+                line: 965
               },
               kind: "named",
               name: "NuclideUri"
@@ -5164,14 +4740,14 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "HgService.js",
-                line: 1141
+                line: 966
               },
               kind: "nullable",
               type: {
                 location: {
                   type: "source",
                   fileName: "HgService.js",
-                  line: 1141
+                  line: 966
                 },
                 kind: "boolean"
               }
@@ -5181,14 +4757,540 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "HgService.js",
-              line: 1142
+              line: 967
             },
             kind: "promise",
             type: {
               location: {
                 type: "source",
                 fileName: "HgService.js",
-                line: 1142
+                line: 967
+              },
+              kind: "void"
+            }
+          }
+        },
+        remove: {
+          location: {
+            type: "source",
+            fileName: "HgService.js",
+            line: 990
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "filePaths",
+            type: {
+              location: {
+                type: "source",
+                fileName: "HgService.js",
+                line: 990
+              },
+              kind: "array",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "HgService.js",
+                  line: 990
+                },
+                kind: "named",
+                name: "NuclideUri"
+              }
+            }
+          }, {
+            name: "after",
+            type: {
+              location: {
+                type: "source",
+                fileName: "HgService.js",
+                line: 990
+              },
+              kind: "nullable",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "HgService.js",
+                  line: 990
+                },
+                kind: "boolean"
+              }
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "HgService.js",
+              line: 990
+            },
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "HgService.js",
+                line: 990
+              },
+              kind: "void"
+            }
+          }
+        },
+        add: {
+          location: {
+            type: "source",
+            fileName: "HgService.js",
+            line: 1011
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "filePaths",
+            type: {
+              location: {
+                type: "source",
+                fileName: "HgService.js",
+                line: 1011
+              },
+              kind: "array",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "HgService.js",
+                  line: 1011
+                },
+                kind: "named",
+                name: "NuclideUri"
+              }
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "HgService.js",
+              line: 1011
+            },
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "HgService.js",
+                line: 1011
+              },
+              kind: "void"
+            }
+          }
+        },
+        getTemplateCommitMessage: {
+          location: {
+            type: "source",
+            fileName: "HgService.js",
+            line: 1015
+          },
+          kind: "function",
+          argumentTypes: [],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "HgService.js",
+              line: 1015
+            },
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "HgService.js",
+                line: 1015
+              },
+              kind: "nullable",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "HgService.js",
+                  line: 1015
+                },
+                kind: "string"
+              }
+            }
+          }
+        },
+        getHeadCommitMessage: {
+          location: {
+            type: "source",
+            fileName: "HgService.js",
+            line: 1031
+          },
+          kind: "function",
+          argumentTypes: [],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "HgService.js",
+              line: 1031
+            },
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "HgService.js",
+                line: 1031
+              },
+              kind: "nullable",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "HgService.js",
+                  line: 1031
+                },
+                kind: "string"
+              }
+            }
+          }
+        },
+        log: {
+          location: {
+            type: "source",
+            fileName: "HgService.js",
+            line: 1051
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "filePaths",
+            type: {
+              location: {
+                type: "source",
+                fileName: "HgService.js",
+                line: 1051
+              },
+              kind: "array",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "HgService.js",
+                  line: 1051
+                },
+                kind: "named",
+                name: "NuclideUri"
+              }
+            }
+          }, {
+            name: "limit",
+            type: {
+              location: {
+                type: "source",
+                fileName: "HgService.js",
+                line: 1051
+              },
+              kind: "nullable",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "HgService.js",
+                  line: 1051
+                },
+                kind: "number"
+              }
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "HgService.js",
+              line: 1051
+            },
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "HgService.js",
+                line: 1051
+              },
+              kind: "named",
+              name: "VcsLogResponse"
+            }
+          }
+        },
+        fetchMergeConflicts: {
+          location: {
+            type: "source",
+            fileName: "HgService.js",
+            line: 1068
+          },
+          kind: "function",
+          argumentTypes: [],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "HgService.js",
+              line: 1068
+            },
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "HgService.js",
+                line: 1068
+              },
+              kind: "array",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "HgService.js",
+                  line: 1068
+                },
+                kind: "named",
+                name: "MergeConflict"
+              }
+            }
+          }
+        },
+        resolveConflictedFile: {
+          location: {
+            type: "source",
+            fileName: "HgService.js",
+            line: 1113
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "filePath",
+            type: {
+              location: {
+                type: "source",
+                fileName: "HgService.js",
+                line: 1113
+              },
+              kind: "named",
+              name: "NuclideUri"
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "HgService.js",
+              line: 1113
+            },
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "HgService.js",
+                line: 1113
+              },
+              kind: "void"
+            }
+          }
+        },
+        continueRebase: {
+          location: {
+            type: "source",
+            fileName: "HgService.js",
+            line: 1117
+          },
+          kind: "function",
+          argumentTypes: [],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "HgService.js",
+              line: 1117
+            },
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "HgService.js",
+                line: 1117
+              },
+              kind: "void"
+            }
+          }
+        },
+        abortRebase: {
+          location: {
+            type: "source",
+            fileName: "HgService.js",
+            line: 1121
+          },
+          kind: "function",
+          argumentTypes: [],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "HgService.js",
+              line: 1121
+            },
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "HgService.js",
+                line: 1121
+              },
+              kind: "void"
+            }
+          }
+        },
+        rebase: {
+          location: {
+            type: "source",
+            fileName: "HgService.js",
+            line: 1125
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "destination",
+            type: {
+              location: {
+                type: "source",
+                fileName: "HgService.js",
+                line: 1126
+              },
+              kind: "string"
+            }
+          }, {
+            name: "source",
+            type: {
+              location: {
+                type: "source",
+                fileName: "HgService.js",
+                line: 1127
+              },
+              kind: "nullable",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "HgService.js",
+                  line: 1127
+                },
+                kind: "string"
+              }
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "HgService.js",
+              line: 1128
+            },
+            kind: "observable",
+            type: {
+              location: {
+                type: "source",
+                fileName: "HgService.js",
+                line: 1128
+              },
+              kind: "named",
+              name: "ProcessMessage"
+            }
+          }
+        },
+        pull: {
+          location: {
+            type: "source",
+            fileName: "HgService.js",
+            line: 1148
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "options",
+            type: {
+              location: {
+                type: "source",
+                fileName: "HgService.js",
+                line: 1148
+              },
+              kind: "array",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "HgService.js",
+                  line: 1148
+                },
+                kind: "string"
+              }
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "HgService.js",
+              line: 1148
+            },
+            kind: "observable",
+            type: {
+              location: {
+                type: "source",
+                fileName: "HgService.js",
+                line: 1148
+              },
+              kind: "named",
+              name: "ProcessMessage"
+            }
+          }
+        },
+        copy: {
+          location: {
+            type: "source",
+            fileName: "HgService.js",
+            line: 1165
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "filePaths",
+            type: {
+              location: {
+                type: "source",
+                fileName: "HgService.js",
+                line: 1166
+              },
+              kind: "array",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "HgService.js",
+                  line: 1166
+                },
+                kind: "named",
+                name: "NuclideUri"
+              }
+            }
+          }, {
+            name: "destPath",
+            type: {
+              location: {
+                type: "source",
+                fileName: "HgService.js",
+                line: 1167
+              },
+              kind: "named",
+              name: "NuclideUri"
+            }
+          }, {
+            name: "after",
+            type: {
+              location: {
+                type: "source",
+                fileName: "HgService.js",
+                line: 1168
+              },
+              kind: "nullable",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "HgService.js",
+                  line: 1168
+                },
+                kind: "boolean"
+              }
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "HgService.js",
+              line: 1169
+            },
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "HgService.js",
+                line: 1169
               },
               kind: "void"
             }

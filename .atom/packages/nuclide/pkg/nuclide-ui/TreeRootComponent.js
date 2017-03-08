@@ -110,6 +110,7 @@ class TreeRootComponent extends _reactForAtom.React.Component {
     if (!prevState || this.state.selectedKeys !== prevState.selectedKeys) {
       const firstSelectedDescendant = this.refs[FIRST_SELECTED_DESCENDANT_REF];
       if (firstSelectedDescendant !== undefined) {
+        // $FlowFixMe
         _reactForAtom.ReactDOM.findDOMNode(firstSelectedDescendant).scrollIntoViewIfNeeded(false);
       }
     }

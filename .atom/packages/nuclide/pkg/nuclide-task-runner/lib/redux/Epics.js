@@ -310,7 +310,8 @@ function createTaskObservable(taskMeta, getState) {
     taskFailedNotification.onDidDismiss(() => {
       taskFailedNotification = null;
     });
-    (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error('Error running task:', taskMeta, error);
+    const taskMetaForLogging = Object.assign({}, taskMeta, { taskRunner: undefined });
+    (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error('Error running task:', taskMetaForLogging, error);
     return _rxjsBundlesRxMinJs.Observable.of({
       type: (_Actions || _load_Actions()).TASK_ERRORED,
       payload: {

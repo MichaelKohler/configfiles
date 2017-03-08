@@ -10,7 +10,11 @@ let connectionToFlowService = (() => {
   var _ref = (0, _asyncToGenerator.default)(function* (connection) {
     const flowService = (0, (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).getServiceByConnection)('FlowService', connection);
     const fileNotifier = yield (0, (_nuclideOpenFiles || _load_nuclideOpenFiles()).getNotifierByConnection)(connection);
-    const languageService = yield flowService.initialize(fileNotifier);
+    const config = {
+      functionSnippetShouldIncludeArguments: Boolean((_featureConfig || _load_featureConfig()).default.get('nuclide-flow.functionSnippetShouldIncludeArguments')),
+      stopFlowOnExit: Boolean((_featureConfig || _load_featureConfig()).default.get('nuclide-flow.stopFlowOnExit'))
+    };
+    const languageService = yield flowService.initialize(fileNotifier, config);
 
     return languageService;
   });

@@ -117,14 +117,18 @@ class BreakpointListComponent extends _reactForAtom.React.Component {
         'div',
         { className: 'nuclide-debugger-breakpoint', key: i },
         _reactForAtom.React.createElement((_Checkbox || _load_Checkbox()).Checkbox, {
-          label: label,
           checked: enabled,
           indeterminate: !resolved,
           disabled: !resolved,
           onChange: this._handleBreakpointEnabledChange.bind(this, breakpoint),
           title: resolved ? null : 'Unresolved Breakpoint',
           className: (0, (_classnames || _load_classnames()).default)(resolved ? '' : 'nuclide-debugger-breakpoint-unresolved')
-        })
+        }),
+        _reactForAtom.React.createElement(
+          'span',
+          { className: 'nuclide-debugger-breakpoint' },
+          label
+        )
       );
       return _reactForAtom.React.createElement(
         (_ListView || _load_ListView()).ListViewItem,

@@ -192,7 +192,7 @@ function _load_autocomplete() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// From https://phabricator.intern.facebook.com/diffusion/FBS/browse/master/fbcode/hphp/hack/src/utils/exit_status.ml
+// From hphp/hack/src/utils/exit_status.ml
 const HACK_SERVER_ALREADY_EXISTS_EXIT_CODE = 77; /**
                                                   * Copyright (c) 2015-present, Facebook, Inc.
                                                   * All rights reserved.

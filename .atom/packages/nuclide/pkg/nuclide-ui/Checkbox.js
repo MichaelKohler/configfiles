@@ -68,6 +68,7 @@ class Checkbox extends _reactForAtom.React.PureComponent {
    * @see https://www.w3.org/TR/html5/forms.html#the-input-element
    */
   _setIndeterminate() {
+    // $FlowFixMe
     _reactForAtom.ReactDOM.findDOMNode(this.refs.input).indeterminate = this.props.indeterminate;
   }
 

@@ -71,8 +71,10 @@ class CreateConnectionProfileForm extends _reactForAtom.React.Component {
     const root = _reactForAtom.ReactDOM.findDOMNode(this);
     this.disposables.add(
     // Hitting enter when this panel has focus should confirm the dialog.
+    // $FlowFixMe
     atom.commands.add(root, 'core:confirm', this._clickSave),
     // Hitting escape when this panel has focus should cancel the dialog.
+    // $FlowFixMe
     atom.commands.add(root, 'core:cancel', this._clickCancel));
     this.refs['profile-name'].focus();
   }

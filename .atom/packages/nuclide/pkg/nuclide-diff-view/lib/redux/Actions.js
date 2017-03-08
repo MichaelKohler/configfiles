@@ -38,6 +38,7 @@ exports.setIsPrepareMode = setIsPrepareMode;
 exports.setVerbatimModeEnabled = setVerbatimModeEnabled;
 exports.updateShouldUseTextBasedForm = updateShouldUseTextBasedForm;
 exports.setEnabledFeatures = setEnabledFeatures;
+exports.splitRevision = splitRevision;
 
 var _ActionTypes;
 
@@ -384,6 +385,16 @@ function setEnabledFeatures(enabledFeatures) {
     type: (_ActionTypes || _load_ActionTypes()).SET_ENABLED_FEATURES,
     payload: {
       enabledFeatures
+    }
+  };
+}
+
+function splitRevision(publishUpdates, repository) {
+  return {
+    type: (_ActionTypes || _load_ActionTypes()).SPLIT_REVISION,
+    payload: {
+      publishUpdates,
+      repository
     }
   };
 }

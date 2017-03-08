@@ -50,7 +50,9 @@ class CreateBookmarkModal extends _reactForAtom.React.Component {
   }
 
   componentDidMount() {
-    this.disposables.add(atom.commands.add(_reactForAtom.ReactDOM.findDOMNode(this), 'core:confirm', this._handleCreateClick), (_featureConfig || _load_featureConfig()).default.observe((_constants || _load_constants()).STACKED_CONFIG_KEY, () => this.forceUpdate()));
+    this.disposables.add(
+    // $FlowFixMe
+    atom.commands.add(_reactForAtom.ReactDOM.findDOMNode(this), 'core:confirm', this._handleCreateClick), (_featureConfig || _load_featureConfig()).default.observe((_constants || _load_constants()).STACKED_CONFIG_KEY, () => this.forceUpdate()));
     this.refs.atomTextEditor.focus();
   }
 

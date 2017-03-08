@@ -104,7 +104,8 @@ class NewDebuggerView extends _reactForAtom.React.PureComponent {
     this.state = {
       showThreadsWindow: Boolean(debuggerStore.getSettings().get('SupportThreadsWindow')),
       customThreadColumns: debuggerStore.getSettings().get('CustomThreadColumns') || [],
-      mode: debuggerStore.getDebuggerMode()
+      mode: debuggerStore.getDebuggerMode(),
+      threadsComponentTitle: String(debuggerStore.getSettings().get('threadsComponentTitle'))
     };
   }
 
@@ -114,7 +115,8 @@ class NewDebuggerView extends _reactForAtom.React.PureComponent {
       this.setState({
         showThreadsWindow: Boolean(debuggerStore.getSettings().get('SupportThreadsWindow')),
         customThreadColumns: debuggerStore.getSettings().get('CustomThreadColumns') || [],
-        mode: debuggerStore.getDebuggerMode()
+        mode: debuggerStore.getDebuggerMode(),
+        threadsComponentTitle: String(debuggerStore.getSettings().get('threadsComponentTitle'))
       });
     }));
   }
@@ -128,48 +130,84 @@ class NewDebuggerView extends _reactForAtom.React.PureComponent {
       model
     } = this.props;
     const actions = model.getActions();
-    const mode = this.state.mode;
+    const {
+      mode,
+      threadsComponentTitle,
+      customThreadColumns
+    } = this.state;
     const WatchExpressionComponentWrapped = this._watchExpressionComponentWrapped;
     const ScopesComponentWrapped = this._scopesComponentWrapped;
     const disabledClass = mode !== (_DebuggerStore || _load_DebuggerStore()).DebuggerMode.RUNNING ? '' : ' nuclide-debugger-container-new-disabled';
 
-    const threadsSection = this.state.showThreadsWindow ? _reactForAtom.React.createElement(
+    let threadsSection = null;
+    if (this.state.showThreadsWindow) {
+      threadsSection = _reactForAtom.React.createElement(
+        (_ResizableFlexContainer || _load_ResizableFlexContainer()).ResizableFlexItem,
+        { initialFlexScale: 1 },
+        _reactForAtom.React.createElement(
+          (_Section || _load_Section()).Section,
+          { headline: threadsComponentTitle,
+            className: (0, (_classnames || _load_classnames()).default)('nuclide-debugger-section-header', disabledClass) },
+          _reactForAtom.React.createElement(
+            'div',
+            { className: 'nuclide-debugger-section-content' },
+            _reactForAtom.React.createElement((_DebuggerThreadsComponent || _load_DebuggerThreadsComponent()).DebuggerThreadsComponent, {
+              bridge: this.props.model.getBridge(),
+              threadStore: model.getThreadStore(),
+              customThreadColumns: customThreadColumns,
+              threadName: threadsComponentTitle
+            })
+          )
+        )
+      );
+    }
+
+    const breakpointItem = _reactForAtom.React.createElement(
       (_ResizableFlexContainer || _load_ResizableFlexContainer()).ResizableFlexItem,
       { initialFlexScale: 1 },
       _reactForAtom.React.createElement(
         (_Section || _load_Section()).Section,
-        { headline: 'Threads',
-          className: (0, (_classnames || _load_classnames()).default)('nuclide-debugger-section-header', disabledClass) },
+        { headline: 'Breakpoints',
+          key: 'breakpoints',
+          className: 'nuclide-debugger-section-header' },
         _reactForAtom.React.createElement(
           'div',
           { className: 'nuclide-debugger-section-content' },
-          _reactForAtom.React.createElement((_DebuggerThreadsComponent || _load_DebuggerThreadsComponent()).DebuggerThreadsComponent, {
-            bridge: this.props.model.getBridge(),
-            threadStore: model.getThreadStore(),
-            customThreadColumns: this.state.customThreadColumns
+          _reactForAtom.React.createElement((_BreakpointListComponent || _load_BreakpointListComponent()).BreakpointListComponent, {
+            actions: actions,
+            breakpointStore: model.getBreakpointStore()
           })
         )
       )
-    ) : null;
+    );
 
     const debuggerStoppedNotice = mode !== (_DebuggerStore || _load_DebuggerStore()).DebuggerMode.STOPPED ? null : _reactForAtom.React.createElement(
-      'div',
-      { className: 'nuclide-debugger-state-notice' },
+      (_ResizableFlexContainer || _load_ResizableFlexContainer()).ResizableFlexContainer,
+      { direction: (_ResizableFlexContainer || _load_ResizableFlexContainer()).FlexDirections.VERTICAL },
       _reactForAtom.React.createElement(
-        'span',
-        null,
-        'The debugger is not attached.'
-      ),
-      _reactForAtom.React.createElement(
-        'div',
-        { className: 'nuclide-debugger-state-notice' },
+        (_ResizableFlexContainer || _load_ResizableFlexContainer()).ResizableFlexItem,
+        { initialFlexScale: 1 },
         _reactForAtom.React.createElement(
-          (_Button || _load_Button()).Button,
-          {
-            onClick: () => atom.commands.dispatch(atom.views.getView(atom.workspace), 'nuclide-debugger:toggle') },
-          'Start debugging'
+          'div',
+          { className: 'nuclide-debugger-state-notice' },
+          _reactForAtom.React.createElement(
+            'span',
+            null,
+            'The debugger is not attached.'
+          ),
+          _reactForAtom.React.createElement(
+            'div',
+            { className: 'nuclide-debugger-state-notice' },
+            _reactForAtom.React.createElement(
+              (_Button || _load_Button()).Button,
+              {
+                onClick: () => atom.commands.dispatch(atom.views.getView(atom.workspace), 'nuclide-debugger:toggle') },
+              'Start debugging'
+            )
+          )
         )
-      )
+      ),
+      breakpointItem
     );
 
     const debugeeRunningNotice = mode !== (_DebuggerStore || _load_DebuggerStore()).DebuggerMode.RUNNING ? null : _reactForAtom.React.createElement(
@@ -201,24 +239,7 @@ class NewDebuggerView extends _reactForAtom.React.PureComponent {
           )
         )
       ),
-      _reactForAtom.React.createElement(
-        (_ResizableFlexContainer || _load_ResizableFlexContainer()).ResizableFlexItem,
-        { initialFlexScale: 1 },
-        _reactForAtom.React.createElement(
-          (_Section || _load_Section()).Section,
-          { headline: 'Breakpoints',
-            key: 'breakpoints',
-            className: 'nuclide-debugger-section-header' },
-          _reactForAtom.React.createElement(
-            'div',
-            { className: 'nuclide-debugger-section-content' },
-            _reactForAtom.React.createElement((_BreakpointListComponent || _load_BreakpointListComponent()).BreakpointListComponent, {
-              actions: actions,
-              breakpointStore: model.getBreakpointStore()
-            })
-          )
-        )
-      ),
+      breakpointItem,
       _reactForAtom.React.createElement(
         (_ResizableFlexContainer || _load_ResizableFlexContainer()).ResizableFlexItem,
         { initialFlexScale: 1 },

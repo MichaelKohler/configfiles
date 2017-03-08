@@ -91,12 +91,22 @@ let debugAndroidActivity = (() => {
 
     const debuggerService = yield getDebuggerService();
     try {
+      (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)('fb-java-debugger-start', {
+        startType: 'buck-toolbar',
+        target: buckProjectPath,
+        targetType: 'android',
+        targetClass: androidActivity
+      });
+
       /* eslint-disable nuclide-internal/no-cross-atom-imports */
       // $FlowFB
       const procInfo = require('../../fb-debugger-java/lib/AdbProcessInfo');
-      debuggerService.startDebugging(new procInfo.AdbProcessInfo(buckProjectPath, androidActivity));
+      debuggerService.startDebugging(new procInfo.AdbProcessInfo(buckProjectPath, null, null, androidActivity));
       /* eslint-enable nuclide-internal/no-cross-atom-imports */
     } catch (e) {
+      (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)('fb-java-debugger-unavailable', {
+        error: e.toString()
+      });
       throw new Error('Java debugger service is not available.');
     }
   });
@@ -176,8 +186,16 @@ function _load_nuclideRemoteConnection() {
   return _nuclideRemoteConnection = require('../../nuclide-remote-connection');
 }
 
+var _nuclideAnalytics;
+
+function _load_nuclideAnalytics() {
+  return _nuclideAnalytics = require('../../nuclide-analytics');
+}
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// eslint-disable-next-line nuclide-internal/no-cross-atom-imports
+const LLDB_PROCESS_ID_REGEX = /lldb -p ([0-9]+)/;
 // eslint-disable-next-line nuclide-internal/no-cross-atom-imports
 /**
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -188,9 +206,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  *
  * 
  */
-
-const LLDB_PROCESS_ID_REGEX = /lldb -p ([0-9]+)/;
-// eslint-disable-next-line nuclide-internal/no-cross-atom-imports
 
 const ANDROID_ACTIVITY_REGEX = /Starting activity (.*)\/(.*)\.\.\./;
 const ANDROID_TARGET_REGEX = /OK +(.+\.apk)/;

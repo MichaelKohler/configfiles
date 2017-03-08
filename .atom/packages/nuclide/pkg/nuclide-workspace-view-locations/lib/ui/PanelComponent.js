@@ -148,12 +148,16 @@ class PanelComponent extends _reactForAtom.React.Component {
    */
   _repaint() {
     const element = _reactForAtom.ReactDOM.findDOMNode(this);
+    // $FlowFixMe
     const isVisible = getComputedStyle(element).getPropertyValue('visibility');
 
     if (isVisible) {
       // Force a redraw so the scrollbars are styled correctly based on the theme
+      // $FlowFixMe
       element.style.display = 'none';
+      // $FlowFixMe
       element.offsetWidth;
+      // $FlowFixMe
       element.style.display = '';
     }
   }
@@ -243,6 +247,7 @@ class PanelComponent extends _reactForAtom.React.Component {
       if (el == null || toggleButtonEl == null) {
         return false;
       }
+      // $FlowFixMe
       const panelArea = el.getBoundingClientRect();
       const toggleButtonArea = toggleButtonEl.getBoundingClientRect();
       const mousePosition = { x: event.pageX, y: event.pageY };
@@ -251,6 +256,7 @@ class PanelComponent extends _reactForAtom.React.Component {
   }
 
   _handleToggleButton(toggleButton) {
+    // $FlowFixMe
     this._toggleButtonEl = toggleButton == null ? null : _reactForAtom.ReactDOM.findDOMNode(toggleButton);
   }
 
@@ -281,15 +287,19 @@ class PanelComponent extends _reactForAtom.React.Component {
     let size = 0;
     switch (this.props.position) {
       case 'left':
+        // $FlowFixMe
         size = event.pageX - containerEl.getBoundingClientRect().left;
         break;
       case 'top':
+        // $FlowFixMe
         size = event.pageY - containerEl.getBoundingClientRect().top;
         break;
       case 'bottom':
+        // $FlowFixMe
         size = containerEl.getBoundingClientRect().bottom - event.pageY;
         break;
       case 'right':
+        // $FlowFixMe
         size = containerEl.getBoundingClientRect().right - event.pageX;
         break;
     }

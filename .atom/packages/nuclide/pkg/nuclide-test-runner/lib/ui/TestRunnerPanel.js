@@ -109,6 +109,7 @@ class TestRunnerPanel extends _reactForAtom.React.Component {
     this.renderTree();
     this.renderConsole();
 
+    // $FlowFixMe
     _reactForAtom.ReactDOM.findDOMNode(this.refs.paneContainer).appendChild(atom.views.getView(this._paneContainer));
   }
 

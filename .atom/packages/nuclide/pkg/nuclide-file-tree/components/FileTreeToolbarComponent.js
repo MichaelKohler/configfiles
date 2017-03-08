@@ -129,7 +129,7 @@ class FileTreeToolbarComponent extends _reactForAtom.React.Component {
     const workingSetsStore = this._store.getWorkingSetsStore();
     let shouldShowButtonLabel;
     if (workingSetsStore != null) {
-      shouldShowButtonLabel = workingSetsStore.getApplicableDefinitions().length === 0;
+      shouldShowButtonLabel = workingSetsStore.getDefinitions().length === 0;
     }
     const workingSet = this._store.getWorkingSet();
     const editedWorkingSetIsEmpty = this._store.isEditedWorkingSetEmpty();

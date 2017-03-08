@@ -8,22 +8,28 @@ exports.initialize = undefined;
 var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
 
 let initialize = exports.initialize = (() => {
-  var _ref = (0, _asyncToGenerator.default)(function* (fileNotifier) {
+  var _ref = (0, _asyncToGenerator.default)(function* (fileNotifier, config) {
     if (!(fileNotifier instanceof (_nuclideOpenFilesRpc || _load_nuclideOpenFilesRpc()).FileCache)) {
       throw new Error('Invariant violation: "fileNotifier instanceof FileCache"');
     }
 
     const fileCache = fileNotifier;
-    return new FlowLanguageService(fileCache);
+    return new FlowLanguageService(fileCache, config);
   });
 
-  return function initialize(_x) {
+  return function initialize(_x, _x2) {
     return _ref.apply(this, arguments);
   };
 })();
 
 exports.dispose = dispose;
 exports.flowGetAst = flowGetAst;
+
+var _config;
+
+function _load_config() {
+  return _config = require('./config');
+}
 
 var _nuclideLanguageServiceRpc;
 
@@ -59,15 +65,17 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // If types are added here, make sure to also add them to FlowConstants.js. This needs to be the
 // canonical type definition so that we can use these in the service framework.
-let state = null; /**
-                   * Copyright (c) 2015-present, Facebook, Inc.
-                   * All rights reserved.
-                   *
-                   * This source code is licensed under the license found in the LICENSE file in
-                   * the root directory of this source tree.
-                   *
-                   * 
-                   */
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ */
+
+let state = null;
 
 function getState() {
   if (state == null) {
@@ -84,7 +92,7 @@ function dispose() {
 }
 
 class FlowLanguageService extends (_nuclideLanguageServiceRpc || _load_nuclideLanguageServiceRpc()).MultiProjectLanguageService {
-  constructor(fileCache) {
+  constructor(fileCache, config) {
     const logger = (0, (_nuclideLogging || _load_nuclideLogging()).getCategoryLogger)('Flow');
     super(logger, fileCache, '.flowconfig', ['.js', '.jsx'], projectDir => {
       const execInfoContainer = getState().getExecInfoContainer();
@@ -92,6 +100,9 @@ class FlowLanguageService extends (_nuclideLanguageServiceRpc || _load_nuclideLa
       const languageService = new (_nuclideLanguageServiceRpc || _load_nuclideLanguageServiceRpc()).ServerLanguageService(fileCache, singleProjectLS);
       return Promise.resolve(languageService);
     });
+    for (const key of Object.keys(config)) {
+      (0, (_config || _load_config()).setConfig)(key, config[key]);
+    }
   }
 
   getOutline(fileVersion) {

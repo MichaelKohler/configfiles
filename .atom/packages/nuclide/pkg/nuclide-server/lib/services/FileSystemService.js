@@ -192,7 +192,7 @@ let readFile = exports.readFile = (() => {
 
 let copyFilePermissions = (() => {
   var _ref8 = (0, _asyncToGenerator.default)(function* (sourcePath, destinationPath) {
-    let permissions = null;
+    let permissions;
     try {
       permissions = (yield (_fsPromise || _load_fsPromise()).default.stat(sourcePath)).mode;
     } catch (e) {
@@ -200,10 +200,11 @@ let copyFilePermissions = (() => {
       if (e.code !== 'ENOENT') {
         throw e;
       }
+      // For new files, use the default process file creation mask.
+      // $FlowIssue: umask argument is optional
+      permissions = 0o666 & ~process.umask(); // eslint-disable-line no-bitwise
     }
-    if (permissions != null) {
-      yield (_fsPromise || _load_fsPromise()).default.chmod(destinationPath, permissions);
-    }
+    yield (_fsPromise || _load_fsPromise()).default.chmod(destinationPath, permissions);
   });
 
   return function copyFilePermissions(_x11, _x12) {

@@ -98,6 +98,7 @@ class DebuggerActions {
       _this.setError(null);
       _this._handleDebugModeStart();
       _this.setDebuggerMode((_DebuggerStore || _load_DebuggerStore()).DebuggerMode.STARTING);
+      _this.setDebugProcessInfo(processInfo);
       try {
         atom.commands.dispatch(atom.views.getView(atom.workspace), 'nuclide-debugger:show');
         const debuggerInstance = yield processInfo.debug();
@@ -105,8 +106,8 @@ class DebuggerActions {
         const supportThreadsWindow = processInfo.supportThreads() && (yield (0, (_passesGK || _load_passesGK()).default)(GK_DEBUGGER_THREADS_WINDOW)) && (yield _this._allowThreadsForPhp(processInfo));
         _this._store.getSettings().set('SupportThreadsWindow', supportThreadsWindow);
         if (supportThreadsWindow) {
-          const customColumns = processInfo.getThreadColumns();
-          _this._store.getSettings().set('CustomThreadColumns', customColumns);
+          _this._store.getSettings().set('CustomThreadColumns', processInfo.getThreadColumns());
+          _this._store.getSettings().set('threadsComponentTitle', processInfo.getThreadsComponentTitle());
         }
         const singleThreadStepping = processInfo.supportSingleThreadStepping();
         if (singleThreadStepping) {
@@ -214,8 +215,9 @@ class DebuggerActions {
     });
 
     this.clearInterface();
-
+    this.updateControlButtons([]);
     this.setDebuggerMode((_DebuggerStore || _load_DebuggerStore()).DebuggerMode.STOPPED);
+    this.setDebugProcessInfo(null);
     (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)(AnalyticsEvents.DEBUGGER_STOP);
     (0, (_AnalyticsHelper || _load_AnalyticsHelper()).endTimerTracking)();
 
@@ -581,6 +583,13 @@ class DebuggerActions {
         id,
         response
       }
+    });
+  }
+
+  setDebugProcessInfo(processInfo) {
+    this._dispatcher.dispatch({
+      actionType: (_DebuggerDispatcher || _load_DebuggerDispatcher()).ActionTypes.SET_DEBUG_PROCESS_INFO,
+      data: processInfo
     });
   }
 

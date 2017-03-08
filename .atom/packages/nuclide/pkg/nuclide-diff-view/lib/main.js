@@ -333,6 +333,11 @@ class Activation {
       } else {
         atom.commands.dispatch(atom.views.getView(atom.workspace), 'nuclide-diff-view:open');
       }
+    }), atom.commands.add('atom-workspace', 'nuclide-diff-view:split', () => {
+      const { activeRepository } = this._store.getState();
+      if (activeRepository) {
+        this._actionCreators.splitRevision(this._progressUpdates, activeRepository);
+      }
     }),
 
     // Context Menu Items.

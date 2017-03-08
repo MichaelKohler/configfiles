@@ -75,6 +75,7 @@ class Button extends _reactForAtom.React.Component {
     if (node == null) {
       return;
     }
+    // $FlowFixMe
     node.focus();
   }
 

@@ -751,6 +751,23 @@ class HgService {
     return this._commitCode(message, args, isInteractive).publish();
   }
 
+  splitRevision() {
+    let editMergeConfigs;
+    return _rxjsBundlesRxMinJs.Observable.fromPromise((0, _asyncToGenerator.default)(function* () {
+      editMergeConfigs = yield (0, (_hgUtils || _load_hgUtils()).getEditMergeConfigs)();
+    })()).switchMap(() => {
+      if (!(editMergeConfigs != null)) {
+        throw new Error('editMergeConfigs cannot be null');
+      }
+
+      const execOptions = {
+        cwd: this._workingDirectory,
+        HGEDITOR: editMergeConfigs.hgEditor
+      };
+      return this._hgObserveExecution([...editMergeConfigs.args, 'split'], execOptions);
+    }).publish();
+  }
+
   revert(filePaths, toRevision) {
     const args = [...filePaths];
     if (toRevision != null) {
@@ -805,6 +822,13 @@ class HgService {
    */
   purge() {
     return this._runSimpleInWorkingDirectory('purge', []);
+  }
+
+  /**
+   * Undoes the effect of a local commit, specifically the working directory parent.
+   */
+  uncommit() {
+    return this._runSimpleInWorkingDirectory('uncommit', []);
   }
 
   /**
@@ -975,7 +999,7 @@ class HgService {
       });
       const origBackupPath = yield _this20._getOrigBackupPath();
       const conflicts = yield Promise.all(conflictedFiles.map((() => {
-        var _ref3 = (0, _asyncToGenerator.default)(function* (conflictedFile) {
+        var _ref4 = (0, _asyncToGenerator.default)(function* (conflictedFile) {
           let message;
           // Heuristic: If the `.orig` file doesn't exist, then it's deleted by the rebasing commit.
           if (yield _this20._checkOrigFile(origBackupPath, conflictedFile.path)) {
@@ -990,7 +1014,7 @@ class HgService {
         });
 
         return function (_x2) {
-          return _ref3.apply(this, arguments);
+          return _ref4.apply(this, arguments);
         };
       })()));
       return conflicts;
