@@ -37,6 +37,18 @@
       "atom-dxr-search"
       "tree-view"
     ]
+    ignoredNames: [
+      ".git"
+      ".hg"
+      ".svn"
+      ".DS_Store"
+      "._*"
+      "Thumbs.db"
+      "desktop.ini"
+      "node_modules"
+      "test.out"
+      "coverage"
+    ]
     packagesWithKeymapsDisabled: []
     telemetryConsent: "no"
     themes: [
