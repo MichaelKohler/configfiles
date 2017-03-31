@@ -1,6 +1,7 @@
 [ui]
 username = Michael Kohler <mkohler@picobudget.com>
 ignore = ~/.hgignore
+interface = curses
 
 [defaults]
 diff = -U 8 -p
@@ -13,13 +14,19 @@ qnew = -Ue
 prechangegroup.mq-no-pull = ! hg qtop > /dev/null 2>&1
 
 [extensions]
-mq =
-hgext.purge =
-hgext.hbisect =
-color =
-hgext.fetch =
-progress =
-rebase =
+mq = 
+hgext.purge = 
+hgext.hbisect = 
+color = 
+hgext.fetch = 
+progress = 
+rebase = 
+pager = 
+histedit = 
+fsmonitor = 
+blackbox = 
+firefoxtree = /Users/mkohler/.mozbuild/version-control-tools/hgext/firefoxtree
+push-to-try = /Users/mkohler/.mozbuild/version-control-tools/hgext/push-to-try
 
 [diff]
 git = 1
@@ -28,3 +35,27 @@ unified = 8
 
 [paths]
 try = ssh://hg.mozilla.org/try
+[pager]
+pager = LESS=FRSXQ less
+attend-help = true
+attend-incoming = true
+attend-outgoing = true
+attend-status = true
+attend-wip = true
+[alias]
+wip = log --graph --rev=wip --template=wip
+[revsetalias]
+wip = (parents(not public()) or not public() or . or (head() and branch(default))) and (not obsolete() or unstable()^) and not closed() and not (fxheads() - date(-90))
+[templates]
+wip = '{label("wip.branch", if(branches,"{branches} "))}{label(ifeq(graphnode,"x","wip.obsolete","wip.{phase}"),"{rev}:{node|short}")}{label("wip.user", " {author|user}")}{label("wip.tags", if(tags," {tags}"))}{label("wip.tags", if(fxheads," {fxheads}"))}{if(bookmarks," ")}{label("wip.bookmarks", if(bookmarks,bookmarks))}{label(ifcontains(rev, revset("parents()"), "wip.here"), " {desc|firstline}")}'
+[color]
+wip.bookmarks = yellow underline
+wip.branch = yellow
+wip.draft = green
+wip.here = red
+wip.obsolete = none
+wip.public = blue
+wip.tags = yellow
+wip.user = magenta
+[experimental]
+graphshorten = true
