@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.activate = activate;
+exports.initialize = initialize;
 exports.deserializeSourceControlSideBar = deserializeSourceControlSideBar;
 exports.consumeWorkspaceViewsService = consumeWorkspaceViewsService;
 exports.deactivate = deactivate;
@@ -117,9 +117,12 @@ let restored;
 
 const WORKSPACE_VIEW_URI = 'atom://nuclide/source-control';
 
-function activate(rawState) {
+const DESERIALIZER_VERSION = atom.workspace.getLeftDock == null ? 1 : 2;
+
+function initialize(rawState) {
   activated = true;
-  restored = rawState != null && rawState.restored === true;
+  const serializedVersionMatches = (rawState && rawState.version || 1) === DESERIALIZER_VERSION;
+  restored = rawState != null && serializedVersionMatches && rawState.restored === true;
   const initialState = getInitialState();
   const actions = new _rxjsBundlesRxMinJs.Subject();
   states = createStateStream((0, (_applyActionMiddleware || _load_applyActionMiddleware()).applyActionMiddleware)(actions, () => states.getValue()), initialState);
@@ -159,7 +162,7 @@ class SourceControlSideBar {
   }
 
   getDefaultLocation() {
-    return 'left-panel';
+    return 'left';
   }
 
   getTitle() {
@@ -342,6 +345,10 @@ function deactivate() {
 
 function serialize() {
   return {
-    restored: true
+    restored: true,
+    // Scrap our serialization when docks become available.
+    // TODO(matthewwithanm): After docks have been in Atom stable for a while, we can just change
+    //   this to "2"
+    version: atom.workspace.getLeftDock == null ? 1 : 2
   };
 }

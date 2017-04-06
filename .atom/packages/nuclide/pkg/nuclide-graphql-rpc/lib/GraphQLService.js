@@ -118,12 +118,12 @@ class GraphQLLanguageAnalyzer {
         const graphQLProcess = yield (0, (_GraphQLProcess || _load_GraphQLProcess()).getGraphQLProcess)(_this2._fileCache, filePath);
 
         if (!graphQLProcess) {
-          return [];
+          return { isIncomplete: false, items: [] };
         }
 
         const result = yield graphQLProcess.getAutocompleteSuggestions(buffer.getText(), position, filePath);
 
-        return result.map(function (completion) {
+        const items = result.map(function (completion) {
           return {
             text: completion.text,
             description: completion.description || null,
@@ -131,6 +131,10 @@ class GraphQLLanguageAnalyzer {
             leftLabelHTML: completion.typeName ? `<span style="color: #E10098;">${completion.typeName}</span>` : null
           };
         });
+        return {
+          isIncomplete: false,
+          items
+        };
       }));
     })();
   }

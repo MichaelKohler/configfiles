@@ -197,8 +197,7 @@ function deserializeAppState(rawState) {
   return {
     executors: new Map(),
     currentExecutorId: null,
-    // For performance reasons, we won't restore records until we've figured out windowing.
-    records: [],
+    records: rawState && rawState.records ? rawState.records.map(deserializeRecord) : [],
     history: [],
     providers: new Map(),
     providerStatuses: new Map(),
@@ -207,6 +206,20 @@ function deserializeAppState(rawState) {
     // here to conform to the AppState type defintion.
     maxMessageCount: Number.POSITIVE_INFINITY
   };
+}
+
+function deserializeRecord(record) {
+  return Object.assign({}, record, {
+    timestamp: parseDate(record.timestamp) || new Date(0)
+  });
+}
+
+function parseDate(raw) {
+  if (raw == null) {
+    return null;
+  }
+  const date = new Date(raw);
+  return isNaN(date.getTime()) ? null : date;
 }
 
 (0, (_createPackage || _load_createPackage()).default)(module.exports, Activation);

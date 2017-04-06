@@ -15,17 +15,24 @@ var _querystring = _interopRequireDefault(require('querystring'));
 
 var _url = _interopRequireDefault(require('url'));
 
+var _idx;
+
+function _load_idx() {
+  return _idx = _interopRequireDefault(require('idx'));
+}
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- */
+// eslint-disable-next-line nuclide-internal/prefer-nuclide-uri
+const { remote } = _electron.default; /**
+                                       * Copyright (c) 2015-present, Facebook, Inc.
+                                       * All rights reserved.
+                                       *
+                                       * This source code is licensed under the license found in the LICENSE file in
+                                       * the root directory of this source tree.
+                                       *
+                                       * 
+                                       */
 
 /**
  * This is a temporary hack to hook into atom://nuclide URIs until
@@ -42,9 +49,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  */
 
 /* global localStorage */
-
-const { remote } = _electron.default;
-// eslint-disable-next-line nuclide-internal/prefer-nuclide-uri
 
 if (!(remote != null)) {
   throw new Error('for Flow');
@@ -79,6 +83,8 @@ function getAtomInitializerScript() {
 
 // Read the previous window state and create Atom windows as appropriate.
 function restoreWindows(blobStore) {
+  var _ref, _ref2;
+
   if (!process.env.ATOM_HOME) {
     throw new Error('ATOM_HOME not found');
   }
@@ -92,7 +98,7 @@ function restoreWindows(blobStore) {
   loadSettings.windowInitializationScript = initScript;
   // Inherit the initialPaths from the first state.
   // We need to set this before initializing Atom to restore the state.
-  loadSettings.initialPaths = windowStates[0] != null && windowStates[0].initialPaths || [];
+  loadSettings.initialPaths = ((_ref = windowStates) != null ? (_ref2 = _ref[0]) != null ? _ref2.initialPaths : _ref2 : _ref) || [];
 
   // TODO(hansonw): Remove when Atom 1.15 is deployed.
   document.location.hash = encodeURIComponent(JSON.stringify(loadSettings));
@@ -130,7 +136,7 @@ function releaseLock() {
 // Normally this is expected to set up the Atom application window.
 
 exports.default = (() => {
-  var _ref = (0, _asyncToGenerator.default)(function* (blobStore) {
+  var _ref3 = (0, _asyncToGenerator.default)(function* (blobStore) {
     const currentWindow = remote.getCurrentWindow();
     try {
       const { urlToOpen } = getLoadSettings();
@@ -180,7 +186,7 @@ exports.default = (() => {
   });
 
   function initialize(_x) {
-    return _ref.apply(this, arguments);
+    return _ref3.apply(this, arguments);
   }
 
   return initialize;

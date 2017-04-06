@@ -204,6 +204,7 @@ const HACK_SERVER_ALREADY_EXISTS_EXIT_CODE = 77; /**
                                                   */
 
 const HACK_IDE_NEW_CLIENT_CONNECTED_EXIT_CODE = 207;
+const MAX_HACK_AUTOCOMPLETE_ITEMS = 100;
 
 let serviceRegistry = null;
 
@@ -289,7 +290,7 @@ class HackProcess extends (_nuclideRpc || _load_nuclideRpc()).RpcProcess {
       (_hackConfig || _load_hackConfig()).logger.log(`Attempting Hack Autocomplete: ${filePath}, ${position.toString()}`);
       const buffer = yield _this2.getBufferAtVersion(fileVersion);
       if (buffer == null) {
-        return [];
+        return { isIncomplete: false, items: [] };
       }
       const contents = buffer.getText();
       const offset = buffer.characterIndexForPosition(position);
@@ -304,9 +305,16 @@ class HackProcess extends (_nuclideRpc || _load_nuclideRpc()).RpcProcess {
       const service = _this2.getConnectionService();
 
       (_hackConfig || _load_hackConfig()).logger.log('Got Hack Service');
-      return (0, (_Completions || _load_Completions()).convertCompletions)(contents, offset, replacementPrefix, (
       // TODO: Include version number to ensure agreement on file version.
-      yield service.getCompletions(filePath, { line, column })));
+      const unfilteredItems = yield service.getCompletions(filePath, { line, column });
+      if (unfilteredItems == null) {
+        return null;
+      }
+      const isIncomplete = unfilteredItems.length === MAX_HACK_AUTOCOMPLETE_ITEMS;
+
+      const items = (0, (_Completions || _load_Completions()).convertCompletions)(contents, offset, replacementPrefix, unfilteredItems);
+
+      return { isIncomplete, items };
     })();
   }
 

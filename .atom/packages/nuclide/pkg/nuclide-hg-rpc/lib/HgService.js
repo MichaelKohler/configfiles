@@ -246,7 +246,6 @@ class HgService {
       let primarySubscriptionExpression = ['allof', ['not', ['dirname', '.hg']],
       // Hg appears to modify temporary files that begin with these
       // prefixes, every time a file is saved.
-      // TODO (t7832809) Remove this when it is unnecessary.
       ['not', ['match', 'hg-checkexec-*', 'wholename']], ['not', ['match', 'hg-checklink-*', 'wholename']],
       // This watchman subscription is used to determine when and which
       // files to fetch new statuses for. There is no reason to include
@@ -714,7 +713,7 @@ class HgService {
         cwd: this._workingDirectory,
         HGEDITOR: editMergeConfigs.hgEditor
       };
-      return this._hgObserveExecution([...editMergeConfigs.args, ...argumentsWithCommitFile], execOptions);
+      return this._hgObserveExecution([...editMergeConfigs.args, ...argumentsWithCommitFile], execOptions).switchMap((_hgUtils || _load_hgUtils()).processExitCodeAndThrow);
     }).finally(() => {
       if (tempFile != null) {
         (_fsPromise || _load_fsPromise()).default.unlink(tempFile);
@@ -804,11 +803,14 @@ class HgService {
    * @param options.
    */
   checkout(revision, create, options) {
-    const args = [revision];
+    const args = ['checkout', revision];
     if (options && options.clean) {
       args.push('--clean');
     }
-    return this._runSimpleInWorkingDirectory('checkout', args);
+    const executionOptions = {
+      cwd: this._workingDirectory
+    };
+    return (0, (_hgUtils || _load_hgUtils()).hgObserveExecution)(args, executionOptions).timeout(300000).switchMap((_hgUtils || _load_hgUtils()).processExitCodeAndThrow).publish();
   }
 
   show(revision) {
@@ -933,8 +935,7 @@ class HgService {
     var _this17 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      // Once TODO(t14843143) is done the extension would be enabled by default
-      const args = ['--config', 'extensions.debugcommitmessage= ', 'debugcommitmessage'];
+      const args = ['debugcommitmessage'];
       const execOptions = {
         cwd: _this17._workingDirectory
       };

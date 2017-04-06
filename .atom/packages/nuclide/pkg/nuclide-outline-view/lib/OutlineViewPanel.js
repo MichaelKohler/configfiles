@@ -57,7 +57,7 @@ class OutlineViewPanelState {
   }
 
   getDefaultLocation() {
-    return 'right-panel';
+    return 'right';
   }
 
   didChangeVisibility(visible) {

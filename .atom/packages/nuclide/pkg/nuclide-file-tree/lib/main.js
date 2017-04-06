@@ -20,6 +20,12 @@ function _load_UniversalDisposable() {
   return _UniversalDisposable = _interopRequireDefault(require('../../commons-node/UniversalDisposable'));
 }
 
+var _event;
+
+function _load_event() {
+  return _event = require('../../commons-node/event');
+}
+
 var _featureConfig;
 
 function _load_featureConfig() {
@@ -32,10 +38,10 @@ function _load_viewableFromReactElement() {
   return _viewableFromReactElement = require('../../commons-atom/viewableFromReactElement');
 }
 
-var _debounce;
+var _textEditor;
 
-function _load_debounce() {
-  return _debounce = _interopRequireDefault(require('../../commons-node/debounce'));
+function _load_textEditor() {
+  return _textEditor = require('../../commons-atom/text-editor');
 }
 
 var _observable;
@@ -70,6 +76,8 @@ function _load_Constants() {
 
 var _react = _interopRequireDefault(require('react'));
 
+var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
@@ -88,13 +96,21 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 const OPEN_FILES_UPDATE_DEBOUNCE_INTERVAL_MS = 150;
 
+const DESERIALIZER_VERSION = atom.workspace.getLeftDock == null ? 1 : 2;
+
 class Activation {
   // Has the package state been restored from a previous session?
-  constructor(state) {
+  constructor(rawState) {
+    let state = rawState || {};
+    const serializedVersionMatches = (state.version || 1) === DESERIALIZER_VERSION;
+    if (!serializedVersionMatches) {
+      state = {};
+    }
+
     this._disposables = new (_UniversalDisposable || _load_UniversalDisposable()).default();
 
     this._fileTreeController = new (_FileTreeController || _load_FileTreeController()).default(state == null ? null : state.tree);
-    this._restored = state != null && state.restored === true;
+    this._restored = state.restored === true;
 
     const excludeVcsIgnoredPathsSetting = 'core.excludeVcsIgnoredPaths';
     const hideIgnoredNamesSetting = 'nuclide-file-tree.hideIgnoredNames';
@@ -168,7 +184,12 @@ class Activation {
   serialize() {
     return {
       tree: this._fileTreeController.serialize(),
-      restored: true
+      restored: true,
+      // Scrap our serialization when docks become available. Technically, we only need to scrap
+      // the "restored" value, but this is simpler.
+      // TODO(matthewwithanm): After docks have been in Atom stable for a while, we can just change
+      //   this to "2"
+      version: atom.workspace.getLeftDock == null ? 1 : 2
     };
   }
 
@@ -181,30 +202,20 @@ class Activation {
     });
     this._disposables.add(currentSubscription);
 
-    let updateOpenFilesWorkingSet = this._fileTreeController.updateOpenFilesWorkingSet.bind(this._fileTreeController);
+    const rebuildSignals = _rxjsBundlesRxMinJs.Observable.merge((0, (_event || _load_event()).observableFromSubscribeFunction)(atom.workspace.onDidAddPaneItem.bind(atom.workspace)), (0, (_event || _load_event()).observableFromSubscribeFunction)(atom.workspace.onDidDestroyPaneItem.bind(atom.workspace)), (0, (_event || _load_event()).observableFromSubscribeFunction)((_textEditor || _load_textEditor()).observeTextEditors).flatMap(textEditor => {
+      return (0, (_event || _load_event()).observableFromSubscribeFunction)(textEditor.onDidChangePath.bind(textEditor)).takeUntil((0, (_event || _load_event()).observableFromSubscribeFunction)(textEditor.onDidDestroy.bind(textEditor)));
+    })).debounceTime(OPEN_FILES_UPDATE_DEBOUNCE_INTERVAL_MS);
 
-    this._disposables.add(() => {
-      updateOpenFilesWorkingSet = () => {};
-    });
-
-    const rebuildOpenFilesWorkingSet = (0, (_debounce || _load_debounce()).default)(() => {
+    this._disposables.add(rebuildSignals.subscribe(() => {
       const openUris = atom.workspace.getTextEditors().filter(te => te.getPath() != null && te.getPath() !== '').map(te => te.getPath());
       const openFilesWorkingSet = new (_nuclideWorkingSetsCommon || _load_nuclideWorkingSetsCommon()).WorkingSet(openUris);
-      updateOpenFilesWorkingSet(openFilesWorkingSet);
-    }, OPEN_FILES_UPDATE_DEBOUNCE_INTERVAL_MS);
-
-    rebuildOpenFilesWorkingSet();
-
-    const paneObservingDisposable = new (_UniversalDisposable || _load_UniversalDisposable()).default();
-    paneObservingDisposable.add(atom.workspace.onDidAddPaneItem(rebuildOpenFilesWorkingSet), atom.workspace.onDidDestroyPaneItem(rebuildOpenFilesWorkingSet));
-
-    this._disposables.add(paneObservingDisposable);
+      this._fileTreeController.updateOpenFilesWorkingSet(openFilesWorkingSet);
+    }));
 
     return new (_UniversalDisposable || _load_UniversalDisposable()).default(() => {
       this._fileTreeController.updateWorkingSetsStore(null);
       this._fileTreeController.updateWorkingSet(new (_nuclideWorkingSetsCommon || _load_nuclideWorkingSetsCommon()).WorkingSet());
       this._fileTreeController.updateOpenFilesWorkingSet(new (_nuclideWorkingSetsCommon || _load_nuclideWorkingSetsCommon()).WorkingSet());
-      paneObservingDisposable.dispose();
       this._disposables.remove(currentSubscription);
       currentSubscription.dispose();
     });

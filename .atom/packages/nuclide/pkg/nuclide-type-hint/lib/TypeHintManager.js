@@ -79,21 +79,14 @@ class TypeHintManager {
       if (!typeHint || _this._marker) {
         return;
       }
-      const { hint, hintTree, range } = typeHint;
-      // For now, actual hint text is required.
-
-      if (!(hint != null)) {
-        throw new Error('Invariant violation: "hint != null"');
-      }
+      const { hint, range } = typeHint;
       // We track the timing above, but we still want to know the number of popups that are shown.
-
-
       (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)('type-hint-popup', {
         scope: scopeName,
         message: hint
       });
       return {
-        component: (0, (_TypeHintComponent || _load_TypeHintComponent()).makeTypeHintComponent)(hintTree || hint, grammar),
+        component: (0, (_TypeHintComponent || _load_TypeHintComponent()).makeTypeHintComponent)(hint, grammar),
         range
       };
     })();

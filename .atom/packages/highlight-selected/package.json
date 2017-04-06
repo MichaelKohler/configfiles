@@ -2,40 +2,40 @@
   "_args": [
     [
       {
-        "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117013-8962-1qpr8hw/package.tgz",
+        "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-11736-60418-17jcoqz/package.tgz",
         "scope": null,
         "escapedName": null,
         "name": null,
-        "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117013-8962-1qpr8hw/package.tgz",
-        "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117013-8962-1qpr8hw/package.tgz",
+        "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-11736-60418-17jcoqz/package.tgz",
+        "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-11736-60418-17jcoqz/package.tgz",
         "type": "local"
       },
-      "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-117013-8962-73fhjn"
+      "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-11736-60418-fizs1g"
     ]
   ],
-  "_from": "../d-117013-8962-1qpr8hw/package.tgz",
-  "_id": "highlight-selected@0.12.0",
+  "_from": "../d-11736-60418-17jcoqz/package.tgz",
+  "_id": "highlight-selected@0.13.1",
   "_inCache": true,
   "_installable": true,
   "_location": "/highlight-selected",
   "_phantomChildren": {},
   "_requested": {
-    "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117013-8962-1qpr8hw/package.tgz",
+    "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-11736-60418-17jcoqz/package.tgz",
     "scope": null,
     "escapedName": null,
     "name": null,
-    "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117013-8962-1qpr8hw/package.tgz",
-    "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117013-8962-1qpr8hw/package.tgz",
+    "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-11736-60418-17jcoqz/package.tgz",
+    "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-11736-60418-17jcoqz/package.tgz",
     "type": "local"
   },
   "_requiredBy": [
     "#USER"
   ],
-  "_resolved": "file:../d-117013-8962-1qpr8hw/package.tgz",
-  "_shasum": "b73bbec5b00d28cb5d54c4fbebbfd4aff41cd331",
+  "_resolved": "file:../d-11736-60418-17jcoqz/package.tgz",
+  "_shasum": "8b6ce153f680dfd60ab003835e666266c4420e5f",
   "_shrinkwrap": null,
-  "_spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117013-8962-1qpr8hw/package.tgz",
-  "_where": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-117013-8962-73fhjn",
+  "_spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-11736-60418-17jcoqz/package.tgz",
+  "_where": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-11736-60418-fizs1g",
   "bugs": {
     "url": "https://github.com/richrace/highlight-selected/issues"
   },
@@ -47,7 +47,7 @@
     }
   },
   "dependencies": {
-    "underscore-plus": "1.x"
+    "grim": "^2.0.1"
   },
   "description": "Highlights the current word selected when double clicking",
   "devDependencies": {
@@ -70,7 +70,8 @@
     "highlightSelected": {
       "description": "Exposes Highlight Selected Events",
       "versions": {
-        "1.0.0": "provideHighlightSelectedV1"
+        "1.0.0": "provideHighlightSelectedV1Deprecated",
+        "2.0.0": "provideHighlightSelectedV2"
       }
     }
   },
@@ -80,5 +81,5 @@
     "type": "git",
     "url": "git+https://github.com/richrace/highlight-selected.git"
   },
-  "version": "0.12.0"
+  "version": "0.13.1"
 }

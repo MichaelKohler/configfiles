@@ -126,7 +126,7 @@ function RevisionsTimelineComponent(props) {
   const publishTooltip = {
     delay: 100,
     placement: 'top',
-    title: 'Publish your last commit to a Phabricator differential revision.'
+    title: 'Send your last commit changes to Phabricator for review.'
   };
 
   return _react.default.createElement(
@@ -140,7 +140,7 @@ function RevisionsTimelineComponent(props) {
         size: (_Button || _load_Button()).ButtonSizes.SMALL,
         tooltip: publishTooltip,
         onClick: props.onClickPublish },
-      'Publish to Phabricator'
+      'Submit for review'
     ),
     _react.default.createElement(
       'h5',

@@ -354,7 +354,7 @@ class FileTreeActions {
 
       // Unsubscribe from removedRepos.
       removedRepos.forEach(function (repo) {
-        return _this._repositoryRemoved(repo, rootKeysForRepository);
+        return _this._repositoryRemoved(repo);
       });
 
       // Create subscriptions for addedRepos.

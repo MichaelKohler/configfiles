@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.RevertibleStatusCodes = exports.FileChangeStatusToTextColor = exports.FileChangeStatusToIcon = exports.FileChangeStatusToPrefix = exports.HgStatusToFileChangeStatus = exports.FileChangeStatus = exports.findVcs = undefined;
+exports.DIFF_EDITOR_MARKER_CLASS = exports.RevertibleStatusCodes = exports.FileChangeStatusToTextColor = exports.FileChangeStatusToIcon = exports.FileChangeStatusToPrefix = exports.HgStatusToFileChangeStatus = exports.FileChangeStatus = exports.findVcs = undefined;
 
 var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
 
@@ -228,6 +228,8 @@ const FileChangeStatusToTextColor = exports.FileChangeStatusToTextColor = Object
 });
 
 const RevertibleStatusCodes = exports.RevertibleStatusCodes = [FileChangeStatus.ADDED, FileChangeStatus.MODIFIED, FileChangeStatus.REMOVED];
+
+const DIFF_EDITOR_MARKER_CLASS = exports.DIFF_EDITOR_MARKER_CLASS = 'nuclide-diff-editor-marker';
 
 function getDirtyFileChanges(repository) {
   const dirtyFileChanges = new Map();

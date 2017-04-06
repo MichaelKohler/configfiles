@@ -69,6 +69,7 @@ class BuckToolbar extends _react.default.Component {
       buildRuleType,
       buildTarget,
       buckRoot,
+      extraPlatformUi,
       isLoadingRule,
       isLoadingPlatforms,
       platformGroups,
@@ -131,6 +132,10 @@ class BuckToolbar extends _react.default.Component {
         title: 'Choose a device',
         selectionComparator: (_shallowequal || _load_shallowequal()).default
       }));
+
+      if (extraPlatformUi) {
+        widgets.push(extraPlatformUi);
+      }
     }
 
     return _react.default.createElement(

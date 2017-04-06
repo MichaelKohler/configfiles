@@ -175,7 +175,9 @@ function processArcanistOutput(stream_) {
       if (out != null) {
         out = out.replace(/\n$/, '');
         for (const line of out.split('\n')) {
-          lines.push({ [fd]: line });
+          if (line.trim().length > 0) {
+            lines.push({ [fd]: line });
+          }
         }
       }
     }
@@ -427,7 +429,7 @@ function createPhabricatorRevision(repository, publishUpdates, headCommitMessage
   _rxjsBundlesRxMinJs.Observable.defer(() => {
     const stream = (0, (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).getArcanistServiceByNuclideUri)(filePath).createPhabricatorRevision(filePath, isPrepareMode, lintExcuse).refCount();
 
-    return processArcanistOutput(stream).startWith({ level: 'info', text: 'Creating new revision...\n' }).do(message => publishUpdates.next(message));
+    return processArcanistOutput(stream).startWith({ level: 'info', text: 'Creating new revision...\n' }).switchMap(processErrorMessageAndThrow).do(message => publishUpdates.next(message));
   }), _rxjsBundlesRxMinJs.Observable.defer(() => _rxjsBundlesRxMinJs.Observable.fromPromise(repository.getHeadCommitMessage()).do(commitMessage => {
     const phabricatorRevision = (0, (_utils || _load_utils()).getPhabricatorRevisionFromCommitMessage)(commitMessage || '');
     if (phabricatorRevision != null) {
@@ -454,7 +456,7 @@ function updatePhabricatorRevision(repository, publishUpdates, headCommitMessage
 
   const stream = (0, (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).getArcanistServiceByNuclideUri)(filePath).updatePhabricatorRevision(filePath, userUpdateMessage, allowUntracked, lintExcuse, verbatimModeEnabled).refCount();
 
-  return processArcanistOutput(stream).startWith({ level: 'info', text: `Updating revision \`${phabricatorRevision.name}\`...\n` }).do({
+  return processArcanistOutput(stream).startWith({ level: 'info', text: `Updating revision \`${phabricatorRevision.name}\`...\n` }).switchMap(processErrorMessageAndThrow).do({
     next: message => publishUpdates.next(message),
     complete: () => notifyRevisionStatus(phabricatorRevision, 'updated')
   }).ignoreElements();
@@ -492,4 +494,12 @@ function formatDiffViewUrl(diffEntityOptions_) {
     slashes: true,
     query: diffEntityOptions
   });
+}
+
+function processErrorMessageAndThrow(message) {
+  if (message.level === 'error') {
+    return _rxjsBundlesRxMinJs.Observable.throw(new Error(message.text));
+  }
+
+  return _rxjsBundlesRxMinJs.Observable.of(message);
 }

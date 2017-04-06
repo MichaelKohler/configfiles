@@ -72,6 +72,14 @@ class NullLanguageService {
     return Promise.resolve(null);
   }
 
+  supportsSymbolSearch(directories) {
+    return Promise.resolve(false);
+  }
+
+  symbolSearch(query, directories) {
+    return Promise.resolve(null);
+  }
+
   getProjectRoot(fileUri) {
     return Promise.resolve(null);
   }

@@ -37,12 +37,21 @@ let hgAsyncExecute = exports.hgAsyncExecute = (() => {
 let getHgExecParams = (() => {
   var _ref2 = (0, _asyncToGenerator.default)(function* (args_, options_) {
     let args = args_;
-    const pathToSSHConfig = (_nuclideUri || _load_nuclideUri()).default.expandHomeDir('~/.atom/scm_ssh.sh');
-    const doesSSHConfigExist = yield (_fsPromise || _load_fsPromise()).default.exists(pathToSSHConfig);
-    const sshCommand = doesSSHConfigExist ? pathToSSHConfig
-    // Disabling ssh keyboard input so all commands that prompt for interaction
-    // fail instantly rather than just wait for an input that will never arrive
-    : 'ssh -oBatchMode=yes -oControlMaster=no';
+    let sshCommand;
+    // expandHomeDir is not supported on windows
+    if (process.platform !== 'win32') {
+      const pathToSSHConfig = (_nuclideUri || _load_nuclideUri()).default.expandHomeDir('~/.atom/scm_ssh.sh');
+      const doesSSHConfigExist = yield (_fsPromise || _load_fsPromise()).default.exists(pathToSSHConfig);
+      if (doesSSHConfigExist) {
+        sshCommand = pathToSSHConfig;
+      }
+    }
+
+    if (sshCommand == null) {
+      // Disabling ssh keyboard input so all commands that prompt for interaction
+      // fail instantly rather than just wait for an input that will never arrive
+      sshCommand = 'ssh -oBatchMode=yes -oControlMaster=no';
+    }
     args.push('--config', `ui.ssh=${sshCommand}`);
     const options = Object.assign({}, options_, {
       env: Object.assign({}, (yield (0, (_process || _load_process()).getOriginalEnvironment)()), {
@@ -98,7 +107,7 @@ let getEditMergeConfigs = exports.getEditMergeConfigs = (() => {
     // Atom RPC needs to agree with the Atom process / nuclide server on the address and port.
     const hgEditor = getAtomRpcScriptPath() + ` -f ${connectionDetails.family} -p ${connectionDetails.port} --wait`;
     return {
-      args: ['--config', 'merge-tools.editmerge.check=conflicts', '--config', 'ui.merge=editmerge', '--config', 'ui.interactive=no', '--config', 'ui.interface.chunkselector=editor'],
+      args: ['--config', 'merge-tools.editmerge.check=conflicts', '--config', 'ui.merge=editmerge', '--config', 'ui.interactive=no', '--config', 'ui.interface.chunkselector=editor', '--config', 'extensions.edrecord='],
       hgEditor
     };
   });
@@ -200,7 +209,7 @@ function getAtomRpcScriptPath() {
 
 function processExitCodeAndThrow(processMessage) {
   if (processMessage.kind === 'exit' && processMessage.exitCode !== 0) {
-    return _rxjsBundlesRxMinJs.Observable.throw(new Error('HG failed with non zero exit code'));
+    return _rxjsBundlesRxMinJs.Observable.throw(new Error(`HG failed with exit code: ${String(processMessage.exitCode)}`));
   }
   return _rxjsBundlesRxMinJs.Observable.of(processMessage);
 }

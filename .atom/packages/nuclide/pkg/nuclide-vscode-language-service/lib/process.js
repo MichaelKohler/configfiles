@@ -16,6 +16,7 @@ exports.convertDiagnostic = convertDiagnostic;
 exports.convertSeverity = convertSeverity;
 exports.createTextDocumentPositionParams = createTextDocumentPositionParams;
 exports.convertCompletion = convertCompletion;
+exports.convertSearchResult = convertSearchResult;
 
 var _nuclideUri;
 
@@ -151,7 +152,7 @@ class LanguageServerProtocolProcess {
         _this._process = yield LspProcess.create(_this._logger, _this._createProcess(), _this._projectRoot);
         _this._subscribeToFileEvents();
       } catch (e) {
-        _this._logger.logError('LanguageServerProtocolProcess - error spawning child process: ', e);
+        _this._logger.logError('LanguageServerProtocolProcess - error spawning child process: ' + e);
         throw e;
       }
     })();
@@ -180,7 +181,7 @@ class LanguageServerProtocolProcess {
   }
 
   getDiagnostics(fileVersion) {
-    this._logger.logError('NYI');
+    this._logger.logError('NYI: getDiagnostics');
     return Promise.resolve(null);
   }
 
@@ -194,7 +195,17 @@ class LanguageServerProtocolProcess {
 
     return (0, _asyncToGenerator.default)(function* () {
       const result = yield _this3._process._connection.completion((yield _this3.createTextDocumentPositionParams(fileVersion, position)));
-      return Array.isArray(result) ? result.map(convertCompletion) : result.items.map(convertCompletion);
+      if (Array.isArray(result)) {
+        return {
+          isIncomplete: false,
+          items: result.map(convertCompletion)
+        };
+      } else {
+        return {
+          isIncomplete: result.isIncomplete,
+          items: result.items.map(convertCompletion)
+        };
+      }
     })();
   }
 
@@ -212,22 +223,22 @@ class LanguageServerProtocolProcess {
   }
 
   getDefinitionById(file, id) {
-    this._logger.logError('NYI');
+    this._logger.logError('NYI: getDefinitionById');
     return Promise.resolve(null);
   }
 
   findReferences(fileVersion, position) {
-    this._logger.logError('NYI');
+    this._logger.logError('NYI: findReferences');
     return Promise.resolve(null);
   }
 
   getCoverage(filePath) {
-    this._logger.logError('NYI');
+    this._logger.logError('NYI: getCoverage');
     return Promise.resolve(null);
   }
 
   getOutline(fileVersion) {
-    this._logger.logError('NYI');
+    this._logger.logError('NYI: getOutline');
     return Promise.resolve(null);
   }
 
@@ -260,32 +271,45 @@ class LanguageServerProtocolProcess {
   }
 
   highlight(fileVersion, position) {
-    this._logger.logError('NYI');
+    this._logger.logError('NYI: highlight');
     return Promise.resolve(null);
   }
 
   formatSource(fileVersion, range) {
-    this._logger.logError('NYI');
+    this._logger.logError('NYI: formatSource');
     return Promise.resolve(null);
   }
 
   formatEntireFile(fileVersion, range) {
-    this._logger.logError('NYI');
+    this._logger.logError('NYI: formatEntireFile');
     return Promise.resolve(null);
   }
 
   getEvaluationExpression(fileVersion, position) {
-    this._logger.logError('NYI');
+    this._logger.logError('NYI: getEvaluationExpression');
     return Promise.resolve(null);
   }
 
+  supportsSymbolSearch(directories) {
+    return Promise.resolve(Boolean(this._process._capabilities.workspaceSymbolProvider));
+  }
+
+  symbolSearch(query, directories) {
+    var _this6 = this;
+
+    return (0, _asyncToGenerator.default)(function* () {
+      const result = yield _this6._process._connection.workspaceSymbol({ query });
+      return result.map(convertSearchResult);
+    })();
+  }
+
   getProjectRoot(fileUri) {
-    this._logger.logError('NYI');
+    this._logger.logError('NYI: getProjectRoot');
     return Promise.resolve(null);
   }
 
   isFileInProject(fileUri) {
-    this._logger.logError('NYI');
+    this._logger.logError('NYI: isFileInProject');
     return Promise.resolve(false);
   }
 
@@ -334,10 +358,10 @@ class LanguageServerProtocolProcess {
   }
 
   createTextDocumentPositionParams(fileVersion, position) {
-    var _this6 = this;
+    var _this7 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      yield _this6.getBufferAtVersion(fileVersion);
+      yield _this7.getBufferAtVersion(fileVersion);
       return createTextDocumentPositionParams(fileVersion, position);
     })();
   }
@@ -352,10 +376,10 @@ class LspProcess {
     this._process = process;
     this._projectRoot = projectRoot;
 
-    this._logger.logInfo('LanguageServerProtocolProcess - created child process with PID: ', process.pid);
+    this._logger.logInfo('LanguageServerProtocolProcess - created child process with PID: ' + process.pid);
 
     process.stdin.on('error', error => {
-      this._logger.logError('LanguageServerProtocolProcess - error writing data: ', error);
+      this._logger.logError('LanguageServerProtocolProcess - error writing data: ' + error);
     });
 
     let reader;
@@ -486,5 +510,71 @@ function convertCompletion(item) {
     displayText: item.label,
     type: item.detail,
     description: item.documentation
+  };
+}
+
+// Converts an LSP SymbolInformation.kind number into an Atom icon
+// from https://github.com/atom/atom/blob/master/static/octicons.less -
+// you can see the pictures at https://octicons.github.com/
+function symbolKindToAtomIcon(kind) {
+  // for reference, vscode: https://github.com/Microsoft/vscode/blob/be08f9f3a1010354ae2d8b84af017ed1043570e7/src/vs/editor/contrib/suggest/browser/media/suggest.css#L135
+  // for reference, hack: https://github.com/facebook/nuclide/blob/20cf17dca439e02a64f4365f3a52b0f26cf53726/pkg/nuclide-hack-rpc/lib/SymbolSearch.js#L120
+  switch (kind) {
+    case (_protocolV || _load_protocolV()).SymbolKind.File:
+      return 'file';
+    case (_protocolV || _load_protocolV()).SymbolKind.Module:
+      return 'file-submodule';
+    case (_protocolV || _load_protocolV()).SymbolKind.Namespace:
+      return 'file-submodule';
+    case (_protocolV || _load_protocolV()).SymbolKind.Package:
+      return 'package';
+    case (_protocolV || _load_protocolV()).SymbolKind.Class:
+      return 'code';
+    case (_protocolV || _load_protocolV()).SymbolKind.Method:
+      return 'zap';
+    case (_protocolV || _load_protocolV()).SymbolKind.Property:
+      return 'key';
+    case (_protocolV || _load_protocolV()).SymbolKind.Field:
+      return 'key';
+    case (_protocolV || _load_protocolV()).SymbolKind.Constructor:
+      return 'zap';
+    case (_protocolV || _load_protocolV()).SymbolKind.Enum:
+      return 'file-binary';
+    case (_protocolV || _load_protocolV()).SymbolKind.Interface:
+      return 'puzzle';
+    case (_protocolV || _load_protocolV()).SymbolKind.Function:
+      return 'zap';
+    case (_protocolV || _load_protocolV()).SymbolKind.Variable:
+      return 'pencil';
+    case (_protocolV || _load_protocolV()).SymbolKind.Constant:
+      return 'quote';
+    case (_protocolV || _load_protocolV()).SymbolKind.String:
+      return 'quote';
+    case (_protocolV || _load_protocolV()).SymbolKind.Number:
+      return 'quote';
+    case (_protocolV || _load_protocolV()).SymbolKind.Boolean:
+      return 'quote';
+    case (_protocolV || _load_protocolV()).SymbolKind.Array:
+      return 'list-ordered';
+    default:
+      return 'question';
+  }
+}
+
+function convertSearchResult(info) {
+  let hoverText = 'unknown';
+  for (const key in (_protocolV || _load_protocolV()).SymbolKind) {
+    if (info.kind === (_protocolV || _load_protocolV()).SymbolKind[key]) {
+      hoverText = key;
+    }
+  }
+  return {
+    path: info.location.uri,
+    line: info.location.range.start.line,
+    column: info.location.range.start.character,
+    name: info.name,
+    containerName: info.containerName,
+    icon: symbolKindToAtomIcon(info.kind),
+    hoverText
   };
 }

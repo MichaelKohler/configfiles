@@ -83,11 +83,11 @@ let getDiffEditors = (() => {
     });
 
     // Add marker classes to be used for atom command registeration.
-    newEditorElement.classList.add((_constants || _load_constants()).DIFF_EDITOR_MARKER_CLASS);
+    newEditorElement.classList.add((_vcs || _load_vcs()).DIFF_EDITOR_MARKER_CLASS);
     oldEditorElement.classList.add(READ_ONLY_EDITOR_CLASS);
-    oldEditorElement.classList.add((_constants || _load_constants()).DIFF_EDITOR_MARKER_CLASS);
+    oldEditorElement.classList.add((_vcs || _load_vcs()).DIFF_EDITOR_MARKER_CLASS);
     disposables.add(function () {
-      return newEditorElement.classList.remove((_constants || _load_constants()).DIFF_EDITOR_MARKER_CLASS);
+      return newEditorElement.classList.remove((_vcs || _load_vcs()).DIFF_EDITOR_MARKER_CLASS);
     });
 
     disposables.add(new (_SyncScroll || _load_SyncScroll()).default(oldEditorElement, newEditorElement));
@@ -199,10 +199,10 @@ function _load_goToLocation() {
   return _goToLocation = require('../../../commons-atom/go-to-location');
 }
 
-var _constants;
+var _vcs;
 
-function _load_constants() {
-  return _constants = require('../constants');
+function _load_vcs() {
+  return _vcs = require('../../../commons-atom/vcs');
 }
 
 var _LoadingSpinner;

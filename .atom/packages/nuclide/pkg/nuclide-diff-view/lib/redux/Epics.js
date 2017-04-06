@@ -695,7 +695,6 @@ function splitRevision(actions, store) {
       throw new Error('Invariant violation: "action.type === ActionTypes.SPLIT_REVISION"');
     }
 
-    (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)('diff-view-split');
     const {
       publishUpdates,
       repository
@@ -705,7 +704,7 @@ function splitRevision(actions, store) {
     } = store.getState();
     const consoleClient = new ConsoleClient(mode, publishUpdates);
 
-    return trackComplete('diff-view-split', _rxjsBundlesRxMinJs.Observable.defer(() => repository.splitRevision())).do(processMessage => consoleClient.enableAndPipeProcessMessagesToConsole(processMessage)).switchMap(processMessage => _rxjsBundlesRxMinJs.Observable.empty()).catch(error => {
+    return trackComplete('diff-view-split-commit', _rxjsBundlesRxMinJs.Observable.defer(() => repository.splitRevision())).do(processMessage => consoleClient.enableAndPipeProcessMessagesToConsole(processMessage)).switchMap(processMessage => _rxjsBundlesRxMinJs.Observable.empty()).catch(error => {
       atom.notifications.addError('Couldn\'t split revision', {
         detail: error
       });

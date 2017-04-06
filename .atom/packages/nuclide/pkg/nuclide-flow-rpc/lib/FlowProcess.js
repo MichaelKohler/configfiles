@@ -47,6 +47,12 @@ function _load_process() {
   return _process = require('../../commons-node/process');
 }
 
+var _promise;
+
+function _load_promise() {
+  return _promise = require('../../commons-node/promise');
+}
+
 var _nice;
 
 function _load_nice() {
@@ -108,12 +114,19 @@ const SERVER_READY_TIMEOUT_MS = 60 * 1000;
 
 const EXEC_FLOW_RETRIES = 5;
 
+const NO_RETRY_ARGS = ['--retry-if-init', 'false', '--retries', '0', '--no-auto-start'];
+
+const TEMP_SERVER_STATES = [(_FlowConstants || _load_FlowConstants()).ServerStatus.NOT_RUNNING, (_FlowConstants || _load_FlowConstants()).ServerStatus.BUSY, (_FlowConstants || _load_FlowConstants()).ServerStatus.INIT];
+
 class FlowProcess {
-  // The current state of the Flow server in this directory
+  // The path to the directory where the .flowconfig is -- i.e. the root of the Flow project.
+
+  // If we had to start a Flow server, store the process here so we can kill it when we shut down.
   constructor(root, execInfoContainer) {
     this._execInfoContainer = execInfoContainer;
     this._serverStatus = new _rxjsBundlesRxMinJs.BehaviorSubject((_FlowConstants || _load_FlowConstants()).ServerStatus.UNKNOWN);
     this._root = root;
+    this._isDisposed = new _rxjsBundlesRxMinJs.BehaviorSubject(false);
 
     this._ideConnections = this._createIDEConnectionStream();
 
@@ -123,12 +136,16 @@ class FlowProcess {
 
     this._serverStatus.filter(x => x === (_FlowConstants || _load_FlowConstants()).ServerStatus.NOT_RUNNING).subscribe(() => {
       this._startFlowServer();
-      this._pingServer();
     });
-    function isBusyOrInit(status) {
-      return status === (_FlowConstants || _load_FlowConstants()).ServerStatus.BUSY || status === (_FlowConstants || _load_FlowConstants()).ServerStatus.INIT;
-    }
-    this._serverStatus.filter(isBusyOrInit).subscribe(() => {
+
+    this._serverStatus.scan(({ previousState }, nextState) => {
+      // We should start pinging if we move into a temp state
+      const shouldStartPinging = !TEMP_SERVER_STATES.includes(previousState) && TEMP_SERVER_STATES.includes(nextState);
+      return {
+        shouldStartPinging,
+        previousState: nextState
+      };
+    }, { shouldStartPinging: false, previousState: (_FlowConstants || _load_FlowConstants()).ServerStatus.UNKNOWN }).filter(({ shouldStartPinging }) => shouldStartPinging).subscribe(() => {
       this._pingServer();
     });
 
@@ -136,13 +153,12 @@ class FlowProcess {
       (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)('flow-server-failed');
     });
   }
-  // The path to the directory where the .flowconfig is -- i.e. the root of the Flow project.
-
-  // If we had to start a Flow server, store the process here so we can kill it when we shut down.
+  // The current state of the Flow server in this directory
 
 
   dispose() {
     this._serverStatus.complete();
+    this._isDisposed.next(true);
     if (this._startedServer && (0, (_FlowHelpers || _load_FlowHelpers()).getStopFlowOnExit)()) {
       // The default, SIGTERM, does not reliably kill the flow servers.
       this._startedServer.kill('SIGKILL');
@@ -193,7 +209,7 @@ class FlowProcess {
 
       connectionWatcher.dispose();
       connectionWatcher = null;
-    }).publishReplay(1).refCount();
+    }).takeUntil(this._isDisposed.filter(x => x)).concat(_rxjsBundlesRxMinJs.Observable.of(null)).publishReplay(1).refCount();
   }
 
   _tryCreateIDEProcess() {
@@ -203,11 +219,19 @@ class FlowProcess {
       if (!(yield _this._serverIsReady())) {
         return null;
       }
-      const allExecInfo = yield getAllExecInfo(['ide', '--protocol', 'very-unstable'], _this._root, _this._execInfoContainer);
+      const allExecInfo = yield getAllExecInfo(['ide', '--protocol', 'very-unstable', ...NO_RETRY_ARGS], _this._root, _this._execInfoContainer);
       if (allExecInfo == null) {
         return null;
       }
-      return (0, (_process || _load_process()).safeSpawn)(allExecInfo.pathToFlow, allExecInfo.args, allExecInfo.options);
+      const proc = (0, (_process || _load_process()).safeSpawn)(allExecInfo.pathToFlow, allExecInfo.args, allExecInfo.options);
+      proc.once('exit', function (code, signal) {
+        // If it crashes we will get `null` or `undefined`, but that doesn't actually mean that Flow
+        // is not installed.
+        if (code != null) {
+          _this._updateServerStatus(code);
+        }
+      });
+      return proc;
     })();
   }
 
@@ -296,13 +320,13 @@ class FlowProcess {
 
     return (0, _asyncToGenerator.default)(function* () {
       let args = args_;
-      args = [...args, '--retry-if-init', 'false', '--retries', '0', '--no-auto-start'];
+      args = [...args, ...NO_RETRY_ARGS];
       try {
         const result = yield FlowProcess.execFlowClient(args, _this4._root, _this4._execInfoContainer, options);
-        _this4._updateServerStatus(result);
+        _this4._updateServerStatus(result != null ? result.exitCode : null);
         return result;
       } catch (e) {
-        _this4._updateServerStatus(e);
+        _this4._updateServerStatus(e != null ? e.exitCode : null);
         if (e.exitCode === FLOW_RETURN_CODES.typeError) {
           return e;
         } else {
@@ -312,12 +336,12 @@ class FlowProcess {
     })();
   }
 
-  _updateServerStatus(result) {
+  _updateServerStatus(exitCode) {
     let status;
-    if (result == null) {
+    if (exitCode == null) {
       status = (_FlowConstants || _load_FlowConstants()).ServerStatus.NOT_INSTALLED;
     } else {
-      switch (result.exitCode) {
+      switch (exitCode) {
         case FLOW_RETURN_CODES.ok:
         // falls through
         case FLOW_RETURN_CODES.typeError:
@@ -343,7 +367,7 @@ class FlowProcess {
           // server. So, don't update.
           return;
         default:
-          logger.error(`Unknown return code from Flow: ${String(result.exitCode)}`);
+          logger.error(`Unknown return code from Flow: ${String(exitCode)}`);
           status = (_FlowConstants || _load_FlowConstants()).ServerStatus.UNKNOWN;
       }
     }
@@ -362,28 +386,29 @@ class FlowProcess {
     }
   }
 
-  /** Ping the server until it leaves the current state */
-  _pingServer(tries = 30) {
+  /** Ping the server until it reaches a steady state */
+  _pingServer() {
     var _this5 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      const fromState = _this5._serverStatus.getValue();
-      let stateChanged = false;
-      _this5._serverStatus.filter(function (newState) {
-        return newState !== fromState;
+      let hasReachedSteadyState = false;
+      _this5._serverStatus.filter(function (state) {
+        return !TEMP_SERVER_STATES.includes(state);
       }).take(1).subscribe(function () {
-        stateChanged = true;
+        hasReachedSteadyState = true;
       });
-      for (let i = 0; !stateChanged && i < tries; i++) {
+      while (!hasReachedSteadyState) {
         // eslint-disable-next-line no-await-in-loop
-        yield _this5._rawExecFlow(['status']).catch(function () {
-          return null;
-        });
+        yield _this5._pingServerOnce();
         // Wait 1 second
         // eslint-disable-next-line no-await-in-loop
-        yield _rxjsBundlesRxMinJs.Observable.of(null).delay(1000).toPromise();
+        yield (0, (_promise || _load_promise()).sleep)(1000);
       }
     })();
+  }
+
+  _pingServerOnce() {
+    return this._rawExecFlow(['status']).catch(() => null);
   }
 
   /**
@@ -394,8 +419,8 @@ class FlowProcess {
     // If the server state is unknown, nobody has tried to do anything flow-related yet. However,
     // the call to _serverIsReady() implies that somebody wants to. So, kick off a Flow server ping
     // which will learn the state of the Flow server and start it up if needed.
-    if (this._serverStatus.getValue() === 'unknown') {
-      this._pingServer();
+    if (this._serverStatus.getValue() === (_FlowConstants || _load_FlowConstants()).ServerStatus.UNKNOWN) {
+      this._pingServerOnce();
     }
     return this._serverStatus.filter(x => x === (_FlowConstants || _load_FlowConstants()).ServerStatus.READY).map(() => true).race(_rxjsBundlesRxMinJs.Observable.of(false).delay(SERVER_READY_TIMEOUT_MS))
     // If the stream is completed timeout will not return its default value and we will see an

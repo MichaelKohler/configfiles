@@ -105,6 +105,8 @@ class DiffCommitView extends _react.default.Component {
 
   __populateCommitMessage() {
     this.refs.message.getTextBuffer().setText(this.props.commitMessage || '');
+    this.refs.message.getModel().setCursorBufferPosition([0, 0]);
+    this.refs.message.getElement().focus();
   }
 
   _isLoading() {
@@ -223,9 +225,9 @@ class DiffCommitView extends _react.default.Component {
           className: 'padded',
           checked: this.props.shouldPublishOnCommit,
           disabled: isLoading,
-          label: 'Publish',
+          label: 'Submit for review',
           onChange: this._onTogglePublish,
-          ref: this._addTooltip('Whether to automatically publish the revision ' + 'to Phabricator after committing or amending it.')
+          ref: this._addTooltip('Whether to automatically submit your changes to Phabricator ' + 'for review after committing or amending it.')
         }),
         prepareOptionElement,
         verbatimeOptionElement,

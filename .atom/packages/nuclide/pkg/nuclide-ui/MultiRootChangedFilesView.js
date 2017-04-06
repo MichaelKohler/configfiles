@@ -17,6 +17,12 @@ function _load_goToLocation() {
   return _goToLocation = require('../commons-atom/go-to-location');
 }
 
+var _openInDiffView;
+
+function _load_openInDiffView() {
+  return _openInDiffView = require('../commons-atom/open-in-diff-view');
+}
+
 var _nuclideUri;
 
 function _load_nuclideUri() {
@@ -39,27 +45,23 @@ function _load_ChangedFilesList() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- */
-
 class MultiRootChangedFilesView extends _react.default.Component {
 
   componentDidMount() {
     this._subscriptions = new (_UniversalDisposable || _load_UniversalDisposable()).default();
-    const { commandPrefix, getRevertTargetRevision } = this.props;
+    const { commandPrefix, getRevertTargetRevision, openInDiffViewOption } = this.props;
     this._subscriptions.add(atom.contextMenu.add({
       [`.${commandPrefix}-file-entry`]: [{ type: 'separator' }, {
         label: 'Add to Mercurial',
         command: `${commandPrefix}:add`,
         shouldDisplay: event => {
           return this._getStatusCodeForFile(event) === (_vcs || _load_vcs()).FileChangeStatus.UNTRACKED;
+        }
+      }, {
+        label: 'Open in Diff View',
+        command: `${commandPrefix}:open-in-diff-view`,
+        shouldDisplay: event => {
+          return openInDiffViewOption;
         }
       }, {
         label: 'Revert',
@@ -123,6 +125,13 @@ class MultiRootChangedFilesView extends _react.default.Component {
         (0, (_vcs || _load_vcs()).confirmAndRevertPath)(filePath, targetRevision);
       }
     }));
+
+    this._subscriptions.add(atom.commands.add(`.${commandPrefix}-file-entry`, `${commandPrefix}:open-in-diff-view`, event => {
+      const filePath = this._getFilePathFromEvent(event);
+      if (filePath != null && filePath.length) {
+        (0, (_openInDiffView || _load_openInDiffView()).openFileInDiffView)(filePath);
+      }
+    }));
   }
 
   _getStatusCodeForFile(event) {
@@ -179,4 +188,12 @@ class MultiRootChangedFilesView extends _react.default.Component {
     this._subscriptions.dispose();
   }
 }
-exports.MultiRootChangedFilesView = MultiRootChangedFilesView;
+exports.MultiRootChangedFilesView = MultiRootChangedFilesView; /**
+                                                                * Copyright (c) 2015-present, Facebook, Inc.
+                                                                * All rights reserved.
+                                                                *
+                                                                * This source code is licensed under the license found in the LICENSE file in
+                                                                * the root directory of this source tree.
+                                                                *
+                                                                * 
+                                                                */

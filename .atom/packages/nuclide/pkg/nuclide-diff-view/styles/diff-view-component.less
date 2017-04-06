@@ -5,11 +5,29 @@
 @revisionBubbleDiameter: 10px;
 @revisionBubbleShadowRadius: 4px;
 
-.nuclide-diff-view-removable-tag {
+.nuclide-diff-view-removable-tag, .nuclide-diff-view-suggested-reviewers-tag {
   margin-left: 2px;
   margin-right: 2px;
-  float: left;
   font-size: @input-font-size;
+}
+
+.nuclide-diff-view-removable-tag {
+  padding-top: 2px;
+}
+
+.nuclide-diff-view-tag-container {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+
+  atom-text-editor {
+    margin-top: 2px;
+  }
+}
+
+.nuclide-diff-view-tag-input {
+  flex-grow: 1;
+  min-width: 25%;
 }
 
 .nuclide-diff-view-padded {
@@ -329,6 +347,8 @@ atom-text-editor {
 .nuclide-diff-view-navigator-file-changes-container {
   display: flex;
   flex-direction: column;
+  height: 100%;
+  width: 100%;
 }
 
 .nuclide-diff-view-tree {

@@ -196,7 +196,13 @@ function getPackagerObservable(projectRootPath) {
         return _rxjsBundlesRxMinJs.Observable.of(event.data);
       case 'exit':
         if (event.exitCode !== 0) {
-          return _rxjsBundlesRxMinJs.Observable.throw(new PackagerError((0, (_process || _load_process()).exitEventToMessage)(event), stderr));
+          // Completely ignore EADDRINUSE errors since the packager is probably already running.
+          if (!stderr.includes('Error: listen EADDRINUSE :::8081')) {
+            atom.notifications.addWarning('Packager failed to start - continuing anyway.', {
+              dismissable: true,
+              detail: stderr.trim() === '' ? undefined : stderr
+            });
+          }
         }
         return _rxjsBundlesRxMinJs.Observable.empty();
       case 'stderr':

@@ -112,7 +112,7 @@ function findIncludingSourceFile(headerFile, projectRoot) {
         const file = processGrepResult(message.data, headerFile, regex);
         return file == null ? _rxjsBundlesRxMinJs.Observable.empty() : _rxjsBundlesRxMinJs.Observable.of(file);
       case 'error':
-        throw new Error(message.error);
+        throw new Error(String(message.error));
       case 'exit':
         return _rxjsBundlesRxMinJs.Observable.of(null);
       default:

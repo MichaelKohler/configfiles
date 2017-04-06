@@ -1,7 +1,5 @@
 'use strict';
 
-var _atom = require('atom');
-
 var _nuclideAnalytics;
 
 function _load_nuclideAnalytics() {
@@ -112,21 +110,6 @@ class Activation {
 
   consumeStatusBar(statusBar) {
     this._getStatusBarTile().consumeStatusBar(statusBar);
-  }
-
-  consumeToolBar(getToolBar) {
-    const toolBar = getToolBar('nuclide-diagnostics-ui');
-    toolBar.addButton({
-      icon: 'law',
-      callback: 'nuclide-diagnostics-ui:toggle-table',
-      tooltip: 'Toggle Diagnostics Table',
-      priority: 100
-    });
-    const disposable = new _atom.Disposable(() => {
-      toolBar.removeItems();
-    });
-    this._subscriptions.add(disposable);
-    return disposable;
   }
 
   deserializeDiagnosticsPanelModel() {

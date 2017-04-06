@@ -347,16 +347,16 @@ class FlowSingleProjectLanguageService {
       try {
         const result = yield _this4._process.execFlow(args, options);
         if (!result) {
-          return [];
+          return { isIncomplete: false, items: [] };
         }
         const json = parseJSON(args, result.stdout);
         const resultsArray = json.result;
         const completions = resultsArray.map(function (item) {
           return processAutocompleteItem(replacementPrefix, item);
         });
-        return (0, (_nuclideFlowCommon || _load_nuclideFlowCommon()).filterResultsByPrefix)(prefix, completions);
+        return (0, (_nuclideFlowCommon || _load_nuclideFlowCommon()).filterResultsByPrefix)(prefix, { isIncomplete: false, items: completions });
       } catch (e) {
-        return [];
+        return { isIncomplete: false, items: [] };
       }
     })();
   }
@@ -365,6 +365,15 @@ class FlowSingleProjectLanguageService {
     var _this5 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
+      // Do not show typehints for whitespace.
+      const character = buffer.getTextInRange([position, {
+        row: position.row,
+        column: position.column + 1
+      }]);
+      if (character.match(/\s/)) {
+        return null;
+      }
+
       const options = {};
 
       options.stdin = buffer.getText();

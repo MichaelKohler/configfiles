@@ -19,25 +19,35 @@ function _load_vscodeJsonrpc() {
   return _vscodeJsonrpc = _interopRequireWildcard(require('vscode-jsonrpc'));
 }
 
+var _through;
+
+function _load_through() {
+  return _through = _interopRequireDefault(require('through'));
+}
+
 var _nuclideLogging;
 
 function _load_nuclideLogging() {
   return _nuclideLogging = require('../../nuclide-logging');
 }
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 // TODO put these in flow-typed when they are fleshed out better
 
-const SUBSCRIBE_METHOD_NAME = 'subscribeToDiagnostics'; /**
-                                                         * Copyright (c) 2015-present, Facebook, Inc.
-                                                         * All rights reserved.
-                                                         *
-                                                         * This source code is licensed under the license found in the LICENSE file in
-                                                         * the root directory of this source tree.
-                                                         *
-                                                         * 
-                                                         */
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ */
+
+const SUBSCRIBE_METHOD_NAME = 'subscribeToDiagnostics';
 
 const NOTIFICATION_METHOD_NAME = 'diagnosticsNotification';
 
@@ -49,9 +59,9 @@ class FlowIDEConnection {
     this._isDisposed = false;
     this._onWillDisposeCallbacks = new Set();
     this._ideProcess = process;
-    this._ideProcess.stderr.on('data', msg => {
+    this._ideProcess.stderr.pipe((0, (_through || _load_through()).default)(msg => {
       (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().info('Flow IDE process stderr: ', msg.toString());
-    });
+    }));
     this._connection = (_vscodeJsonrpc || _load_vscodeJsonrpc()).createMessageConnection(new (_vscodeJsonrpc || _load_vscodeJsonrpc()).StreamMessageReader(this._ideProcess.stdout), new (_vscodeJsonrpc || _load_vscodeJsonrpc()).StreamMessageWriter(this._ideProcess.stdin));
     this._connection.listen();
 

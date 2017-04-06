@@ -208,7 +208,7 @@ class FileTreeSidebarComponent extends _react.default.Component {
         // If "Reveal File on Switch" is enabled, ensure the scroll position is synced to where the
         // user expects when the side bar shows the file tree.
         if ((_featureConfig || _load_featureConfig()).default.get((_Constants || _load_Constants()).REVEAL_FILE_ON_SWITCH_SETTING)) {
-          atom.commands.dispatch(atom.views.getView(atom.workspace), 'nuclide-file-tree:reveal-active-file');
+          atom.commands.dispatch(atom.views.getView(atom.workspace), 'nuclide-file-tree:reveal-in-file-tree');
         }
         this._actions.clearFilter();
         this._updateScrollerHeight();
@@ -254,7 +254,8 @@ class FileTreeSidebarComponent extends _react.default.Component {
           fileChanges: (0, (_vcs || _load_vcs()).filterMultiRootFileChanges)(this.state.uncommittedFileChanges),
           selectedFile: this.state.activeUri,
           hideEmptyFolders: true,
-          onFileChosen: this._onFileChosen
+          onFileChosen: this._onFileChosen,
+          openInDiffViewOption: true
         })
       );
 
@@ -449,7 +450,7 @@ class FileTreeSidebarComponent extends _react.default.Component {
   }
 
   getDefaultLocation() {
-    return 'left-panel';
+    return 'left';
   }
 
   getPreferredInitialWidth() {

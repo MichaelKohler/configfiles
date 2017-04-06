@@ -172,7 +172,7 @@ function filterProvidersByScopeName(providers, scopeName) {
   return providers.filter(provider => {
     return provider.inclusionPriority > 0 && provider.validForScope(scopeName);
   }).sort((providerA, providerB) => {
-    return providerA.inclusionPriority - providerB.inclusionPriority;
+    return providerB.inclusionPriority - providerA.inclusionPriority;
   });
 }
 
@@ -460,13 +460,12 @@ class DatatipManagerForEditor {
     this._setState(DatatipState.HIDDEN);
   }
 
-  createPinnedDataTip(component, range, pinnable, editor) {
-    const datatip = new (_PinnedDatatip || _load_PinnedDatatip()).PinnedDatatip(
-    /* datatip */{ component, range, pinnable }, editor,
+  createPinnedDataTip(datatip, editor) {
+    const pinnedDatatip = new (_PinnedDatatip || _load_PinnedDatatip()).PinnedDatatip(datatip, editor,
     /* onDispose */() => {
-      this._pinnedDatatips.delete(datatip);
+      this._pinnedDatatips.delete(pinnedDatatip);
     });
-    return datatip;
+    return pinnedDatatip;
   }
 
   _handlePinClicked(editor, datatip) {
@@ -521,18 +520,17 @@ class DatatipManager {
 
   addProvider(provider) {
     this._datatipProviders.push(provider);
+    return new (_UniversalDisposable || _load_UniversalDisposable()).default(() => {
+      (0, (_collection || _load_collection()).arrayRemove)(this._datatipProviders, provider);
+    });
   }
 
-  removeProvider(provider) {
-    (0, (_collection || _load_collection()).arrayRemove)(this._datatipProviders, provider);
-  }
-
-  createPinnedDataTip(component, range, pinnable, editor) {
+  createPinnedDataTip(datatip, editor) {
     const manager = this._editorManagers.get(editor);
     if (!manager) {
       throw new Error('Trying to create a pinned data tip on an editor that has ' + 'no datatip manager');
     }
-    return manager.createPinnedDataTip(component, range, pinnable, editor);
+    return manager.createPinnedDataTip(datatip, editor);
   }
 
   dispose() {

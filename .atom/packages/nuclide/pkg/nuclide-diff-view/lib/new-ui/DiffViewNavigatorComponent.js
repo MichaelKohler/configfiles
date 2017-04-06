@@ -16,6 +16,12 @@ function _load_constants() {
   return _constants = require('../constants');
 }
 
+var _vcs;
+
+function _load_vcs() {
+  return _vcs = require('../../../commons-atom/vcs');
+}
+
 var _react = _interopRequireDefault(require('react'));
 
 var _DiffViewComponent;
@@ -43,6 +49,16 @@ function _load_notifications() {
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ */
 
 class DiffViewNavigatorComponent extends _react.default.Component {
 
@@ -107,7 +123,7 @@ class DiffViewNavigatorComponent extends _react.default.Component {
           'Changed Sections: '
         ),
         _react.default.createElement((_SectionDirectionNavigator || _load_SectionDirectionNavigator()).default, {
-          commandTarget: `.${(_constants || _load_constants()).DIFF_EDITOR_MARKER_CLASS}`,
+          commandTarget: `.${(_vcs || _load_vcs()).DIFF_EDITOR_MARKER_CLASS}`,
           filePath: filePath,
           navigationSections: navigationSections,
           selectedNavigationSectionIndex: activeSectionIndex,
@@ -188,12 +204,4 @@ class DiffViewNavigatorComponent extends _react.default.Component {
     }
   }
 }
-exports.default = DiffViewNavigatorComponent; /**
-                                               * Copyright (c) 2015-present, Facebook, Inc.
-                                               * All rights reserved.
-                                               *
-                                               * This source code is licensed under the license found in the LICENSE file in
-                                               * the root directory of this source tree.
-                                               *
-                                               * 
-                                               */
+exports.default = DiffViewNavigatorComponent;

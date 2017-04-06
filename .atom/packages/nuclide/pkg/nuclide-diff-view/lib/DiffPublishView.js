@@ -135,6 +135,8 @@ class DiffPublishView extends _react.default.Component {
     const messageEditor = this.refs.message;
     if (messageEditor != null) {
       messageEditor.getTextBuffer().setText(this.props.message || '');
+      messageEditor.getModel().setCursorBufferPosition([0, 0]);
+      messageEditor.getElement().focus();
     }
   }
 
@@ -181,9 +183,9 @@ class DiffPublishView extends _react.default.Component {
       case (_constants || _load_constants()).PublishModeState.READY:
         isBusy = false;
         if (publishMode === (_constants || _load_constants()).PublishMode.CREATE) {
-          publishMessage = 'Publish Phabricator Revision';
+          publishMessage = 'Submit';
         } else {
-          publishMessage = 'Update Phabricator Revision';
+          publishMessage = 'Update';
         }
         break;
       case (_constants || _load_constants()).PublishModeState.LOADING_PUBLISH_MESSAGE:

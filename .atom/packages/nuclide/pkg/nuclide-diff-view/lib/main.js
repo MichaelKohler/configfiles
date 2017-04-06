@@ -321,7 +321,7 @@ class Activation {
     }), addActivePathCommands('nuclide-diff-view:amend', {
       viewMode: (_constants || _load_constants()).DiffMode.COMMIT_MODE,
       commitMode: (_constants || _load_constants()).CommitMode.AMEND
-    }), addActivePathCommands('nuclide-diff-view:publish', {
+    }), addActivePathCommands('nuclide-diff-view:submit-for-review', {
       viewMode: (_constants || _load_constants()).DiffMode.PUBLISH_MODE
     }), atom.commands.add('atom-workspace', 'nuclide-diff-view:toggle', () => {
       const readOnlyEditor = atom.workspace.getTextEditors().find(editor => {
@@ -354,8 +354,8 @@ class Activation {
           label: 'Amend',
           command: 'nuclide-diff-view:amend'
         }, {
-          label: 'Publish to Phabricator',
-          command: 'nuclide-diff-view:publish'
+          label: 'Submit for review',
+          command: 'nuclide-diff-view:submit-for-review'
         }],
         shouldDisplay() {
           return isActiveEditorDiffable();
@@ -367,7 +367,7 @@ class Activation {
     }), addFileTreeCommands('nuclide-diff-view:amend-context', {
       viewMode: (_constants || _load_constants()).DiffMode.COMMIT_MODE,
       commitMode: (_constants || _load_constants()).CommitMode.AMEND
-    }), addFileTreeCommands('nuclide-diff-view:publish-context', {
+    }), addFileTreeCommands('nuclide-diff-view:submit-for-review-context', {
       viewMode: (_constants || _load_constants()).DiffMode.PUBLISH_MODE
     }),
 
@@ -607,8 +607,8 @@ class Activation {
         return shouldDisplayDiffTreeItem(contextMenu);
       }
     }, AMEND_FILE_TREE_CONTEXT_MENU_PRIORITY), contextMenu.addItemToSourceControlMenu({
-      label: 'Publish to Phabricator',
-      command: 'nuclide-diff-view:publish-context',
+      label: 'Submit for review',
+      command: 'nuclide-diff-view:submit-for-review-context',
       shouldDisplay() {
         return shouldDisplayDiffTreeItem(contextMenu);
       }

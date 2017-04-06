@@ -559,10 +559,39 @@ class ConnectionMultiplexer {
     }
   }
 
+  _connectionBreakpointExits(connection) {
+    // Check if the breakpoint at which the specified connection is stopped
+    // still exists in the breakpoint store.
+    if (!(connection.getStopReason() === (_Connection || _load_Connection()).BREAKPOINT)) {
+      throw new Error('Invariant violation: "connection.getStopReason() === BREAKPOINT"');
+    }
+
+    const stopLocation = connection.getStopBreakpointLocation();
+    if (stopLocation == null) {
+      // If the stop location is unknown, we must behave as if the breakpoint existed
+      // since we cannot confirm it doesn't, and it is unsafe to just randomly resume
+      // connections. This connection could be stopped at an eval, exception or async
+      // break.
+      return true;
+    }
+
+    const exists = this._breakpointStore.breakpointExists(stopLocation.filename, stopLocation.lineNumber);
+
+    if (!exists) {
+      (_utils || _load_utils()).default.log('Connection hit stale breakpoint. Resuming...');
+    }
+
+    return exists;
+  }
+
   _resumeBackgroundConnections() {
     for (const connection of this._connections.values()) {
-      if (connection !== this._enabledConnection && (connection.getStopReason() === (_Connection || _load_Connection()).ASYNC_BREAK || connection.getStatus() === (_DbgpSocket || _load_DbgpSocket()).ConnectionStatus.Starting)) {
-        connection.sendContinuationCommand((_DbgpSocket || _load_DbgpSocket()).COMMAND_RUN);
+      if (connection !== this._enabledConnection && (connection.getStopReason() === (_Connection || _load_Connection()).ASYNC_BREAK || connection.getStopReason() === (_Connection || _load_Connection()).BREAKPOINT && connection.getStatus() === (_DbgpSocket || _load_DbgpSocket()).ConnectionStatus.Break && !this._connectionBreakpointExits(connection) || connection.getStatus() === (_DbgpSocket || _load_DbgpSocket()).ConnectionStatus.Starting)) {
+        try {
+          connection.sendContinuationCommand((_DbgpSocket || _load_DbgpSocket()).COMMAND_RUN);
+        } catch (e) {
+          // Connection could have been closed (or resumed by the frontend) before we resumed it.
+        }
       }
     }
   }

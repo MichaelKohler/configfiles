@@ -36,7 +36,7 @@ class WString {
         visible: true,
         startDegree: 1,
         length
-      }, length);
+      });
     }
   }
 

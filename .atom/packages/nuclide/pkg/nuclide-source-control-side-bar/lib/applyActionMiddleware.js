@@ -157,7 +157,9 @@ function applyActionMiddleware(actions, getState) {
     }
 
     const { bookmark, repository } = action.payload;
-    return _rxjsBundlesRxMinJs.Observable.fromPromise(repository.checkoutReference(bookmark.bookmark, false)).ignoreElements().catch(error => {
+    const checkoutReference = repository.getType() === 'hg' ? repository.checkoutReference(bookmark.bookmark, false).ignoreElements() : _rxjsBundlesRxMinJs.Observable.fromPromise(repository.checkoutReference(bookmark.bookmark, false)).ignoreElements();
+
+    return checkoutReference.catch(error => {
       atom.notifications.addWarning('Failed Updating to Bookmark', {
         description: 'Revert or commit uncommitted changes before changing bookmarks.',
         detail: error,

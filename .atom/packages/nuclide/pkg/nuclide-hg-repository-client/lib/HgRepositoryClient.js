@@ -638,7 +638,7 @@ class HgRepositoryClient {
   }
 
   checkoutReference(reference, create, options) {
-    return this._service.checkout(reference, create, options);
+    return this._service.checkout(reference, create, options).refCount();
   }
 
   show(revision) {
@@ -792,7 +792,6 @@ class HgRepositoryClient {
   }
 
   getTemplateCommitMessage() {
-    // TODO(t12228275) This is a stopgap hack, fix it.
     return this._service.getTemplateCommitMessage();
   }
 

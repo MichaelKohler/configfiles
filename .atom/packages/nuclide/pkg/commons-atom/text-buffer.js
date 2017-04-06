@@ -137,14 +137,18 @@ function bufferForUri(uri) {
 
 function createBufferForUri(uri) {
   let buffer;
+  const params = {
+    filePath: uri,
+    shouldDestroyOnFileDelete: () => atom.config.get('core.closeDeletedFileTabs')
+  };
   if ((_nuclideUri || _load_nuclideUri()).default.isLocal(uri)) {
-    buffer = new _atom.TextBuffer({ filePath: uri });
+    buffer = new _atom.TextBuffer(params);
   } else {
     const connection = (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).ServerConnection.getForUri(uri);
     if (connection == null) {
       throw new Error(`ServerConnection cannot be found for uri: ${uri}`);
     }
-    buffer = new (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).NuclideTextBuffer(connection, { filePath: uri });
+    buffer = new (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).NuclideTextBuffer(connection, params);
   }
   atom.project.addBuffer(buffer);
 

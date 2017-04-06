@@ -56,6 +56,7 @@ class Connection {
       this._disposables.add(this.onNotification((notifyName, notify) => onNotificationCallback(this, notifyName, notify)));
     }
     this._stopReason = null;
+    this._stopBreakpointLocation = null;
   }
 
   isDummyConnection() {
@@ -75,13 +76,26 @@ class Connection {
     switch (newStatus) {
       case (_DbgpSocket || _load_DbgpSocket()).ConnectionStatus.Running:
         this._stopReason = null;
+        this._stopBreakpointLocation = null;
         break;
       case (_DbgpSocket || _load_DbgpSocket()).ConnectionStatus.Break:
         if (prevStatus === (_DbgpSocket || _load_DbgpSocket()).ConnectionStatus.BreakMessageReceived) {
           this._stopReason = ASYNC_BREAK;
+          this._stopBreakpointLocation = null;
         } else if (prevStatus !== (_DbgpSocket || _load_DbgpSocket()).ConnectionStatus.Break) {
           // TODO(dbonafilia): investigate why we sometimes receive two BREAK_MESSAGES
           this._stopReason = BREAKPOINT;
+          if (args != null && args.length >= 2) {
+            const [file, line] = args;
+            this._stopBreakpointLocation = {
+              filename: file,
+              lineNumber: Number(line),
+              conditionExpression: null
+            };
+          } else {
+            // Unknown stop location.
+            this._stopBreakpointLocation = null;
+          }
         }
         break;
       case (_DbgpSocket || _load_DbgpSocket()).ConnectionStatus.DummyIsViewable:
@@ -185,6 +199,12 @@ class Connection {
 
   getStopReason() {
     return this._stopReason;
+  }
+
+  // Returns the location this connection is stopped at if it is stopped at a file+line breakpoint.
+  // Otherwise, returns null.
+  getStopBreakpointLocation() {
+    return this._stopBreakpointLocation;
   }
 
   dispose() {

@@ -13,6 +13,16 @@ function _load_Actions() {
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ */
+
 function accumulateState(state, action) {
   switch (action.type) {
     case (_Actions || _load_Actions()).SET_PROJECT_ROOT:
@@ -33,6 +43,7 @@ function accumulateState(state, action) {
         buildRuleType: null,
         platformGroups: [],
         selectedDeploymentTarget: null,
+        extraPlatformUi: null,
         buildTarget: action.buildTarget,
         isLoadingRule: true,
         lastSessionPlatformName: preference.platformName,
@@ -51,11 +62,13 @@ function accumulateState(state, action) {
       return Object.assign({}, state, {
         platformGroups,
         selectedDeploymentTarget,
+        extraPlatformUi: getExtraUiForDeploymentTarget(selectedDeploymentTarget),
         isLoadingPlatforms: false
       });
     case (_Actions || _load_Actions()).SET_DEPLOYMENT_TARGET:
       return Object.assign({}, state, {
         selectedDeploymentTarget: action.deploymentTarget,
+        extraPlatformUi: getExtraUiForDeploymentTarget(action.deploymentTarget),
         lastSessionPlatformName: null,
         lastSessionDeviceName: null
       });
@@ -65,15 +78,7 @@ function accumulateState(state, action) {
       });
   }
   return state;
-} /**
-   * Copyright (c) 2015-present, Facebook, Inc.
-   * All rights reserved.
-   *
-   * This source code is licensed under the license found in the LICENSE file in
-   * the root directory of this source tree.
-   *
-   * 
-   */
+}
 
 function getDeploymentTargetPreference(state) {
   // If a deployment target exists, that's our first choice, otherwise look at the last session
@@ -135,4 +140,11 @@ function selectValidDeploymentTarget(preferredPlatformName, preferredDeviceName,
   }
 
   return { platform: existingPlatform, device: existingDevice };
+}
+
+function getExtraUiForDeploymentTarget(deploymentTarget) {
+  if (deploymentTarget == null || deploymentTarget.platform.extraUiWhenSelected == null) {
+    return null;
+  }
+  return deploymentTarget.platform.extraUiWhenSelected(deploymentTarget.device);
 }
