@@ -352,13 +352,13 @@
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>269 207 606 456 0 0 1440 877 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>279 394 796 473 0 0 1440 878 </string>
+	<string>279 344 796 473 0 0 1440 878 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>0 26 1438 852 0 0 1440 878 </string>
+	<string>0 4 1410 874 0 0 1440 878 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>8 21 1410 854 0 0 1440 878 </string>
+	<string>8 25 1410 853 0 0 1440 878 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
-	<string>30 25 1410 852 0 0 1440 877 </string>
+	<string>30 9 1410 854 0 0 1440 878 </string>
 	<key>NeverWarnAboutShortLivedSessions_FD5C2234-1D93-4931-9B2A-183ED689CDD8</key>
 	<true/>
 	<key>NeverWarnAboutShortLivedSessions_FD5C2234-1D93-4931-9B2A-183ED689CDD8_selection</key>
@@ -1145,7 +1145,7 @@
 			<key>Visual Bell</key>
 			<true/>
 			<key>Window Type</key>
-			<integer>12</integer>
+			<integer>2</integer>
 			<key>Working Directory</key>
 			<string>/Users/mkohler</string>
 		</dict>
@@ -1263,6 +1263,10 @@
 	<false/>
 	<key>TmuxDashboardLimit</key>
 	<integer>10</integer>
+	<key>ToolbeltTools</key>
+	<array>
+		<string>Recent Directories</string>
+	</array>
 	<key>TripleClickSelectsFullWrappedLines</key>
 	<false/>
 	<key>URLHandlersByGuid</key>
