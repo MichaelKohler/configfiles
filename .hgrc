@@ -35,6 +35,12 @@ git = 1
 showfunc = 1
 unified = 8
 
+[mozilla]
+ircnick = mkohler
+
+[bugzilla]
+%include ./.hgrc-bugzilla
+
 [paths]
 try = ssh://hg.mozilla.org/try
 review = https://reviewboard-hg.mozilla.org/autoreview
