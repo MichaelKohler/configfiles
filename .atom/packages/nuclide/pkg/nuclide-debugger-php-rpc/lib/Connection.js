@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Connection = exports.BREAKPOINT = exports.ASYNC_BREAK = undefined;
+exports.Connection = exports.EXCEPTION = exports.BREAKPOINT = exports.ASYNC_BREAK = undefined;
 
 var _DbgpSocket;
 
@@ -37,6 +37,7 @@ let connectionCount = 1;
 
 const ASYNC_BREAK = exports.ASYNC_BREAK = 'async_break';
 const BREAKPOINT = exports.BREAKPOINT = 'breakpoint';
+const EXCEPTION = exports.EXCEPTION = 'exception';
 
 class Connection {
 
@@ -49,6 +50,8 @@ class Connection {
     this._isDummyConnection = isDummyConnection;
     this._isDummyViewable = false;
     this._disposables = new (_eventKit || _load_eventKit()).CompositeDisposable();
+    this._breakCount = 0;
+
     if (onStatusCallback != null) {
       this._disposables.add(this.onStatus((status, ...args) => onStatusCallback(this, status, ...args)));
     }
@@ -84,9 +87,9 @@ class Connection {
           this._stopBreakpointLocation = null;
         } else if (prevStatus !== (_DbgpSocket || _load_DbgpSocket()).ConnectionStatus.Break) {
           // TODO(dbonafilia): investigate why we sometimes receive two BREAK_MESSAGES
-          this._stopReason = BREAKPOINT;
-          if (args != null && args.length >= 2) {
-            const [file, line] = args;
+          const [file, line, exception] = args;
+          this._stopReason = exception == null ? BREAKPOINT : EXCEPTION;
+          if (file != null && line != null) {
             this._stopBreakpointLocation = {
               filename: file,
               lineNumber: Number(line),
@@ -97,6 +100,7 @@ class Connection {
             this._stopBreakpointLocation = null;
           }
         }
+        this._breakCount++;
         break;
       case (_DbgpSocket || _load_DbgpSocket()).ConnectionStatus.DummyIsViewable:
         this._isDummyViewable = true;
@@ -130,6 +134,10 @@ class Connection {
     } else {
       return this._status === (_DbgpSocket || _load_DbgpSocket()).ConnectionStatus.Break;
     }
+  }
+
+  getBreakCount() {
+    return this._breakCount;
   }
 
   onNotification(callback) {

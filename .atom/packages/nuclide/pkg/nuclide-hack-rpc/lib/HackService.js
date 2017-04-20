@@ -126,12 +126,6 @@ function _load_nuclideOpenFilesRpc() {
   return _nuclideOpenFilesRpc = require('../../nuclide-open-files-rpc');
 }
 
-var _EvaluationExpression;
-
-function _load_EvaluationExpression() {
-  return _EvaluationExpression = require('./EvaluationExpression');
-}
-
 var _nuclideLanguageServiceRpc;
 
 function _load_nuclideLanguageServiceRpc() {
@@ -428,7 +422,10 @@ class HackSingleFileLanguageService {
       } else if (response.error_message !== '') {
         throw new Error(`Error formatting hack source: ${response.error_message}`);
       }
-      return response.result;
+      return [{
+        oldRange: range,
+        newText: response.result
+      }];
     })();
   }
 
@@ -438,7 +435,7 @@ class HackSingleFileLanguageService {
 
   getEvaluationExpression(filePath, buffer, position) {
     return (0, _asyncToGenerator.default)(function* () {
-      return (0, (_EvaluationExpression || _load_EvaluationExpression()).getEvaluationExpression)(filePath, buffer, position);
+      throw new Error('Not implemented');
     })();
   }
 

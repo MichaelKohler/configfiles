@@ -200,7 +200,7 @@ class DbgpSocket {
       const xdebugMessages = response['xdebug:message'];
       if (xdebugMessages != null && xdebugMessages.length >= 1) {
         const breakDetails = xdebugMessages[0].$;
-        this._emitStatus(ConnectionStatus.Break, breakDetails.filename, breakDetails.lineno);
+        this._emitStatus(ConnectionStatus.Break, breakDetails.filename, breakDetails.lineno, breakDetails.exception);
       }
     }
 

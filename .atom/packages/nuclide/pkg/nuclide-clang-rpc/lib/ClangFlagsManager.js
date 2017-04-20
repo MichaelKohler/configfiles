@@ -6,8 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 
 var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
 
-var _os = _interopRequireDefault(require('os'));
-
 var _nuclideUri;
 
 function _load_nuclideUri() {
@@ -56,15 +54,17 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const logger = (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)(); /**
-                                                                              * Copyright (c) 2015-present, Facebook, Inc.
-                                                                              * All rights reserved.
-                                                                              *
-                                                                              * This source code is licensed under the license found in the LICENSE file in
-                                                                              * the root directory of this source tree.
-                                                                              *
-                                                                              * 
-                                                                              */
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ */
+
+const logger = (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)();
 
 const BUCK_TIMEOUT = 10 * 60 * 1000;
 
@@ -482,14 +482,12 @@ class ClangFlagsManager {
       // TODO(t12973165): Allow configuring a custom flavor.
       // For now, this seems to use cxx.default_platform, which tends to be correct.
       const buildTarget = target + '#compilation-database';
-      // Since this is a background process, avoid stressing the system.
-      const maxLoad = _os.default.cpus().length / 2;
       const buildReport = yield (_nuclideBuckRpc || _load_nuclideBuckRpc()).build(buckProjectRoot, [
       // Small builds, like those used for a compilation database, can degrade overall
       // `buck build` performance by unnecessarily invalidating the Action Graph cache.
       // See https://buckbuild.com/concept/buckconfig.html#client.skip-action-graph-cache
       // for details on the importance of using skip-action-graph-cache=true.
-      '--config', 'client.skip-action-graph-cache=true', buildTarget, '-L', String(maxLoad)], { commandOptions: { timeout: BUCK_TIMEOUT } });
+      '--config', 'client.skip-action-graph-cache=true', buildTarget], { commandOptions: { timeout: BUCK_TIMEOUT } });
       if (!buildReport.success) {
         const error = `Failed to build ${buildTarget}`;
         logger.error(error);

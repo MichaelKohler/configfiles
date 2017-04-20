@@ -125,7 +125,7 @@ class DebuggerModel {
     this._watchExpressionStore = new (_WatchExpressionStore || _load_WatchExpressionStore()).WatchExpressionStore(this._dispatcher, this._bridge);
     this._watchExpressionListStore = new (_WatchExpressionListStore || _load_WatchExpressionListStore()).WatchExpressionListStore(this._watchExpressionStore, this._dispatcher);
     this._debuggerActionStore = new (_DebuggerActionsStore || _load_DebuggerActionsStore()).default(this._dispatcher, this._bridge);
-    this._callstackStore = new (_CallstackStore || _load_CallstackStore()).default(this._dispatcher);
+    this._callstackStore = new (_CallstackStore || _load_CallstackStore()).default(this._dispatcher, this._store);
     this._scopesStore = new (_ScopesStore || _load_ScopesStore()).default(this._dispatcher);
     this._threadStore = new (_ThreadStore || _load_ThreadStore()).default(this._dispatcher);
     this._debuggerPauseController = new (_DebuggerPauseController || _load_DebuggerPauseController()).DebuggerPauseController(this._store);
@@ -198,7 +198,7 @@ class DebuggerModel {
     return WORKSPACE_VIEW_URI;
   }
 
-  getPreferredInitialWidth() {
+  getPreferredWidth() {
     return 500;
   }
 }

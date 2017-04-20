@@ -119,6 +119,13 @@ class DebuggerActions {
             _this.updateControlButtons([]);
           }
         }
+
+        if (processInfo.supportsConfigureSourcePaths()) {
+          _this.updateConfigureSourcePathsCallback(processInfo.configureSourceFilePaths.bind(processInfo));
+        } else {
+          _this.updateConfigureSourcePathsCallback(null);
+        }
+
         yield _this._waitForChromeConnection(debuggerInstance);
       } catch (err) {
         (0, (_AnalyticsHelper || _load_AnalyticsHelper()).failTimerTracking)(err);
@@ -214,6 +221,7 @@ class DebuggerActions {
     this.updateControlButtons([]);
     this.setDebuggerMode((_DebuggerStore || _load_DebuggerStore()).DebuggerMode.STOPPED);
     this.setDebugProcessInfo(null);
+    this.updateConfigureSourcePathsCallback(null);
     (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)(AnalyticsEvents.DEBUGGER_STOP);
     (0, (_AnalyticsHelper || _load_AnalyticsHelper()).endTimerTracking)();
 
@@ -254,6 +262,19 @@ class DebuggerActions {
     this._dispatcher.dispatch({
       actionType: (_DebuggerDispatcher || _load_DebuggerDispatcher()).ActionTypes.UPDATE_CUSTOM_CONTROL_BUTTONS,
       data: buttons
+    });
+  }
+
+  updateConfigureSourcePathsCallback(callback) {
+    this._dispatcher.dispatch({
+      actionType: (_DebuggerDispatcher || _load_DebuggerDispatcher()).ActionTypes.UPDATE_CONFIGURE_SOURCE_PATHS_CALLBACK,
+      data: callback
+    });
+  }
+
+  configureSourcePaths() {
+    this._dispatcher.dispatch({
+      actionType: (_DebuggerDispatcher || _load_DebuggerDispatcher()).ActionTypes.CONFIGURE_SOURCE_PATHS
     });
   }
 

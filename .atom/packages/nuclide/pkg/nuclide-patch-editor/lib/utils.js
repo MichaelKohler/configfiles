@@ -129,7 +129,6 @@ function createHunkData(hunk) {
     allChanges,
     countEnabledChanges: allChanges.length,
     firstChangedLineIndex,
-    hunk,
     selected: (_constants || _load_constants()).SelectedState.ALL
   };
 }

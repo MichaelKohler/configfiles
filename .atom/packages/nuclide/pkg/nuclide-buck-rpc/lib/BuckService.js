@@ -439,7 +439,7 @@ let queryWithArgs = exports.queryWithArgs = (() => {
 
 
 let getLastCommandInfo = exports.getLastCommandInfo = (() => {
-  var _ref17 = (0, _asyncToGenerator.default)(function* (rootPath) {
+  var _ref17 = (0, _asyncToGenerator.default)(function* (rootPath, maxArgs) {
     const logFile = (_nuclideUri || _load_nuclideUri()).default.join(rootPath, LOG_PATH);
     if (yield (_fsPromise || _load_fsPromise()).default.exists(logFile)) {
       const result = yield (0, (_process || _load_process()).asyncExecute)('head', ['-n', '1', logFile]);
@@ -457,7 +457,7 @@ let getLastCommandInfo = exports.getLastCommandInfo = (() => {
           return null;
         }
         const args = stripBrackets(matches[matches.length - 1]).split(', ');
-        if (args.length <= 1) {
+        if (args.length <= 1 || maxArgs != null && args.length - 1 > maxArgs) {
           return null;
         }
         return { timestamp, command: args[0], args: args.slice(1) };
@@ -466,7 +466,7 @@ let getLastCommandInfo = exports.getLastCommandInfo = (() => {
     return null;
   });
 
-  return function getLastCommandInfo(_x34) {
+  return function getLastCommandInfo(_x34, _x35) {
     return _ref17.apply(this, arguments);
   };
 })();
@@ -660,7 +660,7 @@ function _buildWithOutput(rootPath, buildTargets, options) {
     baseOptions: Object.assign({}, options),
     buildTargets
   });
-  return _rxjsBundlesRxMinJs.Observable.fromPromise(_getBuckCommandAndOptions(rootPath)).switchMap(({ pathToBuck, buckCommandOptions }) => (0, (_process || _load_process()).observeProcess)(() => (0, (_process || _load_process()).safeSpawn)(pathToBuck, args, buckCommandOptions)).startWith({
+  return _rxjsBundlesRxMinJs.Observable.fromPromise(_getBuckCommandAndOptions(rootPath)).switchMap(({ pathToBuck, buckCommandOptions }) => (0, (_process || _load_process()).observeProcess)(pathToBuck, args, Object.assign({}, buckCommandOptions, { /* TODO(T17353599) */isExitError: () => false })).startWith({
     kind: 'stdout',
     data: `Starting "${pathToBuck} ${_getArgsStringSkipClientId(args)}"`
   }));

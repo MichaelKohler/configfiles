@@ -108,6 +108,10 @@ class HunkDiff extends _react.default.Component {
     const oldText = prevHunk.changes.map(change => change.content.slice(1)).join('\n');
     const oldGrammar = this.props.grammar;
 
+    if (newText === oldText && grammar === oldGrammar) {
+      return;
+    }
+
     if (newText !== oldText) {
       editor.setText(newText);
     }
@@ -117,6 +121,7 @@ class HunkDiff extends _react.default.Component {
     this._disposables.dispose();
     this._disposables = new (_UniversalDisposable || _load_UniversalDisposable()).default();
     this._createLineMarkers(editor);
+    this._createLineNumbers(editor);
   }
 
   shouldComponentUpdate(nextProps) {

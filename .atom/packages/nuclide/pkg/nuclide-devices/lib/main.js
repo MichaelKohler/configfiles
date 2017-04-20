@@ -18,12 +18,28 @@ function _load_DevicesPanelState() {
   return _DevicesPanelState = require('./DevicesPanelState');
 }
 
+var _AndroidFetcher;
+
+function _load_AndroidFetcher() {
+  return _AndroidFetcher = require('./fetchers/AndroidFetcher');
+}
+
+var _TizenFetcher;
+
+function _load_TizenFetcher() {
+  return _TizenFetcher = require('./fetchers/TizenFetcher');
+}
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 class Activation {
 
   constructor(state) {
     this._disposables = new (_UniversalDisposable || _load_UniversalDisposable()).default();
+    this._fetchers = new Set();
+
+    this.registerDeviceFetcher(new (_AndroidFetcher || _load_AndroidFetcher()).AndroidFetcher());
+    this.registerDeviceFetcher(new (_TizenFetcher || _load_TizenFetcher()).TizenFetcher());
   }
 
   dispose() {
@@ -33,11 +49,19 @@ class Activation {
   consumeWorkspaceViewsService(api) {
     this._disposables.add(api.addOpener(uri => {
       if (uri === (_DevicesPanelState || _load_DevicesPanelState()).WORKSPACE_VIEW_URI) {
-        return new (_DevicesPanelState || _load_DevicesPanelState()).DevicesPanelState();
+        return new (_DevicesPanelState || _load_DevicesPanelState()).DevicesPanelState(this._fetchers);
       }
     }), () => api.destroyWhere(item => item instanceof (_DevicesPanelState || _load_DevicesPanelState()).DevicesPanelState), atom.commands.add('atom-workspace', 'nuclide-devices:toggle', event => {
       api.toggle((_DevicesPanelState || _load_DevicesPanelState()).WORKSPACE_VIEW_URI, event.detail);
     }));
+  }
+
+  deserializeDevicePanelState() {
+    return new (_DevicesPanelState || _load_DevicesPanelState()).DevicesPanelState(this._fetchers);
+  }
+
+  registerDeviceFetcher(fetcher) {
+    this._fetchers.add(fetcher);
   }
 } /**
    * Copyright (c) 2015-present, Facebook, Inc.

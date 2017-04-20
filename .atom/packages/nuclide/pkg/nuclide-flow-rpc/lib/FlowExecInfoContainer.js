@@ -143,6 +143,11 @@ class FlowExecInfoContainer {
     })();
   }
 
+  reallyGetFlowExecInfo(root) {
+    this._flowExecInfoCache.del(root);
+    return this.getFlowExecInfo(root);
+  }
+
   _computeFlowExecInfo(root) {
     var _this2 = this;
 

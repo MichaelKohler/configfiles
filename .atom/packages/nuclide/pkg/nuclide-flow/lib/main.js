@@ -134,7 +134,8 @@ let getLanguageServiceConfig = (() => {
       } : undefined,
       evaluationExpression: {
         version: '0.0.0',
-        analyticsEventName: 'flow.evaluationExpression'
+        analyticsEventName: 'flow.evaluationExpression',
+        regexp: (_nuclideFlowCommon || _load_nuclideFlowCommon()).JAVASCRIPT_IDENTIFIER_REGEX
       }
     };
   });

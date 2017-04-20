@@ -53,16 +53,6 @@ function _load_() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- */
-
 class MultiProjectLanguageService {
   // Maps project dir => LanguageService
   constructor(logger, fileCache, projectFileName, fileExtensions, languageServiceFactory) {
@@ -344,5 +334,14 @@ class MultiProjectLanguageService {
 }
 
 exports.MultiProjectLanguageService = MultiProjectLanguageService; // Enforces that an instance of MultiProjectLanguageService satisfies the LanguageService type
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ */
 
 null;

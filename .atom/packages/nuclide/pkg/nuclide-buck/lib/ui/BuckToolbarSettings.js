@@ -66,6 +66,7 @@ class BuckToolbarSettings extends _react.default.Component {
   }
 
   render() {
+    const extraSettingsUi = this.props.platformProviderSettings != null ? this.props.platformProviderSettings.ui : null;
     return _react.default.createElement(
       (_Modal || _load_Modal()).Modal,
       { onDismiss: this.props.onDismiss },
@@ -116,7 +117,8 @@ class BuckToolbarSettings extends _react.default.Component {
               onDidChange: this._onRunArgsChange.bind(this),
               onConfirm: this._onSave.bind(this)
             })
-          )
+          ),
+          extraSettingsUi
         ),
         _react.default.createElement(
           'div',
@@ -160,6 +162,9 @@ class BuckToolbarSettings extends _react.default.Component {
       atom.notifications.addError('Could not parse arguments', {
         detail: err.stack
       });
+    }
+    if (this.props.platformProviderSettings != null) {
+      this.props.platformProviderSettings.onSave();
     }
   }
 }

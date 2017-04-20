@@ -34,7 +34,10 @@ let getInstance = exports.getInstance = (() => {
     };
 
     logger.info('Spawning new ocamlmerlin process version ' + version);
-    const process = yield (0, (_process || _load_process()).safeSpawn)(merlinPath, flags, options);
+    const processStream = (0, (_process || _load_process()).spawn)(merlinPath, flags, options).publish();
+    const processPromise = processStream.take(1).toPromise();
+    processStream.connect();
+    const process = yield processPromise;
     // Turns 2.5.1 into 2.5
     const majorMinor = version.split('.').slice(0, 2).join('.');
     switch (majorMinor) {

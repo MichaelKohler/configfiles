@@ -1,5 +1,66 @@
 # Nuclide Changelog
 
+## v0.218.0
+
+**Performance**
+
+* Quick Open should feel snappier (default 200ms debounce has been removed).
+* Fuzzy file search indexing is now faster in Hg repositories.
+* Fixed a bug where rebasing remote Hg repositories would flood the Nuclide server connection.
+* Significantly reduced the network/CPU usage of listing directories (e.g. in the file tree).
+
+**General**
+
+* Hyperclick URL matching is more accurate.
+* The Buck toolbar's target typeahead now suggests the owner of the current file at the top.
+
+**C++**
+
+* Language features are now compatible with the [language-cpp14](https://github.com/jbw3/language-cpp14) grammar package.
+
+**Debugger**
+
+* Fixed bugs around setting breakpoints by clicking in the gutter, and issues where clicking a line number to select a line of text sets unwanted breakpoints.
+* PHP/Hack: Fixed bug where debugger doesn't exit when the script being debugged finishes.
+* PHP/Hack: Fixed exceptions that can occur when resolving breakpoints that have already been removed.
+* C++ debugger: Fixed an issue where the child process is launched with an empty set of environment variables.
+* Added scrollbars to datatips so you can see all the content when examining variables that have lots of members.
+* Fixed weird scrolling issues in Watch Expressions pane.
+
+## v0.217.0
+
+**Debugger**
+* Fixed a bug causing fetching native processes on a remote server with many running processes was saturating Nuclide server remote connection and slowing things down.
+
+**Flow**
+* Fix a bug that could break Flow integration when the .flowconfig changed to specify a different Flow version.
+
+**PHP/Hack Debugger**
+
+* UX: Improved wording of several confusing error messages.
+* Fixed issue where the console indicated it was ready for use before it actually was, and attempts to use it resulted in odd behavior.
+* Fixed issue where issuing an eval command caused a breakpoint to be hit in xdebug_includes.php instead of the script being debugged.
+* Requests window now indicates if a thread is stopped due to an Exception vs hitting a breakpoint.
+* Fixed issue where unchecking “Pause on exception” and hitting continue did not stop breaking in on requests hitting exceptions.
+* Launch script window now resolves “~” to your home directory path when launching a script.
+* Added a “recently launched scripts” drop-down to the launch dialog.
+* Debugger now shows an error and exits if it fails to attach to an HHVM instance rather than waiting forever.
+* Debugger now shows an error and exits if an invalid HHVM binary path is specified for launching a script.
+
+**Source Control**
+
+* Remove diff-view and source control sidebar features from the public release of Nuclide.
+
+According to user feedback, these features have enjoyed very low usage outside of Facebook, negatively impact the performance of Nuclide, and generally don't (yet) meet the quality bar we'd like to set for Nuclide.
+
+In order to improve on this, we will be moving these features to a Facebook-internal version of Nuclide for the foreseeable future, allowing us to iterate more quickly, clean up tech debt, and polish the experience.
+
+## v0.216.0
+
+### Hotfix from 0.215.0
+
+* Limit the number of console records serialized to avoid UI freezes.
+
 ## v0.215.0
 
 General

@@ -177,7 +177,12 @@ function getPackagerObservable(projectRootPath) {
     if (atom.devMode) {
       editor.push('--dev');
     }
-    return (0, (_process || _load_process()).observeProcess)(() => (0, (_process || _load_process()).safeSpawn)(command, args, { cwd, env: Object.assign({}, process.env, { REACT_EDITOR: (0, (_shellQuote || _load_shellQuote()).quote)(editor) }) }), true);
+    return (0, (_process || _load_process()).observeProcess)(command, args, {
+      cwd,
+      env: Object.assign({}, process.env, { REACT_EDITOR: (0, (_shellQuote || _load_shellQuote()).quote)(editor) }),
+      killTreeOnComplete: true,
+      /* TODO(T17353599) */isExitError: () => false
+    });
   })
   // Accumulate the stderr so that we can show it to the user if something goes wrong.
   .scan((acc, event) => {

@@ -75,7 +75,11 @@ class MercurialConflictContext {
         return [];
       }
       _this._cachedMergeConflicts = yield _this._conflictingRepository.fetchMergeConflicts();
-      return _this._cachedMergeConflicts;
+      return _this._cachedMergeConflicts.map(function (conflict) {
+        return Object.assign({}, conflict, {
+          message: conflict.status
+        });
+      });
     })();
   }
 
@@ -104,7 +108,8 @@ class MercurialConflictContext {
       if (_this3._conflictingRepository == null) {
         throw new Error('Mercurial merge conflict resolver doesn\'t have a conflicting repository');
       }
-      yield _this3._conflictingRepository.resolveConflictedFile(filePath).toPromise();
+      yield _this3._conflictingRepository.markConflictedFile(filePath,
+      /* resolved */true).toPromise();
       _this3._cachedMergeConflicts = _this3._cachedMergeConflicts.filter(function (mergeConflict) {
         return mergeConflict.path !== filePath;
       });

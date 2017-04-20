@@ -10,7 +10,10 @@ var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
 let niceSafeSpawn = exports.niceSafeSpawn = (() => {
   var _ref = (0, _asyncToGenerator.default)(function* (command, args, execOptions) {
     const nicified = yield nicifyCommand(command, args);
-    return (0, (_process || _load_process()).safeSpawn)(nicified.command, nicified.args, execOptions);
+    const processStream = (0, (_process || _load_process()).spawn)(nicified.command, nicified.args, execOptions).publish();
+    const processPromise = processStream.take(1).toPromise();
+    processStream.connect();
+    return processPromise;
   });
 
   return function niceSafeSpawn(_x, _x2, _x3) {
@@ -85,6 +88,8 @@ let hasCommand = (() => {
   };
 })();
 
+exports.niceObserveProcess = niceObserveProcess;
+
 var _lruCache;
 
 function _load_lruCache() {
@@ -102,6 +107,8 @@ var _which;
 function _load_which() {
   return _which = _interopRequireDefault(require('./which'));
 }
+
+var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -130,4 +137,8 @@ function hasNiceCommand() {
 
 function hasIoniceCommand() {
   return hasCommand(IONICE_COMMAND);
+}
+
+function niceObserveProcess(command_, args_, options) {
+  return _rxjsBundlesRxMinJs.Observable.defer(() => nicifyCommand(command_, args_ || [])).switchMap(({ command, args }) => (0, (_process || _load_process()).observeProcess)(command, args, options));
 }

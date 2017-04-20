@@ -74,7 +74,7 @@ class Modal extends _react.default.Component {
     el.focus();
     this._cancelDisposable = new (_UniversalDisposable || _load_UniversalDisposable()).default(atom.commands.add(window, 'core:cancel', () => {
       this.props.onDismiss();
-    }), _rxjsBundlesRxMinJs.Observable.fromEvent(window, 'click')
+    }), _rxjsBundlesRxMinJs.Observable.fromEvent(window, 'mousedown')
     // Ignore clicks in the current tick. We don't want to capture the click that showed this
     // modal.
     .skipUntil(_rxjsBundlesRxMinJs.Observable.interval(0).first()).subscribe(this._handleWindowClick));

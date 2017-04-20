@@ -3,14 +3,14 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.GraphQLLanguageService = exports.initialize = undefined;
+exports.initialize = undefined;
 
 var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
 
 /* LanguageService related type imports */
 let initialize = exports.initialize = (() => {
   var _ref = (0, _asyncToGenerator.default)(function* (fileNotifier) {
-    return new GraphQLLanguageService(fileNotifier);
+    return new (_nuclideLanguageServiceRpc || _load_nuclideLanguageServiceRpc()).ServerLanguageService(fileNotifier, new GraphQLLanguageAnalyzer(fileNotifier));
   });
 
   return function initialize(_x) {
@@ -64,15 +64,6 @@ function _load_GraphQLProcess() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-class GraphQLLanguageService extends (_nuclideLanguageServiceRpc || _load_nuclideLanguageServiceRpc()).ServerLanguageService {
-  constructor(fileNotifier) {
-    super(fileNotifier, new GraphQLLanguageAnalyzer(fileNotifier));
-  }
-
-  dispose() {}
-}
-
-exports.GraphQLLanguageService = GraphQLLanguageService;
 class GraphQLLanguageAnalyzer {
 
   constructor(fileNotifier) {
@@ -177,7 +168,7 @@ class GraphQLLanguageAnalyzer {
           return null;
         }
 
-        return graphQLProcess.getService().getOutline(buffer.getText());
+        return (yield graphQLProcess.getService()).getOutline(buffer.getText());
       }));
     })();
   }

@@ -5,10 +5,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.MultiRootChangedFilesView = undefined;
 
-var _vcs;
+var _nuclideVcsBase;
 
-function _load_vcs() {
-  return _vcs = require('../commons-atom/vcs');
+function _load_nuclideVcsBase() {
+  return _nuclideVcsBase = require('../nuclide-vcs-base');
 }
 
 var _goToLocation;
@@ -55,13 +55,13 @@ class MultiRootChangedFilesView extends _react.default.Component {
         label: 'Add to Mercurial',
         command: `${commandPrefix}:add`,
         shouldDisplay: event => {
-          return this._getStatusCodeForFile(event) === (_vcs || _load_vcs()).FileChangeStatus.UNTRACKED;
+          return this._getStatusCodeForFile(event) === (_nuclideVcsBase || _load_nuclideVcsBase()).FileChangeStatus.UNTRACKED;
         }
       }, {
         label: 'Open in Diff View',
         command: `${commandPrefix}:open-in-diff-view`,
         shouldDisplay: event => {
-          return openInDiffViewOption;
+          return atom.packages.isPackageLoaded('fb-diff-view') && openInDiffViewOption;
         }
       }, {
         label: 'Revert',
@@ -71,14 +71,14 @@ class MultiRootChangedFilesView extends _react.default.Component {
           if (statusCode == null) {
             return false;
           }
-          return (_vcs || _load_vcs()).RevertibleStatusCodes.includes(statusCode);
+          return (_nuclideVcsBase || _load_nuclideVcsBase()).RevertibleStatusCodes.includes(statusCode);
         }
       }, {
         label: 'Delete',
         command: `${commandPrefix}:delete-file`,
         shouldDisplay: event => {
           const statusCode = this._getStatusCodeForFile(event);
-          return statusCode !== (_vcs || _load_vcs()).FileChangeStatus.REMOVED;
+          return statusCode !== (_nuclideVcsBase || _load_nuclideVcsBase()).FileChangeStatus.REMOVED;
         }
       }, {
         label: 'Goto File',
@@ -104,7 +104,7 @@ class MultiRootChangedFilesView extends _react.default.Component {
     }));
     this._subscriptions.add(atom.commands.add(`.${commandPrefix}-file-entry`, `${commandPrefix}:delete-file`, event => {
       const nuclideFilePath = this._getFilePathFromEvent(event);
-      (0, (_vcs || _load_vcs()).confirmAndDeletePath)(nuclideFilePath);
+      (0, (_nuclideVcsBase || _load_nuclideVcsBase()).confirmAndDeletePath)(nuclideFilePath);
     }));
     this._subscriptions.add(atom.commands.add(`.${commandPrefix}-file-entry`, `${commandPrefix}:copy-file-name`, event => {
       atom.clipboard.write((_nuclideUri || _load_nuclideUri()).default.basename(this._getFilePathFromEvent(event) || ''));
@@ -112,7 +112,7 @@ class MultiRootChangedFilesView extends _react.default.Component {
     this._subscriptions.add(atom.commands.add(`.${commandPrefix}-file-entry`, `${commandPrefix}:add`, event => {
       const filePath = this._getFilePathFromEvent(event);
       if (filePath != null && filePath.length) {
-        (0, (_vcs || _load_vcs()).addPath)(filePath);
+        (0, (_nuclideVcsBase || _load_nuclideVcsBase()).addPath)(filePath);
       }
     }));
     this._subscriptions.add(atom.commands.add(`.${commandPrefix}-file-entry`, `${commandPrefix}:revert`, event => {
@@ -122,7 +122,7 @@ class MultiRootChangedFilesView extends _react.default.Component {
         if (getRevertTargetRevision != null) {
           targetRevision = getRevertTargetRevision();
         }
-        (0, (_vcs || _load_vcs()).confirmAndRevertPath)(filePath, targetRevision);
+        (0, (_nuclideVcsBase || _load_nuclideVcsBase()).confirmAndRevertPath)(filePath, targetRevision);
       }
     }));
 

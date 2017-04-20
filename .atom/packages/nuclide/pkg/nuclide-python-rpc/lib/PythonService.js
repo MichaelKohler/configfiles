@@ -62,6 +62,10 @@ let getDiagnostics = exports.getDiagnostics = (() => {
       // Read contents from stdin.
       args.push('-');
 
+      if (!(typeof command === 'string')) {
+        throw new Error('Invariant violation: "typeof command === \'string\'"');
+      }
+
       result = yield (0, (_process || _load_process()).asyncExecute)(command, args, { cwd: dirName, stdin: contents });
     }
     // 1 indicates unclean lint result (i.e. has errors/warnings).

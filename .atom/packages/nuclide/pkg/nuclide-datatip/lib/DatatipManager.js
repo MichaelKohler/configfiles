@@ -8,7 +8,7 @@ exports.DatatipManager = undefined;
 var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
 
 let fetchDatatip = (() => {
-  var _ref = (0, _asyncToGenerator.default)(function* (editor, position, allProviders, onPinClick) {
+  var _ref = (0, _asyncToGenerator.default)(function* (editor, position, mouseEvent, allProviders, onPinClick) {
     const { scopeName } = editor.getGrammar();
     const providers = filterProvidersByScopeName(allProviders, scopeName);
     if (providers.length === 0) {
@@ -18,21 +18,26 @@ let fetchDatatip = (() => {
     const datatipsAndProviders = (0, (_collection || _load_collection()).arrayCompact)((yield Promise.all(providers.map((() => {
       var _ref2 = (0, _asyncToGenerator.default)(function* (provider) {
         const name = getProviderName(provider);
-        const datatip = yield (0, (_nuclideAnalytics || _load_nuclideAnalytics()).trackTiming)(name + '.datatip', function () {
-          return provider.datatip(editor, position);
-        });
+        const timingTracker = new (_nuclideAnalytics || _load_nuclideAnalytics()).TimingTracker(name + '.datatip');
+        try {
+          const datatip = yield provider.datatip(editor, position, mouseEvent);
+          if (!datatip) {
+            return null;
+          }
+          timingTracker.onSuccess();
 
-        if (!datatip) {
+          return {
+            datatip,
+            provider
+          };
+        } catch (e) {
+          timingTracker.onError(e);
+          logger.error(`Error getting datatip from provider ${name}`, e);
           return null;
         }
-
-        return {
-          datatip,
-          provider
-        };
       });
 
-      return function (_x5) {
+      return function (_x6) {
         return _ref2.apply(this, arguments);
       };
     })()))));
@@ -69,7 +74,7 @@ let fetchDatatip = (() => {
     };
   });
 
-  return function fetchDatatip(_x, _x2, _x3, _x4) {
+  return function fetchDatatip(_x, _x2, _x3, _x4, _x5) {
     return _ref.apply(this, arguments);
   };
 })();
@@ -201,27 +206,22 @@ function getBufferPosition(editor, editorView, event) {
 }
 
 function renderProvider(datatip, editor, providerName, onPinClick) {
-  const { pinnable, component } = datatip;
-  const ProvidedComponent = component;
-
   let action;
   let actionTitle;
   // Datatips are pinnable by default, unless explicitly specified
   // otherwise.
-  if (pinnable !== false) {
+  if (datatip.pinnable !== false) {
     action = (_DatatipComponent || _load_DatatipComponent()).DATATIP_ACTIONS.PIN;
     actionTitle = 'Pin this Datatip';
   }
 
-  return _react.default.createElement(
-    (_DatatipComponent || _load_DatatipComponent()).DatatipComponent,
-    {
-      action: action,
-      actionTitle: actionTitle,
-      onActionClick: () => onPinClick(editor, datatip),
-      key: providerName },
-    _react.default.createElement(ProvidedComponent, null)
-  );
+  return _react.default.createElement((_DatatipComponent || _load_DatatipComponent()).DatatipComponent, {
+    action: action,
+    actionTitle: actionTitle,
+    datatip: datatip,
+    onActionClick: () => onPinClick(editor, datatip),
+    key: providerName
+  });
 }
 
 function renderDatatip(editor, element, { range, renderedProvider }) {
@@ -340,7 +340,7 @@ class DatatipManagerForEditor {
 
   _setStartFetchingDebounce() {
     this._startFetchingDebounce = (0, (_debounce || _load_debounce()).default)(() => {
-      this._startFetching(() => getBufferPosition(this._editor, this._editorView, this._lastMoveEvent));
+      this._startFetching(() => getBufferPosition(this._editor, this._editorView, this._lastMoveEvent), this._lastMoveEvent);
     }, ensurePositiveNumber((_featureConfig || _load_featureConfig()).default.get('nuclide-datatip.datatipDebounceDelay'), DEFAULT_DATATIP_DEBOUNCE_DELAY),
     /* immediate */false);
   }
@@ -371,7 +371,7 @@ class DatatipManagerForEditor {
     }
   }
 
-  _startFetching(getPosition) {
+  _startFetching(getPosition, lastMoveEvent) {
     var _this = this;
 
     return (0, _asyncToGenerator.default)(function* () {
@@ -384,7 +384,7 @@ class DatatipManagerForEditor {
       }
 
       _this._setState(DatatipState.FETCHING);
-      const data = yield fetchDatatip(_this._editor, position, _this._datatipProviders, _this._handlePinClicked.bind(_this));
+      const data = yield fetchDatatip(_this._editor, position, lastMoveEvent, _this._datatipProviders, _this._handlePinClicked.bind(_this));
 
       if (data === null) {
         _this._setState(DatatipState.HIDDEN);
@@ -493,7 +493,7 @@ class DatatipManagerForEditor {
     // it up right away. We assume that a keypress is done within 100ms
     // and don't show it again if it was hidden so soon.
     performance.now() - this._lastHiddenTime > 100) {
-      this._startFetching(() => this._editor.getCursorScreenPosition());
+      this._startFetching(() => this._editor.getCursorScreenPosition(), null);
       return;
     }
   }

@@ -5,6 +5,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.RpcProcess = undefined;
 
+var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
+
 var _StreamTransport;
 
 function _load_StreamTransport() {
@@ -30,6 +32,8 @@ function _load_nuclideLogging() {
 }
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -60,18 +64,21 @@ class RpcProcess {
 
   /**
    * @param name           a name for this server, used to tag log entries
-   * @param createProcess  a function to used create the child process when needed,
-   *                       both during initialization and on restart
+   * @param processStream  a (cold) Observable that creates processes upon subscription,
+   *                       both during initialization and on restart (see spawn)
    */
-  constructor(name, serviceRegistry, createProcess, messageLogger = (direction, message) => {
+  constructor(name, serviceRegistry, processStream, messageLogger = (direction, message) => {
     return;
   }) {
-    this._createProcess = createProcess;
+    this._processStream = processStream;
     this._messageLogger = messageLogger;
     this._name = name;
+    this._disposed = false;
+    this._process = null;
+    this._subscription = null;
     this._serviceRegistry = serviceRegistry;
     this._rpcConnection = null;
-    this._disposed = false;
+    this._disposals = new _rxjsBundlesRxMinJs.Subject();
     this._exitCode = new _rxjsBundlesRxMinJs.Subject();
   }
 
@@ -84,13 +91,12 @@ class RpcProcess {
   }
 
   getService(serviceName) {
-    this._ensureProcess();
+    var _this = this;
 
-    if (!(this._rpcConnection != null)) {
-      throw new Error('Invariant violation: "this._rpcConnection != null"');
-    }
-
-    return this._rpcConnection.getService(serviceName);
+    return (0, _asyncToGenerator.default)(function* () {
+      const connection = _this._ensureConnection();
+      return (yield connection).getService(serviceName);
+    })();
   }
 
   observeExitCode() {
@@ -101,25 +107,36 @@ class RpcProcess {
    * Ensures that the child process is available. Asynchronously creates the child process,
    * only if it is currently null.
    */
-  _ensureProcess() {
-    if (this._process) {
-      return;
-    }
-    try {
-      const proc = this._createProcess();
-      logger.info(`${this._name} - created child process with PID: `, proc.pid);
+  _ensureConnection() {
+    if (this._rpcConnection == null) {
+      const processStream = this._processStream.do({
+        error: e => {
+          logger.error(`${this._name} - error spawning child process: `, e);
+          this.dispose();
+        }
+      }).takeUntil(this._disposals).publish();
 
-      proc.stdin.on('error', error => {
-        logger.error(`${this._name} - error writing data: `, error);
+      // This is implicitly disposed by `dispose()` via `this._disposals`.
+      processStream.switchMap(proc => (0, (_process || _load_process()).getOutputStream)(proc, { /* TODO(T17353599) */isExitError: () => false })).subscribe(this._onProcessMessage.bind(this));
+
+      const connection = this._rpcConnection = processStream.take(1).toPromise().then(proc => {
+        if (proc == null) {
+          throw new Error('RpcProcess disposed during getService');
+        }
+        this._process = proc;
+        logger.info(`${this._name} - created child process with PID: `, proc.pid);
+
+        proc.stdin.on('error', error => {
+          logger.error(`${this._name} - error writing data: `, error);
+        });
+        return new (_RpcConnection || _load_RpcConnection()).RpcConnection('client', this._serviceRegistry, new (_StreamTransport || _load_StreamTransport()).StreamTransport(proc.stdin, proc.stdout, this._messageLogger));
       });
 
-      this._rpcConnection = new (_RpcConnection || _load_RpcConnection()).RpcConnection('client', this._serviceRegistry, new (_StreamTransport || _load_StreamTransport()).StreamTransport(proc.stdin, proc.stdout, this._messageLogger));
-      this._subscription = (0, (_process || _load_process()).getOutputStream)(proc).subscribe(this._onProcessMessage.bind(this));
-      this._process = proc;
-    } catch (e) {
-      logger.error(`${this._name} - error spawning child process: `, e);
-      throw e;
+      this._subscription = processStream.connect();
+      return connection;
     }
+    this._disposed = false;
+    return this._rpcConnection;
   }
 
   /**
@@ -140,7 +157,6 @@ class RpcProcess {
         }
         this.dispose();
         this._exitCode.next(message);
-        this._exitCode.complete();
         break;
       case 'error':
         logger.error(`${this._name} - error received: `, message.error.message);
@@ -162,20 +178,20 @@ class RpcProcess {
   dispose() {
     logger.info(`${this._name} - disposing connection.`);
     this._disposed = true;
+    this._disposals.next();
+
+    if (this._rpcConnection != null) {
+      // If this wasn't already resolved, then it's rejected via `this._disposals`.
+      this._rpcConnection.then(connection => connection.dispose()).catch(() => {});
+      this._rpcConnection = null;
+    }
 
     if (this._subscription != null) {
       // Note that this will kill the process if it is still live.
       this._subscription.unsubscribe();
       this._subscription = null;
+      this._process = null;
     }
-    if (this._rpcConnection != null) {
-      this._rpcConnection.dispose();
-      this._rpcConnection = null;
-    }
-    // If shouldKill is false, i.e. the process exited outside of this
-    // object's control or disposal, the process still needs to be nulled out
-    // to indicate that the process needs to be restarted upon the next call.
-    this._process = null;
   }
 }
 exports.RpcProcess = RpcProcess;

@@ -235,7 +235,7 @@ function createPackageStore(rawState) {
   return store;
 }
 
-if (atom.workspace.docks != null && typeof atom.workspace.toggle === 'function') {
+if (typeof atom.workspace.getLeftDock === 'function' && typeof atom.workspace.toggle === 'function') {
   (0, (_createPackage || _load_createPackage()).default)(module.exports, CompatActivation);
 } else {
   (0, (_createPackage || _load_createPackage()).default)(module.exports, Activation);

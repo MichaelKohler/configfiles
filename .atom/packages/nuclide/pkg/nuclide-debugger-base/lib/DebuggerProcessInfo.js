@@ -49,6 +49,15 @@ class DebuggerProcessInfo {
     return false;
   }
 
+  configureSourceFilePaths() {
+    // Debuggers that support this will override this routine.
+    throw new Error('Not supported');
+  }
+
+  supportsConfigureSourcePaths() {
+    return false;
+  }
+
   supportSingleThreadStepping() {
     return false;
   }

@@ -37,6 +37,20 @@ function _load_settings() {
   return _settings = require('./settings');
 }
 
+var _nuclideUri;
+
+function _load_nuclideUri() {
+  return _nuclideUri = _interopRequireDefault(require('../../commons-node/nuclideUri'));
+}
+
+var _UniversalDisposable;
+
+function _load_UniversalDisposable() {
+  return _UniversalDisposable = _interopRequireDefault(require('../../commons-node/UniversalDisposable'));
+}
+
+var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
+
 var _ConnectionUtils;
 
 function _load_ConnectionUtils() {
@@ -77,17 +91,20 @@ function _load_event() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const CONNECTION_MUX_STATUS_EVENT = 'connection-mux-status'; /**
-                                                              * Copyright (c) 2015-present, Facebook, Inc.
-                                                              * All rights reserved.
-                                                              *
-                                                              * This source code is licensed under the license found in the LICENSE file in
-                                                              * the root directory of this source tree.
-                                                              *
-                                                              * 
-                                                              */
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ */
 
+const CONNECTION_MUX_STATUS_EVENT = 'connection-mux-status';
 const CONNECTION_MUX_NOTIFICATION_EVENT = 'connection-mux-notification';
+const DEBUGGER_CONNECT_TIMEOUT_MS = 30 * 1000;
+const DEBUGGER_TEAR_DOWN_TIMEOUT_MS = 3 * 1000;
 
 const ConnectionMultiplexerStatus = exports.ConnectionMultiplexerStatus = {
   Init: 'Init',
@@ -149,6 +166,8 @@ class ConnectionMultiplexer {
     this._launchedScriptProcessPromise = null;
     this._requestSwitchMessage = null;
     this._lastEnabledConnection = null;
+    this._debuggerStartupDisposable = new (_UniversalDisposable || _load_UniversalDisposable()).default();
+    this._pausePending = false;
   }
 
   onStatus(callback) {
@@ -159,7 +178,10 @@ class ConnectionMultiplexer {
     return (0, (_event || _load_event()).attachEvent)(this._connectionStatusEmitter, CONNECTION_MUX_NOTIFICATION_EVENT, callback);
   }
 
-  listen() {
+  listen(timeoutCallback) {
+    this._debuggerStartupDisposable.dispose();
+    this._sendOutput('Connecting and pre-loading all of your PHP types and symbols. This may take a moment, ' + ' please wait...', 'warning');
+
     const { launchScriptPath } = (0, (_config || _load_config()).getConfig)();
     if (launchScriptPath != null) {
       this._launchModeListen();
@@ -168,23 +190,29 @@ class ConnectionMultiplexer {
     }
 
     this._status = ConnectionMultiplexerStatus.Running;
-
-    const pleaseWaitMessage = {
-      level: 'warning',
-      text: 'Pre-loading, please wait...'
-    };
-    this._clientCallback.sendUserMessage('console', pleaseWaitMessage);
-    this._clientCallback.sendUserMessage('outputWindow', pleaseWaitMessage);
     this._dummyRequestProcess = (0, (_ConnectionUtils || _load_ConnectionUtils()).sendDummyRequest)();
 
     if (launchScriptPath != null) {
+      const expandedScript = (_nuclideUri || _load_nuclideUri()).default.expandHomeDir(launchScriptPath);
       this._launchedScriptProcessPromise = new Promise(resolve => {
-        this._launchedScriptProcess = (0, (_helpers || _load_helpers()).launchPhpScriptWithXDebugEnabled)(launchScriptPath, text => {
-          this._clientCallback.sendUserMessage('outputWindow', { level: 'info', text });
+        this._launchedScriptProcess = (0, (_helpers || _load_helpers()).launchPhpScriptWithXDebugEnabled)(expandedScript, (text, level) => {
+          this._clientCallback.sendUserMessage('outputWindow', { level, text });
+          this._checkForEnd();
           resolve();
         });
       });
     }
+
+    // If the debugger does not connect within a reasonable amount of time, tell the user.
+    this._debuggerStartupDisposable = new (_UniversalDisposable || _load_UniversalDisposable()).default(_rxjsBundlesRxMinJs.Observable.of(null).delay(DEBUGGER_CONNECT_TIMEOUT_MS).switchMap(() => {
+      this._clientCallback.sendUserMessage('notification', {
+        type: 'error',
+        message: 'Error: Timed out while trying to establish debugger connection. ' + 'Is the webserver available?'
+      });
+      return _rxjsBundlesRxMinJs.Observable.of(null).take(DEBUGGER_TEAR_DOWN_TIMEOUT_MS);
+    }).subscribe(timeoutCallback));
+
+    return this._debuggerStartupDisposable;
   }
 
   _attachModeListen() {
@@ -246,12 +274,6 @@ class ConnectionMultiplexer {
       yield _this2._handleSetupForConnection(connection);
       yield _this2._breakpointStore.addConnection(connection);
       _this2._connectionOnStatus(connection, connection.getStatus());
-      if (connection.isDummyConnection()) {
-        _this2._dummyConnection = connection;
-        const text = 'Pre-loading is done! You can use console window now.';
-        _this2._clientCallback.sendUserMessage('console', { text, level: 'warning' });
-        _this2._clientCallback.sendUserMessage('outputWindow', { text, level: 'success' });
-      }
     })();
   }
 
@@ -280,6 +302,8 @@ class ConnectionMultiplexer {
   _connectionOnStatus(connection, status, ...args) {
     (_utils || _load_utils()).default.log(`Mux got status: ${status} on connection ${connection.getId()}`);
 
+    this._debuggerStartupDisposable.dispose();
+
     switch (status) {
       case (_DbgpSocket || _load_DbgpSocket()).ConnectionStatus.Starting:
         // Starting status has no stack.
@@ -307,8 +331,21 @@ class ConnectionMultiplexer {
         } else if (this._isPaused()) {
           this._emitRequestUpdate(connection);
         }
+        if (this._pausePending) {
+          // If an async break is pending and a new connection has started,
+          // we can finish honoring the Debugger.Pause instruction now.
+          this.pause();
+        }
         break;
       case (_DbgpSocket || _load_DbgpSocket()).ConnectionStatus.Break:
+        // Send the preloading complete message after the dummy connection hits its first
+        // breakpoint. This means all of the preloading done by the 'require' commands
+        // preceeding the first xdebug_break() call has completed.
+        if (connection.isDummyConnection() && connection.getBreakCount() === 1) {
+          this._dummyConnection = connection;
+          this._sendOutput('Pre-loading is done! You can use console window now.', 'success');
+        }
+
         if (this._isPaused()) {
           // We don't want to send the first threads updated message until the debugger is
           // paused.
@@ -316,7 +353,8 @@ class ConnectionMultiplexer {
         }
         break;
       case (_DbgpSocket || _load_DbgpSocket()).ConnectionStatus.Error:
-        let message = 'The debugger encountered a problem and the connection had to be shut down.';
+        let message = 'The debugger encountered a problem with one of the HHVM request connections ' + 'and the connection had to be shut down. The debugger is still attached to any ' + 'remaining HHVM requests.';
+
         if (args[0] != null) {
           message = `${message}  Error message: ${args[0]}`;
         }
@@ -347,11 +385,9 @@ class ConnectionMultiplexer {
     this._updateStatus();
   }
 
-  _sendOutput(message, level) {
-    this._clientCallback.sendUserMessage('outputWindow', {
-      level,
-      text: message
-    });
+  _sendOutput(text, level) {
+    this._clientCallback.sendUserMessage('console', { text, level });
+    this._clientCallback.sendUserMessage('outputWindow', { text, level });
   }
 
   _updateStatus() {
@@ -472,6 +508,7 @@ class ConnectionMultiplexer {
         _this3._reportEvaluationFailureIfNeeded(expression, result);
         return result;
       } else {
+        _this3._sendOutput('Error evaluating expression: the console is not ready yet. Please wait...', 'error');
         throw _this3._noConnectionError();
       }
     })();
@@ -493,12 +530,7 @@ class ConnectionMultiplexer {
 
   _reportEvaluationFailureIfNeeded(expression, result) {
     if (result.wasThrown) {
-      const message = {
-        text: 'Failed to evaluate ' + `"${expression}": (${result.error.$.code}) ${result.error.message[0]}`,
-        level: 'error'
-      };
-      this._clientCallback.sendUserMessage('console', message);
-      this._clientCallback.sendUserMessage('outputWindow', message);
+      this._sendOutput('Failed to evaluate ' + `"${expression}": (${result.error.$.code}) ${result.error.message[0]}`, 'error');
     }
   }
 
@@ -536,6 +568,15 @@ class ConnectionMultiplexer {
       // This occurs on startup with the loader breakpoint.
       return Promise.resolve({ stack: {} });
     }
+  }
+
+  getConnectionStopReason(id) {
+    const connection = this._connections.get(id);
+    if (connection != null) {
+      return connection.getStopReason();
+    }
+
+    return null;
   }
 
   getScopesForFrame(frameIndex) {
@@ -586,7 +627,7 @@ class ConnectionMultiplexer {
 
   _resumeBackgroundConnections() {
     for (const connection of this._connections.values()) {
-      if (connection !== this._enabledConnection && (connection.getStopReason() === (_Connection || _load_Connection()).ASYNC_BREAK || connection.getStopReason() === (_Connection || _load_Connection()).BREAKPOINT && connection.getStatus() === (_DbgpSocket || _load_DbgpSocket()).ConnectionStatus.Break && !this._connectionBreakpointExits(connection) || connection.getStatus() === (_DbgpSocket || _load_DbgpSocket()).ConnectionStatus.Starting)) {
+      if (connection !== this._enabledConnection && (connection.getStopReason() === (_Connection || _load_Connection()).ASYNC_BREAK || connection.getStopReason() === (_Connection || _load_Connection()).BREAKPOINT && connection.getStatus() === (_DbgpSocket || _load_DbgpSocket()).ConnectionStatus.Break && !this._connectionBreakpointExits(connection) || connection.getStopReason() === (_Connection || _load_Connection()).EXCEPTION && !this._breakpointStore.getPauseOnExceptions() || connection.getStatus() === (_DbgpSocket || _load_DbgpSocket()).ConnectionStatus.Starting)) {
         try {
           connection.sendContinuationCommand((_DbgpSocket || _load_DbgpSocket()).COMMAND_RUN);
         } catch (e) {
@@ -605,9 +646,22 @@ class ConnectionMultiplexer {
   }
 
   pause() {
-    this._status = ConnectionMultiplexerStatus.UserAsyncBreakSent;
-    // allow a connection that hasnt hit a breakpoint to be enabled, then break all connections.
-    this._asyncBreak();
+    if (this._onlyDummyRemains() && this._dummyConnection != null && !this._dummyConnection.isViewable()) {
+      // If only the dummy remains, and the dummy is not viewable, there are no
+      // connections to break into. Since the front-end is waiting for a response
+      // from at least one connection, send a message to the console to indicate
+      // an async-break is pending, waiting for a request.
+      this._pausePending = true;
+      this._sendOutput('There are no active requests to break in to! The debugger will break when a new request ' + 'arrives.', 'warning');
+    } else {
+      if (this._pausePending) {
+        this._sendOutput('New connection received, breaking into debugger.', 'success');
+      }
+      this._pausePending = false;
+      this._status = ConnectionMultiplexerStatus.UserAsyncBreakSent;
+      // allow a connection that hasn't hit a breakpoint to be enabled, then break all connections.
+      this._asyncBreak();
+    }
   }
 
   resume() {
@@ -667,7 +721,7 @@ class ConnectionMultiplexer {
     var _this6 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      if (_this6._onlyDummyRemains() && (_this6._attachConnector == null || _this6._launchConnector == null || (0, (_config || _load_config()).getConfig)().endDebugWhenNoRequests)) {
+      if ((_this6._connections.size === 0 || _this6._onlyDummyRemains()) && (_this6._attachConnector == null || _this6._launchConnector == null || (0, (_config || _load_config()).getConfig)().endDebugWhenNoRequests)) {
         if (_this6._launchedScriptProcessPromise != null) {
           yield _this6._launchedScriptProcessPromise;
           _this6._launchedScriptProcessPromise = null;

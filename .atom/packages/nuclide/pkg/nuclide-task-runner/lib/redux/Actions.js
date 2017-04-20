@@ -93,10 +93,10 @@ function stopTask() {
   return { type: STOP_TASK };
 }
 
-function toggleToolbarVisibility(taskRunner) {
+function toggleToolbarVisibility(visible, taskRunner) {
   return {
     type: TOGGLE_TOOLBAR_VISIBILITY,
-    payload: { taskRunner }
+    payload: { visible, taskRunner }
   };
 }
 

@@ -118,7 +118,13 @@ function getFilesFromCommand(command, args, localDirectory, transform) {
    */
 
 function getTrackedHgFiles(localDirectory) {
-  return getFilesFromCommand('hg', ['locate', '--fullpath', '--include', '.'], localDirectory, filePath => filePath.slice(localDirectory.length + 1));
+  return (_fsPromise || _load_fsPromise()).default.exists((_nuclideUri || _load_nuclideUri()).default.join(localDirectory, '.hg')).then(isRoot => {
+    if (isRoot) {
+      return getFilesFromCommand('hg', ['locate'], localDirectory);
+    } else {
+      return getFilesFromCommand('hg', ['locate', '--fullpath', '--include', '.'], localDirectory, filePath => filePath.slice(localDirectory.length + 1));
+    }
+  });
 }
 
 /**

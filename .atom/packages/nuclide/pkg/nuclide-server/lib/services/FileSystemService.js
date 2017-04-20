@@ -31,13 +31,7 @@ let newFile = exports.newFile = (() => {
 })();
 
 /**
- * The readdir endpoint accepts the following query parameters:
- *
- *   path: path to the folder to list entries inside.
- *
- * Body contains a JSON encoded array of objects with file: and stats: entries.
- * file: has the file or directory name, stats: has the stats of the file/dir,
- * isSymbolicLink: true if the entry is a symlink to another filesystem location.
+ * Lists all children of the given directory.
  */
 
 
@@ -66,7 +60,7 @@ let readdir = exports.readdir = (() => {
     })()));
     // TODO: Return entries directly and change client to handle error.
     return (0, (_collection || _load_collection()).arrayCompact)(entries).map(function (entry) {
-      return { file: entry.file, stats: entry.stats, isSymbolicLink: entry.isSymbolicLink };
+      return [entry.file, entry.stats.isFile(), entry.isSymbolicLink];
     });
   });
 

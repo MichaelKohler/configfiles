@@ -43,6 +43,7 @@ const DEBUGGER_MODE_CHANGE_EVENT = 'debugger mode change';
  */
 class DebuggerStore {
 
+  // Stored values
   constructor(dispatcher, model) {
     this._dispatcher = dispatcher;
     this._model = model;
@@ -62,13 +63,11 @@ class DebuggerStore {
     this._consoleDisposable = null;
     this._customControlButtons = [];
     this._debugProcessInfo = null;
+    this._setSourcePathCallback = null;
     this.loaderBreakpointResumePromise = new Promise(resolve => {
       this._onLoaderBreakpointResume = resolve;
     });
   }
-
-  // Stored values
-
 
   dispose() {
     this._emitter.dispose();
@@ -131,6 +130,10 @@ class DebuggerStore {
 
   getEvaluationExpressionProviders() {
     return this._evaluationExpressionProviders;
+  }
+
+  getCanSetSourcePaths() {
+    return this._setSourcePathCallback != null;
   }
 
   initializeSingleThreadStepping(mode) {
@@ -219,6 +222,14 @@ class DebuggerStore {
         break;
       case (_DebuggerDispatcher || _load_DebuggerDispatcher()).ActionTypes.UPDATE_CUSTOM_CONTROL_BUTTONS:
         this._customControlButtons = payload.data;
+        break;
+      case (_DebuggerDispatcher || _load_DebuggerDispatcher()).ActionTypes.UPDATE_CONFIGURE_SOURCE_PATHS_CALLBACK:
+        this._setSourcePathCallback = payload.data;
+        break;
+      case (_DebuggerDispatcher || _load_DebuggerDispatcher()).ActionTypes.CONFIGURE_SOURCE_PATHS:
+        if (this._setSourcePathCallback != null) {
+          this._setSourcePathCallback();
+        }
         break;
       case (_DebuggerDispatcher || _load_DebuggerDispatcher()).ActionTypes.SET_DEBUG_PROCESS_INFO:
         if (this._debugProcessInfo != null) {

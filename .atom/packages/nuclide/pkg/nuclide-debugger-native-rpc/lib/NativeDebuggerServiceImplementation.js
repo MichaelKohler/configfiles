@@ -192,13 +192,15 @@ class NativeDebuggerService extends (_nuclideDebuggerCommon || _load_nuclideDebu
   _spawnPythonBackend() {
     const lldbPythonScriptPath = (_nuclideUri || _load_nuclideUri()).default.join(__dirname, '../scripts/main.py');
     const python_args = [lldbPythonScriptPath, '--arguments_in_json'];
+    const environ = process.env;
+    environ.PYTHONPATH = this._config.envPythonPath;
     const options = {
       cwd: (_nuclideUri || _load_nuclideUri()).default.dirname(lldbPythonScriptPath),
       // FD[3] is used for sending arguments JSON blob.
       // FD[4] is used as a ipc channel for output/atom notifications.
       stdio: ['pipe', 'pipe', 'pipe', 'pipe', 'pipe'],
       detached: false, // When Atom is killed, clang_server.py should be killed, too.
-      env: { PYTHONPATH: this._config.envPythonPath }
+      env: environ
     };
     this.getLogger().logInfo(`spawn child_process: ${JSON.stringify(python_args)}`);
     const lldbProcess = _child_process.default.spawn(this._config.pythonBinaryPath, python_args, options);

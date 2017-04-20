@@ -84,10 +84,8 @@ let createHackProcess = (() => {
     if (exitCode !== 0 && exitCode !== HACK_SERVER_ALREADY_EXISTS_EXIT_CODE) {
       throw new Error(`Hack server start failed with code: ${String(exitCode)}`);
     }
-    const createProcess = function () {
-      return (0, (_process || _load_process()).safeSpawn)(command, ['ide', configDir]);
-    };
-    const hackProcess = new HackProcess(fileCache, `HackProcess-${configDir}`, createProcess, configDir);
+    const processStream = (0, (_process || _load_process()).spawn)(command, ['ide', configDir]);
+    const hackProcess = new HackProcess(fileCache, `HackProcess-${configDir}`, processStream, configDir);
 
     // If the process exits unexpectedly, create a new one immediately.
     const startTime = Date.now();
@@ -193,16 +191,17 @@ function _load_autocomplete() {
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // From hphp/hack/src/utils/exit_status.ml
-const HACK_SERVER_ALREADY_EXISTS_EXIT_CODE = 77; /**
-                                                  * Copyright (c) 2015-present, Facebook, Inc.
-                                                  * All rights reserved.
-                                                  *
-                                                  * This source code is licensed under the license found in the LICENSE file in
-                                                  * the root directory of this source tree.
-                                                  *
-                                                  * 
-                                                  */
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ */
 
+const HACK_SERVER_ALREADY_EXISTS_EXIT_CODE = 77;
 const HACK_IDE_NEW_CLIENT_CONNECTED_EXIT_CODE = 207;
 const MAX_HACK_AUTOCOMPLETE_ITEMS = 100;
 
@@ -221,19 +220,18 @@ function logMessage(direction, message) {
 
 class HackProcess extends (_nuclideRpc || _load_nuclideRpc()).RpcProcess {
 
-  constructor(fileCache, name, createProcess, hhconfigPath) {
-    super(name, getServiceRegistry(), createProcess, logMessage);
+  constructor(fileCache, name, processStream, hhconfigPath) {
+    super(name, getServiceRegistry(), processStream, logMessage);
     this._fileCache = fileCache;
     this._fileVersionNotifier = new (_nuclideOpenFilesRpc || _load_nuclideOpenFilesRpc()).FileVersionNotifier();
     this._hhconfigPath = hhconfigPath;
 
-    const service = this.getConnectionService();
     this._fileSubscription = fileCache.observeFileEvents()
     // TODO: Filter on hhconfigPath
     .filter(fileEvent => {
       const fileExtension = (_nuclideUri || _load_nuclideUri()).default.extname(fileEvent.fileVersion.filePath);
       return (_hackConfig || _load_hackConfig()).HACK_FILE_EXTENSIONS.indexOf(fileExtension) !== -1;
-    }).subscribe(fileEvent => {
+    }).combineLatest(_rxjsBundlesRxMinJs.Observable.fromPromise(this.getConnectionService())).subscribe(([fileEvent, service]) => {
       const filePath = fileEvent.fileVersion.filePath;
       const version = fileEvent.fileVersion.version;
       switch (fileEvent.kind) {
@@ -306,7 +304,7 @@ class HackProcess extends (_nuclideRpc || _load_nuclideRpc()).RpcProcess {
 
       (_hackConfig || _load_hackConfig()).logger.log('Got Hack Service');
       // TODO: Include version number to ensure agreement on file version.
-      const unfilteredItems = yield service.getCompletions(filePath, { line, column });
+      const unfilteredItems = yield (yield service).getCompletions(filePath, { line, column });
       if (unfilteredItems == null) {
         return null;
       }
@@ -321,14 +319,16 @@ class HackProcess extends (_nuclideRpc || _load_nuclideRpc()).RpcProcess {
   dispose() {
     if (!this.isDisposed()) {
       // Atempt to send disconnect message before shutting down connection
-      try {
-        (_hackConfig || _load_hackConfig()).logger.log('Attempting to disconnect cleanly from HackProcess');
-        this.getConnectionService().disconnect();
-      } catch (e) {
-        // Failing to send the shutdown is not fatal...
-        // ... continue with shutdown.
-        (_hackConfig || _load_hackConfig()).logger.logError('Hack Process died before disconnect() could be sent.');
-      }
+      this.getConnectionService().then(service => {
+        try {
+          (_hackConfig || _load_hackConfig()).logger.log('Attempting to disconnect cleanly from HackProcess');
+          service.disconnect();
+        } catch (e) {
+          // Failing to send the shutdown is not fatal...
+          // ... continue with shutdown.
+          (_hackConfig || _load_hackConfig()).logger.logError('Hack Process died before disconnect() could be sent.');
+        }
+      });
       super.dispose();
       this._fileVersionNotifier.dispose();
       this._fileSubscription.unsubscribe();
@@ -385,7 +385,7 @@ function editToHackEdit(editEvent) {
 
 function observeConnections(fileCache) {
   (_hackConfig || _load_hackConfig()).logger.logInfo('observing connections');
-  return processes.get(fileCache).observeValues().switchMap(process => _rxjsBundlesRxMinJs.Observable.fromPromise(process)).filter(process => process != null).map(process => {
+  return processes.get(fileCache).observeValues().switchMap(process => process).filter(process => process != null).switchMap(process => {
     if (!(process != null)) {
       throw new Error('Invariant violation: "process != null"');
     }

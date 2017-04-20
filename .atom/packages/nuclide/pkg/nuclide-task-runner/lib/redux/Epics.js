@@ -13,10 +13,10 @@ exports.runTaskEpic = runTaskEpic;
 exports.stopTaskEpic = stopTaskEpic;
 exports.toggleToolbarVisibilityEpic = toggleToolbarVisibilityEpic;
 
-var _textBuffer;
+var _nuclideRemoteConnection;
 
-function _load_textBuffer() {
-  return _textBuffer = require('../../../commons-atom/text-buffer');
+function _load_nuclideRemoteConnection() {
+  return _nuclideRemoteConnection = require('../../../nuclide-remote-connection');
 }
 
 var _tasks;
@@ -226,7 +226,7 @@ function verifySavedBeforeRunningTaskEpic(actions, store) {
       if (shouldSave) {
         const saveAll = _rxjsBundlesRxMinJs.Observable.defer(() => {
           const stillUnsaved = atom.workspace.getTextEditors().filter(editor => editor.getPath() != null && editor.isModified());
-          return Promise.all(unsavedEditors.filter(editor => stillUnsaved.indexOf(editor) !== -1).map(editor => (0, (_textBuffer || _load_textBuffer()).save)(editor.getBuffer())));
+          return Promise.all(unsavedEditors.filter(editor => stillUnsaved.indexOf(editor) !== -1).map(editor => (0, (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).saveBuffer)(editor.getBuffer())));
         });
         return _rxjsBundlesRxMinJs.Observable.concat(saveAll.ignoreElements(), _rxjsBundlesRxMinJs.Observable.of((_Actions || _load_Actions()).runTask(taskMeta))).catch(err => {
           atom.notifications.addError('An unexpected error occurred while saving the files.', { dismissable: true, detail: err.stack.toString() });
@@ -284,18 +284,18 @@ function toggleToolbarVisibilityEpic(actions, store) {
 
     const state = store.getState();
     const { activeTaskRunner, statesForTaskRunners } = state;
-    const { taskRunner } = action.payload;
+    const { visible, taskRunner } = action.payload;
 
     // If changing to a new task runner, select it and show it.
     if (taskRunner != null) {
       const taskRunnerState = statesForTaskRunners.get(taskRunner);
       if (taskRunnerState != null && taskRunnerState.enabled && taskRunner !== activeTaskRunner) {
-        return _rxjsBundlesRxMinJs.Observable.of((_Actions || _load_Actions()).selectTaskRunner(taskRunner, true), (_Actions || _load_Actions()).setToolbarVisibility(true, true));
+        return _rxjsBundlesRxMinJs.Observable.of((_Actions || _load_Actions()).selectTaskRunner(taskRunner, true), (_Actions || _load_Actions()).setToolbarVisibility(visible != null ? visible : true, true));
       }
     }
 
-    // Otherwise, just toggle the visibility.
-    return _rxjsBundlesRxMinJs.Observable.of((_Actions || _load_Actions()).setToolbarVisibility(!state.visible, true));
+    // Otherwise, just toggle the visibility (unless the "visible" override is provided).
+    return _rxjsBundlesRxMinJs.Observable.of((_Actions || _load_Actions()).setToolbarVisibility(visible != null ? visible : !state.visible, true));
   });
 }
 

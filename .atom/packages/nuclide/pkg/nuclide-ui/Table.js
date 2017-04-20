@@ -282,7 +282,8 @@ class Table extends _react.default.Component {
           {
             className: 'nuclide-ui-table-body-cell',
             key: j,
-            style: cellStyle },
+            style: cellStyle,
+            title: datum != null ? String(datum) : null },
           datum
         );
       });

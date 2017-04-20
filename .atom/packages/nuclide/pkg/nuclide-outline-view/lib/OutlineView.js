@@ -202,20 +202,29 @@ function renderTree(editor, outline, index) {
         className: 'list-item nuclide-outline-view-item',
         onClick: onClick,
         onDoubleClick: onDoubleClick },
-      renderItemText(outline)
+      renderItem(outline)
     ),
     renderTrees(editor, outline.children)
   );
 }
 
-function renderItemText(outline) {
-  if (outline.tokenizedText != null) {
-    return outline.tokenizedText.map(renderTextToken);
-  } else if (outline.plainText != null) {
-    return outline.plainText;
-  } else {
-    return 'Missing text';
+function renderItem(outline) {
+  const r = [];
+
+  if (outline.icon != null) {
+    r.push(_react.default.createElement('span', { className: `icon icon-${outline.icon}` }));
+    // Note: icons here are fixed-width, so the text lines up.
   }
+
+  if (outline.tokenizedText != null) {
+    r.push(...outline.tokenizedText.map(renderTextToken));
+  } else if (outline.plainText != null) {
+    r.push(outline.plainText);
+  } else {
+    r.push('Missing text');
+  }
+
+  return r;
 }
 
 function renderTextToken(token, index) {

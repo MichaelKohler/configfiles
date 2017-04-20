@@ -183,6 +183,15 @@ class DebuggerSteppingComponent extends _react.default.Component {
       size: (_LoadingSpinner || _load_LoadingSpinner()).LoadingSpinnerSizes.EXTRA_SMALL
     });
 
+    // "Set Source Paths" is only available if the current debugger provides
+    // this functionality.
+    const setSourcePathsButton = !this.props.debuggerStore.getCanSetSourcePaths() ? null : _react.default.createElement((_Button || _load_Button()).Button, {
+      className: 'nuclide-debugger-set-source-path-button',
+      icon: 'file-code',
+      title: 'Configure source file paths',
+      onClick: () => actions.configureSourcePaths()
+    });
+
     return _react.default.createElement(
       'div',
       { className: 'nuclide-debugger-stepping-component' },
@@ -239,7 +248,8 @@ class DebuggerSteppingComponent extends _react.default.Component {
             keyBindingCommand: 'nuclide-debugger:stop-debugging'
           }),
           onClick: () => actions.stopDebugging()
-        })
+        }),
+        setSourcePathsButton
       ),
       _react.default.createElement(
         (_ButtonGroup || _load_ButtonGroup()).ButtonGroup,

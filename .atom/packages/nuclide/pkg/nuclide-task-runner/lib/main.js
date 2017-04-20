@@ -108,6 +108,14 @@ const SERIALIZED_VERSION = 2;
 // These match task types with shortcuts defined in nuclide-task-runner.json
 const COMMON_TASK_TYPES = ['build', 'run', 'test', 'debug'];
 
+function getVisible(event) {
+  if (event.detail != null && typeof event.detail === 'object') {
+    const { visible } = event.detail;
+    return visible != null ? Boolean(visible) : null;
+  }
+  return null;
+}
+
 class Activation {
 
   constructor(rawState) {
@@ -136,12 +144,7 @@ class Activation {
       this._store.dispatch((_Actions || _load_Actions()).didActivateInitialPackages());
     }), this._panelRenderer, atom.commands.add('atom-workspace', {
       'nuclide-task-runner:toggle-toolbar-visibility': event => {
-        const visible = event.detail != null && typeof event.detail === 'object' ? event.detail.visible : undefined;
-        if (typeof visible === 'boolean') {
-          this._actionCreators.setToolbarVisibility(visible);
-        } else {
-          this._actionCreators.toggleToolbarVisibility();
-        }
+        this._actionCreators.toggleToolbarVisibility(getVisible(event));
       }
     }),
 
@@ -194,8 +197,8 @@ class Activation {
       return taskRunners;
     }), taskRunner => ({
       'atom-workspace': {
-        [`nuclide-task-runner:toggle-${taskRunner.name.toLowerCase()}-toolbar`]: () => {
-          this._actionCreators.toggleToolbarVisibility(taskRunner);
+        [`nuclide-task-runner:toggle-${taskRunner.name.toLowerCase()}-toolbar`]: event => {
+          this._actionCreators.toggleToolbarVisibility(getVisible(event), taskRunner);
         }
       }
     }), taskRunner => taskRunner.id), states.map(state => state.visible).distinctUntilChanged().subscribe(visible => {

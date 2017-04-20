@@ -69,14 +69,16 @@ class BuckToolbar extends _react.default.Component {
       buildRuleType,
       buildTarget,
       buckRoot,
-      extraPlatformUi,
       isLoadingRule,
       isLoadingPlatforms,
       platformGroups,
+      platformProviderUi,
       projectRoot,
       selectedDeploymentTarget,
       taskSettings
     } = this.props.appState;
+    const extraToolbarUi = platformProviderUi != null ? platformProviderUi.toolbar : null;
+    const extraSettings = platformProviderUi != null ? platformProviderUi.settings : null;
 
     let status;
     if (isLoadingRule || isLoadingPlatforms) {
@@ -133,8 +135,8 @@ class BuckToolbar extends _react.default.Component {
         selectionComparator: (_shallowequal || _load_shallowequal()).default
       }));
 
-      if (extraPlatformUi) {
-        widgets.push(extraPlatformUi);
+      if (extraToolbarUi) {
+        widgets.push(extraToolbarUi);
       }
     }
 
@@ -154,6 +156,7 @@ class BuckToolbar extends _react.default.Component {
       this.state.settingsVisible ? _react.default.createElement((_BuckToolbarSettings || _load_BuckToolbarSettings()).default, {
         currentBuckRoot: buckRoot,
         settings: taskSettings,
+        platformProviderSettings: extraSettings,
         onDismiss: () => this._hideSettings(),
         onSave: settings => this._saveSettings(settings)
       }) : null

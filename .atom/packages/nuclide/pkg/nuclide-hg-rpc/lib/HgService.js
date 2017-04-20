@@ -125,6 +125,7 @@ const WATCHMAN_HG_DIR_STATE = 'hg-repository-watchman-subscription-dirstate';
 const WATCHMAN_SUBSCRIPTION_NAME_CONFLICTS = 'hg-repository-watchman-subscription-conflicts';
 
 const CHECK_CONFLICT_DELAY_MS = 2000;
+const COMMIT_CHANGE_DEBOUNCE_MS = 1000;
 
 // If Watchman reports that many files have changed, it's not really useful to report this.
 // This is typically caused by a large rebase or a Watchman re-crawl.
@@ -232,6 +233,30 @@ class HgService {
       }
       return statusMap;
     }).publish();
+  }
+
+  /**
+   * Like fetchStatuses, but first calculates the root of the current
+   * stack and fetches changes since that revision.
+   */
+  fetchStackStatuses() {
+    // Note: an alternative which doesn't depend upon reading .arcconfig in getForkBaseName is:
+    //   return this.fetchStatuses('ancestor(ancestor((not public()) and (:: .))^ or .)')
+    // Both the code below and the alternative above have identical performance.
+
+    return _rxjsBundlesRxMinJs.Observable.fromPromise(getForkBaseName(this._workingDirectory)) // e.g. "master"
+    .switchMap(forkBaseName => {
+      const root = (0, (_hgRevisionExpressionHelpers || _load_hgRevisionExpressionHelpers()).expressionForCommonAncestor)(forkBaseName); // e.g. "ancestor(master, .)"
+      return this.fetchStatuses(root).refCount();
+    }).publish();
+  }
+
+  /**
+   * Like fetchStatuses, but first checks whether the head is public. If so, returns
+   * changes *since* the head. If not, returns changes *including* the head.
+   */
+  fetchHeadStatuses() {
+    return this.fetchStatuses('ancestor(. or (. and (not public()))^)');
   }
 
   _subscribeToWatchman() {
@@ -399,7 +424,10 @@ class HgService {
    * (e.g. commit, amend, histedit, strip, rebase) that would require refetching from the service.
    */
   observeHgCommitsDidChange() {
-    return this._hgRepoCommitsDidChangeObserver.publish();
+    return this._hgRepoCommitsDidChangeObserver
+    // Upon rebase, this can fire once per added commit!
+    // Apply a generous debounce to avoid overloading the RPC connection.
+    .debounceTime(COMMIT_CHANGE_DEBOUNCE_MS).publish();
   }
 
   /**
@@ -685,19 +713,13 @@ class HgService {
   }
 
   _commitCode(message, args, isInteractive) {
-    if (isInteractive) {
-      args.push('--interactive');
-    } else {
-      // Currently if amend leads to a  merge conflict that requires user input
-      // nuclide just freezes doing nothing. This flag will prevent that behavior
-      // and will break out leaving the files unresolved.
-      args.push('--noninteractive');
-    }
-    let tempFile = null;
     let editMergeConfigs;
-
+    let tempFile = null;
     return _rxjsBundlesRxMinJs.Observable.fromPromise((0, _asyncToGenerator.default)(function* () {
-      editMergeConfigs = yield (0, (_hgUtils || _load_hgUtils()).getEditMergeConfigs)();
+      if (isInteractive) {
+        args.push('--interactive');
+        editMergeConfigs = yield (0, (_hgUtils || _load_hgUtils()).getInteractiveCommitEditorConfig)();
+      }
       if (message == null) {
         return args;
       } else {
@@ -705,15 +727,19 @@ class HgService {
         return [...args, '-l', tempFile];
       }
     })()).switchMap(argumentsWithCommitFile => {
-      if (!(editMergeConfigs != null)) {
-        throw new Error('editMergeConfigs cannot be null');
-      }
-
+      const execArgs = argumentsWithCommitFile;
       const execOptions = {
-        cwd: this._workingDirectory,
-        HGEDITOR: editMergeConfigs.hgEditor
+        cwd: this._workingDirectory
       };
-      return this._hgObserveExecution([...editMergeConfigs.args, ...argumentsWithCommitFile], execOptions).switchMap((_hgUtils || _load_hgUtils()).processExitCodeAndThrow);
+      if (editMergeConfigs != null) {
+        execArgs.push(...editMergeConfigs.args);
+        execOptions.HGEDITOR = editMergeConfigs.hgEditor;
+      } else {
+        // Setting the editor to a non-existant tool to prevent operations that rely
+        // on the user's default editor from attempting to open up when needed.
+        execOptions.HGEDITOR = 'true';
+      }
+      return this._hgObserveExecution(execArgs, execOptions);
     }).finally(() => {
       if (tempFile != null) {
         (_fsPromise || _load_fsPromise()).default.unlink(tempFile);
@@ -757,7 +783,7 @@ class HgService {
   splitRevision() {
     let editMergeConfigs;
     return _rxjsBundlesRxMinJs.Observable.fromPromise((0, _asyncToGenerator.default)(function* () {
-      editMergeConfigs = yield (0, (_hgUtils || _load_hgUtils()).getEditMergeConfigs)();
+      editMergeConfigs = yield (0, (_hgUtils || _load_hgUtils()).getInteractiveCommitEditorConfig)();
     })()).switchMap(() => {
       if (!(editMergeConfigs != null)) {
         throw new Error('editMergeConfigs cannot be null');
@@ -1008,7 +1034,7 @@ class HgService {
       }).map(function (fileStatus) {
         return {
           path: fileStatus.path,
-          message: (_hgConstants || _load_hgConstants()).MergeConflictStatus.RESOLVED
+          status: (_hgConstants || _load_hgConstants()).MergeConflictStatus.RESOLVED
         };
       }) : [];
       const conflictedFiles = fileListStatuses.filter(function (fileStatus) {
@@ -1017,16 +1043,16 @@ class HgService {
       const origBackupPath = yield _this20._getOrigBackupPath();
       const conflicts = yield Promise.all(conflictedFiles.map((() => {
         var _ref4 = (0, _asyncToGenerator.default)(function* (conflictedFile) {
-          let message;
+          let status;
           // Heuristic: If the `.orig` file doesn't exist, then it's deleted by the rebasing commit.
           if (yield _this20._checkOrigFile(origBackupPath, conflictedFile.path)) {
-            message = (_hgConstants || _load_hgConstants()).MergeConflictStatus.BOTH_CHANGED;
+            status = (_hgConstants || _load_hgConstants()).MergeConflictStatus.BOTH_CHANGED;
           } else {
-            message = (_hgConstants || _load_hgConstants()).MergeConflictStatus.DELETED_IN_THEIRS;
+            status = (_hgConstants || _load_hgConstants()).MergeConflictStatus.DELETED_IN_THEIRS;
           }
           return {
             path: conflictedFile.path,
-            message
+            status
           };
         });
 
@@ -1064,8 +1090,10 @@ class HgService {
     })();
   }
 
-  resolveConflictedFile(filePath) {
-    const args = ['resolve', '-m', filePath];
+  markConflictedFile(filePath, resolved) {
+    // -m marks file as resolved, -u marks file as unresolved
+    const fileStatus = resolved ? '-m' : '-u';
+    const args = ['resolve', fileStatus, filePath];
     const execOptions = {
       cwd: this._workingDirectory
     };
@@ -1073,7 +1101,7 @@ class HgService {
   }
 
   continueRebase() {
-    const args = ['rebase', '--continue', '--noninteractive'];
+    const args = ['rebase', '--continue'];
     const execOptions = {
       cwd: this._workingDirectory
     };
@@ -1089,9 +1117,11 @@ class HgService {
     if (source != null) {
       args.push('-s', source);
     }
-    args.push('--noninteractive');
     const execOptions = {
-      cwd: this._workingDirectory
+      cwd: this._workingDirectory,
+      // Setting the editor to a non-existant tool to prevent operations that rely
+      // on the user's default editor from attempting to open up when needed.
+      HGEDITOR: 'true'
     };
     return this._hgObserveExecution(args, execOptions).publish();
   }

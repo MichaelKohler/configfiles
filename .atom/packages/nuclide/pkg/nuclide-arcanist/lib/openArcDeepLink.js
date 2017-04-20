@@ -54,7 +54,7 @@ let openArcDeepLink = exports.openArcDeepLink = (() => {
 
       let matches = yield (0, (_getMatchingProjects || _load_getMatchingProjects()).default)(project, atom.project.getPaths());
       if (matches.length === 0) {
-        const lastPath = (0, (_arcanist || _load_arcanist()).getLastProjectPath)(project);
+        const lastPath = (0, (_nuclideArcanistBase || _load_nuclideArcanistBase()).getLastProjectPath)(project);
         if (lastPath != null) {
           const otherWindow = yield searchOtherWindows(lastPath);
           if (otherWindow != null) {
@@ -118,10 +118,10 @@ let openArcDeepLink = exports.openArcDeepLink = (() => {
 
 var _electron = require('electron');
 
-var _arcanist;
+var _nuclideArcanistBase;
 
-function _load_arcanist() {
-  return _arcanist = require('../../commons-atom/arcanist');
+function _load_nuclideArcanistBase() {
+  return _nuclideArcanistBase = require('../../nuclide-arcanist-base');
 }
 
 var _goToLocation;

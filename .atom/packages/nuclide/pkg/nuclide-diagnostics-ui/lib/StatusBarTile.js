@@ -74,7 +74,7 @@ class StatusBarTile {
       warningCount: 0
     };
     this._diagnosticUpdaters.set(diagnosticUpdater, diagnosticCount);
-    this._subscriptions.add(diagnosticUpdater.allMessageUpdates.subscribe(this._onAllMessagesDidUpdate.bind(this, diagnosticUpdater)));
+    this._subscriptions.add(diagnosticUpdater.allMessageUpdates.subscribe(this._onAllMessagesDidUpdate.bind(this, diagnosticUpdater), null, this._onAllMessagesDidUpdate.bind(this, diagnosticUpdater, [])));
   }
 
   consumeStatusBar(statusBar) {

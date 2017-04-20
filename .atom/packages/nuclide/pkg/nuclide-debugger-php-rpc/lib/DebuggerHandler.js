@@ -239,14 +239,19 @@ class DebuggerHandler extends (_Handler || _load_Handler()).default {
     this._sendFakeLoaderBreakpoint();
   }
 
-  _getStackFrames() {
+  _getStackFrames(id) {
     var _this6 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      const frames = yield _this6._connectionMultiplexer.getStackFrames();
-      return Promise.all(frames.stack.map(function (frame, frameIndex) {
-        return _this6._convertFrame(frame, frameIndex);
-      }));
+      const frames = yield _this6._connectionMultiplexer.getConnectionStackFrames(id);
+
+      if (frames != null && frames.stack != null || frames.stack.length === 0) {
+        return Promise.all(frames.stack.map(function (frame, frameIndex) {
+          return _this6._convertFrame(frame, frameIndex);
+        }));
+      }
+
+      return Promise.resolve([]);
     })();
   }
 
@@ -303,7 +308,7 @@ class DebuggerHandler extends (_Handler || _load_Handler()).default {
     if (!this._hadFirstContinuationCommand) {
       this._hadFirstContinuationCommand = true;
       this.sendMethod('Debugger.resumed');
-      this._connectionMultiplexer.listen();
+      this._subscriptions.add(this._connectionMultiplexer.listen(this._endSession.bind(this)));
       return;
     }
     this._connectionMultiplexer.resume();
@@ -386,7 +391,7 @@ class DebuggerHandler extends (_Handler || _load_Handler()).default {
       }
       const enabledConnectionId = _this11._connectionMultiplexer.getEnabledConnectionId();
       _this11.sendMethod('Debugger.paused', {
-        callFrames: yield _this11._getStackFrames(),
+        callFrames: enabledConnectionId != null ? yield _this11._getStackFrames(enabledConnectionId) : [],
         reason: 'breakpoint', // TODO: better reason?
         threadSwitchMessage: requestSwitchMessage,
         data: {},
@@ -404,7 +409,7 @@ class DebuggerHandler extends (_Handler || _load_Handler()).default {
             address: frame != null ? frame.functionName : 'N/A',
             location: frame != null ? frame.location : null,
             hasSource: true,
-            stopReason: 'breakpoint',
+            stopReason: _this11._connectionMultiplexer.getConnectionStopReason(enabledConnectionId),
             description: 'N/A'
           }
         });
@@ -415,7 +420,7 @@ class DebuggerHandler extends (_Handler || _load_Handler()).default {
   _sendFakeLoaderBreakpoint() {
     this.sendMethod('Debugger.paused', {
       callFrames: [],
-      reason: 'breakpoint', // TODO: better reason?
+      reason: 'initial break',
       data: {}
     });
   }

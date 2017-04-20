@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getEditMergeConfigs = exports.createCommmitMessageTempFile = exports.hgAsyncExecute = undefined;
+exports.getInteractiveCommitEditorConfig = exports.createCommmitMessageTempFile = exports.hgAsyncExecute = undefined;
 
 var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
 
@@ -52,7 +52,7 @@ let getHgExecParams = (() => {
       // fail instantly rather than just wait for an input that will never arrive
       sshCommand = 'ssh -oBatchMode=yes -oControlMaster=no';
     }
-    args.push('--config', `ui.ssh=${sshCommand}`);
+    args.push('--config', `ui.ssh=${sshCommand}`, '--noninteractive');
     const options = Object.assign({}, options_, {
       env: Object.assign({}, (yield (0, (_process || _load_process()).getOriginalEnvironment)()), {
         ATOM_BACKUP_EDITOR: 'false'
@@ -94,25 +94,22 @@ let createCommmitMessageTempFile = exports.createCommmitMessageTempFile = (() =>
   };
 })();
 
-let getEditMergeConfigs = exports.getEditMergeConfigs = (() => {
+let getInteractiveCommitEditorConfig = exports.getInteractiveCommitEditorConfig = (() => {
   var _ref4 = (0, _asyncToGenerator.default)(function* () {
     const connectionDetails = yield (0, (_nuclideRemoteAtomRpc || _load_nuclideRemoteAtomRpc()).getConnectionDetails)();
     if (connectionDetails == null) {
       (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error('CommandServer not initialized!');
-      return {
-        args: [],
-        hgEditor: ''
-      };
+      return null;
     }
     // Atom RPC needs to agree with the Atom process / nuclide server on the address and port.
     const hgEditor = getAtomRpcScriptPath() + ` -f ${connectionDetails.family} -p ${connectionDetails.port} --wait`;
     return {
-      args: ['--config', 'merge-tools.editmerge.check=conflicts', '--config', 'ui.merge=editmerge', '--config', 'ui.interactive=no', '--config', 'ui.interface.chunkselector=editor', '--config', 'extensions.edrecord='],
+      args: ['--config', 'ui.interface.chunkselector=editor', '--config', 'extensions.edrecord='],
       hgEditor
     };
   });
 
-  return function getEditMergeConfigs() {
+  return function getInteractiveCommitEditorConfig() {
     return _ref4.apply(this, arguments);
   };
 })();
@@ -173,7 +170,9 @@ const COMMIT_MESSAGE_STRIP_LINE = /^HG:.*(\n|$)/gm; /**
                                                      */
 
 function hgObserveExecution(args_, options_) {
-  return _rxjsBundlesRxMinJs.Observable.fromPromise(getHgExecParams(args_, options_)).switchMap(({ command, args, options }) => (0, (_process || _load_process()).observeProcess)(() => (0, (_process || _load_process()).scriptSafeSpawn)(command, args, options), true));
+  return _rxjsBundlesRxMinJs.Observable.fromPromise(getHgExecParams(args_, options_)).switchMap(({ command, args, options }) => {
+    return (0, (_process || _load_process()).observeProcess)('script', (0, (_process || _load_process()).createArgsForScriptCommand)(command, args), Object.assign({}, options, { killTreeOnComplete: true, /* TODO(T17353599) */isExitError: () => false }));
+  });
 }
 
 /**
@@ -181,7 +180,7 @@ function hgObserveExecution(args_, options_) {
  * Resolves to stdout.
  */
 function hgRunCommand(args_, options_) {
-  return _rxjsBundlesRxMinJs.Observable.fromPromise(getHgExecParams(args_, options_)).switchMap(({ command, args, options }) => (0, (_process || _load_process()).runCommand)(command, args, options, true /* kill process tree on complete */));
+  return _rxjsBundlesRxMinJs.Observable.fromPromise(getHgExecParams(args_, options_)).switchMap(({ command, args, options }) => (0, (_process || _load_process()).runCommand)(command, args, Object.assign({}, options, { killTreeOnComplete: true })));
 }
 
 function logAndThrowHgError(args, options, stdout, stderr) {

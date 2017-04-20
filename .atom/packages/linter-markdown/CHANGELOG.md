@@ -1,6 +1,29 @@
 # Change Log
 
-## [v3.1.0](https://github.com/AtomLinter/linter-markdown/tree/v3.1.0) (2017-01-24)
+## [v4.0.0](https://github.com/AtomLinter/linter-markdown/tree/v4.0.0) (2017-04-14)
+[Full Changelog](https://github.com/AtomLinter/linter-markdown/compare/v3.1.1...v4.0.0)
+
+**Implemented enhancements:**
+
+- chore\(package\): update atom-package-deps to version 4.6.0 [\#132](https://github.com/AtomLinter/linter-markdown/pull/132) ([Arcanemagus](https://github.com/Arcanemagus))
+- Update remark and linter [\#131](https://github.com/AtomLinter/linter-markdown/pull/131) ([wooorm](https://github.com/wooorm))
+
+## [v3.1.1](https://github.com/AtomLinter/linter-markdown/tree/v3.1.1) (2017-04-12)
+[Full Changelog](https://github.com/AtomLinter/linter-markdown/compare/v3.1.0...v3.1.1)
+
+**Implemented enhancements:**
+
+- Async-ify the specs [\#128](https://github.com/AtomLinter/linter-markdown/pull/128) ([Arcanemagus](https://github.com/Arcanemagus))
+- Defer dependency loading [\#127](https://github.com/AtomLinter/linter-markdown/pull/127) ([Arcanemagus](https://github.com/Arcanemagus))
+- Remove macOS testing [\#126](https://github.com/AtomLinter/linter-markdown/pull/126) ([Arcanemagus](https://github.com/Arcanemagus))
+- Update remark-cli to the latest version 🚀 [\#122](https://github.com/AtomLinter/linter-markdown/pull/122) ([greenkeeper[bot]](https://github.com/integration/greenkeeper))
+
+**Fixed bugs:**
+
+- Minor fixes to callback handling [\#130](https://github.com/AtomLinter/linter-markdown/pull/130) ([Arcanemagus](https://github.com/Arcanemagus))
+- Cancel pending idle callbacks on deactivate [\#129](https://github.com/AtomLinter/linter-markdown/pull/129) ([Arcanemagus](https://github.com/Arcanemagus))
+
+## [v3.1.0](https://github.com/AtomLinter/linter-markdown/tree/v3.1.0) (2017-01-25)
 [Full Changelog](https://github.com/AtomLinter/linter-markdown/compare/v3.0.2...v3.1.0)
 
 **Implemented enhancements:**

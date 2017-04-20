@@ -329,7 +329,7 @@ class ContextViewManager {
     return 'info';
   }
 
-  getPreferredInitialWidth() {
+  getPreferredWidth() {
     return 300;
   }
 

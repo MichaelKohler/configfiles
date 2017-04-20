@@ -66,10 +66,10 @@ function _load_utils() {
 
 var _react = _interopRequireDefault(require('react'));
 
-var _vcs;
+var _nuclideVcsBase;
 
-function _load_vcs() {
-  return _vcs = require('../../commons-atom/vcs');
+function _load_nuclideVcsBase() {
+  return _nuclideVcsBase = require('../../nuclide-vcs-base');
 }
 
 var _Reducers;
@@ -127,7 +127,7 @@ class Activation {
 
   consumeCwdApi(cwdApi) {
     const subscription = (0, (_event || _load_event()).observableFromSubscribeFunction)(cwdApi.observeCwd.bind(cwdApi)).switchMap(directory => {
-      const repository = directory ? (0, (_vcs || _load_vcs()).repositoryForPath)(directory.getPath()) : null;
+      const repository = directory ? (0, (_nuclideVcsBase || _load_nuclideVcsBase()).repositoryForPath)(directory.getPath()) : null;
       if (repository == null || repository.getType() !== 'hg') {
         return _rxjsBundlesRxMinJs.Observable.of(false);
       }

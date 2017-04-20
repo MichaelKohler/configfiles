@@ -76,6 +76,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * 
  */
 
+const MAX_SERIALIZED_RECORDS = 1000;
+
 class Activation {
 
   constructor(rawState) {
@@ -188,7 +190,7 @@ class Activation {
       return {};
     }
     return {
-      records: this._store.getState().records
+      records: this._store.getState().records.slice(-MAX_SERIALIZED_RECORDS)
     };
   }
 }

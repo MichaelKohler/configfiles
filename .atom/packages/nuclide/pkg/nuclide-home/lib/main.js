@@ -11,7 +11,10 @@ let displayChangelog = (() => {
     const markdownPreviewPkg = atom.packages.getLoadedPackage('markdown-preview');
     if (markdownPreviewPkg != null) {
       yield atom.packages.activatePackage('markdown-preview');
-      const changelogPath = (_nuclideUri || _load_nuclideUri()).default.join((0, (_systemInfo || _load_systemInfo()).getAtomNuclideDir)(), 'CHANGELOG.md');
+      const fbChangelogPath = (_nuclideUri || _load_nuclideUri()).default.join((0, (_systemInfo || _load_systemInfo()).getAtomNuclideDir)(), 'fb-CHANGELOG.md');
+      const osChangelogPath = (_nuclideUri || _load_nuclideUri()).default.join((0, (_systemInfo || _load_systemInfo()).getAtomNuclideDir)(), 'CHANGELOG.md');
+      const fbChangeLogExists = yield (_fsPromise || _load_fsPromise()).default.exists(fbChangelogPath);
+      const changelogPath = fbChangeLogExists ? fbChangelogPath : osChangelogPath;
       // eslint-disable-next-line nuclide-internal/atom-apis
       yield atom.workspace.open(encodeURI(`markdown-preview://${changelogPath}`));
     }
@@ -43,6 +46,12 @@ var _nuclideUri;
 
 function _load_nuclideUri() {
   return _nuclideUri = _interopRequireDefault(require('../../commons-node/nuclideUri'));
+}
+
+var _fsPromise;
+
+function _load_fsPromise() {
+  return _fsPromise = _interopRequireDefault(require('../../commons-node/fsPromise'));
 }
 
 var _runtimeInfo;
@@ -95,6 +104,9 @@ var _electron = require('electron');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+let subscriptions = null;
+
+// A stream of all of the fragments. This is essentially the state of our panel.
 /**
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -107,9 +119,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 /* global localStorage */
 
-let subscriptions = null;
-
-// A stream of all of the fragments. This is essentially the state of our panel.
 const allHomeFragmentsStream = new _rxjsBundlesRxMinJs.BehaviorSubject((_immutable || _load_immutable()).default.Set());
 
 function activate(state) {

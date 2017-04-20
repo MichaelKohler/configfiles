@@ -82,7 +82,8 @@ let createLanguageService = (() => {
       },
       evaluationExpression: {
         version: '0.0.0',
-        analyticsEventName: 'hack.evaluationExpression'
+        analyticsEventName: 'hack.evaluationExpression',
+        regexp: (_nuclideHackCommon || _load_nuclideHackCommon()).HACK_WORD_REGEX
       },
       autocomplete: {
         version: '2.0.0',

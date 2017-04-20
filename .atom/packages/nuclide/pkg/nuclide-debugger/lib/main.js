@@ -284,7 +284,7 @@ class Activation {
         label: 'Copy Callstack',
         command: 'nuclide-debugger:copy-debugger-callstack'
       }],
-      '.nuclide-debugger-expression-value-list .list-item': [{
+      '.nuclide-debugger-expression-value-list': [{
         label: 'Copy',
         command: 'nuclide-debugger:copy-debugger-expression-value'
       }],

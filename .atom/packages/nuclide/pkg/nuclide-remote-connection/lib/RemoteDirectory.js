@@ -277,15 +277,11 @@ class RemoteDirectory {
       const directories = [];
       const files = [];
       entries.sort(function (a, b) {
-        return a.file.toLowerCase().localeCompare(b.file.toLowerCase());
+        return a[0].toLowerCase().localeCompare(b[0].toLowerCase());
       }).forEach(function (entry) {
-        if (!entry) {
-          throw new Error('Invariant violation: "entry"');
-        }
-
-        const uri = (_nuclideUri || _load_nuclideUri()).default.createRemoteUri(_this3._host, (_nuclideUri || _load_nuclideUri()).default.join(_this3._localPath, entry.file));
-        const symlink = entry.isSymbolicLink;
-        if (entry.stats && entry.stats.isFile()) {
+        const [name, isFile, symlink] = entry;
+        const uri = (_nuclideUri || _load_nuclideUri()).default.createRemoteUri(_this3._host, (_nuclideUri || _load_nuclideUri()).default.join(_this3._localPath, name));
+        if (isFile) {
           files.push(_this3._server.createFile(uri, symlink));
         } else {
           directories.push(_this3._server.createDirectory(uri, _this3._hgRepositoryDescription, symlink));

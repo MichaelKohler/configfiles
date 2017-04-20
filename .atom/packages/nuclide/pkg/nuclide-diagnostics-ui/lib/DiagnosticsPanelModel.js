@@ -134,7 +134,9 @@ function getPropsStream(diagnosticsStream, warnAboutLinterStream, showTracesStre
     }
   }).distinctUntilChanged();
 
-  const sortedDiagnostics = _rxjsBundlesRxMinJs.Observable.concat(_rxjsBundlesRxMinJs.Observable.of([]), diagnosticsStream.map(diagnostics => diagnostics.slice().sort((_paneUtils || _load_paneUtils()).compareMessagesByFile)));
+  const sortedDiagnostics = _rxjsBundlesRxMinJs.Observable.concat(_rxjsBundlesRxMinJs.Observable.of([]), diagnosticsStream.map(diagnostics => diagnostics.slice().sort((_paneUtils || _load_paneUtils()).compareMessagesByFile)),
+  // If the diagnostics stream ever terminates, clear all messages.
+  _rxjsBundlesRxMinJs.Observable.of([]));
 
   const filterByActiveTextEditorStream = new _rxjsBundlesRxMinJs.BehaviorSubject(initialfilterByActiveTextEditor);
   const handleFilterByActiveTextEditorChange = filterByActiveTextEditor => {

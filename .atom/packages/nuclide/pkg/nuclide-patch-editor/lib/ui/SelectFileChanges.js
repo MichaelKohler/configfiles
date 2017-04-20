@@ -60,6 +60,7 @@ class SelectFileChanges extends _react.default.Component {
       { className: 'nuclide-patch-editor-select-file-changes' },
       _react.default.createElement((_Checkbox || _load_Checkbox()).Checkbox, {
         checked: selected === (_constants || _load_constants()).SelectedState.ALL,
+        className: 'nuclide-patch-editor-file-checkbox',
         indeterminate: selected === (_constants || _load_constants()).SelectedState.SOME,
         onChange: this._onToggleFile
       }),

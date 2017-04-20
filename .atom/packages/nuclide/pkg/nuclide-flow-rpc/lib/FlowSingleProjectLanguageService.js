@@ -280,7 +280,13 @@ class FlowSingleProjectLanguageService {
     const ideConnections = this._process.getIDEConnections();
     return ideConnections.switchMap(ideConnection => {
       if (ideConnection != null) {
-        return ideConnection.observeDiagnostics().map(diagnosticsJson => {
+        return ideConnection.observeDiagnostics().filter(msg => msg.kind === 'errors').map(msg => {
+          if (!(msg.kind === 'errors')) {
+            throw new Error('Invariant violation: "msg.kind === \'errors\'"');
+          }
+
+          return msg.errors;
+        }).map(diagnosticsJson => {
           const diagnostics = (0, (_diagnosticsParser || _load_diagnosticsParser()).flowStatusOutputToDiagnostics)(diagnosticsJson);
           const filePathToMessages = new Map();
 
@@ -537,23 +543,7 @@ class FlowSingleProjectLanguageService {
   }
 
   getEvaluationExpression(filePath, buffer, position) {
-    // TODO: Replace RegExp with AST-based, more accurate approach.
-    const extractedIdentifier = (0, (_range || _load_range()).wordAtPositionFromBuffer)(buffer, position, (_nuclideFlowCommon || _load_nuclideFlowCommon()).JAVASCRIPT_IDENTIFIER_REGEX);
-    if (extractedIdentifier == null) {
-      return Promise.resolve(null);
-    }
-    const {
-      range,
-      wordMatch
-    } = extractedIdentifier;
-    const [expression] = wordMatch;
-    if (expression == null) {
-      return Promise.resolve(null);
-    }
-    return Promise.resolve({
-      expression,
-      range
-    });
+    throw new Error('Not implemented');
   }
 
   isFileInProject(fileUri) {

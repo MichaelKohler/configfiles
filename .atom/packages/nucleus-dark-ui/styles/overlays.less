@@ -1,12 +1,17 @@
-.overlay,
-atom-panel.modal {
+atom-overlay,
+.modal {
   .shadow();
   border-radius: @component-border-radius;
+}
+
+.overlay,
+atom-panel.modal {
+  border-radius: @component-border-radius;
   border: 0;
-  padding: 0;
+  padding: @component-padding 0;
   width: 680px;
   margin-left: -340px;
-  overflow: hidden;
+
   @media (max-width: 768px) {
     width: 88%;
     left: 50%;
@@ -24,13 +29,16 @@ atom-panel.modal {
   }
 
   & > * > *:not(.list-group) {
-    margin: @component-padding @component-padding*2;
+    margin: 0 @component-padding*2;
+  }
+
+  .list-group:not(:first-child):not(:empty),
+  .list-tree:not(:first-child):not(:empty) {
+    border-top: 1px solid @overlay-border-color;
   }
 
   .list-group,
   .list-tree {
-    border-top: 1px solid @overlay-border-color;
-
     li.list-nested-item > .list-item,
     li:not(.list-nested-item) {
       padding: 0.5em @component-padding*2;
@@ -91,24 +99,35 @@ atom-panel.modal {
   }
 }
 
+autocomplete-suggestion-list .icon {
+  width: 2.25rem;
+  height: 2.25rem;
+}
+
 .autocomplete-suggestion-list.select-list.popover-list,
 .select-list.popover-list {
   .shadow();
   .text(normal);
+  background-color: @overlay-border-color;
+  border-radius: @component-border-radius;
+  border: 0;
+  line-height: 2.25rem;
+
+  .suggestion-list-scroller {
+    border-radius: 4px;
+    background-color: @overlay-background-color;
+  }
 
   .suggestion-description {
     background: @overlay-border-color;
   }
 
-  background-color: @overlay-background-color;
-  border-radius: @component-border-radius;
-  border: 0;
-
   atom-text-editor {
     margin-bottom: @component-padding/2;
   }
 
-  .list-group li {
+  ol.list-group li {
+    line-height: 2.25rem;
     padding-left: @component-padding/2;
     .transition(color);
 
@@ -140,16 +159,7 @@ atom-panel.modal {
     }
   }
 
-  /deep/::-webkit-scrollbar-track {
-    background: @overlay-background-color;
-  }
-
-  /deep/::-webkit-scrollbar-corner {
-    background: @overlay-background-color;
-  }
-
-  /deep/::-webkit-scrollbar-thumb {
-    border-color: @overlay-background-color;
-    background: @scrollbar-color;
+  /deep/::-webkit-scrollbar {
+    display: none;
   }
 }

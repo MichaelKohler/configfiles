@@ -9,8 +9,7 @@ var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
 
 let getAutocompleteSuggestions = exports.getAutocompleteSuggestions = (() => {
   var _ref = (0, _asyncToGenerator.default)(function* (serverManager, filePath, buffer, position, activatedManually, autocompleteArguments, includeOptionalArguments) {
-    const triggerRegex = activatedManually ? EXPLICIT_TRIGGER_COMPLETION_REGEX : IMPLICIT_TRIGGER_COMPLETION_REGEX;
-    if ((0, (_range || _load_range()).matchRegexEndingAt)(buffer, position, triggerRegex) == null) {
+    if (!activatedManually && (0, (_range || _load_range()).matchRegexEndingAt)(buffer, position, TRIGGER_REGEX) == null) {
       return { isIncomplete: false, items: [] };
     }
 
@@ -82,8 +81,7 @@ const TYPES = {
     * 
     */
 
-const IMPLICIT_TRIGGER_COMPLETION_REGEX = /([. ]|[a-zA-Z_][a-zA-Z0-9_]*)$/;
-const EXPLICIT_TRIGGER_COMPLETION_REGEX = /([. (]|[a-zA-Z_][a-zA-Z0-9_]*)$/;
+const TRIGGER_REGEX = /(\.|[a-zA-Z_][a-zA-Z0-9_]*)$/;
 
 /**
  * Generate a function-signature line string if completion is a function.

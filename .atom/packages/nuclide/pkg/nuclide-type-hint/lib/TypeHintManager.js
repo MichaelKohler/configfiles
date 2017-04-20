@@ -18,12 +18,6 @@ function _load_nuclideAnalytics() {
   return _nuclideAnalytics = require('../../nuclide-analytics');
 }
 
-var _TypeHintComponent;
-
-function _load_TypeHintComponent() {
-  return _TypeHintComponent = require('./TypeHintComponent');
-}
-
 var _nuclideLogging;
 
 function _load_nuclideLogging() {
@@ -32,17 +26,15 @@ function _load_nuclideLogging() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- */
-
-const logger = (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)();
+const logger = (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)(); /**
+                                                                              * Copyright (c) 2015-present, Facebook, Inc.
+                                                                              * All rights reserved.
+                                                                              *
+                                                                              * This source code is licensed under the license found in the LICENSE file in
+                                                                              * the root directory of this source tree.
+                                                                              *
+                                                                              * 
+                                                                              */
 
 class TypeHintManager {
 
@@ -86,7 +78,7 @@ class TypeHintManager {
         message: hint
       });
       return {
-        component: (0, (_TypeHintComponent || _load_TypeHintComponent()).makeTypeHintComponent)(hint, grammar),
+        markedStrings: [{ type: 'snippet', value: hint, grammar }],
         range
       };
     })();

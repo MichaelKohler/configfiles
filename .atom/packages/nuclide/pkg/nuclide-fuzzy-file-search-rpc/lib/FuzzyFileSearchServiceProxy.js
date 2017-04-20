@@ -12,7 +12,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "FuzzyFileSearchService.js",
-          line: 25
+          line: 26
         },
         kind: "named",
         name: "NuclideUri"
@@ -23,32 +23,13 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "FuzzyFileSearchService.js",
-          line: 26
+          line: 27
         },
         kind: "string"
       }
     }, {
       name: "ignoredNames",
       type: {
-        location: {
-          type: "source",
-          fileName: "FuzzyFileSearchService.js",
-          line: 27
-        },
-        kind: "array",
-        type: {
-          location: {
-            type: "source",
-            fileName: "FuzzyFileSearchService.js",
-            line: 27
-          },
-          kind: "string"
-        }
-      }
-    }]).then(args => {
-      return _client.callRemoteFunction("FuzzyFileSearchService/queryFuzzyFile", "promise", args);
-    }).then(value => {
-      return _client.unmarshal(value, {
         location: {
           type: "source",
           fileName: "FuzzyFileSearchService.js",
@@ -60,6 +41,25 @@ module.exports = _client => {
             type: "source",
             fileName: "FuzzyFileSearchService.js",
             line: 28
+          },
+          kind: "string"
+        }
+      }
+    }]).then(args => {
+      return _client.callRemoteFunction("FuzzyFileSearchService/queryFuzzyFile", "promise", args);
+    }).then(value => {
+      return _client.unmarshal(value, {
+        location: {
+          type: "source",
+          fileName: "FuzzyFileSearchService.js",
+          line: 29
+        },
+        kind: "array",
+        type: {
+          location: {
+            type: "source",
+            fileName: "FuzzyFileSearchService.js",
+            line: 29
           },
           kind: "named",
           name: "FileSearchResult"
@@ -75,7 +75,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "FuzzyFileSearchService.js",
-          line: 34
+          line: 46
         },
         kind: "string"
       }
@@ -85,14 +85,14 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "FuzzyFileSearchService.js",
-          line: 35
+          line: 47
         },
         kind: "array",
         type: {
           location: {
             type: "source",
             fileName: "FuzzyFileSearchService.js",
-            line: 35
+            line: 47
           },
           kind: "string"
         }
@@ -104,14 +104,14 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "FuzzyFileSearchService.js",
-          line: 36
+          line: 48
         },
         kind: "array",
         type: {
           location: {
             type: "source",
             fileName: "FuzzyFileSearchService.js",
-            line: 36
+            line: 48
           },
           kind: "named",
           name: "FileSearchResult"
@@ -127,7 +127,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "FuzzyFileSearchService.js",
-          line: 55
+          line: 67
         },
         kind: "named",
         name: "NuclideUri"
@@ -139,7 +139,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "FuzzyFileSearchService.js",
-          line: 56
+          line: 68
         },
         kind: "boolean"
       });
@@ -153,7 +153,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "FuzzyFileSearchService.js",
-          line: 63
+          line: 75
         },
         kind: "named",
         name: "NuclideUri"
@@ -165,7 +165,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "FuzzyFileSearchService.js",
-          line: 63
+          line: 75
         },
         kind: "void"
       });
@@ -244,13 +244,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "FuzzyFileSearchService.js",
-        line: 24
+        line: 25
       },
       type: {
         location: {
           type: "source",
           fileName: "FuzzyFileSearchService.js",
-          line: 24
+          line: 25
         },
         kind: "function",
         argumentTypes: [{
@@ -259,7 +259,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "FuzzyFileSearchService.js",
-              line: 25
+              line: 26
             },
             kind: "named",
             name: "NuclideUri"
@@ -270,36 +270,12 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "FuzzyFileSearchService.js",
-              line: 26
+              line: 27
             },
             kind: "string"
           }
         }, {
           name: "ignoredNames",
-          type: {
-            location: {
-              type: "source",
-              fileName: "FuzzyFileSearchService.js",
-              line: 27
-            },
-            kind: "array",
-            type: {
-              location: {
-                type: "source",
-                fileName: "FuzzyFileSearchService.js",
-                line: 27
-              },
-              kind: "string"
-            }
-          }
-        }],
-        returnType: {
-          location: {
-            type: "source",
-            fileName: "FuzzyFileSearchService.js",
-            line: 28
-          },
-          kind: "promise",
           type: {
             location: {
               type: "source",
@@ -312,6 +288,30 @@ Object.defineProperty(module.exports, "defs", {
                 type: "source",
                 fileName: "FuzzyFileSearchService.js",
                 line: 28
+              },
+              kind: "string"
+            }
+          }
+        }],
+        returnType: {
+          location: {
+            type: "source",
+            fileName: "FuzzyFileSearchService.js",
+            line: 29
+          },
+          kind: "promise",
+          type: {
+            location: {
+              type: "source",
+              fileName: "FuzzyFileSearchService.js",
+              line: 29
+            },
+            kind: "array",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FuzzyFileSearchService.js",
+                line: 29
               },
               kind: "named",
               name: "FileSearchResult"
@@ -326,13 +326,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "FuzzyFileSearchService.js",
-        line: 33
+        line: 45
       },
       type: {
         location: {
           type: "source",
           fileName: "FuzzyFileSearchService.js",
-          line: 33
+          line: 45
         },
         kind: "function",
         argumentTypes: [{
@@ -341,7 +341,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "FuzzyFileSearchService.js",
-              line: 34
+              line: 46
             },
             kind: "string"
           }
@@ -351,14 +351,14 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "FuzzyFileSearchService.js",
-              line: 35
+              line: 47
             },
             kind: "array",
             type: {
               location: {
                 type: "source",
                 fileName: "FuzzyFileSearchService.js",
-                line: 35
+                line: 47
               },
               kind: "string"
             }
@@ -368,21 +368,21 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "FuzzyFileSearchService.js",
-            line: 36
+            line: 48
           },
           kind: "promise",
           type: {
             location: {
               type: "source",
               fileName: "FuzzyFileSearchService.js",
-              line: 36
+              line: 48
             },
             kind: "array",
             type: {
               location: {
                 type: "source",
                 fileName: "FuzzyFileSearchService.js",
-                line: 36
+                line: 48
               },
               kind: "named",
               name: "FileSearchResult"
@@ -397,13 +397,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "FuzzyFileSearchService.js",
-        line: 54
+        line: 66
       },
       type: {
         location: {
           type: "source",
           fileName: "FuzzyFileSearchService.js",
-          line: 54
+          line: 66
         },
         kind: "function",
         argumentTypes: [{
@@ -412,7 +412,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "FuzzyFileSearchService.js",
-              line: 55
+              line: 67
             },
             kind: "named",
             name: "NuclideUri"
@@ -422,14 +422,14 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "FuzzyFileSearchService.js",
-            line: 56
+            line: 68
           },
           kind: "promise",
           type: {
             location: {
               type: "source",
               fileName: "FuzzyFileSearchService.js",
-              line: 56
+              line: 68
             },
             kind: "boolean"
           }
@@ -442,13 +442,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "FuzzyFileSearchService.js",
-        line: 63
+        line: 75
       },
       type: {
         location: {
           type: "source",
           fileName: "FuzzyFileSearchService.js",
-          line: 63
+          line: 75
         },
         kind: "function",
         argumentTypes: [{
@@ -457,7 +457,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "FuzzyFileSearchService.js",
-              line: 63
+              line: 75
             },
             kind: "named",
             name: "NuclideUri"
@@ -467,14 +467,14 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "FuzzyFileSearchService.js",
-            line: 63
+            line: 75
           },
           kind: "promise",
           type: {
             location: {
               type: "source",
               fileName: "FuzzyFileSearchService.js",
-              line: 63
+              line: 75
             },
             kind: "void"
           }

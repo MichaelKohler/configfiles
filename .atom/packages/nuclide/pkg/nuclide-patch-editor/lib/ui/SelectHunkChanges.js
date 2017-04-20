@@ -11,6 +11,12 @@ function _load_Checkbox() {
   return _Checkbox = require('../../../nuclide-ui/Checkbox');
 }
 
+var _GutterCheckbox;
+
+function _load_GutterCheckbox() {
+  return _GutterCheckbox = require('./GutterCheckbox');
+}
+
 var _FileChanges;
 
 function _load_FileChanges() {
@@ -33,17 +39,19 @@ function _load_constants() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ */
+
 function getExtraData(props) {
   return (0, (_nullthrows || _load_nullthrows()).default)(props.extraData);
-} /**
-   * Copyright (c) 2015-present, Facebook, Inc.
-   * All rights reserved.
-   *
-   * This source code is licensed under the license found in the LICENSE file in
-   * the root directory of this source tree.
-   *
-   * 
-   */
+}
 
 function getHunkData(props) {
   const hunks = (0, (_nullthrows || _load_nullthrows()).default)(getExtraData(props).fileData.chunks);
@@ -58,34 +66,59 @@ class SelectHunkChanges extends _react.default.Component {
     const { actionCreators, fileData: { id: fileId }, patchId } = getExtraData(props);
     this._onToggleHunk = () => actionCreators.toggleHunk(patchId, fileId, props.hunk.oldStart);
 
-    this._hunkData = getHunkData(props);
+    const hunkData = getHunkData(props);
+    const firstChangeIndex = props.hunk.changes.findIndex(change => change.type !== 'normal');
+
+    this.state = { editor: null, firstChangeIndex, hunkData };
   }
 
-  shouldComponentUpdate(nextProps) {
-    const newHunkData = getHunkData(nextProps);
-    if (newHunkData !== this._hunkData) {
-      this._hunkData = newHunkData;
+  componentWillReceiveProps(nextProps) {
+    const hunkData = getHunkData(nextProps);
+    this.setState({ hunkData });
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (nextState.hunkData !== this.state.hunkData) {
       return true;
     }
+
+    if (nextState.editor !== this.state.editor) {
+      return true;
+    }
+
     return false;
   }
 
   render() {
+    const { actionCreators, fileData: { id: fileId }, patchId } = getExtraData(this.props);
+
+    let gutterCheckboxes;
+    const { editor } = this.state;
+    if (editor != null) {
+      gutterCheckboxes = this.state.hunkData.allChanges.map((isEnabled, index) => _react.default.createElement((_GutterCheckbox || _load_GutterCheckbox()).GutterCheckbox, {
+        checked: isEnabled,
+        editor: editor,
+        key: index,
+        lineNumber: index + this.state.firstChangeIndex,
+        onToggleLine: () => actionCreators.toggleLine(patchId, fileId, this.props.hunk.oldStart, index)
+      }));
+    }
+
     return _react.default.createElement(
       'div',
       { className: 'nuclide-patch-editor-select-hunk-changes' },
       _react.default.createElement((_Checkbox || _load_Checkbox()).Checkbox, {
-        checked: this._hunkData.selected === (_constants || _load_constants()).SelectedState.ALL,
-        indeterminate: this._hunkData.selected === (_constants || _load_constants()).SelectedState.SOME,
+        checked: this.state.hunkData.selected === (_constants || _load_constants()).SelectedState.ALL,
+        className: 'nuclide-patch-editor-hunk-checkbox',
+        indeterminate: this.state.hunkData.selected === (_constants || _load_constants()).SelectedState.SOME,
         onChange: this._onToggleHunk
       }),
       _react.default.createElement(
         'div',
         { className: 'nuclide-patch-editor-hunk-changes' },
-        _react.default.createElement((_FileChanges || _load_FileChanges()).HunkDiff, Object.assign({}, this.props, { ref: hunk => {
-            this._editor = hunk && hunk.editor;
-          } }))
-      )
+        _react.default.createElement((_FileChanges || _load_FileChanges()).HunkDiff, Object.assign({}, this.props, { ref: hunk => hunk && this.setState({ editor: hunk.editor }) }))
+      ),
+      gutterCheckboxes
     );
   }
 }

@@ -70,13 +70,17 @@ const logger = (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)(); /**
                                                                               */
 
 const SERVICE_FRAMEWORK_RPC_TIMEOUT_MS = 60 * 1000;
-const LARGE_RESPONSE_SIZE = 50000;
+const LARGE_RESPONSE_SIZE = 100000;
 
 class Subscription {
 
+  // Track the total number of received bytes to track large subscriptions.
+  // Reset the count every minute so frequent offenders fire repeatedly.
   constructor(message, observer) {
     this._message = message;
     this._observer = observer;
+    this._totalBytes = 0;
+    this._firstByteTime = 0;
   }
 
   error(error) {
@@ -87,9 +91,11 @@ class Subscription {
     }
   }
 
-  next(data) {
+  next(data, bytes) {
     try {
       this._observer.next(data);
+      // TODO: consider implementing a rate limit
+      this._totalBytes += bytes;
     } catch (e) {
       logger.error(`Caught exception in Subscription.next: ${e.toString()}`);
     }
@@ -101,6 +107,14 @@ class Subscription {
     } catch (e) {
       logger.error(`Caught exception in Subscription.complete: ${e.toString()}`);
     }
+  }
+
+  getBytes() {
+    if (Date.now() - this._firstByteTime > 60000) {
+      this._totalBytes = 0;
+      this._firstByteTime = Date.now();
+    }
+    return this._totalBytes;
   }
 }
 
@@ -545,17 +559,7 @@ class RpcConnection {
       case 'next':
       case 'complete':
       case 'error':
-        const requestMessage = this._handleResponseMessage(message);
-        if (value.length > LARGE_RESPONSE_SIZE && requestMessage != null) {
-          const eventName = trackingIdOfMessage(this._objectRegistry, requestMessage);
-          const args = requestMessage.args != null ? (0, (_string || _load_string()).shorten)(JSON.stringify(requestMessage.args), 100, '...') : '';
-          logger.warn(`${eventName}: Large response of size ${value.length}. Args:`, args);
-          (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)('large-rpc-response', {
-            eventName,
-            size: value.length,
-            args
-          });
-        }
+        this._handleResponseMessage(message, value);
         break;
       case 'call':
       case 'call-object':
@@ -570,7 +574,7 @@ class RpcConnection {
   }
 
   // Handles the response and returns the originating request message (if possible).
-  _handleResponseMessage(message) {
+  _handleResponseMessage(message, rawMessage) {
     const id = message.id;
     switch (message.type) {
       case 'response':
@@ -579,7 +583,9 @@ class RpcConnection {
           if (call != null) {
             const { result } = message;
             call.resolve(result);
-            return call._message;
+            if (rawMessage.length >= LARGE_RESPONSE_SIZE) {
+              this._trackLargeResponse(call._message, rawMessage.length);
+            }
           }
           break;
         }
@@ -589,7 +595,6 @@ class RpcConnection {
           if (call != null) {
             const { error } = message;
             call.reject(error);
-            return call._message;
           }
           break;
         }
@@ -598,8 +603,14 @@ class RpcConnection {
           const subscription = this._subscriptions.get(id);
           if (subscription != null) {
             const { value } = message;
-            subscription.next(value);
-            return subscription._message;
+            const prevBytes = subscription.getBytes();
+            subscription.next(value, rawMessage.length);
+            if (prevBytes < LARGE_RESPONSE_SIZE) {
+              const bytes = subscription.getBytes();
+              if (bytes >= LARGE_RESPONSE_SIZE) {
+                this._trackLargeResponse(subscription._message, bytes);
+              }
+            }
           }
           break;
         }
@@ -609,7 +620,6 @@ class RpcConnection {
           if (subscription != null) {
             subscription.complete();
             this._subscriptions.delete(id);
-            return subscription._message;
           }
           break;
         }
@@ -620,7 +630,6 @@ class RpcConnection {
             const { error } = message;
             subscription.error(error);
             this._subscriptions.delete(id);
-            return subscription._message;
           }
           break;
         }
@@ -678,6 +687,17 @@ class RpcConnection {
 
   _getTypeRegistry() {
     return this._serviceRegistry.getTypeRegistry();
+  }
+
+  _trackLargeResponse(message, size) {
+    const eventName = trackingIdOfMessage(this._objectRegistry, message);
+    const args = message.args != null ? (0, (_string || _load_string()).shorten)(JSON.stringify(message.args), 100, '...') : '';
+    logger.warn(`${eventName}: Large response of size ${size}. Args:`, args);
+    (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)('large-rpc-response', {
+      eventName,
+      size,
+      args
+    });
   }
 
   dispose() {

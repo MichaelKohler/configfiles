@@ -111,9 +111,8 @@ class BreakpointStore {
 
   getBreakpointIdFromConnection(connection, xdebugBreakpoint) {
     const map = this._connections.get(connection);
-
-    if (!map) {
-      throw new Error('Invariant violation: "map"');
+    if (map == null) {
+      return null;
     }
 
     for (const [key, value] of map) {
@@ -178,6 +177,10 @@ class BreakpointStore {
       })());
       yield Promise.all(breakpointPromises);
     })();
+  }
+
+  getPauseOnExceptions() {
+    return this._pauseAllExceptionBreakpointId != null;
   }
 
   _removePauseAllExceptionBreakpointIfNeeded() {

@@ -68,6 +68,7 @@ class NuclideBridge {
     this._debuggerPausedCount = 0;
     this._suppressBreakpointNotification = false;
     this._settings = {};
+    this._callframeId = -1;
 
     ipcRenderer.on('command', this._handleIpcCommand.bind(this));
 
@@ -269,6 +270,7 @@ class NuclideBridge {
       const selectedFrame = target.debuggerModel.callFrames[callframeIndex];
       target.debuggerModel.setSelectedCallFrame(selectedFrame);
       this._updateScopes(selectedFrame);
+      this._callframeId = selectedFrame.id;
     }
   }
 
@@ -328,7 +330,8 @@ class NuclideBridge {
         location: {
           path: callFrame.script.sourceURL,
           column: location.columnNumber,
-          line: location.lineNumber
+          line: location.lineNumber,
+          hasSource: callFrame.hasSource() != null ? callFrame.hasSource() : true
         }
       };
     });
@@ -374,6 +377,16 @@ class NuclideBridge {
         expression,
         id
       });
+
+      if (!wasThrown) {
+        // Evaluate could have had a side effect. Force a refresh of scopes for the current
+        // frame.
+        mainTarget.debuggerModel.threadStore.getRefreshedThreadStack(callFrames => {
+          const frames = callFrames != null && callFrames.length > 0 ? callFrames : mainTarget.debuggerModel.callFrames;
+
+          frames.filter(frame => frame.id === this._callframeId).forEach(frame => this._updateScopes(frame));
+        });
+      }
     });
   }
 

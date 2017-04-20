@@ -39,16 +39,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * TODO use generic search provider
  * TODO move combobox to separate package.
  */
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- */
-
 class Combobox extends _react.default.Component {
 
   constructor(props) {
@@ -86,7 +76,6 @@ class Combobox extends _react.default.Component {
     atom.commands.add(node, 'core:cancel', this._handleCancel),
     // $FlowFixMe
     atom.commands.add(node, 'core:confirm', this._handleConfirm), this.refs.freeformInput.onDidChange(this._handleTextInputChange));
-    this.requestUpdate(this.state.textInput);
   }
 
   componentWillUnmount() {
@@ -145,14 +134,16 @@ class Combobox extends _react.default.Component {
     return this.refs.freeformInput.getText();
   }
 
-  // TODO use native (fuzzy/strict - configurable?) filter provider
   _getFilteredOptions(options, filterValue) {
+    if (this.props.filterOptions != null) {
+      return this.props.filterOptions(options, filterValue).slice(0, this.props.maxOptionCount);
+    }
+
     const lowerCaseState = filterValue.toLowerCase();
     return options.map(option => {
       const valueLowercase = option.toLowerCase();
       return {
         value: option,
-        valueLowercase,
         matchIndex: valueLowercase.indexOf(lowerCaseState)
       };
     }).filter(option => option.matchIndex !== -1).sort((a, b) => {
@@ -163,7 +154,7 @@ class Combobox extends _react.default.Component {
       }
       // Then we prefer smaller options, thus close to the input
       return a.value.length - b.value.length;
-    }).slice(0, this.props.maxOptionCount);
+    }).map(option => option.value).slice(0, this.props.maxOptionCount);
   }
 
   _getOptionsElement() {
@@ -276,7 +267,7 @@ class Combobox extends _react.default.Component {
   _handleConfirm() {
     const option = this.state.filteredOptions[this.state.selectedIndex];
     if (option !== undefined) {
-      this.selectValue(option.value);
+      this.selectValue(option);
     }
   }
 
@@ -318,18 +309,27 @@ class Combobox extends _react.default.Component {
     }
 
     if (this.state.optionsVisible) {
+      const lowerCaseState = this.state.textInput.toLowerCase();
       options.push(...this.state.filteredOptions.map((option, i) => {
-        const beforeMatch = option.value.substring(0, option.matchIndex);
-        const endOfMatchIndex = option.matchIndex + this.state.textInput.length;
-        const highlightedMatch = option.value.substring(option.matchIndex, endOfMatchIndex);
-        const afterMatch = option.value.substring(endOfMatchIndex, option.value.length);
+        const matchIndex = option.toLowerCase().indexOf(lowerCaseState);
+        let beforeMatch;
+        let highlightedMatch;
+        let afterMatch;
+        if (matchIndex >= 0) {
+          beforeMatch = option.substring(0, matchIndex);
+          const endOfMatchIndex = matchIndex + this.state.textInput.length;
+          highlightedMatch = option.substring(matchIndex, endOfMatchIndex);
+          afterMatch = option.substring(endOfMatchIndex, option.length);
+        } else {
+          beforeMatch = option;
+        }
         const isSelected = i === this.state.selectedIndex;
         return _react.default.createElement(
           'li',
           {
             className: isSelected ? 'selected' : null,
-            key: 'option-' + option.value,
-            onClick: this._handleItemClick.bind(this, option.value),
+            key: 'option-' + option,
+            onClick: this._handleItemClick.bind(this, option),
             onMouseOver: this._setSelectedIndex.bind(this, i),
             ref: isSelected ? 'selectedOption' : null },
           beforeMatch,
@@ -398,7 +398,16 @@ class Combobox extends _react.default.Component {
     );
   }
 }
-exports.Combobox = Combobox;
+exports.Combobox = Combobox; /**
+                              * Copyright (c) 2015-present, Facebook, Inc.
+                              * All rights reserved.
+                              *
+                              * This source code is licensed under the license found in the LICENSE file in
+                              * the root directory of this source tree.
+                              *
+                              * 
+                              */
+
 Combobox.defaultProps = {
   className: '',
   maxOptionCount: 10,

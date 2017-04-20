@@ -99,14 +99,11 @@ function findIncludingSourceFile(headerFile, projectRoot) {
   const relativePath = (0, (_escapeStringRegexp || _load_escapeStringRegexp()).default)((_nuclideUri || _load_nuclideUri()).default.relative(projectRoot, headerFile));
   const pattern = `^\\s*#include\\s+["<](${relativePath}|(../)*${basename})[">]\\s*$`;
   const regex = new RegExp(pattern);
-  const spawnGrepProcess = () => {
-    // We need both the file and the match to verify relative includes.
-    // Relative includes may not always be correct, so we may have to go through all the results.
-    return (0, (_process || _load_process()).safeSpawn)('grep', ['-RE', // recursive, extended
-    '--null', // separate file/match with \0
-    pattern, (_nuclideUri || _load_nuclideUri()).default.dirname(headerFile)]);
-  };
-  return (0, (_process || _load_process()).observeProcess)(spawnGrepProcess).flatMap(message => {
+  // We need both the file and the match to verify relative includes.
+  // Relative includes may not always be correct, so we may have to go through all the results.
+  return (0, (_process || _load_process()).observeProcess)('grep', ['-RE', // recursive, extended
+  '--null', // separate file/match with \0
+  pattern, (_nuclideUri || _load_nuclideUri()).default.dirname(headerFile)], { /* TODO(T17353599) */isExitError: () => false }).flatMap(message => {
     switch (message.kind) {
       case 'stdout':
         const file = processGrepResult(message.data, headerFile, regex);
