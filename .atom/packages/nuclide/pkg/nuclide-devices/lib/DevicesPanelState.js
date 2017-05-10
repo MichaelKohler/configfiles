@@ -19,36 +19,12 @@ function _load_DevicePanel() {
   return _DevicePanel = require('./ui/DevicePanel');
 }
 
+var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
+
 var _bindObservableAsProps;
 
 function _load_bindObservableAsProps() {
   return _bindObservableAsProps = require('../../nuclide-ui/bindObservableAsProps');
-}
-
-var _reduxObservable;
-
-function _load_reduxObservable() {
-  return _reduxObservable = require('../../commons-node/redux-observable');
-}
-
-var _redux;
-
-function _load_redux() {
-  return _redux = require('redux');
-}
-
-var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
-
-var _createEmptyAppState;
-
-function _load_createEmptyAppState() {
-  return _createEmptyAppState = require('./redux/createEmptyAppState');
-}
-
-var _Reducers;
-
-function _load_Reducers() {
-  return _Reducers = _interopRequireWildcard(require('./redux/Reducers'));
 }
 
 var _Actions;
@@ -57,31 +33,27 @@ function _load_Actions() {
   return _Actions = _interopRequireWildcard(require('./redux/Actions'));
 }
 
-var _Epics;
-
-function _load_Epics() {
-  return _Epics = _interopRequireWildcard(require('./redux/Epics'));
-}
-
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const WORKSPACE_VIEW_URI = exports.WORKSPACE_VIEW_URI = 'atom://nuclide/devices'; /**
-                                                                                   * Copyright (c) 2015-present, Facebook, Inc.
-                                                                                   * All rights reserved.
-                                                                                   *
-                                                                                   * This source code is licensed under the license found in the LICENSE file in
-                                                                                   * the root directory of this source tree.
-                                                                                   *
-                                                                                   * 
-                                                                                   */
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ * @format
+ */
+
+const WORKSPACE_VIEW_URI = exports.WORKSPACE_VIEW_URI = 'atom://nuclide/devices';
 
 class DevicesPanelState {
 
-  constructor(deviceFetchers) {
-    const epics = Object.keys(_Epics || _load_Epics()).map(k => (_Epics || _load_Epics())[k]).filter(epic => typeof epic === 'function');
-    this._store = (0, (_redux || _load_redux()).createStore)((_Reducers || _load_Reducers()).app, (0, (_createEmptyAppState || _load_createEmptyAppState()).createEmptyAppState)(deviceFetchers), (0, (_redux || _load_redux()).applyMiddleware)((0, (_reduxObservable || _load_reduxObservable()).createEpicMiddleware)((0, (_reduxObservable || _load_reduxObservable()).combineEpics)(...epics))));
+  constructor(store) {
+    this._store = store;
   }
 
   getTitle() {
@@ -121,8 +93,11 @@ class DevicesPanelState {
       devices: state.devices,
       hosts: state.hosts,
       host: state.host,
+      deviceTypes: state.deviceTypes,
       deviceType: state.deviceType,
       device: state.device,
+      infoTables: state.infoTables,
+      deviceActions: state.deviceActions,
       refreshDevices,
       setHost,
       setDeviceType,

@@ -38,6 +38,7 @@ const PYTHON_EXECUTABLE = 'python'; /**
                                      * the root directory of this source tree.
                                      *
                                      * 
+                                     * @format
                                      */
 
 const LIB_PATH = (_nuclideUri || _load_nuclideUri()).default.join(__dirname, '../VendorLib');
@@ -46,7 +47,8 @@ const OPTS = {
   cwd: (_nuclideUri || _load_nuclideUri()).default.dirname(PROCESS_PATH),
   stdio: 'pipe',
   detached: false, // When Atom is killed, server process should be killed.
-  env: { PYTHONPATH: LIB_PATH }
+  env: { PYTHONPATH: LIB_PATH },
+  /* TODO(T17353599) */isExitError: () => false
 };
 
 let serviceRegistry = null;

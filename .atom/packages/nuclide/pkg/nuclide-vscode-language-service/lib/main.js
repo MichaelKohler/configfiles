@@ -37,6 +37,7 @@ function _load_process2() {
  * the root directory of this source tree.
  *
  * 
+ * @format
  */
 
 class PerConnectionLanguageService extends (_nuclideLanguageServiceRpc || _load_nuclideLanguageServiceRpc()).MultiProjectLanguageService {

@@ -34,6 +34,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * the root directory of this source tree.
  *
  * 
+ * @format
  */
 
 class Modal extends _react.default.Component {
@@ -88,10 +89,7 @@ class Modal extends _react.default.Component {
       { container: this._container },
       _react.default.createElement(
         'div',
-        Object.assign({
-          tabIndex: '0'
-        }, props, {
-          ref: this._handleContainerInnerElement }),
+        Object.assign({ tabIndex: '0' }, props, { ref: this._handleContainerInnerElement }),
         this.props.children
       )
     );

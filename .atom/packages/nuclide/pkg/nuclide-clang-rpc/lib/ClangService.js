@@ -125,7 +125,9 @@ let formatCode = exports.formatCode = (() => {
     if (length != null) {
       args.push(`-length=${length}`);
     }
-    const { stdout } = yield (0, (_process || _load_process()).checkOutput)('clang-format', args, { stdin: contents });
+    const stdout = yield (0, (_process || _load_process()).runCommand)('clang-format', args, {
+      input: contents
+    }).toPromise();
 
     // The first line is a JSON blob indicating the new cursor position.
     const newLine = stdout.indexOf('\n');
@@ -181,6 +183,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * the root directory of this source tree.
  *
  * 
+ * @format
  */
 
 const serverManager = new (_ClangServerManager || _load_ClangServerManager()).default();

@@ -67,6 +67,7 @@ const logger = (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)(); /**
                                                                               * the root directory of this source tree.
                                                                               *
                                                                               * 
+                                                                              * @format
                                                                               */
 
 const SERVICE_FRAMEWORK_RPC_TIMEOUT_MS = 60 * 1000;
@@ -177,8 +178,9 @@ class Call {
 class RpcConnection {
 
   // Do not call this directly, use factory methods below.
-  constructor(kind, serviceRegistry, transport) {
+  constructor(kind, serviceRegistry, transport, options = {}) {
     this._transport = transport;
+    this._options = options;
     this._rpcRequestId = 1;
     this._serviceRegistry = serviceRegistry;
     this._objectRegistry = new (_ObjectRegistry || _load_ObjectRegistry()).ObjectRegistry(kind, this._serviceRegistry, this);
@@ -195,8 +197,8 @@ class RpcConnection {
   }
 
   // Creates a client side connection to a server on another machine.
-  static createRemote(transport, predefinedTypes, services, protocol = (_config || _load_config()).SERVICE_FRAMEWORK3_PROTOCOL) {
-    return new RpcConnection('client', new (_ServiceRegistry || _load_ServiceRegistry()).ServiceRegistry(predefinedTypes, services, protocol), transport);
+  static createRemote(transport, predefinedTypes, services, options = {}, protocol = (_config || _load_config()).SERVICE_FRAMEWORK3_PROTOCOL) {
+    return new RpcConnection('client', new (_ServiceRegistry || _load_ServiceRegistry()).ServiceRegistry(predefinedTypes, services, protocol), transport, options);
   }
 
   // Creates a client side connection to a server on the same machine.
@@ -321,7 +323,11 @@ class RpcConnection {
             this._calls.delete(message.id);
           }));
         });
-        return (0, (_nuclideAnalytics || _load_nuclideAnalytics()).trackTiming)(trackingIdOfMessageAndNetwork(this._objectRegistry, message), () => promise);
+        const { trackSampleRate } = this._options;
+        if (trackSampleRate && Math.random() * trackSampleRate <= 1) {
+          return (0, (_nuclideAnalytics || _load_nuclideAnalytics()).trackTiming)(trackingIdOfMessageAndNetwork(this._objectRegistry, message), () => promise);
+        }
+        return promise;
       case 'observable':
         {
           const id = message.id;
@@ -410,7 +416,6 @@ class RpcConnection {
 
     // Marshal the result, to send over the network.
     result.concatMap(value => this._getTypeRegistry().marshal(this._objectRegistry, value, elementType))
-
     // Send the next, error, and completion events of the observable across the socket.
     .subscribe(data => {
       this._transport.send(JSON.stringify((0, (_messages || _load_messages()).createNextMessage)(this._getProtocol(), id, data)));
@@ -445,10 +450,7 @@ class RpcConnection {
     var _this3 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      const {
-        localImplementation,
-        type
-      } = _this3._getFunctionImplemention(call.method);
+      const { localImplementation, type } = _this3._getFunctionImplemention(call.method);
       const marshalledArgs = yield _this3._getTypeRegistry().unmarshalArguments(_this3._objectRegistry, call.args, type.argumentTypes);
 
       _this3._returnValue(id, localImplementation.apply(_this3, marshalledArgs), type.returnType);
@@ -495,10 +497,7 @@ class RpcConnection {
         throw new Error('Invariant violation: "classDefinition != null"');
       }
 
-      const {
-        localImplementation,
-        definition
-      } = classDefinition;
+      const { localImplementation, definition } = classDefinition;
       const constructorArgs = definition.constructorArgs;
 
       if (!(constructorArgs != null)) {
@@ -690,6 +689,9 @@ class RpcConnection {
   }
 
   _trackLargeResponse(message, size) {
+    if (!this._options.trackSampleRate) {
+      return;
+    }
     const eventName = trackingIdOfMessage(this._objectRegistry, message);
     const args = message.args != null ? (0, (_string || _load_string()).shorten)(JSON.stringify(message.args), 100, '...') : '';
     logger.warn(`${eventName}: Large response of size ${size}. Args:`, args);

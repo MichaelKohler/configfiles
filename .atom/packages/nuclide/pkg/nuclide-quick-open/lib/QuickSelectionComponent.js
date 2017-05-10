@@ -91,6 +91,7 @@ function _findKeybindingForAction(action, target) {
    * the root directory of this source tree.
    *
    * 
+   * @format
    */
 
 class QuickSelectionComponent extends _react.default.Component {
@@ -195,9 +196,9 @@ class QuickSelectionComponent extends _react.default.Component {
 
   componentDidMount() {
     const modalNode = _reactDom.default.findDOMNode(this);
-    this._subscriptions.add(
+    this._subscriptions.add(atom.commands.add(
     // $FlowFixMe
-    atom.commands.add(modalNode, 'core:move-to-bottom', this._handleMoveToBottom),
+    modalNode, 'core:move-to-bottom', this._handleMoveToBottom),
     // $FlowFixMe
     atom.commands.add(modalNode, 'core:move-to-top', this._handleMoveToTop),
     // $FlowFixMe
@@ -205,11 +206,11 @@ class QuickSelectionComponent extends _react.default.Component {
     // $FlowFixMe
     atom.commands.add(modalNode, 'core:move-up', this._handleMoveUp),
     // $FlowFixMe
-    atom.commands.add(modalNode, 'core:confirm', this._select),
+    atom.commands.add(modalNode, 'core:confirm', this._select), atom.commands.add(
     // $FlowFixMe
-    atom.commands.add(modalNode, 'pane:show-previous-item', this._handleMovePreviousTab),
+    modalNode, 'pane:show-previous-item', this._handleMovePreviousTab), atom.commands.add(
     // $FlowFixMe
-    atom.commands.add(modalNode, 'pane:show-next-item', this._handleMoveNextTab), atom.commands.add('body', 'core:cancel', () => {
+    modalNode, 'pane:show-next-item', this._handleMoveNextTab), atom.commands.add('body', 'core:cancel', () => {
       this.props.onCancellation();
     }), _rxjsBundlesRxMinJs.Observable.fromEvent(document, 'mousedown').subscribe(this._handleDocumentMouseDown),
     // The text editor often changes during dispatches, so wait until the next tick.
@@ -607,7 +608,7 @@ class QuickSelectionComponent extends _react.default.Component {
               className: (0, (_classnames || _load_classnames()).default)({
                 'quick-open-result-item': true,
                 'list-item': true,
-                'selected': isSelected
+                selected: isSelected
               }),
               key: serviceName + dirName + itemIndex,
               onMouseDown: this._select,
@@ -632,7 +633,9 @@ class QuickSelectionComponent extends _react.default.Component {
         }
         return _react.default.createElement(
           'li',
-          { className: (0, (_classnames || _load_classnames()).default)({ 'list-nested-item': showDirectories }), key: dirName },
+          {
+            className: (0, (_classnames || _load_classnames()).default)({ 'list-nested-item': showDirectories }),
+            key: dirName },
           directoryLabel,
           message,
           _react.default.createElement(

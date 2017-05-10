@@ -6,6 +6,36 @@ Object.defineProperty(exports, "__esModule", {
 
 var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
 
+/**
+ * If the compilation flags provide an absolute Clang path, and that Clang path
+ * contains an actual libclang.so, then use that first.
+ */
+let getLibClangFromFlags = (() => {
+  var _ref2 = (0, _asyncToGenerator.default)(function* (flagsData) {
+    if (flagsData == null || flagsData.flags == null || flagsData.flags.length === 0) {
+      return null;
+    }
+    const clangPath = flagsData.flags[0];
+    if ((_nuclideUri || _load_nuclideUri()).default.isAbsolute(clangPath)) {
+      const libClangPath = (_nuclideUri || _load_nuclideUri()).default.join((_nuclideUri || _load_nuclideUri()).default.dirname(clangPath), '../lib/libclang.so');
+      if (libClangPath != null && (yield (_fsPromise || _load_fsPromise()).default.exists(libClangPath))) {
+        return libClangPath;
+      }
+    }
+    return null;
+  });
+
+  return function getLibClangFromFlags(_x) {
+    return _ref2.apply(this, arguments);
+  };
+})();
+
+var _fsPromise;
+
+function _load_fsPromise() {
+  return _fsPromise = _interopRequireDefault(require('../../commons-node/fsPromise'));
+}
+
 var _nuclideUri;
 
 function _load_nuclideUri() {
@@ -46,17 +76,16 @@ function _load_nuclideFilewatcherRpc() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- */
-
-let serviceRegistry = null;
+let serviceRegistry = null; /**
+                             * Copyright (c) 2015-present, Facebook, Inc.
+                             * All rights reserved.
+                             *
+                             * This source code is licensed under the license found in the LICENSE file in
+                             * the root directory of this source tree.
+                             *
+                             * 
+                             * @format
+                             */
 
 function getServiceRegistry() {
   if (serviceRegistry == null) {
@@ -66,7 +95,7 @@ function getServiceRegistry() {
 }
 
 function spawnClangProcess(src, serverArgsPromise, flagsPromise) {
-  return _rxjsBundlesRxMinJs.Observable.fromPromise(Promise.all([serverArgsPromise, flagsPromise])).switchMap(([serverArgs, flagsData]) => {
+  return _rxjsBundlesRxMinJs.Observable.fromPromise(Promise.all([serverArgsPromise, flagsPromise, flagsPromise.then(getLibClangFromFlags)])).switchMap(([serverArgs, flagsData, libClangFromFlags]) => {
     var _ref;
 
     const flags = (_ref = flagsData) != null ? _ref.flags : _ref;
@@ -75,14 +104,16 @@ function spawnClangProcess(src, serverArgsPromise, flagsPromise) {
       // ClangServer will also dispose itself upon encountering this.
       throw new Error(`No flags found for ${src}`);
     }
-    const { libClangLibraryFile, pythonPathEnv, pythonExecutable } = serverArgs;
+    const { pythonPathEnv, pythonExecutable } = serverArgs;
     const pathToLibClangServer = (_nuclideUri || _load_nuclideUri()).default.join(__dirname, '../python/clang_server.py');
     const args = [pathToLibClangServer];
+    const libClangLibraryFile = libClangFromFlags || serverArgs.libClangLibraryFile;
     if (libClangLibraryFile != null) {
       args.push('--libclang-file', libClangLibraryFile);
     }
     args.push('--', src);
-    args.push(...flags);
+    // Note that the first flag is always the compiler path.
+    args.push(...flags.slice(1));
     const options = {
       cwd: (_nuclideUri || _load_nuclideUri()).default.dirname(pathToLibClangServer),
       stdio: 'pipe',
@@ -154,8 +185,10 @@ class ClangServer {
       if (_process == null) {
         return 0;
       }
-      const { exitCode, stdout } = yield (0, (_process2 || _load_process()).asyncExecute)('ps', ['-p', _process.pid.toString(), '-o', 'rss=']);
-      if (exitCode !== 0) {
+      let stdout;
+      try {
+        stdout = yield (0, (_process2 || _load_process()).runCommand)('ps', ['-p', _process.pid.toString(), '-o', 'rss=']).toPromise();
+      } catch (err) {
         return 0;
       }
       return parseInt(stdout, 10) * 1024; // ps returns KB

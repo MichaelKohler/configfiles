@@ -71,6 +71,7 @@ const MAX_OMNI_RESULTS_PER_SERVICE = 5; /**
                                          * the root directory of this source tree.
                                          *
                                          * 
+                                         * @format
                                          */
 
 /* global performance */
@@ -396,6 +397,12 @@ class SearchResultManager {
           if (cachedQueries) {
             if (cachedQueries[query]) {
               cachedResult = cachedQueries[query];
+              // It's important to ensure that we update lastCachedQuery here.
+              // Consider the case where we enter "abc", then "abcd",
+              // then correct back to "abc" and finally enter "abce".
+              // We need to ensure that "abce" displays the results for "abc"
+              // while loading rather than the results for "abcd".
+              this._resultCache.setLastCachedQuery(providerName, query);
             } else if (lastCachedQuery != null && cachedQueries[lastCachedQuery]) {
               cachedResult = cachedQueries[lastCachedQuery];
             }
@@ -408,7 +415,9 @@ class SearchResultManager {
         };
         const resultList = cachedResult.results || defaultResult.results;
         results[path] = {
-          results: resultList.map(result => Object.assign({}, result, { sourceProvider: providerName })),
+          results: resultList.map(result => Object.assign({}, result, {
+            sourceProvider: providerName
+          })),
           loading: cachedResult.loading || defaultResult.loading,
           error: cachedResult.error || defaultResult.error
         };

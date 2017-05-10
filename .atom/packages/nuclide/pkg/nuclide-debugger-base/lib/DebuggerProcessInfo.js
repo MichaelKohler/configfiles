@@ -16,6 +16,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * the root directory of this source tree.
  *
  * 
+ * @format
  */
 
 class DebuggerProcessInfo {
@@ -59,6 +60,10 @@ class DebuggerProcessInfo {
   }
 
   supportSingleThreadStepping() {
+    return false;
+  }
+
+  supportContinueToLocation() {
     return false;
   }
 

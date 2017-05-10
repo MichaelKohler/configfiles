@@ -15,22 +15,22 @@ function _load_PanelComponentScroller() {
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
 
-var _collection;
+var _Selectors;
 
-function _load_collection() {
-  return _collection = require('../../../commons-node/collection');
-}
-
-var _Dropdown;
-
-function _load_Dropdown() {
-  return _Dropdown = require('../../../nuclide-ui/Dropdown');
+function _load_Selectors() {
+  return _Selectors = require('./Selectors');
 }
 
 var _DeviceTable;
 
 function _load_DeviceTable() {
   return _DeviceTable = require('./DeviceTable');
+}
+
+var _InfoTable;
+
+function _load_InfoTable() {
+  return _InfoTable = require('./InfoTable');
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -43,6 +43,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * the root directory of this source tree.
  *
  * 
+ * @format
  */
 
 class DevicePanel extends _react.default.Component {
@@ -58,78 +59,30 @@ class DevicePanel extends _react.default.Component {
   }
 
   componentDidMount() {
-    this._deviceFetcherSubscription = _rxjsBundlesRxMinJs.Observable.interval(3000).startWith(0).do(() => this.props.refreshDevices()).subscribe();
+    this._deviceFetcherSubscription = _rxjsBundlesRxMinJs.Observable.interval(3000).startWith(0).subscribe(() => this.props.refreshDevices());
   }
 
   componentWillUnmount() {
     this._deviceFetcherSubscription.unsubscribe();
   }
 
-  _createSelectorSection() {
-    const hostOptions = this.props.hosts.map(host => ({ value: host, label: host }));
-    const typeOptions = Array.from(this.props.devices.keys()).map(type => ({ value: type, label: type }));
-    if (typeOptions.length === 0) {
-      typeOptions.push({ value: null, label: 'No devices connected' });
+  _createDeviceTable() {
+    if (this.props.deviceType === null) {
+      return null;
     }
-    return _react.default.createElement(
-      'table',
-      null,
-      _react.default.createElement(
-        'tr',
-        null,
-        _react.default.createElement(
-          'td',
-          null,
-          _react.default.createElement(
-            'label',
-            { className: 'inline-block' },
-            'Connection:'
-          )
-        ),
-        _react.default.createElement(
-          'td',
-          null,
-          _react.default.createElement((_Dropdown || _load_Dropdown()).Dropdown, {
-            className: 'inline-block',
-            options: hostOptions,
-            onChange: this.props.setHost,
-            value: this.props.host
-          })
-        )
-      ),
-      _react.default.createElement(
-        'tr',
-        null,
-        _react.default.createElement(
-          'td',
-          null,
-          _react.default.createElement(
-            'label',
-            { className: 'inline-block' },
-            'Device type:'
-          )
-        ),
-        _react.default.createElement(
-          'td',
-          null,
-          _react.default.createElement((_Dropdown || _load_Dropdown()).Dropdown, {
-            className: 'inline-block',
-            options: typeOptions,
-            disabled: this.props.devices.size === 0,
-            onChange: this.props.setDeviceType,
-            value: this.props.deviceType
-          })
-        )
-      )
-    );
+    return _react.default.createElement((_DeviceTable || _load_DeviceTable()).DeviceTable, {
+      devices: this.props.devices,
+      device: this.props.device,
+      setDevice: this.props.setDevice
+    });
   }
 
-  _createDeviceTable() {
-    const selectedDeviceType = this.props.devices.size > 0 && this.props.deviceType == null ? this.props.devices.keys().next().value : this.props.deviceType;
-
-    const devices = Array.from((0, (_collection || _load_collection()).mapFilter)(this.props.devices, (type, _) => type === selectedDeviceType).values())[0] || [];
-
-    return _react.default.createElement((_DeviceTable || _load_DeviceTable()).DeviceTable, { devices: devices, device: this.props.device, setDevice: this.props.setDevice });
+  _createInfoTables() {
+    return Array.from(this.props.infoTables.entries()).map(([title, infoTable]) => _react.default.createElement(
+      'div',
+      { className: 'block', key: title },
+      _react.default.createElement((_InfoTable || _load_InfoTable()).InfoTable, { title: title, table: infoTable })
+    ));
   }
 
   render() {
@@ -142,13 +95,22 @@ class DevicePanel extends _react.default.Component {
         _react.default.createElement(
           'div',
           { className: 'block' },
-          this._createSelectorSection()
+          _react.default.createElement((_Selectors || _load_Selectors()).Selectors, {
+            deviceType: this.props.deviceType,
+            deviceTypes: this.props.deviceTypes,
+            hosts: this.props.hosts,
+            host: this.props.host,
+            setDeviceType: this.props.setDeviceType,
+            setHost: this.props.setHost,
+            deviceActions: this.props.deviceActions
+          })
         ),
         _react.default.createElement(
           'div',
           { className: 'block' },
           this._createDeviceTable()
-        )
+        ),
+        this._createInfoTables()
       )
     );
   }

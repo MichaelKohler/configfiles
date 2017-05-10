@@ -91,6 +91,7 @@ const MAX_SELECTION_LENGTH = 1000; /**
                                     * the root directory of this source tree.
                                     *
                                     * 
+                                    * @format
                                     */
 
 const ANALYTICS_CHANGE_SELECTION_DEBOUCE = 100;

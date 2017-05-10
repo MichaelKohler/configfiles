@@ -23,6 +23,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * the root directory of this source tree.
  *
  * 
+ * @format
  */
 
 class DeviceTable extends _react.default.Component {
@@ -31,6 +32,11 @@ class DeviceTable extends _react.default.Component {
     super(props);
     this.state = { selectedDeviceIndex: null };
     this._handleDeviceTableSelection = this._handleDeviceTableSelection.bind(this);
+    this._emptyComponent = () => _react.default.createElement(
+      'div',
+      { className: 'padded' },
+      'No devices connected'
+    );
   }
 
   componentWillReceiveProps(nextProps) {
@@ -45,12 +51,9 @@ class DeviceTable extends _react.default.Component {
   }
 
   render() {
-    if (this.props.devices.length === 0) {
-      return _react.default.createElement('div', null);
-    }
-
-    const rows = this.props.devices.map(device => ({ data: { name: device.displayName } }));
-
+    const rows = this.props.devices.map(device => ({
+      data: { name: device.displayName }
+    }));
     const columns = [{
       key: 'name',
       title: 'Device',
@@ -62,6 +65,7 @@ class DeviceTable extends _react.default.Component {
       columns: columns,
       fixedHeader: true,
       maxBodyHeight: '99999px',
+      emptyComponent: this._emptyComponent,
       selectable: true,
       selectedIndex: this.state.selectedDeviceIndex,
       onSelect: this._handleDeviceTableSelection,

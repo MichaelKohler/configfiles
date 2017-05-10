@@ -59,7 +59,8 @@ class DebuggerCallstackComponent extends _react.default.Component {
   }
 
   _locationComponent(props) {
-    const missingSourceItem = this.props.callstackStore.getDebuggerStore().getCanSetSourcePaths() && !props.data.hasSource ? _react.default.createElement('span', { className: (0, (_classnames || _load_classnames()).default)('text-error', 'icon', 'icon-alert'),
+    const missingSourceItem = this.props.callstackStore.getDebuggerStore().getCanSetSourcePaths() && !props.data.hasSource ? _react.default.createElement('span', {
+      className: (0, (_classnames || _load_classnames()).default)('text-error', 'icon', 'icon-alert'),
       onClick: () => this.props.actions.configureSourcePaths(),
       ref: (0, (_addTooltip || _load_addTooltip()).default)({
         title: 'Source file not found! Some debugger features will not work without source.' + '<br/><br/>' + 'Click to configure source file paths...'
@@ -70,16 +71,19 @@ class DebuggerCallstackComponent extends _react.default.Component {
     // lldb://asm/0x1234. These are not valid paths that can be used to
     // construct a nuclideUri so we need to skip the protocol prefix.
     const path = (_nuclideUri || _load_nuclideUri()).default.basename(props.data.path.replace(/^[a-zA-Z]+:\/\//, ''));
+
+    // Chrome line numbers are actually 0-based, so add 1.
+    const line = props.data.line + 1;
     return _react.default.createElement(
       'div',
-      { title: `${path}:${props.data.line}` },
+      { title: `${path}:${line}` },
       missingSourceItem,
       _react.default.createElement(
         'span',
         null,
         path,
         ':',
-        props.data.line
+        line
       )
     );
   }
@@ -106,9 +110,7 @@ class DebuggerCallstackComponent extends _react.default.Component {
   render() {
     const { callstack } = this.state;
     const rows = callstack == null ? [] : callstack.map((callstackItem, i) => {
-      const {
-        location
-      } = callstackItem;
+      const { location } = callstackItem;
       const isSelected = this.state.selectedCallFrameIndex === i;
       const cellData = {
         data: {
@@ -167,4 +169,5 @@ exports.DebuggerCallstackComponent = DebuggerCallstackComponent; /**
                                                                   * the root directory of this source tree.
                                                                   *
                                                                   * 
+                                                                  * @format
                                                                   */

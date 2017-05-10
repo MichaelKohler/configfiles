@@ -41,42 +41,22 @@ class Sdb extends (_DebugBridge || _load_DebugBridge()).DebugBridge {
     return this.getTizenModelConfigKey(device, 'tizen.org/system/model_name');
   }
 
-  getManifestForPackageName(device, packageName) {
-    var _this = this;
-
-    return (0, _asyncToGenerator.default)(function* () {
-      const user = yield _this.runShortAdbCommand(device, ['shell', 'whoami']).toPromise();
-      const isRoot = user.trim() !== 'root';
-      let result;
-      try {
-        if (!isRoot) {
-          yield _this.runShortAdbCommand(device, ['root', 'on']).toPromise();
-        }
-        result = yield _this.runShortAdbCommand(device, ['shell', 'cat', `/opt/usr/apps/${packageName}/tizen-manifest.xml`]).toPromise();
-      } finally {
-        if (!isRoot) {
-          yield _this.runShortAdbCommand(device, ['root', 'off']).toPromise();
-        }
-      }
-      return result;
-    })();
-  }
-
   getAPIVersion(device) {
-    var _this2 = this;
+    var _this = this;
 
     return (0, _asyncToGenerator.default)(function* () {
       let version;
       try {
-        version = yield _this2.getTizenModelConfigKey(device, 'tizen.org/feature/platform.core.api.version');
+        version = yield _this.getTizenModelConfigKey(device, 'tizen.org/feature/platform.core.api.version');
       } catch (e) {
-        version = yield _this2.getTizenModelConfigKey(device, 'tizen.org/feature/platform.native.api.version');
+        version = yield _this.getTizenModelConfigKey(device, 'tizen.org/feature/platform.native.api.version');
       }
       return version;
     })();
   }
 
   installPackage(device, packagePath) {
+    // TODO(T17463635)
     if (!!(_nuclideUri || _load_nuclideUri()).default.isRemote(packagePath)) {
       throw new Error('Invariant violation: "!nuclideUri.isRemote(packagePath)"');
     }
@@ -89,6 +69,7 @@ class Sdb extends (_DebugBridge || _load_DebugBridge()).DebugBridge {
   }
 
   uninstallPackage(device, packageName) {
+    // TODO(T17463635)
     return this.runLongAdbCommand(device, ['uninstall', packageName]);
   }
 }
@@ -100,4 +81,5 @@ exports.Sdb = Sdb; /**
                     * the root directory of this source tree.
                     *
                     * 
+                    * @format
                     */

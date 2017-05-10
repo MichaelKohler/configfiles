@@ -91,17 +91,16 @@ function _load_FlowIDEConnectionWatcher() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- */
-
-const logger = (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)();
+const logger = (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)(); /**
+                                                                              * Copyright (c) 2015-present, Facebook, Inc.
+                                                                              * All rights reserved.
+                                                                              *
+                                                                              * This source code is licensed under the license found in the LICENSE file in
+                                                                              * the root directory of this source tree.
+                                                                              *
+                                                                              * 
+                                                                              * @format
+                                                                              */
 
 // Names modeled after https://github.com/facebook/flow/blob/master/src/common/flowExitStatus.ml
 const FLOW_RETURN_CODES = exports.FLOW_RETURN_CODES = {
@@ -333,7 +332,7 @@ class FlowProcess {
         _this2._setServerStatus((_FlowConstants || _load_FlowConstants()).ServerStatus.NOT_INSTALLED);
         return;
       }
-      // `flow server` will start a server in the foreground. asyncExecute
+      // `flow server` will start a server in the foreground. runCommand/runCommandDetailed
       // will not resolve the promise until the process exits, which in this
       // case is never. We need to use spawn directly to get access to the
       // ChildProcess object.
@@ -499,12 +498,9 @@ class FlowProcess {
       if (allExecInfo == null) {
         return null;
       }
-      const ret = yield (0, (_process || _load_process()).asyncExecute)(allExecInfo.pathToFlow, allExecInfo.args, allExecInfo.options);
-      if (ret.exitCode !== 0) {
-        // TODO: bubble up the exit code via return value instead
-        throw ret;
-      }
-      return ret;
+
+      // TODO: bubble up the exit code via return value instead of the error
+      return (0, (_process || _load_process()).runCommandDetailed)(allExecInfo.pathToFlow, allExecInfo.args, allExecInfo.options).toPromise();
     })();
   }
 }

@@ -28,6 +28,7 @@ const URL_REGEX = /(?:https?:\/\/(www.)?[-\w@:%.+~#=]{2,256}.[a-z]{2,6}\b([-\w@:
                                                                                                                                                                   * the root directory of this source tree.
                                                                                                                                                                   *
                                                                                                                                                                   * 
+                                                                                                                                                                  * @format
                                                                                                                                                                   */
 
 const TRAILING_JUNK_REGEX = /[.,]?$/;

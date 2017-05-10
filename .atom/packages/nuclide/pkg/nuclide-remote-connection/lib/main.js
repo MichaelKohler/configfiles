@@ -135,6 +135,7 @@ exports.getlocalService = (_serviceManager || _load_serviceManager()).getlocalSe
                                                                                         * the root directory of this source tree.
                                                                                         *
                                                                                         * 
+                                                                                        * @format
                                                                                         */
 
 function getAdbServiceByNuclideUri(uri) {

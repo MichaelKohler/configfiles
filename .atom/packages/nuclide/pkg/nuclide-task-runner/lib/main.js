@@ -102,6 +102,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * the root directory of this source tree.
  *
  * 
+ * @format
  */
 
 const SERIALIZED_VERSION = 2;
@@ -132,7 +133,9 @@ class Activation {
     const epics = Object.keys(_Epics || _load_Epics()).map(k => (_Epics || _load_Epics())[k]).filter(epic => typeof epic === 'function');
     const epicOptions = { preferencesForWorkingRoots };
     const rootEpic = (actions, store) => (0, (_reduxObservable || _load_reduxObservable()).combineEpics)(...epics)(actions, store, epicOptions);
-    this._store = (0, (_redux || _load_redux()).createStore)((0, (_redux || _load_redux()).combineReducers)(_Reducers || _load_Reducers()), { visible: getInitialVisibility(serializedState, preferencesForWorkingRoots) }, (0, (_redux || _load_redux()).applyMiddleware)((0, (_reduxObservable || _load_reduxObservable()).createEpicMiddleware)(rootEpic), (_trackingMiddleware || _load_trackingMiddleware()).trackingMiddleware));
+    this._store = (0, (_redux || _load_redux()).createStore)((0, (_redux || _load_redux()).combineReducers)(_Reducers || _load_Reducers()), {
+      visible: getInitialVisibility(serializedState, preferencesForWorkingRoots)
+    }, (0, (_redux || _load_redux()).applyMiddleware)((0, (_reduxObservable || _load_reduxObservable()).createEpicMiddleware)(rootEpic), (_trackingMiddleware || _load_trackingMiddleware()).trackingMiddleware));
     const states = _rxjsBundlesRxMinJs.Observable.from(this._store).filter(state => state.taskRunnersReady).distinctUntilChanged().share();
     this._actionCreators = (0, (_redux || _load_redux()).bindActionCreators)(_Actions || _load_Actions(), this._store.dispatch);
     this._panelRenderer = new (_PanelRenderer || _load_PanelRenderer()).default({
@@ -144,10 +147,9 @@ class Activation {
       this._store.dispatch((_Actions || _load_Actions()).didActivateInitialPackages());
     }), this._panelRenderer, atom.commands.add('atom-workspace', {
       'nuclide-task-runner:toggle-toolbar-visibility': event => {
-        this._actionCreators.toggleToolbarVisibility(getVisible(event));
+        this._actionCreators.requestToggleToolbarVisibility(getVisible(event));
       }
     }),
-
     // Add a command for each enabled task in each enabled task runner
     (0, (_syncAtomCommands || _load_syncAtomCommands()).default)(states.map(state => state.statesForTaskRunners).distinctUntilChanged().map(statesForTaskRunners => {
       const taskRunnersAndTasks = new Set();
@@ -166,7 +168,6 @@ class Activation {
         }
       }
     })),
-
     // Add a command for each enabled common task with mapped keyboard shortcuts
     (0, (_syncAtomCommands || _load_syncAtomCommands()).default)(states.map(state => {
       const { activeTaskRunner, isUpdatingTaskRunners } = state;
@@ -181,11 +182,12 @@ class Activation {
     }).distinctUntilChanged((_collection || _load_collection()).arrayEqual).map(tasks => new Set(tasks.filter(task => task.disabled !== true && COMMON_TASK_TYPES.includes(task.type)))), taskMeta => ({
       'atom-workspace': {
         [`nuclide-task-runner:${taskMeta.type}`]: () => {
-          this._actionCreators.runTask(Object.assign({}, taskMeta, { taskRunner: this._store.getState().activeTaskRunner }));
+          this._actionCreators.runTask(Object.assign({}, taskMeta, {
+            taskRunner: this._store.getState().activeTaskRunner
+          }));
         }
       }
     })),
-
     // Add a toggle command for each enabled task runner
     (0, (_syncAtomCommands || _load_syncAtomCommands()).default)(states.map(state => state.statesForTaskRunners).distinctUntilChanged().map(statesForTaskRunners => {
       const taskRunners = new Set();
@@ -198,7 +200,7 @@ class Activation {
     }), taskRunner => ({
       'atom-workspace': {
         [`nuclide-task-runner:toggle-${taskRunner.name.toLowerCase()}-toolbar`]: event => {
-          this._actionCreators.toggleToolbarVisibility(getVisible(event), taskRunner);
+          this._actionCreators.requestToggleToolbarVisibility(getVisible(event), taskRunner);
         }
       }
     }), taskRunner => taskRunner.id), states.map(state => state.visible).distinctUntilChanged().subscribe(visible => {
@@ -305,7 +307,7 @@ class Activation {
           throw new Error('Invariant violation: "pkg != null"');
         }
 
-        pkg._actionCreators.toggleToolbarVisibility();
+        pkg._actionCreators.requestToggleToolbarVisibility();
       }
     };
   }

@@ -22,7 +22,8 @@ let getAutocompleteSuggestions = exports.getAutocompleteSuggestions = (() => {
       // Always display optional arguments in the UI.
       const displayText = getText(completion);
       // Only autocomplete arguments if the include optional arguments setting is on.
-      const snippet = autocompleteArguments ? getText(completion, includeOptionalArguments, true /* createPlaceholders */) : completion.text;
+      const snippet = autocompleteArguments ? getText(completion, includeOptionalArguments, true /* createPlaceholders */
+      ) : completion.text;
       return {
         displayText,
         snippet,
@@ -79,6 +80,7 @@ const TYPES = {
     * the root directory of this source tree.
     *
     * 
+    * @format
     */
 
 const TRIGGER_REGEX = /(\.|[a-zA-Z_][a-zA-Z0-9_]*)$/;

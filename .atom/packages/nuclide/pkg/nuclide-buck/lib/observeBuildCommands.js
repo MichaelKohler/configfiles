@@ -49,6 +49,7 @@ const CHECK_INTERVAL = 30000; /**
                                * the root directory of this source tree.
                                *
                                * 
+                               * @format
                                */
 
 const CONFIG_KEY = 'nuclide-buck.suggestTaskRunner';

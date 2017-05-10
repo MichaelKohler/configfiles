@@ -6,12 +6,6 @@ function _load_createPackage() {
   return _createPackage = _interopRequireDefault(require('../../commons-atom/createPackage'));
 }
 
-var _featureConfig;
-
-function _load_featureConfig() {
-  return _featureConfig = _interopRequireDefault(require('../../commons-atom/featureConfig'));
-}
-
 var _UniversalDisposable;
 
 function _load_UniversalDisposable() {
@@ -42,53 +36,49 @@ function _load_LinterAdapterFactory() {
   return _LinterAdapterFactory = require('./LinterAdapterFactory');
 }
 
+var _IndieLinterRegistry;
+
+function _load_IndieLinterRegistry() {
+  return _IndieLinterRegistry = _interopRequireDefault(require('./IndieLinterRegistry'));
+}
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const legacyLinterSetting = 'nuclide-diagnostics-store.consumeLegacyLinters'; /**
-                                                                               * Copyright (c) 2015-present, Facebook, Inc.
-                                                                               * All rights reserved.
-                                                                               *
-                                                                               * This source code is licensed under the license found in the LICENSE file in
-                                                                               * the root directory of this source tree.
-                                                                               *
-                                                                               * 
-                                                                               */
-
-const legacyLintOnTheFlySetting = 'nuclide-diagnostics-store.legacyLintOnTheFly';
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ * @format
+ */
 
 class Activation {
 
   constructor() {
     this._allLinterAdapters = new Set();
+    this._diagnosticStore = new (_nuclideDiagnosticsCommon || _load_nuclideDiagnosticsCommon()).DiagnosticStore();
 
-    // Returns mixed so a cast is necessary.
-    this._consumeLegacyLinters = (_featureConfig || _load_featureConfig()).default.get(legacyLinterSetting);
-    this._lintOnTheFly = (_featureConfig || _load_featureConfig()).default.get(legacyLintOnTheFlySetting);
-
-    this._disposables = new (_UniversalDisposable || _load_UniversalDisposable()).default((_featureConfig || _load_featureConfig()).default.observe(legacyLinterSetting, newValue => {
-      // To make this really solid, we should also probably trigger the linter
-      // for the active text editor. Possibly more trouble than it's worth,
-      // though, since this may be a temporary option.
-      this._consumeLegacyLinters = newValue;
-      this._allLinterAdapters.forEach(adapter => adapter.setEnabled(newValue));
-    }), (_featureConfig || _load_featureConfig()).default.observe(legacyLintOnTheFlySetting, newValue => {
-      this._lintOnTheFly = newValue;
-      this._allLinterAdapters.forEach(adapter => adapter.setLintOnFly(newValue));
-    }));
+    this._disposables = new (_UniversalDisposable || _load_UniversalDisposable()).default(this._diagnosticStore, () => {
+      this._allLinterAdapters.forEach(adapter => adapter.dispose());
+      this._allLinterAdapters.clear();
+    });
   }
 
   dispose() {
-    this._allLinterAdapters.forEach(adapter => adapter.dispose());
-    this._allLinterAdapters.clear();
     this._disposables.dispose();
   }
 
-  getDiagnosticStore() {
-    if (this._diagnosticStore == null) {
-      this._diagnosticStore = new (_nuclideDiagnosticsCommon || _load_nuclideDiagnosticsCommon()).DiagnosticStore();
-      this._disposables.add(this._diagnosticStore);
+  _getIndieRegistry() {
+    if (this._indieRegistry == null) {
+      const registry = new (_IndieLinterRegistry || _load_IndieLinterRegistry()).default();
+      this._disposables.add(registry);
+      this._indieRegistry = registry;
+      return registry;
     }
-    return this._diagnosticStore;
+    return this._indieRegistry;
   }
 
   /**
@@ -96,7 +86,7 @@ class Activation {
    */
   provideDiagnosticUpdates() {
     if (!this._diagnosticUpdater) {
-      const store = this.getDiagnosticStore();
+      const store = this._diagnosticStore;
       this._diagnosticUpdater = {
         onFileMessagesDidUpdate: store.onFileMessagesDidUpdate.bind(store),
         onProjectMessagesDidUpdate: store.onProjectMessagesDidUpdate.bind(store),
@@ -122,14 +112,26 @@ class Activation {
     return this._observableDiagnosticUpdater;
   }
 
+  provideIndie() {
+    return config => {
+      const delegate = this._getIndieRegistry().register(config);
+      const disposable = this.consumeDiagnosticsProviderV2(delegate);
+      delegate.onDidDestroy(() => {
+        disposable.dispose();
+      });
+      return delegate;
+    };
+  }
+
   consumeLinterProvider(provider) {
     const newAdapters = (0, (_LinterAdapterFactory || _load_LinterAdapterFactory()).createAdapters)(provider);
     const adapterDisposables = new (_UniversalDisposable || _load_UniversalDisposable()).default();
     for (const adapter of newAdapters) {
-      adapter.setEnabled(this._consumeLegacyLinters);
-      adapter.setLintOnFly(this._lintOnTheFly);
       this._allLinterAdapters.add(adapter);
-      const diagnosticDisposable = this.consumeDiagnosticsProviderV1(adapter);
+      const diagnosticDisposable = this.consumeDiagnosticsProviderV2({
+        updates: adapter.getUpdates(),
+        invalidations: adapter.getInvalidations()
+      });
       adapterDisposables.add(() => {
         diagnosticDisposable.dispose();
         adapter.dispose();
@@ -149,7 +151,7 @@ class Activation {
   }
 
   consumeDiagnosticsProviderV2(provider) {
-    const store = this.getDiagnosticStore();
+    const store = this._diagnosticStore;
 
     const subscriptions = new (_UniversalDisposable || _load_UniversalDisposable()).default(provider.updates.subscribe(update => store.updateMessages(provider, update), error => {
       (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error(`Error: updates.subscribe ${error}`);

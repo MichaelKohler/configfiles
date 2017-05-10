@@ -2,40 +2,40 @@
   "_args": [
     [
       {
-        "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117320-16034-1ku3w9l.kzzw9g4x6r/package.tgz",
+        "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117410-60062-b5uqcw.akhg5y7gb9/package.tgz",
         "scope": null,
         "escapedName": null,
         "name": null,
-        "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117320-16034-1ku3w9l.kzzw9g4x6r/package.tgz",
-        "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117320-16034-1ku3w9l.kzzw9g4x6r/package.tgz",
+        "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117410-60062-b5uqcw.akhg5y7gb9/package.tgz",
+        "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117410-60062-b5uqcw.akhg5y7gb9/package.tgz",
         "type": "local"
       },
-      "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-117320-16034-rk5u0x.ig0p0kke29"
+      "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-117410-60062-10u6iwf.eaoobw3ik9"
     ]
   ],
-  "_from": "../d-117320-16034-1ku3w9l.kzzw9g4x6r/package.tgz",
-  "_id": "nucleus-dark-ui@0.11.17",
+  "_from": "../d-117410-60062-b5uqcw.akhg5y7gb9/package.tgz",
+  "_id": "nucleus-dark-ui@0.12.1",
   "_inCache": true,
   "_installable": true,
   "_location": "/nucleus-dark-ui",
   "_phantomChildren": {},
   "_requested": {
-    "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117320-16034-1ku3w9l.kzzw9g4x6r/package.tgz",
+    "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117410-60062-b5uqcw.akhg5y7gb9/package.tgz",
     "scope": null,
     "escapedName": null,
     "name": null,
-    "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117320-16034-1ku3w9l.kzzw9g4x6r/package.tgz",
-    "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117320-16034-1ku3w9l.kzzw9g4x6r/package.tgz",
+    "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117410-60062-b5uqcw.akhg5y7gb9/package.tgz",
+    "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117410-60062-b5uqcw.akhg5y7gb9/package.tgz",
     "type": "local"
   },
   "_requiredBy": [
     "#USER"
   ],
-  "_resolved": "file:../d-117320-16034-1ku3w9l.kzzw9g4x6r/package.tgz",
-  "_shasum": "2a81612e5a0c8d197b2f37774b0eb021eca672db",
+  "_resolved": "file:../d-117410-60062-b5uqcw.akhg5y7gb9/package.tgz",
+  "_shasum": "5072816ea04a96a855665cfc65deb0bcca7f7f94",
   "_shrinkwrap": null,
-  "_spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117320-16034-1ku3w9l.kzzw9g4x6r/package.tgz",
-  "_where": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-117320-16034-rk5u0x.ig0p0kke29",
+  "_spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117410-60062-b5uqcw.akhg5y7gb9/package.tgz",
+  "_where": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-117410-60062-10u6iwf.eaoobw3ik9",
   "bugs": {
     "url": "https://github.com/ignism/nucleus-dark-ui/issues"
   },
@@ -61,5 +61,5 @@
     "url": "git+https://github.com/ignism/nucleus-dark-ui.git"
   },
   "theme": "ui",
-  "version": "0.11.17"
+  "version": "0.12.1"
 }

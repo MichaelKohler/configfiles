@@ -2,40 +2,40 @@
   "_args": [
     [
       {
-        "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117320-16034-mgjny4.ir9jurf6r/package.tgz",
+        "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117410-60062-102y92s.hm7hftuik9/package.tgz",
         "scope": null,
         "escapedName": null,
         "name": null,
-        "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117320-16034-mgjny4.ir9jurf6r/package.tgz",
-        "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117320-16034-mgjny4.ir9jurf6r/package.tgz",
+        "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117410-60062-102y92s.hm7hftuik9/package.tgz",
+        "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117410-60062-102y92s.hm7hftuik9/package.tgz",
         "type": "local"
       },
-      "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-117320-16034-1yvzgck.ydmnh77gb9"
+      "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-117410-60062-1qnwfzs.1kq1bawcdi"
     ]
   ],
-  "_from": "../d-117320-16034-mgjny4.ir9jurf6r/package.tgz",
-  "_id": "linter-markdown@4.0.0",
+  "_from": "../d-117410-60062-102y92s.hm7hftuik9/package.tgz",
+  "_id": "linter-markdown@4.0.1",
   "_inCache": true,
   "_installable": true,
   "_location": "/linter-markdown",
   "_phantomChildren": {},
   "_requested": {
-    "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117320-16034-mgjny4.ir9jurf6r/package.tgz",
+    "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117410-60062-102y92s.hm7hftuik9/package.tgz",
     "scope": null,
     "escapedName": null,
     "name": null,
-    "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117320-16034-mgjny4.ir9jurf6r/package.tgz",
-    "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117320-16034-mgjny4.ir9jurf6r/package.tgz",
+    "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117410-60062-102y92s.hm7hftuik9/package.tgz",
+    "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117410-60062-102y92s.hm7hftuik9/package.tgz",
     "type": "local"
   },
   "_requiredBy": [
     "#USER"
   ],
-  "_resolved": "file:../d-117320-16034-mgjny4.ir9jurf6r/package.tgz",
-  "_shasum": "d96bfa13dd00c5aa69085387c1df39c39e8fcd13",
+  "_resolved": "file:../d-117410-60062-102y92s.hm7hftuik9/package.tgz",
+  "_shasum": "afd1fd15d283d883725f79884a22336963222b31",
   "_shrinkwrap": null,
-  "_spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117320-16034-mgjny4.ir9jurf6r/package.tgz",
-  "_where": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-117320-16034-1yvzgck.ydmnh77gb9",
+  "_spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117410-60062-102y92s.hm7hftuik9/package.tgz",
+  "_where": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-117410-60062-1qnwfzs.1kq1bawcdi",
   "bugs": {
     "url": "https://github.com/AtomLinter/linter-markdown/issues"
   },
@@ -74,7 +74,7 @@
   },
   "dependencies": {
     "atom-package-deps": "^4.6.0",
-    "remark": "7.0.0",
+    "remark": "7.0.1",
     "remark-preset-lint-consistent": "^2.0.0",
     "remark-preset-lint-recommended": "^2.0.0",
     "unified-engine-atom": "^5.0.0"
@@ -148,5 +148,5 @@
     "lint": "remark README.md LICENSE.md && eslint lib spec",
     "test": "apm test"
   },
-  "version": "4.0.0"
+  "version": "4.0.1"
 }

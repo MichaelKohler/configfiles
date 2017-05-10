@@ -43,6 +43,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * the root directory of this source tree.
  *
  * 
+ * @format
  */
 
 const logger = (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)();
@@ -79,7 +80,7 @@ class RpcProcess {
     this._serviceRegistry = serviceRegistry;
     this._rpcConnection = null;
     this._disposals = new _rxjsBundlesRxMinJs.Subject();
-    this._exitCode = new _rxjsBundlesRxMinJs.Subject();
+    this._exitMessage = new _rxjsBundlesRxMinJs.Subject();
   }
 
   getName() {
@@ -99,8 +100,12 @@ class RpcProcess {
     })();
   }
 
-  observeExitCode() {
-    return this._exitCode.asObservable();
+  /**
+   * Emits the exit message of the currently running process, or null on error.
+   * Completes when the process finishes.
+   */
+  observeExitMessage() {
+    return this._exitMessage.takeUntil(this._disposals);
   }
 
   /**
@@ -112,12 +117,17 @@ class RpcProcess {
       const processStream = this._processStream.do({
         error: e => {
           logger.error(`${this._name} - error spawning child process: `, e);
+          this._exitMessage.next(null);
           this.dispose();
         }
       }).takeUntil(this._disposals).publish();
 
-      // This is implicitly disposed by `dispose()` via `this._disposals`.
-      processStream.switchMap(proc => (0, (_process || _load_process()).getOutputStream)(proc, { /* TODO(T17353599) */isExitError: () => false })).subscribe(this._onProcessMessage.bind(this));
+      processStream.switchMap(proc => (0, (_process || _load_process()).getOutputStream)(proc, {
+        /* TODO(T17353599) */isExitError: () => false
+      }))
+      // switchMap won't stop until the mapped observable stops.
+      // Manual disposals shouldn't trigger the exit message.
+      .takeUntil(this._disposals).subscribe(this._onProcessMessage.bind(this));
 
       const connection = this._rpcConnection = processStream.take(1).toPromise().then(proc => {
         if (proc == null) {
@@ -151,15 +161,8 @@ class RpcProcess {
         logger.warn(`${this._name} - error from stderr received: `, message.data.toString());
         break;
       case 'exit':
-        // Log exit code if process exited not as a result of being disposed.
-        if (!this._disposed) {
-          logger.error(`${this._name} - exited before dispose: `, message.exitCode);
-        }
-        this.dispose();
-        this._exitCode.next(message);
-        break;
-      case 'error':
-        logger.error(`${this._name} - error received: `, message.error.message);
+        logger.error(`${this._name} - exited with ${(0, (_process || _load_process()).exitEventToMessage)(message)}`);
+        this._exitMessage.next(message);
         this.dispose();
         break;
       default:
@@ -176,6 +179,10 @@ class RpcProcess {
    * and killing the child process if necessary.
    */
   dispose() {
+    if (this._disposed) {
+      return;
+    }
+
     logger.info(`${this._name} - disposing connection.`);
     this._disposed = true;
     this._disposals.next();

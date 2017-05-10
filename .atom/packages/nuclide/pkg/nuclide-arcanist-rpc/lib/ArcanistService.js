@@ -215,22 +215,30 @@ function _load_nuclideLogging() {
   return _nuclideLogging = require('../../nuclide-logging');
 }
 
+var _lruCache;
+
+function _load_lruCache() {
+  return _lruCache = _interopRequireDefault(require('lru-cache'));
+}
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- */
+const ARC_CONFIG_FILE_NAME = '.arcconfig'; /**
+                                            * Copyright (c) 2015-present, Facebook, Inc.
+                                            * All rights reserved.
+                                            *
+                                            * This source code is licensed under the license found in the LICENSE file in
+                                            * the root directory of this source tree.
+                                            *
+                                            * 
+                                            * @format
+                                            */
 
-const ARC_CONFIG_FILE_NAME = '.arcconfig';
-
-const arcConfigDirectoryMap = new Map();
-const arcProjectMap = new Map();
+const CACHE_TIME = 30 * 1000; // 30 seconds
+const arcConfigDirectoryMap = (0, (_lruCache || _load_lruCache()).default)({
+  maxAge: CACHE_TIME
+});
+const arcProjectMap = (0, (_lruCache || _load_lruCache()).default)({ maxAge: CACHE_TIME });
 
 function findDiagnostics(path, skip) {
   return _rxjsBundlesRxMinJs.Observable.fromPromise(findArcConfigDirectory(path)).switchMap(arcDir => {
@@ -254,8 +262,9 @@ function _callArcDiff(filePath, extraArcDiffArgs) {
       return _rxjsBundlesRxMinJs.Observable.throw(new Error('Failed to find Arcanist config.  Is this project set up for Arcanist?'));
     }
     return _rxjsBundlesRxMinJs.Observable.fromPromise(getArcExecOptions(arcConfigDir)).switchMap(opts => {
-      const scriptArgs = (0, (_process || _load_process()).createArgsForScriptCommand)('arc', args);
-      return (0, (_observable || _load_observable()).compact)((0, (_process || _load_process()).observeProcess)('script', scriptArgs, opts).map(event => {
+      const scriptArgs = (0, (_process || _load_process()).scriptifyCommand)('arc', args, opts);
+      return (0, (_observable || _load_observable()).compact)((0, (_process || _load_process()).observeProcess)(...scriptArgs).catch(error => _rxjsBundlesRxMinJs.Observable.of({ kind: 'error', error })) // TODO(T17463635)
+      .map(event => {
         switch (event.kind) {
           case 'stdout':
             return { stdout: event.data };
@@ -298,6 +307,7 @@ function updatePhabricatorRevision(filePath, message, allowUntracked, lintExcuse
 }
 
 function execArcPull(cwd, fetchLatest, allowDirtyChanges) {
+  // TODO(T17463635)
   const args = ['pull'];
   if (fetchLatest) {
     args.push('--latest');
@@ -307,21 +317,29 @@ function execArcPull(cwd, fetchLatest, allowDirtyChanges) {
     args.push('--allow-dirty');
   }
 
-  return _rxjsBundlesRxMinJs.Observable.fromPromise(getArcExecOptions(cwd)).switchMap(opts => (0, (_process || _load_process()).observeProcess)('arc', args, Object.assign({}, opts, { /* TODO(T17353599) */isExitError: () => false }))).publish();
+  return _rxjsBundlesRxMinJs.Observable.fromPromise(getArcExecOptions(cwd)).switchMap(opts => (0, (_process || _load_process()).observeProcess)('arc', args, Object.assign({}, opts, {
+    /* TODO(T17353599) */isExitError: () => false
+  })).catch(error => _rxjsBundlesRxMinJs.Observable.of({ kind: 'error', error }))).publish();
 }
 
 function execArcLand(cwd) {
+  // TODO(T17463635)
   const args = ['land'];
-  return _rxjsBundlesRxMinJs.Observable.fromPromise(getArcExecOptions(cwd)).switchMap(opts => (0, (_process || _load_process()).observeProcess)('arc', args, Object.assign({}, opts, { /* TODO(T17353599) */isExitError: () => false }))).publish();
+  return _rxjsBundlesRxMinJs.Observable.fromPromise(getArcExecOptions(cwd)).switchMap(opts => (0, (_process || _load_process()).observeProcess)('arc', args, Object.assign({}, opts, {
+    /* TODO(T17353599) */isExitError: () => false
+  })).catch(error => _rxjsBundlesRxMinJs.Observable.of({ kind: 'error', error }))).publish();
 }
 
 function execArcPatch(cwd, differentialRevision) {
+  // TODO(T17463635)
   const args = ['patch'];
   if (differentialRevision.match(/^[0-9]+$/)) {
     args.push('--diff');
   }
   args.push(differentialRevision);
-  return _rxjsBundlesRxMinJs.Observable.fromPromise(getArcExecOptions(cwd)).switchMap(opts => (0, (_process || _load_process()).observeProcess)('arc', args, Object.assign({}, opts, { /* TODO(T17353599) */isExitError: () => false }))).publish();
+  return _rxjsBundlesRxMinJs.Observable.fromPromise(getArcExecOptions(cwd)).switchMap(opts => (0, (_process || _load_process()).observeProcess)('arc', args, Object.assign({}, opts, {
+    /* TODO(T17353599) */isExitError: () => false
+  })).catch(error => _rxjsBundlesRxMinJs.Observable.of({ kind: 'error', error }))).publish();
 }
 
 function execArcLint(cwd, filePaths, skip) {
@@ -329,7 +347,9 @@ function execArcLint(cwd, filePaths, skip) {
   if (skip.length > 0) {
     args.push('--skip', skip.join(','));
   }
-  return _rxjsBundlesRxMinJs.Observable.fromPromise(getArcExecOptions(cwd)).switchMap(opts => (0, (_nice || _load_nice()).niceObserveProcess)('arc', args, Object.assign({}, opts, { killTreeOnComplete: true }))).mergeMap(event => {
+  return _rxjsBundlesRxMinJs.Observable.fromPromise(getArcExecOptions(cwd)).switchMap(opts => (0, (_nice || _load_nice()).niceObserveProcess)('arc', args, Object.assign({}, opts, {
+    killTreeWhenDone: true
+  })).catch(error => _rxjsBundlesRxMinJs.Observable.of({ kind: 'error', error }))).mergeMap(event => {
     if (event.kind === 'error') {
       return _rxjsBundlesRxMinJs.Observable.throw(event.error);
     } else if (event.kind === 'exit') {
@@ -417,7 +437,7 @@ const __TEST__ = exports.__TEST__ = {
   arcConfigDirectoryMap,
   arcProjectMap,
   reset() {
-    arcConfigDirectoryMap.clear();
-    arcProjectMap.clear();
+    arcConfigDirectoryMap.reset();
+    arcProjectMap.reset();
   }
 };

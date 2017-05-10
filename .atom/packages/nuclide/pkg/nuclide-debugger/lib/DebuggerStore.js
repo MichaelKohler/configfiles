@@ -25,15 +25,21 @@ const DebuggerMode = exports.DebuggerMode = Object.freeze({
   PAUSED: 'paused',
   STOPPING: 'stopping',
   STOPPED: 'stopped'
-}); /**
-     * Copyright (c) 2015-present, Facebook, Inc.
-     * All rights reserved.
-     *
-     * This source code is licensed under the license found in the LICENSE file in
-     * the root directory of this source tree.
-     *
-     * 
-     */
+});
+
+// This is to work around flow's missing support of enums.
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ * @format
+ */
+
+DebuggerMode;
 
 const DEBUGGER_CHANGE_EVENT = 'change';
 const DEBUGGER_MODE_CHANGE_EVENT = 'debugger mode change';
@@ -110,6 +116,10 @@ class DebuggerStore {
 
   getDebuggerMode() {
     return this._debuggerMode;
+  }
+
+  isDebugging() {
+    return this._debuggerMode !== DebuggerMode.STOPPED && this._debuggerMode !== DebuggerMode.STOPPING;
   }
 
   getTogglePauseOnException() {

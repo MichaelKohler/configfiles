@@ -48,6 +48,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * the root directory of this source tree.
  *
  * 
+ * @format
  */
 
 const NO_ACTIVE_PROJECT_ERROR = 'No active Buck project. Check your Current Working Root.';

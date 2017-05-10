@@ -4,14 +4,16 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.createEmptyAppState = createEmptyAppState;
-function createEmptyAppState(deviceFetchers) {
+function createEmptyAppState() {
   return {
     hosts: ['local'],
     host: 'local',
-    devices: new Map(),
+    devices: [],
     deviceType: null,
+    deviceTypes: [],
     device: null,
-    deviceFetchers
+    deviceActions: [],
+    infoTables: new Map()
   };
 } /**
    * Copyright (c) 2015-present, Facebook, Inc.
@@ -21,4 +23,5 @@ function createEmptyAppState(deviceFetchers) {
    * the root directory of this source tree.
    *
    * 
+   * @format
    */

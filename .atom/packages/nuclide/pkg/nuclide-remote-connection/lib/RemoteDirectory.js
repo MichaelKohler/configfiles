@@ -31,6 +31,7 @@ const logger = (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)(); /**
                                                                               * the root directory of this source tree.
                                                                               *
                                                                               * 
+                                                                              * @format
                                                                               */
 
 const MARKER_PROPERTY_FOR_REMOTE_DIRECTORY = '__nuclide_remote_directory__';
@@ -46,7 +47,9 @@ class RemoteDirectory {
    * @param uri should be of the form "nuclide://example.com/path/to/directory".
    */
   constructor(server, uri, symlink = false, options) {
-    Object.defineProperty(this, MARKER_PROPERTY_FOR_REMOTE_DIRECTORY, { value: true });
+    Object.defineProperty(this, MARKER_PROPERTY_FOR_REMOTE_DIRECTORY, {
+      value: true
+    });
     this._server = server;
     this._uri = uri;
     this._emitter = new _atom.Emitter();

@@ -99,6 +99,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * the root directory of this source tree.
  *
  * 
+ * @format
  */
 
 const CONNECTION_MUX_STATUS_EVENT = 'connection-mux-status';
@@ -283,7 +284,8 @@ class ConnectionMultiplexer {
         const xdebugBreakpoint = notify;
         const breakpointId = this._breakpointStore.getBreakpointIdFromConnection(connection, xdebugBreakpoint);
         if (breakpointId == null) {
-          throw Error(`Cannot find xdebug breakpoint ${JSON.stringify(xdebugBreakpoint)} in connection.`);
+          (_utils || _load_utils()).default.logError(`Cannot find xdebug breakpoint ${JSON.stringify(xdebugBreakpoint)} in connection.`);
+          break;
         }
         this._breakpointStore.updateBreakpoint(breakpointId, xdebugBreakpoint);
         const breakpoint = this._breakpointStore.getBreakpoint(breakpointId);
@@ -421,8 +423,8 @@ class ConnectionMultiplexer {
   }
 
   _isFirstStartingConnection(connection) {
-    return this._status === ConnectionMultiplexerStatus.UserAsyncBreakSent && connection.getStatus() === (_DbgpSocket || _load_DbgpSocket()).ConnectionStatus.Starting && this._connections.size === 2 // Dummy connection + first connection.
-    && !connection.isDummyConnection();
+    return this._status === ConnectionMultiplexerStatus.UserAsyncBreakSent && connection.getStatus() === (_DbgpSocket || _load_DbgpSocket()).ConnectionStatus.Starting && this._connections.size === 2 && // Dummy connection + first connection.
+    !connection.isDummyConnection();
   }
 
   _enableConnection(connection) {
@@ -808,6 +810,10 @@ class ConnectionMultiplexer {
     } else {
       return null;
     }
+  }
+
+  getEnabledConnection() {
+    return this._enabledConnection;
   }
 
   selectThread(id) {

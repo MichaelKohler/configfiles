@@ -24,6 +24,7 @@ const BUILTIN_LOCATION = '(builtins)'; /**
                                         * the root directory of this source tree.
                                         *
                                         * 
+                                        * @format
                                         */
 
 function flowStatusOutputToDiagnostics(statusOutput) {

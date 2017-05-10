@@ -6,12 +6,13 @@ Object.defineProperty(exports, "__esModule", {
 exports.setProjectRootEpic = setProjectRootEpic;
 exports.setActiveTaskRunnerEpic = setActiveTaskRunnerEpic;
 exports.combineTaskRunnerStatesEpic = combineTaskRunnerStatesEpic;
+exports.toggleToolbarVisibilityEpic = toggleToolbarVisibilityEpic;
 exports.updatePreferredVisibilityEpic = updatePreferredVisibilityEpic;
 exports.updatePreferredTaskRunnerEpic = updatePreferredTaskRunnerEpic;
 exports.verifySavedBeforeRunningTaskEpic = verifySavedBeforeRunningTaskEpic;
 exports.runTaskEpic = runTaskEpic;
 exports.stopTaskEpic = stopTaskEpic;
-exports.toggleToolbarVisibilityEpic = toggleToolbarVisibilityEpic;
+exports.setToolbarVisibilityEpic = setToolbarVisibilityEpic;
 
 var _nuclideRemoteConnection;
 
@@ -67,6 +68,7 @@ function setProjectRootEpic(actions, store, options) {
    * the root directory of this source tree.
    *
    * 
+   * @format
    */
 
 function setActiveTaskRunnerEpic(actions, store, options) {
@@ -152,6 +154,18 @@ function combineTaskRunnerStatesEpic(actions, store, options) {
   });
 }
 
+function toggleToolbarVisibilityEpic(actions, store) {
+  return actions.ofType((_Actions || _load_Actions()).REQUEST_TOGGLE_TOOLBAR_VISIBILITY).map(action => {
+    if (!(action.type === (_Actions || _load_Actions()).REQUEST_TOGGLE_TOOLBAR_VISIBILITY)) {
+      throw new Error('Invariant violation: "action.type === Actions.REQUEST_TOGGLE_TOOLBAR_VISIBILITY"');
+    }
+
+    const state = store.getState();
+    const { visible, taskRunner } = action.payload;
+    return state.activeTaskRunner == null ? (_Actions || _load_Actions()).setToolbarVisibility(false, true) : (_Actions || _load_Actions()).toggleToolbarVisibility(visible, taskRunner);
+  });
+}
+
 function updatePreferredVisibilityEpic(actions, store, options) {
   return actions.ofType((_Actions || _load_Actions()).SET_TOOLBAR_VISIBILITY).do(action => {
     if (!(action.type === (_Actions || _load_Actions()).SET_TOOLBAR_VISIBILITY)) {
@@ -163,20 +177,19 @@ function updatePreferredVisibilityEpic(actions, store, options) {
 
     // Only act if responding to an explicit user action
     if (updateUserPreferences) {
-      if (!projectRoot && visible) {
+      if (projectRoot == null) {
         atom.notifications.addError('Add a project to use the task runner toolbar', {
           dismissable: true
         });
-      } else if (!activeTaskRunner && visible) {
+      } else if (activeTaskRunner == null) {
         atom.notifications.addError('No task runner available for the current working root selected in file tree', {
           dismissable: true
         });
-      } else if (projectRoot) {
+      } else {
         // The user explicitly changed the visibility, remember this state
         const { preferencesForWorkingRoots } = options;
-        const taskRunnerId = activeTaskRunner ? activeTaskRunner.id : null;
         preferencesForWorkingRoots.setItem(projectRoot.getPath(), {
-          taskRunnerId,
+          taskRunnerId: activeTaskRunner.id,
           visible
         });
       }
@@ -276,7 +289,7 @@ function stopTaskEpic(actions, store) {
   });
 }
 
-function toggleToolbarVisibilityEpic(actions, store) {
+function setToolbarVisibilityEpic(actions, store) {
   return actions.ofType((_Actions || _load_Actions()).TOGGLE_TOOLBAR_VISIBILITY).switchMap(action => {
     if (!(action.type === (_Actions || _load_Actions()).TOGGLE_TOOLBAR_VISIBILITY)) {
       throw new Error('Invariant violation: "action.type === Actions.TOGGLE_TOOLBAR_VISIBILITY"');

@@ -138,7 +138,9 @@ class CallstackStore {
   }
 
   _highlightCallFrameLine(editor, line) {
-    const marker = editor.markBufferRange([[line, 0], [line, Infinity]], { invalidate: 'never' });
+    const marker = editor.markBufferRange([[line, 0], [line, Infinity]], {
+      invalidate: 'never'
+    });
     editor.decorateMarker(marker, {
       type: 'line',
       class: 'nuclide-current-line-highlight'
@@ -182,4 +184,5 @@ exports.default = CallstackStore; /**
                                    * the root directory of this source tree.
                                    *
                                    * 
+                                   * @format
                                    */

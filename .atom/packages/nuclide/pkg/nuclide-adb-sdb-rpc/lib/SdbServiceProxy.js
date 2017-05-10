@@ -5,6 +5,116 @@ let Observable;
 module.exports = _client => {
   const remoteModule = {};
 
+  remoteModule.registerSdbPath = function (arg0, arg1, arg2) {
+    return _client.marshalArguments(Array.from(arguments), [{
+      name: "id",
+      type: {
+        location: {
+          type: "source",
+          fileName: "SdbService.js",
+          line: 21
+        },
+        kind: "string"
+      }
+    }, {
+      name: "path",
+      type: {
+        location: {
+          type: "source",
+          fileName: "SdbService.js",
+          line: 22
+        },
+        kind: "named",
+        name: "NuclideUri"
+      }
+    }, {
+      name: "priority",
+      type: {
+        location: {
+          type: "source",
+          fileName: "SdbService.js",
+          line: 23
+        },
+        kind: "nullable",
+        type: {
+          location: {
+            type: "source",
+            fileName: "SdbService.js",
+            line: 23
+          },
+          kind: "number"
+        }
+      }
+    }]).then(args => {
+      return _client.callRemoteFunction("SdbService/registerSdbPath", "promise", args);
+    }).then(value => {
+      return _client.unmarshal(value, {
+        location: {
+          type: "source",
+          fileName: "SdbService.js",
+          line: 24
+        },
+        kind: "void"
+      });
+    });
+  };
+
+  remoteModule.getDeviceInfo = function (arg0) {
+    return _client.marshalArguments(Array.from(arguments), [{
+      name: "name",
+      type: {
+        location: {
+          type: "source",
+          fileName: "SdbService.js",
+          line: 33
+        },
+        kind: "string"
+      }
+    }]).then(args => {
+      return _client.callRemoteFunction("SdbService/getDeviceInfo", "promise", args);
+    }).then(value => {
+      return _client.unmarshal(value, {
+        location: {
+          type: "source",
+          fileName: "SdbService.js",
+          line: 34
+        },
+        kind: "map",
+        keyType: {
+          location: {
+            type: "source",
+            fileName: "SdbService.js",
+            line: 34
+          },
+          kind: "string"
+        },
+        valueType: {
+          location: {
+            type: "source",
+            fileName: "SdbService.js",
+            line: 34
+          },
+          kind: "string"
+        }
+      });
+    });
+  };
+
+  remoteModule.startServer = function () {
+    return _client.marshalArguments(Array.from(arguments), []).then(args => {
+      return _client.callRemoteFunction("SdbService/startServer", "promise", args);
+    }).then(value => {
+      return _client.unmarshal(value, {
+        location: {
+          type: "source",
+          fileName: "SdbService.js",
+          line: 38
+        },
+        kind: "boolean"
+      });
+    });
+  };
+
   remoteModule.getDeviceList = function () {
     return _client.marshalArguments(Array.from(arguments), []).then(args => {
       return _client.callRemoteFunction("SdbService/getDeviceList", "promise", args);
@@ -13,14 +123,14 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "SdbService.js",
-          line: 23
+          line: 42
         },
         kind: "array",
         type: {
           location: {
             type: "source",
             fileName: "SdbService.js",
-            line: 23
+            line: 42
           },
           kind: "named",
           name: "DeviceDescription"
@@ -36,7 +146,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "SdbService.js",
-          line: 28
+          line: 47
         },
         kind: "string"
       }
@@ -46,7 +156,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "SdbService.js",
-          line: 29
+          line: 48
         },
         kind: "string"
       }
@@ -57,42 +167,42 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "SdbService.js",
-          line: 30
+          line: 49
         },
         kind: "number"
       });
     });
   };
 
-  remoteModule.getManifestForPackageName = function (arg0, arg1) {
+  remoteModule.getFileContentsAtPath = function (arg0, arg1) {
     return _client.marshalArguments(Array.from(arguments), [{
       name: "device",
       type: {
         location: {
           type: "source",
           fileName: "SdbService.js",
-          line: 35
+          line: 54
         },
         kind: "string"
       }
     }, {
-      name: "packageName",
+      name: "path",
       type: {
         location: {
           type: "source",
           fileName: "SdbService.js",
-          line: 36
+          line: 55
         },
         kind: "string"
       }
     }]).then(args => {
-      return _client.callRemoteFunction("SdbService/getManifestForPackageName", "promise", args);
+      return _client.callRemoteFunction("SdbService/getFileContentsAtPath", "promise", args);
     }).then(value => {
       return _client.unmarshal(value, {
         location: {
           type: "source",
           fileName: "SdbService.js",
-          line: 37
+          line: 56
         },
         kind: "string"
       });
@@ -106,7 +216,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "SdbService.js",
-          line: 42
+          line: 61
         },
         kind: "string"
       }
@@ -116,7 +226,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "SdbService.js",
-          line: 43
+          line: 62
         },
         kind: "named",
         name: "NuclideUri"
@@ -128,10 +238,10 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "SdbService.js",
-          line: 44
+          line: 63
         },
         kind: "named",
-        name: "ProcessMessage"
+        name: "LegacyProcessMessage"
       });
     }).publish();
   };
@@ -143,7 +253,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "SdbService.js",
-          line: 51
+          line: 71
         },
         kind: "string"
       }
@@ -153,7 +263,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "SdbService.js",
-          line: 52
+          line: 72
         },
         kind: "string"
       }
@@ -164,7 +274,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "SdbService.js",
-          line: 53
+          line: 73
         },
         kind: "string"
       });
@@ -178,7 +288,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "SdbService.js",
-          line: 58
+          line: 78
         },
         kind: "string"
       }
@@ -188,7 +298,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "SdbService.js",
-          line: 59
+          line: 79
         },
         kind: "string"
       }
@@ -199,10 +309,10 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "SdbService.js",
-          line: 60
+          line: 80
         },
         kind: "named",
-        name: "ProcessMessage"
+        name: "LegacyProcessMessage"
       });
     }).publish();
   };
@@ -273,19 +383,152 @@ Object.defineProperty(module.exports, "defs", {
         type: "builtin"
       }
     },
-    getDeviceList: {
+    registerSdbPath: {
       kind: "function",
-      name: "getDeviceList",
+      name: "registerSdbPath",
       location: {
         type: "source",
         fileName: "SdbService.js",
-        line: 23
+        line: 20
       },
       type: {
         location: {
           type: "source",
           fileName: "SdbService.js",
-          line: 23
+          line: 20
+        },
+        kind: "function",
+        argumentTypes: [{
+          name: "id",
+          type: {
+            location: {
+              type: "source",
+              fileName: "SdbService.js",
+              line: 21
+            },
+            kind: "string"
+          }
+        }, {
+          name: "path",
+          type: {
+            location: {
+              type: "source",
+              fileName: "SdbService.js",
+              line: 22
+            },
+            kind: "named",
+            name: "NuclideUri"
+          }
+        }, {
+          name: "priority",
+          type: {
+            location: {
+              type: "source",
+              fileName: "SdbService.js",
+              line: 23
+            },
+            kind: "nullable",
+            type: {
+              location: {
+                type: "source",
+                fileName: "SdbService.js",
+                line: 23
+              },
+              kind: "number"
+            }
+          }
+        }],
+        returnType: {
+          location: {
+            type: "source",
+            fileName: "SdbService.js",
+            line: 24
+          },
+          kind: "promise",
+          type: {
+            location: {
+              type: "source",
+              fileName: "SdbService.js",
+              line: 24
+            },
+            kind: "void"
+          }
+        }
+      }
+    },
+    getDeviceInfo: {
+      kind: "function",
+      name: "getDeviceInfo",
+      location: {
+        type: "source",
+        fileName: "SdbService.js",
+        line: 32
+      },
+      type: {
+        location: {
+          type: "source",
+          fileName: "SdbService.js",
+          line: 32
+        },
+        kind: "function",
+        argumentTypes: [{
+          name: "name",
+          type: {
+            location: {
+              type: "source",
+              fileName: "SdbService.js",
+              line: 33
+            },
+            kind: "string"
+          }
+        }],
+        returnType: {
+          location: {
+            type: "source",
+            fileName: "SdbService.js",
+            line: 34
+          },
+          kind: "promise",
+          type: {
+            location: {
+              type: "source",
+              fileName: "SdbService.js",
+              line: 34
+            },
+            kind: "map",
+            keyType: {
+              location: {
+                type: "source",
+                fileName: "SdbService.js",
+                line: 34
+              },
+              kind: "string"
+            },
+            valueType: {
+              location: {
+                type: "source",
+                fileName: "SdbService.js",
+                line: 34
+              },
+              kind: "string"
+            }
+          }
+        }
+      }
+    },
+    startServer: {
+      kind: "function",
+      name: "startServer",
+      location: {
+        type: "source",
+        fileName: "SdbService.js",
+        line: 38
+      },
+      type: {
+        location: {
+          type: "source",
+          fileName: "SdbService.js",
+          line: 38
         },
         kind: "function",
         argumentTypes: [],
@@ -293,21 +536,55 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "SdbService.js",
-            line: 23
+            line: 38
           },
           kind: "promise",
           type: {
             location: {
               type: "source",
               fileName: "SdbService.js",
-              line: 23
+              line: 38
+            },
+            kind: "boolean"
+          }
+        }
+      }
+    },
+    getDeviceList: {
+      kind: "function",
+      name: "getDeviceList",
+      location: {
+        type: "source",
+        fileName: "SdbService.js",
+        line: 42
+      },
+      type: {
+        location: {
+          type: "source",
+          fileName: "SdbService.js",
+          line: 42
+        },
+        kind: "function",
+        argumentTypes: [],
+        returnType: {
+          location: {
+            type: "source",
+            fileName: "SdbService.js",
+            line: 42
+          },
+          kind: "promise",
+          type: {
+            location: {
+              type: "source",
+              fileName: "SdbService.js",
+              line: 42
             },
             kind: "array",
             type: {
               location: {
                 type: "source",
                 fileName: "SdbService.js",
-                line: 23
+                line: 42
               },
               kind: "named",
               name: "DeviceDescription"
@@ -322,13 +599,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "SdbService.js",
-        line: 27
+        line: 46
       },
       type: {
         location: {
           type: "source",
           fileName: "SdbService.js",
-          line: 27
+          line: 46
         },
         kind: "function",
         argumentTypes: [{
@@ -337,7 +614,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "SdbService.js",
-              line: 28
+              line: 47
             },
             kind: "string"
           }
@@ -347,7 +624,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "SdbService.js",
-              line: 29
+              line: 48
             },
             kind: "string"
           }
@@ -356,33 +633,33 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "SdbService.js",
-            line: 30
+            line: 49
           },
           kind: "promise",
           type: {
             location: {
               type: "source",
               fileName: "SdbService.js",
-              line: 30
+              line: 49
             },
             kind: "number"
           }
         }
       }
     },
-    getManifestForPackageName: {
+    getFileContentsAtPath: {
       kind: "function",
-      name: "getManifestForPackageName",
+      name: "getFileContentsAtPath",
       location: {
         type: "source",
         fileName: "SdbService.js",
-        line: 34
+        line: 53
       },
       type: {
         location: {
           type: "source",
           fileName: "SdbService.js",
-          line: 34
+          line: 53
         },
         kind: "function",
         argumentTypes: [{
@@ -391,17 +668,17 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "SdbService.js",
-              line: 35
+              line: 54
             },
             kind: "string"
           }
         }, {
-          name: "packageName",
+          name: "path",
           type: {
             location: {
               type: "source",
               fileName: "SdbService.js",
-              line: 36
+              line: 55
             },
             kind: "string"
           }
@@ -410,14 +687,14 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "SdbService.js",
-            line: 37
+            line: 56
           },
           kind: "promise",
           type: {
             location: {
               type: "source",
               fileName: "SdbService.js",
-              line: 37
+              line: 56
             },
             kind: "string"
           }
@@ -430,13 +707,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "SdbService.js",
-        line: 41
+        line: 60
       },
       type: {
         location: {
           type: "source",
           fileName: "SdbService.js",
-          line: 41
+          line: 60
         },
         kind: "function",
         argumentTypes: [{
@@ -445,7 +722,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "SdbService.js",
-              line: 42
+              line: 61
             },
             kind: "string"
           }
@@ -455,7 +732,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "SdbService.js",
-              line: 43
+              line: 62
             },
             kind: "named",
             name: "NuclideUri"
@@ -465,17 +742,17 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "SdbService.js",
-            line: 44
+            line: 63
           },
           kind: "observable",
           type: {
             location: {
               type: "source",
               fileName: "SdbService.js",
-              line: 44
+              line: 63
             },
             kind: "named",
-            name: "ProcessMessage"
+            name: "LegacyProcessMessage"
           }
         }
       }
@@ -486,13 +763,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "SdbService.js",
-        line: 50
+        line: 70
       },
       type: {
         location: {
           type: "source",
           fileName: "SdbService.js",
-          line: 50
+          line: 70
         },
         kind: "function",
         argumentTypes: [{
@@ -501,7 +778,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "SdbService.js",
-              line: 51
+              line: 71
             },
             kind: "string"
           }
@@ -511,7 +788,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "SdbService.js",
-              line: 52
+              line: 72
             },
             kind: "string"
           }
@@ -520,14 +797,14 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "SdbService.js",
-            line: 53
+            line: 73
           },
           kind: "promise",
           type: {
             location: {
               type: "source",
               fileName: "SdbService.js",
-              line: 53
+              line: 73
             },
             kind: "string"
           }
@@ -540,13 +817,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "SdbService.js",
-        line: 57
+        line: 77
       },
       type: {
         location: {
           type: "source",
           fileName: "SdbService.js",
-          line: 57
+          line: 77
         },
         kind: "function",
         argumentTypes: [{
@@ -555,7 +832,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "SdbService.js",
-              line: 58
+              line: 78
             },
             kind: "string"
           }
@@ -565,7 +842,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "SdbService.js",
-              line: 59
+              line: 79
             },
             kind: "string"
           }
@@ -574,17 +851,17 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "SdbService.js",
-            line: 60
+            line: 80
           },
           kind: "observable",
           type: {
             location: {
               type: "source",
               fileName: "SdbService.js",
-              line: 60
+              line: 80
             },
             kind: "named",
-            name: "ProcessMessage"
+            name: "LegacyProcessMessage"
           }
         }
       }
@@ -594,28 +871,28 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "process-rpc-types.js",
-        line: 13
+        line: 14
       },
       name: "ProcessExitMessage",
       definition: {
         location: {
           type: "source",
           fileName: "process-rpc-types.js",
-          line: 13
+          line: 14
         },
         kind: "object",
         fields: [{
           location: {
             type: "source",
             fileName: "process-rpc-types.js",
-            line: 14
+            line: 15
           },
           name: "kind",
           type: {
             location: {
               type: "source",
               fileName: "process-rpc-types.js",
-              line: 14
+              line: 15
             },
             kind: "string-literal",
             value: "exit"
@@ -625,33 +902,9 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "process-rpc-types.js",
-            line: 15
-          },
-          name: "exitCode",
-          type: {
-            location: {
-              type: "source",
-              fileName: "process-rpc-types.js",
-              line: 15
-            },
-            kind: "nullable",
-            type: {
-              location: {
-                type: "source",
-                fileName: "process-rpc-types.js",
-                line: 15
-              },
-              kind: "number"
-            }
-          },
-          optional: false
-        }, {
-          location: {
-            type: "source",
-            fileName: "process-rpc-types.js",
             line: 16
           },
-          name: "signal",
+          name: "exitCode",
           type: {
             location: {
               type: "source",
@@ -665,7 +918,7 @@ Object.defineProperty(module.exports, "defs", {
                 fileName: "process-rpc-types.js",
                 line: 16
               },
-              kind: "string"
+              kind: "number"
             }
           },
           optional: false
@@ -675,14 +928,22 @@ Object.defineProperty(module.exports, "defs", {
             fileName: "process-rpc-types.js",
             line: 17
           },
-          name: "stderr",
+          name: "signal",
           type: {
             location: {
               type: "source",
               fileName: "process-rpc-types.js",
               line: 17
             },
-            kind: "string"
+            kind: "nullable",
+            type: {
+              location: {
+                type: "source",
+                fileName: "process-rpc-types.js",
+                line: 17
+              },
+              kind: "string"
+            }
           },
           optional: false
         }]
@@ -700,28 +961,28 @@ Object.defineProperty(module.exports, "defs", {
         location: {
           type: "source",
           fileName: "process-rpc-types.js",
-          line: 21
+          line: 22
         },
         kind: "union",
         types: [{
           location: {
             type: "source",
             fileName: "process-rpc-types.js",
-            line: 21
+            line: 22
           },
           kind: "object",
           fields: [{
             location: {
               type: "source",
               fileName: "process-rpc-types.js",
-              line: 22
+              line: 23
             },
             name: "kind",
             type: {
               location: {
                 type: "source",
                 fileName: "process-rpc-types.js",
-                line: 22
+                line: 23
               },
               kind: "string-literal",
               value: "stdout"
@@ -731,14 +992,14 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "process-rpc-types.js",
-              line: 23
+              line: 24
             },
             name: "data",
             type: {
               location: {
                 type: "source",
                 fileName: "process-rpc-types.js",
-                line: 23
+                line: 24
               },
               kind: "string"
             },
@@ -748,21 +1009,21 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "process-rpc-types.js",
-            line: 24
+            line: 26
           },
           kind: "object",
           fields: [{
             location: {
               type: "source",
               fileName: "process-rpc-types.js",
-              line: 25
+              line: 27
             },
             name: "kind",
             type: {
               location: {
                 type: "source",
                 fileName: "process-rpc-types.js",
-                line: 25
+                line: 27
               },
               kind: "string-literal",
               value: "stderr"
@@ -772,14 +1033,14 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "process-rpc-types.js",
-              line: 26
+              line: 28
             },
             name: "data",
             type: {
               location: {
                 type: "source",
                 fileName: "process-rpc-types.js",
-                line: 26
+                line: 28
               },
               kind: "string"
             },
@@ -789,21 +1050,21 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "process-rpc-types.js",
-            line: 13
+            line: 14
           },
           kind: "object",
           fields: [{
             location: {
               type: "source",
               fileName: "process-rpc-types.js",
-              line: 14
+              line: 15
             },
             name: "kind",
             type: {
               location: {
                 type: "source",
                 fileName: "process-rpc-types.js",
-                line: 14
+                line: 15
               },
               kind: "string-literal",
               value: "exit"
@@ -813,33 +1074,9 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "process-rpc-types.js",
-              line: 15
-            },
-            name: "exitCode",
-            type: {
-              location: {
-                type: "source",
-                fileName: "process-rpc-types.js",
-                line: 15
-              },
-              kind: "nullable",
-              type: {
-                location: {
-                  type: "source",
-                  fileName: "process-rpc-types.js",
-                  line: 15
-                },
-                kind: "number"
-              }
-            },
-            optional: false
-          }, {
-            location: {
-              type: "source",
-              fileName: "process-rpc-types.js",
               line: 16
             },
-            name: "signal",
+            name: "exitCode",
             type: {
               location: {
                 type: "source",
@@ -853,7 +1090,7 @@ Object.defineProperty(module.exports, "defs", {
                   fileName: "process-rpc-types.js",
                   line: 16
                 },
-                kind: "string"
+                kind: "number"
               }
             },
             optional: false
@@ -863,12 +1100,80 @@ Object.defineProperty(module.exports, "defs", {
               fileName: "process-rpc-types.js",
               line: 17
             },
-            name: "stderr",
+            name: "signal",
             type: {
               location: {
                 type: "source",
                 fileName: "process-rpc-types.js",
                 line: 17
+              },
+              kind: "nullable",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "process-rpc-types.js",
+                  line: 17
+                },
+                kind: "string"
+              }
+            },
+            optional: false
+          }]
+        }],
+        discriminantField: "kind"
+      }
+    },
+    LegacyProcessMessage: {
+      kind: "alias",
+      location: {
+        type: "source",
+        fileName: "process-rpc-types.js",
+        line: 34
+      },
+      name: "LegacyProcessMessage",
+      definition: {
+        location: {
+          type: "source",
+          fileName: "process-rpc-types.js",
+          line: 35
+        },
+        kind: "union",
+        types: [{
+          location: {
+            type: "source",
+            fileName: "process-rpc-types.js",
+            line: 22
+          },
+          kind: "object",
+          fields: [{
+            location: {
+              type: "source",
+              fileName: "process-rpc-types.js",
+              line: 23
+            },
+            name: "kind",
+            type: {
+              location: {
+                type: "source",
+                fileName: "process-rpc-types.js",
+                line: 23
+              },
+              kind: "string-literal",
+              value: "stdout"
+            },
+            optional: false
+          }, {
+            location: {
+              type: "source",
+              fileName: "process-rpc-types.js",
+              line: 24
+            },
+            name: "data",
+            type: {
+              location: {
+                type: "source",
+                fileName: "process-rpc-types.js",
+                line: 24
               },
               kind: "string"
             },
@@ -878,21 +1183,135 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "process-rpc-types.js",
-            line: 27
+            line: 26
           },
           kind: "object",
           fields: [{
             location: {
               type: "source",
               fileName: "process-rpc-types.js",
-              line: 28
+              line: 27
             },
             name: "kind",
             type: {
               location: {
                 type: "source",
                 fileName: "process-rpc-types.js",
+                line: 27
+              },
+              kind: "string-literal",
+              value: "stderr"
+            },
+            optional: false
+          }, {
+            location: {
+              type: "source",
+              fileName: "process-rpc-types.js",
+              line: 28
+            },
+            name: "data",
+            type: {
+              location: {
+                type: "source",
+                fileName: "process-rpc-types.js",
                 line: 28
+              },
+              kind: "string"
+            },
+            optional: false
+          }]
+        }, {
+          location: {
+            type: "source",
+            fileName: "process-rpc-types.js",
+            line: 14
+          },
+          kind: "object",
+          fields: [{
+            location: {
+              type: "source",
+              fileName: "process-rpc-types.js",
+              line: 15
+            },
+            name: "kind",
+            type: {
+              location: {
+                type: "source",
+                fileName: "process-rpc-types.js",
+                line: 15
+              },
+              kind: "string-literal",
+              value: "exit"
+            },
+            optional: false
+          }, {
+            location: {
+              type: "source",
+              fileName: "process-rpc-types.js",
+              line: 16
+            },
+            name: "exitCode",
+            type: {
+              location: {
+                type: "source",
+                fileName: "process-rpc-types.js",
+                line: 16
+              },
+              kind: "nullable",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "process-rpc-types.js",
+                  line: 16
+                },
+                kind: "number"
+              }
+            },
+            optional: false
+          }, {
+            location: {
+              type: "source",
+              fileName: "process-rpc-types.js",
+              line: 17
+            },
+            name: "signal",
+            type: {
+              location: {
+                type: "source",
+                fileName: "process-rpc-types.js",
+                line: 17
+              },
+              kind: "nullable",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "process-rpc-types.js",
+                  line: 17
+                },
+                kind: "string"
+              }
+            },
+            optional: false
+          }]
+        }, {
+          location: {
+            type: "source",
+            fileName: "process-rpc-types.js",
+            line: 36
+          },
+          kind: "object",
+          fields: [{
+            location: {
+              type: "source",
+              fileName: "process-rpc-types.js",
+              line: 36
+            },
+            name: "kind",
+            type: {
+              location: {
+                type: "source",
+                fileName: "process-rpc-types.js",
+                line: 36
               },
               kind: "string-literal",
               value: "error"
@@ -902,14 +1321,14 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "process-rpc-types.js",
-              line: 29
+              line: 36
             },
             name: "error",
             type: {
               location: {
                 type: "source",
                 fileName: "process-rpc-types.js",
-                line: 29
+                line: 36
               },
               kind: "named",
               name: "Object"
@@ -925,28 +1344,28 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "process-rpc-types.js",
-        line: 32
+        line: 38
       },
       name: "ProcessInfo",
       definition: {
         location: {
           type: "source",
           fileName: "process-rpc-types.js",
-          line: 32
+          line: 38
         },
         kind: "object",
         fields: [{
           location: {
             type: "source",
             fileName: "process-rpc-types.js",
-            line: 33
+            line: 39
           },
           name: "parentPid",
           type: {
             location: {
               type: "source",
               fileName: "process-rpc-types.js",
-              line: 33
+              line: 39
             },
             kind: "number"
           },
@@ -955,14 +1374,14 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "process-rpc-types.js",
-            line: 34
+            line: 40
           },
           name: "pid",
           type: {
             location: {
               type: "source",
               fileName: "process-rpc-types.js",
-              line: 34
+              line: 40
             },
             kind: "number"
           },
@@ -971,14 +1390,14 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "process-rpc-types.js",
-            line: 35
+            line: 41
           },
           name: "command",
           type: {
             location: {
               type: "source",
               fileName: "process-rpc-types.js",
-              line: 35
+              line: 41
             },
             kind: "string"
           },
@@ -991,39 +1410,23 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "types.js",
-        line: 11
+        line: 12
       },
       name: "AndroidJavaProcess",
       definition: {
         location: {
           type: "source",
           fileName: "types.js",
-          line: 11
+          line: 12
         },
         kind: "object",
         fields: [{
           location: {
             type: "source",
             fileName: "types.js",
-            line: 12
-          },
-          name: "user",
-          type: {
-            location: {
-              type: "source",
-              fileName: "types.js",
-              line: 12
-            },
-            kind: "string"
-          },
-          optional: false
-        }, {
-          location: {
-            type: "source",
-            fileName: "types.js",
             line: 13
           },
-          name: "pid",
+          name: "user",
           type: {
             location: {
               type: "source",
@@ -1039,12 +1442,28 @@ Object.defineProperty(module.exports, "defs", {
             fileName: "types.js",
             line: 14
           },
-          name: "name",
+          name: "pid",
           type: {
             location: {
               type: "source",
               fileName: "types.js",
               line: 14
+            },
+            kind: "string"
+          },
+          optional: false
+        }, {
+          location: {
+            type: "source",
+            fileName: "types.js",
+            line: 15
+          },
+          name: "name",
+          type: {
+            location: {
+              type: "source",
+              fileName: "types.js",
+              line: 15
             },
             kind: "string"
           },

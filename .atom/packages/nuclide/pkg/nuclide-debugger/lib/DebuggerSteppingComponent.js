@@ -61,6 +61,7 @@ const defaultTooltipOptions = {
     * the root directory of this source tree.
     *
     * 
+    * @format
     */
 
 const STEP_OVER_ICON = _react.default.createElement(
@@ -176,7 +177,9 @@ class DebuggerSteppingComponent extends _react.default.Component {
     const isPaused = debuggerMode === (_DebuggerStore || _load_DebuggerStore()).DebuggerMode.PAUSED;
     const isStopped = debuggerMode === (_DebuggerStore || _load_DebuggerStore()).DebuggerMode.STOPPED;
     const isPausing = debuggerMode === (_DebuggerStore || _load_DebuggerStore()).DebuggerMode.RUNNING && waitingForPause;
-    const playPauseIcon = isPausing ? null : _react.default.createElement('span', { className: isPaused ? 'icon-playback-play' : 'icon-playback-pause' });
+    const playPauseIcon = isPausing ? null : _react.default.createElement('span', {
+      className: isPaused ? 'icon-playback-play' : 'icon-playback-pause'
+    });
 
     const loadingIndicator = !isPausing ? null : _react.default.createElement((_LoadingSpinner || _load_LoadingSpinner()).LoadingSpinner, {
       className: 'nuclide-debugger-stepping-playpause-button-loading',
@@ -243,8 +246,9 @@ class DebuggerSteppingComponent extends _react.default.Component {
         }),
         _react.default.createElement((_Button || _load_Button()).Button, {
           icon: 'primitive-square',
+          disabled: isStopped,
           tooltip: Object.assign({}, defaultTooltipOptions, {
-            title: 'Stop debugging',
+            title: 'Detach debugger',
             keyBindingCommand: 'nuclide-debugger:stop-debugging'
           }),
           onClick: () => actions.stopDebugging()

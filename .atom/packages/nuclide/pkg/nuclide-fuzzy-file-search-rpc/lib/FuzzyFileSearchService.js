@@ -38,6 +38,7 @@ let queryFuzzyFile = exports.queryFuzzyFile = (() => {
        * the root directory of this source tree.
        *
        * 
+       * @format
        */
 
 let queryAllExistingFuzzyFile = exports.queryAllExistingFuzzyFile = (() => {

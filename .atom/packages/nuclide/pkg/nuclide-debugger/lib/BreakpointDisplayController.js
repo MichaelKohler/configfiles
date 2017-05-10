@@ -4,12 +4,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _DebuggerStore;
-
-function _load_DebuggerStore() {
-  return _DebuggerStore = require('./DebuggerStore');
-}
-
 var _mouseToPosition;
 
 function _load_mouseToPosition() {
@@ -20,6 +14,12 @@ var _UniversalDisposable;
 
 function _load_UniversalDisposable() {
   return _UniversalDisposable = _interopRequireDefault(require('../../commons-node/UniversalDisposable'));
+}
+
+var _contextMenu;
+
+function _load_contextMenu() {
+  return _contextMenu = require('../../commons-atom/context-menu');
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -37,16 +37,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * there's less messy bookkeeping regarding lifetimes of the unregister
  * Disposable objects.
  */
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- */
-
 class BreakpointDisplayController {
 
   constructor(delegate, breakpointStore, editor, debuggerActions) {
@@ -59,14 +49,8 @@ class BreakpointDisplayController {
     this._markerInfo = new Map();
     this._lastShadowBreakpointMarker = null;
     this._boundGlobalMouseMoveHandler = this._handleGlobalMouseLeave.bind(this);
-
-    const debuggerStore = this._breakpointStore.getDebuggerStore();
-    if (debuggerStore) {
-      const mode = debuggerStore.getDebuggerMode();
-      this._debugging = mode !== (_DebuggerStore || _load_DebuggerStore()).DebuggerMode.STOPPED && mode !== (_DebuggerStore || _load_DebuggerStore()).DebuggerMode.STOPPING;
-    } else {
-      this._debugging = false;
-    }
+    this._boundCreateContextMenuHandler = this._handleCreateContextMenu.bind(this);
+    this._debugging = this._isDebugging();
 
     // Configure the gutter.
     const gutter = editor.addGutter({
@@ -76,8 +60,19 @@ class BreakpointDisplayController {
       priority: -1100
     });
     this._gutter = gutter;
-    this._disposables.add(gutter.onDidDestroy(this._handleGutterDestroyed.bind(this)), editor.observeGutters(this._registerGutterMouseHandlers.bind(this)), this._breakpointStore.onNeedUIUpdate(this._handleBreakpointsChanged.bind(this)), this._editor.onDidDestroy(this._handleTextEditorDestroyed.bind(this)));
+    this._disposables.add(gutter.onDidDestroy(this._handleGutterDestroyed.bind(this)), editor.observeGutters(this._registerGutterMouseHandlers.bind(this)), this._breakpointStore.onNeedUIUpdate(this._handleBreakpointsChanged.bind(this)), this._editor.onDidDestroy(this._handleTextEditorDestroyed.bind(this)), this._registerEditorContextMenuHandler());
     this._update();
+  }
+
+  _isDebugging() {
+    const debuggerStore = this._breakpointStore.getDebuggerStore();
+    return debuggerStore != null && debuggerStore.isDebugging();
+  }
+
+  _registerEditorContextMenuHandler() {
+    const editorElement = atom.views.getView(this._editor);
+    editorElement.addEventListener('contextmenu', this._boundCreateContextMenuHandler);
+    return new (_UniversalDisposable || _load_UniversalDisposable()).default(() => editorElement.removeEventListener('contextmenu', this._boundCreateContextMenuHandler));
   }
 
   _registerGutterMouseHandlers(gutter) {
@@ -94,7 +89,23 @@ class BreakpointDisplayController {
     gutterView.addEventListener('mousemove', boundMouseMoveHandler);
     gutterView.addEventListener('mouseenter', boundMouseEnterHandler);
     gutterView.addEventListener('mouseleave', boundMouseLeaveHandler);
-    this._disposables.add(() => gutterView.removeEventListener('click', boundClickHandler), () => gutterView.removeEventListener('mousemove', boundMouseMoveHandler), () => gutterView.removeEventListener('mouseenter', boundMouseEnterHandler), () => gutterView.removeEventListener('mouseleave', boundMouseLeaveHandler), () => window.removeEventListener('mousemove', this._boundGlobalMouseMoveHandler));
+    gutterView.addEventListener('contextmenu', this._boundCreateContextMenuHandler);
+    this._disposables.add(() => gutterView.removeEventListener('click', boundClickHandler), () => gutterView.removeEventListener('mousemove', boundMouseMoveHandler), () => gutterView.removeEventListener('mouseenter', boundMouseEnterHandler), () => gutterView.removeEventListener('mouseleave', boundMouseLeaveHandler), () => gutterView.removeEventListener('contextmenu', this._boundCreateContextMenuHandler), () => window.removeEventListener('mousemove', this._boundGlobalMouseMoveHandler));
+  }
+
+  _handleCreateContextMenu(event) {
+    if (event.button !== 2 || !this._isDebugging()) {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    const menuTemplate = atom.contextMenu.templateForEvent(event);
+    const debuggerGroupIndex = menuTemplate.findIndex(item => item.label === 'Debugger');
+    const [debuggerGroup] = menuTemplate.splice(debuggerGroupIndex, 1);
+    menuTemplate.unshift(...debuggerGroup.submenu, { type: 'separator' });
+    (0, (_contextMenu || _load_contextMenu()).showMenuForEvent)(event, menuTemplate);
   }
 
   dispose() {
@@ -150,12 +161,7 @@ class BreakpointDisplayController {
       return;
     }
 
-    let debugging = true;
-    const debuggerStore = this._breakpointStore.getDebuggerStore();
-    if (debuggerStore) {
-      const mode = debuggerStore.getDebuggerMode();
-      debugging = mode !== (_DebuggerStore || _load_DebuggerStore()).DebuggerMode.STOPPED && mode !== (_DebuggerStore || _load_DebuggerStore()).DebuggerMode.STOPPING;
-    }
+    const debugging = this._isDebugging();
 
     const path = this._editor.getPath();
     if (path == null) {
@@ -348,4 +354,13 @@ class BreakpointDisplayController {
     return marker;
   }
 }
-exports.default = BreakpointDisplayController;
+exports.default = BreakpointDisplayController; /**
+                                                * Copyright (c) 2015-present, Facebook, Inc.
+                                                * All rights reserved.
+                                                *
+                                                * This source code is licensed under the license found in the LICENSE file in
+                                                * the root directory of this source tree.
+                                                *
+                                                * 
+                                                * @format
+                                                */

@@ -159,13 +159,14 @@ class Combobox extends _react.default.Component {
 
   _getOptionsElement() {
     if (this._optionsElement == null) {
-      this._optionsElement = document.createElement('div');
+      const workspaceElement = atom.views.getView(atom.workspace);
 
-      if (!(document.body != null)) {
-        throw new Error('Invariant violation: "document.body != null"');
+      if (!(workspaceElement != null)) {
+        throw new Error('Invariant violation: "workspaceElement != null"');
       }
 
-      document.body.appendChild(this._optionsElement);
+      this._optionsElement = document.createElement('div');
+      workspaceElement.appendChild(this._optionsElement);
       this._subscriptions.add(() => {
         this._optionsElement.remove();
       });
@@ -371,18 +372,14 @@ class Combobox extends _react.default.Component {
       );
     }
 
-    const {
-      initialTextInput,
-      placeholderText,
-      size,
-      width
-    } = this.props;
+    const { initialTextInput, placeholderText, size, width } = this.props;
     const wrapperStyle = {
       width: width == null ? undefined : `${width}px`
     };
     return _react.default.createElement(
       'div',
-      { className: 'select-list popover-list popover-list-subtle ' + this.props.className,
+      {
+        className: 'select-list popover-list popover-list-subtle ' + this.props.className,
         style: wrapperStyle },
       _react.default.createElement((_AtomInput || _load_AtomInput()).AtomInput, {
         initialValue: initialTextInput,
@@ -406,6 +403,7 @@ exports.Combobox = Combobox; /**
                               * the root directory of this source tree.
                               *
                               * 
+                              * @format
                               */
 
 Combobox.defaultProps = {

@@ -26,6 +26,7 @@ function activate(state) {
    * the root directory of this source tree.
    *
    * 
+   * @format
    */
 
 // TODO(T17266325): Remove this package when `atom.whenShellEnvironmentLoaded()` lands.

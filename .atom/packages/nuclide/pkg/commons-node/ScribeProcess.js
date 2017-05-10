@@ -29,6 +29,7 @@ const DEFAULT_JOIN_TIMEOUT = 5000;
  * the root directory of this source tree.
  *
  * 
+ * @format
  */
 
 let SCRIBE_CAT_COMMAND = 'scribe_cat';
@@ -52,8 +53,12 @@ class ScribeProcess {
    */
   static isScribeCatOnPath() {
     return (0, _asyncToGenerator.default)(function* () {
-      const { exitCode } = yield (0, (_process || _load_process()).asyncExecute)('which', [SCRIBE_CAT_COMMAND]);
-      return exitCode === 0;
+      try {
+        yield (0, (_process || _load_process()).runCommand)('which', [SCRIBE_CAT_COMMAND]).toPromise();
+        return true;
+      } catch (err) {
+        return false;
+      }
     })();
   }
 
