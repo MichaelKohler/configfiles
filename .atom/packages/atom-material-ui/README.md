@@ -1,3 +1,9 @@
+# :fire::fire::fire: Latest development version requires **Atom 1.17** :fire::fire::fire:
+
+<small>`Atom 1.17` is currently on the beta channel.</small>
+
+---
+
 [![Build Status](https://img.shields.io/travis/atom-material/atom-material-ui.svg?style=flat-square)](https://travis-ci.org/atom-material/atom-material-ui)
 [![apm](https://img.shields.io/apm/dm/atom-material-ui.svg?style=flat-square)](https://atom.io/packages/atom-material-ui)
 [![apm](https://img.shields.io/apm/v/atom-material-ui.svg?style=flat-square)](https://atom.io/packages/atom-material-ui)
@@ -67,7 +73,7 @@ Please check the [CONTRIBUTING.md](https://github.com/atom-material/atom-materia
 
 ![](http://i.imgur.com/0tHORB1.png)
 
-You can download the redesigned icon from [dropbox](https://www.dropbox.com/s/8gyn40sw95626dx/Atom-MD-Icon.zip?dl=0). It's a ZIP file containing multiple resolution PNGs, ICNS and ICO formats. Windows ICO converted by Akshit Tripathi.
+You can download the redesigned icon from [dropbox](https://dl.dropboxusercontent.com/u/115930/Atom-MD-Icon.zip). It's a ZIP file containing multiple resolution PNGs, ICNS and ICO formats. Windows ICO converted by Akshit Tripathi.
 
 # License
 Atom Material UI is licensed under MIT.

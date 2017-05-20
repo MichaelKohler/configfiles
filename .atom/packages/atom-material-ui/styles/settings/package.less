@@ -1,0 +1,66 @@
+.settings-view {
+    .packages .search-container {
+        margin-bottom: 2rem;
+    }
+
+    .package-card {
+        background-color: fade(@text-color, 5%);
+        border-radius: @component-border-radius;
+        margin-bottom: 1.5rem;
+        .z-depth-1;
+
+        &.disabled {
+            background-color: fade(@text-color, 5%);
+            opacity: .5;
+        }
+
+        &:hover {
+            background-color: fade(@text-color, 5%);
+        }
+
+        .btn-group {
+            box-shadow: none;
+
+            .status-indicator {
+                min-width: 2px;
+                width: 2px;
+            }
+        }
+
+        .meta-controls {
+            .install-button, .uninstall-button {
+                &.is-installing, &.is-uninstalling {
+                    font-size: 0;
+                    padding: 0;
+                    width: 2rem;
+                    height: 2rem;
+                    border-radius: 50%;
+                    animation: spin 1s linear infinite;
+                    background: none;
+                    border: .125rem solid @base-color;
+                    border-right-color: transparent;
+
+                    &::before {
+                        animation: spin 1s linear infinite reverse;
+                        margin: 0;
+                        position: relative;
+                        top: -.125rem;
+                        vertical-align: middle;
+                    }
+
+                    &:hover {
+                        box-shadow: none;
+                    }
+                }
+            }
+
+            .install-button.is-installing::before {
+                transform-origin: .5rem .5rem;
+            }
+
+            .uninstall-button.is-uninstalling::before {
+                transform-origin: .375rem .5rem;
+            }
+        }
+    }
+}
