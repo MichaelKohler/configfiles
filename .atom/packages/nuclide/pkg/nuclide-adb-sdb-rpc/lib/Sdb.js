@@ -7,34 +7,34 @@ exports.Sdb = undefined;
 
 var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
 
-var _DebugBridge;
+var _AdbSdbBase;
 
-function _load_DebugBridge() {
-  return _DebugBridge = require('./DebugBridge');
+function _load_AdbSdbBase() {
+  return _AdbSdbBase = require('./AdbSdbBase');
 }
 
 var _nuclideUri;
 
 function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../../commons-node/nuclideUri'));
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-class Sdb extends (_DebugBridge || _load_DebugBridge()).DebugBridge {
+class Sdb extends (_AdbSdbBase || _load_AdbSdbBase()).AdbSdbBase {
   getTizenModelConfigKey(device, key) {
     const modelConfigPath = '/etc/config/model-config.xml';
 
-    return this.runShortAdbCommand(device, ['shell', 'cat', modelConfigPath]).map(stdout => stdout.split(/\n+/g).filter(s => s.indexOf(key) !== -1)[0]).map(s => {
+    return this.runShortCommand(device, ['shell', 'cat', modelConfigPath]).map(stdout => stdout.split(/\n+/g).filter(s => s.indexOf(key) !== -1)[0]).map(s => {
       const regex = /.*<.*>(.*)<.*>/g;
       return regex.exec(s)[1];
     }).toPromise();
   }
 
   getDeviceArchitecture(device) {
-    return this.runShortAdbCommand(device, ['shell', 'uname', '-m']).map(s => s.trim()).toPromise();
+    return this.runShortCommand(device, ['shell', 'uname', '-m']).map(s => s.trim()).toPromise();
   }
 
   getDeviceModel(device) {
@@ -61,16 +61,16 @@ class Sdb extends (_DebugBridge || _load_DebugBridge()).DebugBridge {
       throw new Error('Invariant violation: "!nuclideUri.isRemote(packagePath)"');
     }
 
-    return this.runLongAdbCommand(device, ['install', packagePath]);
+    return this.runLongCommand(device, ['install', packagePath]);
   }
 
   launchApp(device, identifier) {
-    return this.runShortAdbCommand(device, ['shell', 'launch_app', identifier]).toPromise();
+    return this.runShortCommand(device, ['shell', 'launch_app', identifier]).toPromise();
   }
 
   uninstallPackage(device, packageName) {
     // TODO(T17463635)
-    return this.runLongAdbCommand(device, ['uninstall', packageName]);
+    return this.runLongCommand(device, ['uninstall', packageName]);
   }
 }
 exports.Sdb = Sdb; /**

@@ -21,7 +21,7 @@ function _load_findWholeRangeOfSymbol() {
 var _range;
 
 function _load_range() {
-  return _range = require('../../commons-atom/range');
+  return _range = require('nuclide-commons-atom/range');
 }
 
 var _nuclideAnalytics;

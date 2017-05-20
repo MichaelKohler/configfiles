@@ -14,13 +14,13 @@ function _load_constants() {
 var _promise;
 
 function _load_promise() {
-  return _promise = require('../../commons-node/promise');
+  return _promise = require('nuclide-commons/promise');
 }
 
 var _collection;
 
 function _load_collection() {
-  return _collection = require('../../commons-node/collection');
+  return _collection = require('nuclide-commons/collection');
 }
 
 class FileVersionNotifier {

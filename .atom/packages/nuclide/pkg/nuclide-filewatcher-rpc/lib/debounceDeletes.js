@@ -10,7 +10,7 @@ var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
 var _observable;
 
 function _load_observable() {
-  return _observable = require('../../commons-node/observable');
+  return _observable = require('nuclide-commons/observable');
 }
 
 const DELETE_DELAY = 1000;

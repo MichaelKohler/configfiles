@@ -8,7 +8,7 @@ exports.observePanes = observePanes;
 var _event;
 
 function _load_event() {
-  return _event = require('../../commons-node/event');
+  return _event = require('nuclide-commons/event');
 }
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');

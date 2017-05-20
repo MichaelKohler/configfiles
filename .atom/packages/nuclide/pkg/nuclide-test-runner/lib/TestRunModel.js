@@ -29,6 +29,7 @@ const Status = Object.freeze({
      * the root directory of this source tree.
      *
      * 
+     * @format
      */
 
 const StatusSymbol = {};

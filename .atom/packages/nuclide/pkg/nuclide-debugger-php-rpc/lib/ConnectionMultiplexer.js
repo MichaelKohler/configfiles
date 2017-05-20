@@ -40,13 +40,13 @@ function _load_settings() {
 var _nuclideUri;
 
 function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../../commons-node/nuclideUri'));
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
 var _UniversalDisposable;
 
 function _load_UniversalDisposable() {
-  return _UniversalDisposable = _interopRequireDefault(require('../../commons-node/UniversalDisposable'));
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
@@ -86,23 +86,22 @@ function _load_ClientCallback() {
 var _event;
 
 function _load_event() {
-  return _event = require('../../commons-node/event');
+  return _event = require('nuclide-commons/event');
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
+const CONNECTION_MUX_STATUS_EVENT = 'connection-mux-status'; /**
+                                                              * Copyright (c) 2015-present, Facebook, Inc.
+                                                              * All rights reserved.
+                                                              *
+                                                              * This source code is licensed under the license found in the LICENSE file in
+                                                              * the root directory of this source tree.
+                                                              *
+                                                              * 
+                                                              * @format
+                                                              */
 
-const CONNECTION_MUX_STATUS_EVENT = 'connection-mux-status';
 const CONNECTION_MUX_NOTIFICATION_EVENT = 'connection-mux-notification';
 const DEBUGGER_CONNECT_TIMEOUT_MS = 30 * 1000;
 const DEBUGGER_TEAR_DOWN_TIMEOUT_MS = 3 * 1000;
@@ -181,7 +180,7 @@ class ConnectionMultiplexer {
 
   listen(timeoutCallback) {
     this._debuggerStartupDisposable.dispose();
-    this._sendOutput('Connecting and pre-loading all of your PHP types and symbols. This may take a moment, ' + ' please wait...', 'warning');
+    this._sendOutput('Connecting and pre-loading all of your PHP types and symbols. This may take a moment, ' + 'please wait...', 'warning');
 
     const { launchScriptPath } = (0, (_config || _load_config()).getConfig)();
     if (launchScriptPath != null) {

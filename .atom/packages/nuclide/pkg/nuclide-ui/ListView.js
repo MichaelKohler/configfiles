@@ -16,7 +16,7 @@ var _react = _interopRequireDefault(require('react'));
 var _ignoreTextSelectionEvents;
 
 function _load_ignoreTextSelectionEvents() {
-  return _ignoreTextSelectionEvents = _interopRequireDefault(require('./ignoreTextSelectionEvents'));
+  return _ignoreTextSelectionEvents = _interopRequireDefault(require('nuclide-commons-ui/ignoreTextSelectionEvents'));
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

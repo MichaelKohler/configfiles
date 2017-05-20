@@ -9,7 +9,7 @@ var _react = _interopRequireDefault(require('react'));
 var _projects;
 
 function _load_projects() {
-  return _projects = require('../../commons-atom/projects');
+  return _projects = require('nuclide-commons-atom/projects');
 }
 
 var _electron = require('electron');

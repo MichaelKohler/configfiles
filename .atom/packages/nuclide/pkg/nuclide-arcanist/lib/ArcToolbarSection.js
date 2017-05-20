@@ -15,13 +15,13 @@ function _load_ArcToolbarModel() {
 var _Button;
 
 function _load_Button() {
-  return _Button = require('../../nuclide-ui/Button');
+  return _Button = require('nuclide-commons-ui/Button');
 }
 
 var _ButtonGroup;
 
 function _load_ButtonGroup() {
-  return _ButtonGroup = require('../../nuclide-ui/ButtonGroup');
+  return _ButtonGroup = require('nuclide-commons-ui/ButtonGroup');
 }
 
 var _Dropdown;

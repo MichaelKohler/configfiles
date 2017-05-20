@@ -13,31 +13,31 @@ function _load_DiagnosticsPane() {
 var _Checkbox;
 
 function _load_Checkbox() {
-  return _Checkbox = require('../../nuclide-ui/Checkbox');
+  return _Checkbox = require('nuclide-commons-ui/Checkbox');
 }
 
 var _Toolbar;
 
 function _load_Toolbar() {
-  return _Toolbar = require('../../nuclide-ui/Toolbar');
+  return _Toolbar = require('nuclide-commons-ui/Toolbar');
 }
 
 var _ToolbarCenter;
 
 function _load_ToolbarCenter() {
-  return _ToolbarCenter = require('../../nuclide-ui/ToolbarCenter');
+  return _ToolbarCenter = require('nuclide-commons-ui/ToolbarCenter');
 }
 
 var _ToolbarLeft;
 
 function _load_ToolbarLeft() {
-  return _ToolbarLeft = require('../../nuclide-ui/ToolbarLeft');
+  return _ToolbarLeft = require('nuclide-commons-ui/ToolbarLeft');
 }
 
 var _ToolbarRight;
 
 function _load_ToolbarRight() {
-  return _ToolbarRight = require('../../nuclide-ui/ToolbarRight');
+  return _ToolbarRight = require('nuclide-commons-ui/ToolbarRight');
 }
 
 var _react = _interopRequireDefault(require('react'));
@@ -45,7 +45,7 @@ var _react = _interopRequireDefault(require('react'));
 var _Button;
 
 function _load_Button() {
-  return _Button = require('../../nuclide-ui/Button');
+  return _Button = require('nuclide-commons-ui/Button');
 }
 
 var _nuclideAnalytics;

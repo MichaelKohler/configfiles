@@ -24,6 +24,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * the root directory of this source tree.
  *
  * 
+ * @format
  */
 
 /* global HTMLElement */
@@ -126,7 +127,8 @@ class SuggestionList extends _react.default.Component {
       }
       return _react.default.createElement(
         'li',
-        { className: className,
+        {
+          className: className,
           key: index,
           onMouseDown: this._boundConfirm,
           onMouseEnter: this._setSelectedIndex.bind(this, index) },
@@ -141,7 +143,9 @@ class SuggestionList extends _react.default.Component {
 
     return _react.default.createElement(
       'div',
-      { className: 'popover-list select-list hyperclick-suggestion-list-scroller', ref: 'scroller' },
+      {
+        className: 'popover-list select-list hyperclick-suggestion-list-scroller',
+        ref: 'scroller' },
       _react.default.createElement(
         'ol',
         { className: 'list-group', ref: 'selectionList' },

@@ -290,13 +290,13 @@ function _load_fsPromise() {
 var _nuclideUri;
 
 function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../../commons-node/nuclideUri'));
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
 var _promise;
 
 function _load_promise() {
-  return _promise = require('../../commons-node/promise');
+  return _promise = require('nuclide-commons/promise');
 }
 
 var _process;

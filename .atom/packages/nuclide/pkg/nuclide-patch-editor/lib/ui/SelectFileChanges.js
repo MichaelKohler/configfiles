@@ -8,7 +8,7 @@ exports.SelectFileChanges = undefined;
 var _Checkbox;
 
 function _load_Checkbox() {
-  return _Checkbox = require('../../../nuclide-ui/Checkbox');
+  return _Checkbox = require('nuclide-commons-ui/Checkbox');
 }
 
 var _FileChanges;

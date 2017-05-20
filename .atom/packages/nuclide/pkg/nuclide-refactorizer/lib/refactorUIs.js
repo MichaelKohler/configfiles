@@ -8,7 +8,7 @@ exports.initRefactorUIs = initRefactorUIs;
 var _UniversalDisposable;
 
 function _load_UniversalDisposable() {
-  return _UniversalDisposable = _interopRequireDefault(require('../../commons-node/UniversalDisposable'));
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
 var _react = _interopRequireDefault(require('react'));
@@ -111,8 +111,9 @@ function renameShortcut(store) {
         case 'pick':
           let renameRefactoring = null;
           for (const refactoring of phase.availableRefactorings) {
-            if (refactoring.kind === 'rename') {
+            if (refactoring.kind === 'rename' || refactoring.kind === 'freeform' && refactoring.disabled !== false && refactoring.name.match(/rename/i)) {
               renameRefactoring = refactoring;
+              break;
             }
           }
           if (renameRefactoring == null) {

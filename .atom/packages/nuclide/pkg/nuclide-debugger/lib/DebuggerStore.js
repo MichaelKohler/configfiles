@@ -19,15 +19,6 @@ function _load_DebuggerDispatcher() {
   return _DebuggerDispatcher = require('./DebuggerDispatcher');
 }
 
-const DebuggerMode = exports.DebuggerMode = Object.freeze({
-  STARTING: 'starting',
-  RUNNING: 'running',
-  PAUSED: 'paused',
-  STOPPING: 'stopping',
-  STOPPED: 'stopped'
-});
-
-// This is to work around flow's missing support of enums.
 /**
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -39,6 +30,15 @@ const DebuggerMode = exports.DebuggerMode = Object.freeze({
  * @format
  */
 
+const DebuggerMode = exports.DebuggerMode = Object.freeze({
+  STARTING: 'starting',
+  RUNNING: 'running',
+  PAUSED: 'paused',
+  STOPPING: 'stopping',
+  STOPPED: 'stopped'
+});
+
+// This is to work around flow's missing support of enums.
 DebuggerMode;
 
 const DEBUGGER_CHANGE_EVENT = 'change';
@@ -102,6 +102,10 @@ class DebuggerStore {
     return this._registerExecutor;
   }
 
+  getBridge() {
+    return this._model.getBridge();
+  }
+
   getDebuggerInstance() {
     return this._debuggerInstance;
   }
@@ -144,6 +148,14 @@ class DebuggerStore {
 
   getCanSetSourcePaths() {
     return this._setSourcePathCallback != null;
+  }
+
+  getCanRestartDebugger() {
+    return this._debugProcessInfo != null;
+  }
+
+  getDebugProcessInfo() {
+    return this._debugProcessInfo;
   }
 
   initializeSingleThreadStepping(mode) {

@@ -27,13 +27,13 @@ function _load_nuclideLogging() {
 var _event;
 
 function _load_event() {
-  return _event = require('../../commons-node/event');
+  return _event = require('nuclide-commons/event');
 }
 
 var _UniversalDisposable;
 
 function _load_UniversalDisposable() {
-  return _UniversalDisposable = _interopRequireDefault(require('../../commons-node/UniversalDisposable'));
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

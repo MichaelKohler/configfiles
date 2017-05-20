@@ -10,7 +10,7 @@ var _react = _interopRequireDefault(require('react'));
 var _Icon;
 
 function _load_Icon() {
-  return _Icon = require('../../nuclide-ui/Icon');
+  return _Icon = require('nuclide-commons-ui/Icon');
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

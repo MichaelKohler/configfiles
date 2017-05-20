@@ -7,7 +7,7 @@ Object.defineProperty(exports, "__esModule", {
 var _nuclideUri;
 
 function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../../../commons-node/nuclideUri'));
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
 var _Console;
@@ -25,31 +25,31 @@ function _load_Dropdown() {
 var _Toolbar;
 
 function _load_Toolbar() {
-  return _Toolbar = require('../../../nuclide-ui/Toolbar');
+  return _Toolbar = require('nuclide-commons-ui/Toolbar');
 }
 
 var _ToolbarLeft;
 
 function _load_ToolbarLeft() {
-  return _ToolbarLeft = require('../../../nuclide-ui/ToolbarLeft');
+  return _ToolbarLeft = require('nuclide-commons-ui/ToolbarLeft');
 }
 
 var _ToolbarRight;
 
 function _load_ToolbarRight() {
-  return _ToolbarRight = require('../../../nuclide-ui/ToolbarRight');
+  return _ToolbarRight = require('nuclide-commons-ui/ToolbarRight');
 }
 
 var _Checkbox;
 
 function _load_Checkbox() {
-  return _Checkbox = require('../../../nuclide-ui/Checkbox');
+  return _Checkbox = require('nuclide-commons-ui/Checkbox');
 }
 
 var _Button;
 
 function _load_Button() {
-  return _Button = require('../../../nuclide-ui/Button');
+  return _Button = require('nuclide-commons-ui/Button');
 }
 
 var _createPaneContainer;

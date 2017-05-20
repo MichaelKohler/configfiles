@@ -17,7 +17,7 @@ function _load_classnames() {
 var _UniversalDisposable;
 
 function _load_UniversalDisposable() {
-  return _UniversalDisposable = _interopRequireDefault(require('../commons-node/UniversalDisposable'));
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

@@ -11,7 +11,7 @@ var _reactDom = _interopRequireDefault(require('react-dom'));
 var _AtomTextEditor;
 
 function _load_AtomTextEditor() {
-  return _AtomTextEditor = require('../../../nuclide-ui/AtomTextEditor');
+  return _AtomTextEditor = require('nuclide-commons-ui/AtomTextEditor');
 }
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');

@@ -25,7 +25,7 @@ var _atom = require('atom');
 var _featureConfig;
 
 function _load_featureConfig() {
-  return _featureConfig = _interopRequireDefault(require('../../commons-atom/featureConfig'));
+  return _featureConfig = _interopRequireDefault(require('nuclide-commons-atom/feature-config'));
 }
 
 var _nuclideRemoteConnection;

@@ -7,7 +7,7 @@ Object.defineProperty(exports, "__esModule", {
 var _UniversalDisposable;
 
 function _load_UniversalDisposable() {
-  return _UniversalDisposable = _interopRequireDefault(require('../../commons-node/UniversalDisposable'));
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
 var _tasks;
@@ -19,7 +19,7 @@ function _load_tasks() {
 var _event;
 
 function _load_event() {
-  return _event = require('../../commons-node/event');
+  return _event = require('nuclide-commons/event');
 }
 
 var _createExtraUiComponent;
@@ -34,14 +34,23 @@ var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ * @format
+ */
+
 class ArcBuildSystem {
 
   constructor() {
     this.id = 'arcanist';
-    this._outputMessages = new _rxjsBundlesRxMinJs.Subject();
     this._model = this._getModel();
     this.name = this._model.getName();
-    this._disposables = new (_UniversalDisposable || _load_UniversalDisposable()).default(this._outputMessages);
   }
 
   setProjectRoot(projectRoot, callback) {
@@ -65,7 +74,7 @@ class ArcBuildSystem {
     } catch (_) {
       ArcToolbarModel = require('./ArcToolbarModel').ArcToolbarModel;
     }
-    return new ArcToolbarModel(this._outputMessages);
+    return new ArcToolbarModel();
   }
 
   getExtraUi() {
@@ -79,10 +88,6 @@ class ArcBuildSystem {
     return ArcIcon;
   }
 
-  getOutputMessages() {
-    return this._outputMessages;
-  }
-
   runTask(taskType) {
     if (!this._model.getTaskList().some(task => task.type === taskType)) {
       throw new Error(`There's no hhvm task named "${taskType}"`);
@@ -91,23 +96,9 @@ class ArcBuildSystem {
     const taskFunction = getTaskRunFunction(this._model, taskType);
     return (0, (_tasks || _load_tasks()).taskFromObservable)(taskFunction());
   }
-
-  dispose() {
-    this._disposables.dispose();
-  }
 }
 
-exports.default = ArcBuildSystem; /**
-                                   * Copyright (c) 2015-present, Facebook, Inc.
-                                   * All rights reserved.
-                                   *
-                                   * This source code is licensed under the license found in the LICENSE file in
-                                   * the root directory of this source tree.
-                                   *
-                                   * 
-                                   * @format
-                                   */
-
+exports.default = ArcBuildSystem;
 function getTaskRunFunction(model, taskType) {
   switch (taskType) {
     case 'build':

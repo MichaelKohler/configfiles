@@ -10,19 +10,19 @@ var _react = _interopRequireDefault(require('react'));
 var _Icon;
 
 function _load_Icon() {
-  return _Icon = require('../../nuclide-ui/Icon');
+  return _Icon = require('nuclide-commons-ui/Icon');
 }
 
 var _addTooltip;
 
 function _load_addTooltip() {
-  return _addTooltip = _interopRequireDefault(require('../../nuclide-ui/add-tooltip'));
+  return _addTooltip = _interopRequireDefault(require('nuclide-commons-ui/addTooltip'));
 }
 
 var _featureConfig;
 
 function _load_featureConfig() {
-  return _featureConfig = _interopRequireDefault(require('../../commons-atom/featureConfig'));
+  return _featureConfig = _interopRequireDefault(require('nuclide-commons-atom/feature-config'));
 }
 
 var _classnames;

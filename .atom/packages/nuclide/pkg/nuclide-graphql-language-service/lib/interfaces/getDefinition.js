@@ -55,18 +55,36 @@ const LANGUAGE = exports.LANGUAGE = 'GraphQL'; /**
                                                 */
 
 function getDefinitionQueryResultForDefinitionNode(path, text, definition) {
+  const name = definition.name;
+
+  if (!name) {
+    throw new Error('Name node expected.');
+  }
+
   return {
     definitions: [getDefinitionForFragmentDefinition(path, text, definition)],
-    queryRange: [(0, (_Range || _load_Range()).locToRange)(text, definition.name.loc)]
+    queryRange: [(0, (_Range || _load_Range()).locToRange)(text, name.loc)]
   };
 }
 
 function getDefinitionForFragmentDefinition(path, text, definition) {
+  const name = definition.name;
+
+  if (!name) {
+    throw new Error('Name node expected.');
+  }
+
+  const nameLoc = name.loc;
+
+  if (!nameLoc) {
+    throw new Error('Location for Name node expected.');
+  }
+
   return {
     path,
-    position: (0, (_Range || _load_Range()).offsetToPoint)(text, definition.name.loc.start),
+    position: (0, (_Range || _load_Range()).offsetToPoint)(text, nameLoc.start),
     range: (0, (_Range || _load_Range()).locToRange)(text, definition.loc),
-    name: definition.name.value,
+    name: name.value,
     language: LANGUAGE,
     // This is a file inside the project root, good enough for now
     projectRoot: path

@@ -57,10 +57,16 @@ function getArgumentReference(typeInfo) {
 }
 
 function getEnumValueReference(typeInfo) {
+  const type = (0, (_graphql || _load_graphql()).getNamedType)(typeInfo.inputType);
+
+  if (!type) {
+    throw new Error('Expected type to be truthy.');
+  }
+
   return {
     kind: 'EnumValue',
     value: typeInfo.enumValue,
-    type: (0, (_graphql || _load_graphql()).getNamedType)(typeInfo.inputType)
+    type
   };
 }
 

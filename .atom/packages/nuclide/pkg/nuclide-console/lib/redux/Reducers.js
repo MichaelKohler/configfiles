@@ -44,11 +44,13 @@ function accumulateState(state, action) {
           records: state.records.slice(-maxMessageCount)
         });
       }
-    case (_Actions || _load_Actions()).REGISTER_RECORD_PROVIDER:
+    case (_Actions || _load_Actions()).REGISTER_SOURCE:
       {
-        const { recordProvider } = action.payload;
+        const { source } = action.payload;
         return Object.assign({}, state, {
-          providers: new Map(state.providers).set(recordProvider.id, recordProvider)
+          providers: new Map(state.providers).set(source.id, Object.assign({}, source, {
+            name: source.name || source.id
+          }))
         });
       }
     case (_Actions || _load_Actions()).CLEAR_RECORDS:

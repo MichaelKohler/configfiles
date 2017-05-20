@@ -17,13 +17,13 @@ function _load_nuclideRemoteConnection() {
 var _nuclideUri;
 
 function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../../commons-node/nuclideUri'));
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
 var _promise;
 
 function _load_promise() {
-  return _promise = require('../../commons-node/promise');
+  return _promise = require('nuclide-commons/promise');
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -89,7 +89,7 @@ class RelatedFileFinder {
       const dirName = (_nuclideUri || _load_nuclideUri()).default.dirname(filePath);
       const prefix = getPrefix(filePath);
       const service = (0, (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).getFileSystemServiceByNuclideUri)(filePath);
-      const listing = yield service.readdir((_nuclideUri || _load_nuclideUri()).default.getPath(dirName));
+      const listing = yield service.readdir(dirName);
       // Here the filtering logic:
       // first get all files with the same prefix -> filelist,
       // add the related files from external providers

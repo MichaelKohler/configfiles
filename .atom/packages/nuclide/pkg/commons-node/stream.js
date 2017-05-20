@@ -12,13 +12,13 @@ var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
 var _event;
 
 function _load_event() {
-  return _event = require('./event');
+  return _event = require('nuclide-commons/event');
 }
 
 var _UniversalDisposable;
 
 function _load_UniversalDisposable() {
-  return _UniversalDisposable = _interopRequireDefault(require('./UniversalDisposable'));
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
 var _stream = _interopRequireDefault(require('stream'));

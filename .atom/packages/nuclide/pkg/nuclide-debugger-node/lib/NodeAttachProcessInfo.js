@@ -28,6 +28,10 @@ class NodeAttachProcessInfo extends (_nuclideDebuggerBase || _load_nuclideDebugg
     this._targetInfo = targetInfo;
   }
 
+  clone() {
+    return new NodeAttachProcessInfo(this._targetUri, this._targetInfo);
+  }
+
   debug() {
     var _this = this;
 

@@ -70,7 +70,7 @@ let findTargetLocation = exports.findTargetLocation = (() => {
     let data;
     try {
       const fs = (0, (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).getFileSystemServiceByNuclideUri)(target.path);
-      data = (yield fs.readFile((_nuclideUri || _load_nuclideUri()).default.getPath(target.path))).toString('utf8');
+      data = (yield fs.readFile(target.path)).toString('utf8');
     } catch (e) {
       return null;
     }
@@ -191,7 +191,7 @@ let findRelativeFilePath = (() => {
     let stat;
     try {
       const fs = (0, (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).getFileSystemServiceByNuclideUri)(potentialPath);
-      stat = yield fs.stat((_nuclideUri || _load_nuclideUri()).default.getPath(potentialPath));
+      stat = yield fs.stat(potentialPath);
     } catch (e) {
       return null;
     }
@@ -228,7 +228,7 @@ function _load_buildFiles() {
 var _range;
 
 function _load_range() {
-  return _range = require('../../commons-atom/range');
+  return _range = require('nuclide-commons-atom/range');
 }
 
 var _nuclideRemoteConnection;
@@ -240,13 +240,13 @@ function _load_nuclideRemoteConnection() {
 var _goToLocation;
 
 function _load_goToLocation() {
-  return _goToLocation = require('../../commons-atom/go-to-location');
+  return _goToLocation = require('nuclide-commons-atom/go-to-location');
 }
 
 var _nuclideUri;
 
 function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../../commons-node/nuclideUri'));
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
 var _escapeStringRegexp;

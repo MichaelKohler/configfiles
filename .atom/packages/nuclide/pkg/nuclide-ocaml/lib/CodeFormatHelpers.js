@@ -58,19 +58,19 @@ function _load_nuclideRemoteConnection() {
 var _nuclideUri;
 
 function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../../commons-node/nuclideUri'));
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
 var _string;
 
 function _load_string() {
-  return _string = require('../../commons-node/string');
+  return _string = require('nuclide-commons/string');
 }
 
 var _featureConfig;
 
 function _load_featureConfig() {
-  return _featureConfig = _interopRequireDefault(require('../../commons-atom/featureConfig'));
+  return _featureConfig = _interopRequireDefault(require('nuclide-commons-atom/feature-config'));
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

@@ -12,7 +12,7 @@ var _reactDom = _interopRequireDefault(require('react-dom'));
 var _ReactMountRootElement;
 
 function _load_ReactMountRootElement() {
-  return _ReactMountRootElement = _interopRequireDefault(require('../nuclide-ui/ReactMountRootElement'));
+  return _ReactMountRootElement = _interopRequireDefault(require('nuclide-commons-ui/ReactMountRootElement'));
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

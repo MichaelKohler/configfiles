@@ -164,7 +164,7 @@ var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
 var _nuclideUri;
 
 function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../../commons-node/nuclideUri'));
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
 var _process;
@@ -176,7 +176,7 @@ function _load_process() {
 var _observable;
 
 function _load_observable() {
-  return _observable = require('../../commons-node/observable');
+  return _observable = require('nuclide-commons/observable');
 }
 
 var _nice;

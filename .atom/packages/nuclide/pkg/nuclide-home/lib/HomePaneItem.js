@@ -34,19 +34,19 @@ function _load_createUtmUrl() {
 var _featureConfig;
 
 function _load_featureConfig() {
-  return _featureConfig = _interopRequireDefault(require('../../commons-atom/featureConfig'));
+  return _featureConfig = _interopRequireDefault(require('nuclide-commons-atom/feature-config'));
 }
 
 var _UniversalDisposable;
 
 function _load_UniversalDisposable() {
-  return _UniversalDisposable = _interopRequireDefault(require('../../commons-node/UniversalDisposable'));
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
 var _Checkbox;
 
 function _load_Checkbox() {
-  return _Checkbox = require('../../nuclide-ui/Checkbox');
+  return _Checkbox = require('nuclide-commons-ui/Checkbox');
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

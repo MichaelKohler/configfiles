@@ -14,7 +14,7 @@ function _load_nuclideVcsBase() {
 var _goToLocation;
 
 function _load_goToLocation() {
-  return _goToLocation = require('../commons-atom/go-to-location');
+  return _goToLocation = require('nuclide-commons-atom/go-to-location');
 }
 
 var _openInDiffView;
@@ -32,7 +32,7 @@ function _load_nuclideAnalytics() {
 var _nuclideUri;
 
 function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../commons-node/nuclideUri'));
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
 var _react = _interopRequireDefault(require('react'));
@@ -40,7 +40,7 @@ var _react = _interopRequireDefault(require('react'));
 var _UniversalDisposable;
 
 function _load_UniversalDisposable() {
-  return _UniversalDisposable = _interopRequireDefault(require('../commons-node/UniversalDisposable'));
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
 var _ChangedFilesList;

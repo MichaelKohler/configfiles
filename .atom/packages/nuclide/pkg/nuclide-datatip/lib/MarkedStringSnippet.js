@@ -11,7 +11,7 @@ var _react = _interopRequireDefault(require('react'));
 var _AtomTextEditor;
 
 function _load_AtomTextEditor() {
-  return _AtomTextEditor = require('../../nuclide-ui/AtomTextEditor');
+  return _AtomTextEditor = require('nuclide-commons-ui/AtomTextEditor');
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -38,9 +38,14 @@ class MarkedStringSnippet extends _react.default.Component {
   }
 
   render() {
-    const { value, grammar } = this.props;
+    const { value } = this.props;
     const shouldTruncate = value.length > MAX_LENGTH && !this.state.isExpanded;
     const buffer = new _atom.TextBuffer(shouldTruncate ? value.substr(0, MAX_LENGTH) + '...' : value);
+    // Improve the display of Hack snippets.
+    let { grammar } = this.props;
+    if (grammar.scopeName === 'text.html.hack') {
+      grammar = atom.grammars.grammarForScopeName('source.hackfragment') || grammar;
+    }
     return _react.default.createElement(
       'div',
       {

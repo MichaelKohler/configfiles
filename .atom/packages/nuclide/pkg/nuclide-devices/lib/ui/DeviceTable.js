@@ -10,8 +10,10 @@ var _react = _interopRequireDefault(require('react'));
 var _Table;
 
 function _load_Table() {
-  return _Table = require('../../../nuclide-ui/Table');
+  return _Table = require('nuclide-commons-ui/Table');
 }
+
+var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -30,6 +32,7 @@ class DeviceTable extends _react.default.Component {
 
   constructor(props) {
     super(props);
+    this._devicesSubscription = null;
     this.state = { selectedDeviceIndex: null };
     this._handleDeviceTableSelection = this._handleDeviceTableSelection.bind(this);
     this._emptyComponent = () => _react.default.createElement(
@@ -37,6 +40,16 @@ class DeviceTable extends _react.default.Component {
       { className: 'padded' },
       'No devices connected'
     );
+  }
+
+  componentDidMount() {
+    this._devicesSubscription = this.props.startFetchingDevices();
+  }
+
+  componentWillUnmount() {
+    if (this._devicesSubscription != null) {
+      this._devicesSubscription.unsubscribe();
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -56,7 +69,7 @@ class DeviceTable extends _react.default.Component {
     }));
     const columns = [{
       key: 'name',
-      title: 'Device',
+      title: 'Devices',
       width: 1.0
     }];
 

@@ -15,7 +15,7 @@ var _react = _interopRequireDefault(require('react'));
 var _goToLocation;
 
 function _load_goToLocation() {
-  return _goToLocation = require('../../commons-atom/go-to-location');
+  return _goToLocation = require('nuclide-commons-atom/go-to-location');
 }
 
 var _nuclideAnalytics;
@@ -27,13 +27,13 @@ function _load_nuclideAnalytics() {
 var _Table;
 
 function _load_Table() {
-  return _Table = require('../../nuclide-ui/Table');
+  return _Table = require('nuclide-commons-ui/Table');
 }
 
 var _Highlight;
 
 function _load_Highlight() {
-  return _Highlight = require('../../nuclide-ui/Highlight');
+  return _Highlight = require('nuclide-commons-ui/Highlight');
 }
 
 var _DiagnosticsSorter;
@@ -196,7 +196,8 @@ class DiagnosticsPane extends _react.default.Component {
     }, ...filePathColumn, {
       key: 'range',
       title: 'Line',
-      width: 0.05
+      width: 0.05,
+      shouldRightAlign: true
     }, {
       component: DescriptionComponent,
       key: 'description',

@@ -22,31 +22,31 @@ function _load_DiagnosticsPanel() {
 var _observePaneItemVisibility;
 
 function _load_observePaneItemVisibility() {
-  return _observePaneItemVisibility = _interopRequireDefault(require('../../commons-atom/observePaneItemVisibility'));
+  return _observePaneItemVisibility = _interopRequireDefault(require('nuclide-commons-atom/observePaneItemVisibility'));
 }
 
 var _renderReactRoot;
 
 function _load_renderReactRoot() {
-  return _renderReactRoot = require('../../commons-atom/renderReactRoot');
+  return _renderReactRoot = require('nuclide-commons-ui/renderReactRoot');
 }
 
 var _textEditor;
 
 function _load_textEditor() {
-  return _textEditor = require('../../commons-atom/text-editor');
+  return _textEditor = require('nuclide-commons-atom/text-editor');
 }
 
 var _event;
 
 function _load_event() {
-  return _event = require('../../commons-node/event');
+  return _event = require('nuclide-commons/event');
 }
 
 var _observable;
 
 function _load_observable() {
-  return _observable = require('../../commons-node/observable');
+  return _observable = require('nuclide-commons/observable');
 }
 
 var _nuclideAnalytics;
@@ -58,7 +58,7 @@ function _load_nuclideAnalytics() {
 var _bindObservableAsProps;
 
 function _load_bindObservableAsProps() {
-  return _bindObservableAsProps = require('../../nuclide-ui/bindObservableAsProps');
+  return _bindObservableAsProps = require('nuclide-commons-ui/bindObservableAsProps');
 }
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');

@@ -10,7 +10,7 @@ var _react = _interopRequireDefault(require('react'));
 var _bindObservableAsProps;
 
 function _load_bindObservableAsProps() {
-  return _bindObservableAsProps = require('./bindObservableAsProps');
+  return _bindObservableAsProps = require('nuclide-commons-ui/bindObservableAsProps');
 }
 
 var _highlightOnUpdate;
@@ -34,13 +34,13 @@ function _load_Tree() {
 var _LoadingSpinner;
 
 function _load_LoadingSpinner() {
-  return _LoadingSpinner = require('./LoadingSpinner');
+  return _LoadingSpinner = require('nuclide-commons-ui/LoadingSpinner');
 }
 
 var _ignoreTextSelectionEvents;
 
 function _load_ignoreTextSelectionEvents() {
-  return _ignoreTextSelectionEvents = _interopRequireDefault(require('./ignoreTextSelectionEvents'));
+  return _ignoreTextSelectionEvents = _interopRequireDefault(require('nuclide-commons-ui/ignoreTextSelectionEvents'));
 }
 
 var _classnames;

@@ -10,7 +10,7 @@ var _react = _interopRequireDefault(require('react'));
 var _Button;
 
 function _load_Button() {
-  return _Button = require('./Button');
+  return _Button = require('nuclide-commons-ui/Button');
 }
 
 var _Modal;

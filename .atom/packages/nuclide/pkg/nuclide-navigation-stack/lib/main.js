@@ -3,13 +3,13 @@
 var _projects;
 
 function _load_projects() {
-  return _projects = require('../../commons-atom/projects');
+  return _projects = require('nuclide-commons-atom/projects');
 }
 
 var _textEditor;
 
 function _load_textEditor() {
-  return _textEditor = require('../../commons-atom/text-editor');
+  return _textEditor = require('nuclide-commons-atom/text-editor');
 }
 
 var _NavigationStackController;
@@ -27,19 +27,19 @@ function _load_nuclideAnalytics() {
 var _UniversalDisposable;
 
 function _load_UniversalDisposable() {
-  return _UniversalDisposable = _interopRequireDefault(require('../../commons-node/UniversalDisposable'));
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
 var _goToLocation;
 
 function _load_goToLocation() {
-  return _goToLocation = require('../../commons-atom/go-to-location');
+  return _goToLocation = require('nuclide-commons-atom/go-to-location');
 }
 
 var _createPackage;
 
 function _load_createPackage() {
-  return _createPackage = _interopRequireDefault(require('../../commons-atom/createPackage'));
+  return _createPackage = _interopRequireDefault(require('nuclide-commons-atom/createPackage'));
 }
 
 var _StatusBar;

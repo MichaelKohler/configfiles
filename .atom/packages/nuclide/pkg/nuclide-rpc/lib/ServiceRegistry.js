@@ -75,8 +75,6 @@ class ServiceRegistry {
     const preserveFunctionNames = service.preserveFunctionNames != null && service.preserveFunctionNames;
     try {
       const factory = (0, (_main || _load_main()).createProxyFactory)(service.name, preserveFunctionNames, service.definition, this._predefinedTypes);
-      // $FlowIssue - the parameter passed to require must be a literal string.
-      const localImpl = require(service.implementation);
       this._services.set(service.name, {
         name: service.name,
         factory
@@ -93,24 +91,20 @@ class ServiceRegistry {
               this._typeRegistry.registerAlias(name, definition.location, definition.definition);
             }
             break;
+
           case 'function':
             // Register module-level functions.
             const functionName = service.preserveFunctionNames ? name : `${service.name}/${name}`;
-            this._registerFunction(functionName, localImpl[name], definition.type);
+            this._registerFunction(functionName, service.implementation, impl => impl[name], definition.type);
             break;
+
           case 'interface':
             // Register interfaces.
-            this._classesByName.set(name, {
-              localImplementation: localImpl[name],
-              definition
-            });
-
+            this._registerClass(name, service.implementation, impl => impl[name], definition);
             this._typeRegistry.registerType(name, definition.location, (object, context) => context.marshal(name, object), (objectId, context) => context.unmarshal(objectId, name, context.getService(service.name)[name]));
-
             // Register all of the static methods as remote functions.
-            Object.keys(definition.staticMethods).forEach(funcName => {
-              const funcType = definition.staticMethods[funcName];
-              this._registerFunction(`${name}/${funcName}`, localImpl[name][funcName], funcType);
+            Object.keys(definition.staticMethods).forEach(methodName => {
+              this._registerFunction(`${name}/${methodName}`, service.implementation, impl => impl[name][methodName], definition.staticMethods[methodName]);
             });
             break;
         }
@@ -121,13 +115,34 @@ class ServiceRegistry {
     }
   }
 
-  _registerFunction(name, localImpl, type) {
+  _registerFunction(name, id, accessor, type) {
     if (this._functionsByName.has(name)) {
       throw new Error(`Duplicate RPC function: ${name}`);
     }
+    let impl;
     this._functionsByName.set(name, {
-      localImplementation: localImpl,
+      getLocalImplementation() {
+        if (impl == null) {
+          // $FlowIgnore
+          impl = accessor(require(id));
+        }
+        return impl;
+      },
       type
+    });
+  }
+
+  _registerClass(name, id, accessor, definition) {
+    let impl;
+    this._classesByName.set(name, {
+      getLocalImplementation() {
+        if (impl == null) {
+          // $FlowIgnore
+          impl = accessor(require(id));
+        }
+        return impl;
+      },
+      definition
     });
   }
 

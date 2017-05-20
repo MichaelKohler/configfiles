@@ -5,14 +5,14 @@ let Observable;
 module.exports = _client => {
   const remoteModule = {};
 
-  remoteModule.initializeLsp = function (arg0, arg1, arg2, arg3, arg4, arg5) {
+  remoteModule.initializeLsp = function (arg0, arg1, arg2, arg3, arg4, arg5, arg6) {
     return _client.marshalArguments(Array.from(arguments), [{
       name: "command",
       type: {
         location: {
           type: "source",
           fileName: "HackService.js",
-          line: 100
+          line: 103
         },
         kind: "string"
       }
@@ -22,14 +22,14 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "HackService.js",
-          line: 101
+          line: 104
         },
         kind: "array",
         type: {
           location: {
             type: "source",
             fileName: "HackService.js",
-            line: 101
+            line: 104
           },
           kind: "string"
         }
@@ -40,7 +40,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "HackService.js",
-          line: 102
+          line: 105
         },
         kind: "string"
       }
@@ -50,14 +50,14 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "HackService.js",
-          line: 103
+          line: 106
         },
         kind: "array",
         type: {
           location: {
             type: "source",
             fileName: "HackService.js",
-            line: 103
+            line: 106
           },
           kind: "named",
           name: "NuclideUri"
@@ -69,7 +69,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "HackService.js",
-          line: 104
+          line: 107
         },
         kind: "named",
         name: "LogLevel"
@@ -80,10 +80,21 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "HackService.js",
-          line: 105
+          line: 108
         },
         kind: "named",
         name: "FileNotifier"
+      }
+    }, {
+      name: "host",
+      type: {
+        location: {
+          type: "source",
+          fileName: "HackService.js",
+          line: 109
+        },
+        kind: "named",
+        name: "HostServices"
       }
     }]).then(args => {
       return _client.callRemoteFunction("HackService/initializeLsp", "promise", args);
@@ -92,7 +103,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "HackService.js",
-          line: 106
+          line: 110
         },
         kind: "named",
         name: "LanguageService"
@@ -107,7 +118,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "HackService.js",
-          line: 121
+          line: 127
         },
         kind: "string"
       }
@@ -117,7 +128,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "HackService.js",
-          line: 122
+          line: 128
         },
         kind: "named",
         name: "LogLevel"
@@ -128,7 +139,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "HackService.js",
-          line: 123
+          line: 129
         },
         kind: "named",
         name: "FileNotifier"
@@ -140,7 +151,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "HackService.js",
-          line: 124
+          line: 130
         },
         kind: "named",
         name: "LanguageService"
@@ -148,6 +159,216 @@ module.exports = _client => {
     });
   };
 
+  remoteModule.HostServices = class {
+    consoleNotification(arg0, arg1, arg2) {
+      return _client.marshalArguments(Array.from(arguments), [{
+        name: "source",
+        type: {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 19
+          },
+          kind: "string"
+        }
+      }, {
+        name: "level",
+        type: {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 20
+          },
+          kind: "named",
+          name: "ShowNotificationLevel"
+        }
+      }, {
+        name: "text",
+        type: {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 21
+          },
+          kind: "string"
+        }
+      }]).then(args => {
+        return _client.marshal(this, {
+          kind: "named",
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 17
+          },
+          name: "HostServices"
+        }).then(id => {
+          return _client.callRemoteMethod(id, "consoleNotification", "void", args);
+        });
+      });
+    }
+
+    dialogNotification(arg0, arg1) {
+      return Observable.fromPromise(_client.marshalArguments(Array.from(arguments), [{
+        name: "level",
+        type: {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 25
+          },
+          kind: "named",
+          name: "ShowNotificationLevel"
+        }
+      }, {
+        name: "text",
+        type: {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 26
+          },
+          kind: "string"
+        }
+      }]).then(args => {
+        return _client.marshal(this, {
+          kind: "named",
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 17
+          },
+          name: "HostServices"
+        }).then(id => {
+          return _client.callRemoteMethod(id, "dialogNotification", "observable", args);
+        });
+      })).concatMap(id => id).concatMap(value => {
+        return _client.unmarshal(value, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 27
+          },
+          kind: "void"
+        });
+      }).publish();
+    }
+
+    dialogRequest(arg0, arg1, arg2, arg3) {
+      return Observable.fromPromise(_client.marshalArguments(Array.from(arguments), [{
+        name: "level",
+        type: {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 30
+          },
+          kind: "named",
+          name: "ShowNotificationLevel"
+        }
+      }, {
+        name: "text",
+        type: {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 31
+          },
+          kind: "string"
+        }
+      }, {
+        name: "buttonLabels",
+        type: {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 32
+          },
+          kind: "array",
+          type: {
+            location: {
+              type: "source",
+              fileName: "rpc-types.js",
+              line: 32
+            },
+            kind: "string"
+          }
+        }
+      }, {
+        name: "closeLabel",
+        type: {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 33
+          },
+          kind: "string"
+        }
+      }]).then(args => {
+        return _client.marshal(this, {
+          kind: "named",
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 17
+          },
+          name: "HostServices"
+        }).then(id => {
+          return _client.callRemoteMethod(id, "dialogRequest", "observable", args);
+        });
+      })).concatMap(id => id).concatMap(value => {
+        return _client.unmarshal(value, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 34
+          },
+          kind: "string"
+        });
+      }).publish();
+    }
+
+    childRegister(arg0) {
+      return _client.marshalArguments(Array.from(arguments), [{
+        name: "child",
+        type: {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 40
+          },
+          kind: "named",
+          name: "HostServices"
+        }
+      }]).then(args => {
+        return _client.marshal(this, {
+          kind: "named",
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 17
+          },
+          name: "HostServices"
+        }).then(id => {
+          return _client.callRemoteMethod(id, "childRegister", "promise", args);
+        });
+      }).then(value => {
+        return _client.unmarshal(value, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 40
+          },
+          kind: "named",
+          name: "HostServices"
+        });
+      });
+    }
+
+    dispose() {
+      return _client.disposeRemoteObject(this);
+    }
+
+  };
   remoteModule.FileNotifier = class {
     onFileEvent(arg0) {
       return _client.marshalArguments(Array.from(arguments), [{
@@ -863,28 +1084,28 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 115
+            line: 114
           },
           kind: "nullable",
           type: {
             location: {
               type: "source",
               fileName: "LanguageService.js",
-              line: 115
+              line: 114
             },
             kind: "object",
             fields: [{
               location: {
                 type: "source",
                 fileName: "LanguageService.js",
-                line: 116
+                line: 115
               },
               name: "newCursor",
               type: {
                 location: {
                   type: "source",
                   fileName: "LanguageService.js",
-                  line: 116
+                  line: 115
                 },
                 kind: "number"
               },
@@ -893,14 +1114,14 @@ module.exports = _client => {
               location: {
                 type: "source",
                 fileName: "LanguageService.js",
-                line: 117
+                line: 116
               },
               name: "formatted",
               type: {
                 location: {
                   type: "source",
                   fileName: "LanguageService.js",
-                  line: 117
+                  line: 116
                 },
                 kind: "string"
               },
@@ -918,7 +1139,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 122
+            line: 120
           },
           kind: "named",
           name: "FileVersion"
@@ -929,7 +1150,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 123
+            line: 121
           },
           kind: "named",
           name: "atom$Point"
@@ -951,14 +1172,14 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 124
+            line: 122
           },
           kind: "nullable",
           type: {
             location: {
               type: "source",
               fileName: "LanguageService.js",
-              line: 124
+              line: 122
             },
             kind: "named",
             name: "NuclideEvaluationExpression"
@@ -974,14 +1195,14 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 126
+            line: 124
           },
           kind: "array",
           type: {
             location: {
               type: "source",
               fileName: "LanguageService.js",
-              line: 126
+              line: 124
             },
             kind: "named",
             name: "NuclideUri"
@@ -1004,7 +1225,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 126
+            line: 124
           },
           kind: "boolean"
         });
@@ -1018,7 +1239,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 129
+            line: 127
           },
           kind: "string"
         }
@@ -1028,14 +1249,14 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 130
+            line: 128
           },
           kind: "array",
           type: {
             location: {
               type: "source",
               fileName: "LanguageService.js",
-              line: 130
+              line: 128
             },
             kind: "named",
             name: "NuclideUri"
@@ -1058,21 +1279,21 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 131
+            line: 129
           },
           kind: "nullable",
           type: {
             location: {
               type: "source",
               fileName: "LanguageService.js",
-              line: 131
+              line: 129
             },
             kind: "array",
             type: {
               location: {
                 type: "source",
                 fileName: "LanguageService.js",
-                line: 131
+                line: 129
               },
               kind: "named",
               name: "SymbolResult"
@@ -1089,7 +1310,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 133
+            line: 131
           },
           kind: "named",
           name: "NuclideUri"
@@ -1111,14 +1332,14 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 133
+            line: 131
           },
           kind: "nullable",
           type: {
             location: {
               type: "source",
               fileName: "LanguageService.js",
-              line: 133
+              line: 131
             },
             kind: "named",
             name: "NuclideUri"
@@ -1134,7 +1355,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 135
+            line: 133
           },
           kind: "named",
           name: "NuclideUri"
@@ -1156,7 +1377,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 135
+            line: 133
           },
           kind: "boolean"
         });
@@ -1239,21 +1460,21 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "HackService.js",
-        line: 84
+        line: 87
       },
       name: "SymbolTypeValue",
       definition: {
         location: {
           type: "source",
           fileName: "HackService.js",
-          line: 84
+          line: 87
         },
         kind: "union",
         types: [{
           location: {
             type: "source",
             fileName: "HackService.js",
-            line: 84
+            line: 87
           },
           kind: "number-literal",
           value: 0
@@ -1261,7 +1482,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "HackService.js",
-            line: 84
+            line: 87
           },
           kind: "number-literal",
           value: 1
@@ -1269,7 +1490,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "HackService.js",
-            line: 84
+            line: 87
           },
           kind: "number-literal",
           value: 2
@@ -1277,7 +1498,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "HackService.js",
-            line: 84
+            line: 87
           },
           kind: "number-literal",
           value: 3
@@ -1285,7 +1506,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "HackService.js",
-            line: 84
+            line: 87
           },
           kind: "number-literal",
           value: 4
@@ -1297,35 +1518,35 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "HackService.js",
-        line: 86
+        line: 89
       },
       name: "HackTypeAtPosResult",
       definition: {
         location: {
           type: "source",
           fileName: "HackService.js",
-          line: 86
+          line: 89
         },
         kind: "object",
         fields: [{
           location: {
             type: "source",
             fileName: "HackService.js",
-            line: 87
+            line: 90
           },
           name: "type",
           type: {
             location: {
               type: "source",
               fileName: "HackService.js",
-              line: 87
+              line: 90
             },
             kind: "nullable",
             type: {
               location: {
                 type: "source",
                 fileName: "HackService.js",
-                line: 87
+                line: 90
               },
               kind: "string"
             }
@@ -1335,21 +1556,21 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "HackService.js",
-            line: 88
+            line: 91
           },
           name: "pos",
           type: {
             location: {
               type: "source",
               fileName: "HackService.js",
-              line: 88
+              line: 91
             },
             kind: "nullable",
             type: {
               location: {
                 type: "source",
                 fileName: "HackService.js",
-                line: 88
+                line: 91
               },
               kind: "named",
               name: "HackRange"
@@ -1364,21 +1585,21 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "HackService.js",
-        line: 91
+        line: 94
       },
       name: "HackHighlightRefsResult",
       definition: {
         location: {
           type: "source",
           fileName: "HackService.js",
-          line: 91
+          line: 94
         },
         kind: "array",
         type: {
           location: {
             type: "source",
             fileName: "HackService.js",
-            line: 91
+            line: 94
           },
           kind: "named",
           name: "HackRange"
@@ -1390,28 +1611,28 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "HackService.js",
-        line: 93
+        line: 96
       },
       name: "HackFormatSourceResult",
       definition: {
         location: {
           type: "source",
           fileName: "HackService.js",
-          line: 93
+          line: 96
         },
         kind: "object",
         fields: [{
           location: {
             type: "source",
             fileName: "HackService.js",
-            line: 94
+            line: 97
           },
           name: "error_message",
           type: {
             location: {
               type: "source",
               fileName: "HackService.js",
-              line: 94
+              line: 97
             },
             kind: "string"
           },
@@ -1420,14 +1641,14 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "HackService.js",
-            line: 95
+            line: 98
           },
           name: "result",
           type: {
             location: {
               type: "source",
               fileName: "HackService.js",
-              line: 95
+              line: 98
             },
             kind: "string"
           },
@@ -1436,14 +1657,14 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "HackService.js",
-            line: 96
+            line: 99
           },
           name: "internal_error",
           type: {
             location: {
               type: "source",
               fileName: "HackService.js",
-              line: 96
+              line: 99
             },
             kind: "boolean"
           },
@@ -1457,13 +1678,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "HackService.js",
-        line: 99
+        line: 102
       },
       type: {
         location: {
           type: "source",
           fileName: "HackService.js",
-          line: 99
+          line: 102
         },
         kind: "function",
         argumentTypes: [{
@@ -1472,7 +1693,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "HackService.js",
-              line: 100
+              line: 103
             },
             kind: "string"
           }
@@ -1482,14 +1703,14 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "HackService.js",
-              line: 101
+              line: 104
             },
             kind: "array",
             type: {
               location: {
                 type: "source",
                 fileName: "HackService.js",
-                line: 101
+                line: 104
               },
               kind: "string"
             }
@@ -1500,7 +1721,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "HackService.js",
-              line: 102
+              line: 105
             },
             kind: "string"
           }
@@ -1510,14 +1731,14 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "HackService.js",
-              line: 103
+              line: 106
             },
             kind: "array",
             type: {
               location: {
                 type: "source",
                 fileName: "HackService.js",
-                line: 103
+                line: 106
               },
               kind: "named",
               name: "NuclideUri"
@@ -1529,7 +1750,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "HackService.js",
-              line: 104
+              line: 107
             },
             kind: "named",
             name: "LogLevel"
@@ -1540,24 +1761,35 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "HackService.js",
-              line: 105
+              line: 108
             },
             kind: "named",
             name: "FileNotifier"
+          }
+        }, {
+          name: "host",
+          type: {
+            location: {
+              type: "source",
+              fileName: "HackService.js",
+              line: 109
+            },
+            kind: "named",
+            name: "HostServices"
           }
         }],
         returnType: {
           location: {
             type: "source",
             fileName: "HackService.js",
-            line: 106
+            line: 110
           },
           kind: "promise",
           type: {
             location: {
               type: "source",
               fileName: "HackService.js",
-              line: 106
+              line: 110
             },
             kind: "named",
             name: "LanguageService"
@@ -1571,13 +1803,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "HackService.js",
-        line: 120
+        line: 126
       },
       type: {
         location: {
           type: "source",
           fileName: "HackService.js",
-          line: 120
+          line: 126
         },
         kind: "function",
         argumentTypes: [{
@@ -1586,7 +1818,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "HackService.js",
-              line: 121
+              line: 127
             },
             kind: "string"
           }
@@ -1596,7 +1828,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "HackService.js",
-              line: 122
+              line: 128
             },
             kind: "named",
             name: "LogLevel"
@@ -1607,7 +1839,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "HackService.js",
-              line: 123
+              line: 129
             },
             kind: "named",
             name: "FileNotifier"
@@ -1617,17 +1849,302 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "HackService.js",
-            line: 124
+            line: 130
           },
           kind: "promise",
           type: {
             location: {
               type: "source",
               fileName: "HackService.js",
-              line: 124
+              line: 130
             },
             kind: "named",
             name: "LanguageService"
+          }
+        }
+      }
+    },
+    ShowNotificationLevel: {
+      kind: "alias",
+      location: {
+        type: "source",
+        fileName: "rpc-types.js",
+        line: 14
+      },
+      name: "ShowNotificationLevel",
+      definition: {
+        location: {
+          type: "source",
+          fileName: "rpc-types.js",
+          line: 14
+        },
+        kind: "union",
+        types: [{
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 14
+          },
+          kind: "string-literal",
+          value: "info"
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 14
+          },
+          kind: "string-literal",
+          value: "log"
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 14
+          },
+          kind: "string-literal",
+          value: "warning"
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 14
+          },
+          kind: "string-literal",
+          value: "error"
+        }]
+      }
+    },
+    HostServices: {
+      kind: "interface",
+      name: "HostServices",
+      location: {
+        type: "source",
+        fileName: "rpc-types.js",
+        line: 17
+      },
+      constructorArgs: null,
+      staticMethods: {},
+      instanceMethods: {
+        consoleNotification: {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 18
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "source",
+            type: {
+              location: {
+                type: "source",
+                fileName: "rpc-types.js",
+                line: 19
+              },
+              kind: "string"
+            }
+          }, {
+            name: "level",
+            type: {
+              location: {
+                type: "source",
+                fileName: "rpc-types.js",
+                line: 20
+              },
+              kind: "named",
+              name: "ShowNotificationLevel"
+            }
+          }, {
+            name: "text",
+            type: {
+              location: {
+                type: "source",
+                fileName: "rpc-types.js",
+                line: 21
+              },
+              kind: "string"
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "rpc-types.js",
+              line: 22
+            },
+            kind: "void"
+          }
+        },
+        dialogNotification: {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 24
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "level",
+            type: {
+              location: {
+                type: "source",
+                fileName: "rpc-types.js",
+                line: 25
+              },
+              kind: "named",
+              name: "ShowNotificationLevel"
+            }
+          }, {
+            name: "text",
+            type: {
+              location: {
+                type: "source",
+                fileName: "rpc-types.js",
+                line: 26
+              },
+              kind: "string"
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "rpc-types.js",
+              line: 27
+            },
+            kind: "observable",
+            type: {
+              location: {
+                type: "source",
+                fileName: "rpc-types.js",
+                line: 27
+              },
+              kind: "void"
+            }
+          }
+        },
+        dialogRequest: {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 29
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "level",
+            type: {
+              location: {
+                type: "source",
+                fileName: "rpc-types.js",
+                line: 30
+              },
+              kind: "named",
+              name: "ShowNotificationLevel"
+            }
+          }, {
+            name: "text",
+            type: {
+              location: {
+                type: "source",
+                fileName: "rpc-types.js",
+                line: 31
+              },
+              kind: "string"
+            }
+          }, {
+            name: "buttonLabels",
+            type: {
+              location: {
+                type: "source",
+                fileName: "rpc-types.js",
+                line: 32
+              },
+              kind: "array",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "rpc-types.js",
+                  line: 32
+                },
+                kind: "string"
+              }
+            }
+          }, {
+            name: "closeLabel",
+            type: {
+              location: {
+                type: "source",
+                fileName: "rpc-types.js",
+                line: 33
+              },
+              kind: "string"
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "rpc-types.js",
+              line: 34
+            },
+            kind: "observable",
+            type: {
+              location: {
+                type: "source",
+                fileName: "rpc-types.js",
+                line: 34
+              },
+              kind: "string"
+            }
+          }
+        },
+        dispose: {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 36
+          },
+          kind: "function",
+          argumentTypes: [],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "rpc-types.js",
+              line: 36
+            },
+            kind: "void"
+          }
+        },
+        childRegister: {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 40
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "child",
+            type: {
+              location: {
+                type: "source",
+                fileName: "rpc-types.js",
+                line: 40
+              },
+              kind: "named",
+              name: "HostServices"
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "rpc-types.js",
+              line: 40
+            },
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "rpc-types.js",
+                line: 40
+              },
+              kind: "named",
+              name: "HostServices"
+            }
           }
         }
       }
@@ -3878,28 +4395,28 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "LanguageService.js",
-                line: 115
+                line: 114
               },
               kind: "nullable",
               type: {
                 location: {
                   type: "source",
                   fileName: "LanguageService.js",
-                  line: 115
+                  line: 114
                 },
                 kind: "object",
                 fields: [{
                   location: {
                     type: "source",
                     fileName: "LanguageService.js",
-                    line: 116
+                    line: 115
                   },
                   name: "newCursor",
                   type: {
                     location: {
                       type: "source",
                       fileName: "LanguageService.js",
-                      line: 116
+                      line: 115
                     },
                     kind: "number"
                   },
@@ -3908,14 +4425,14 @@ Object.defineProperty(module.exports, "defs", {
                   location: {
                     type: "source",
                     fileName: "LanguageService.js",
-                    line: 117
+                    line: 116
                   },
                   name: "formatted",
                   type: {
                     location: {
                       type: "source",
                       fileName: "LanguageService.js",
-                      line: 117
+                      line: 116
                     },
                     kind: "string"
                   },
@@ -3929,7 +4446,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 121
+            line: 119
           },
           kind: "function",
           argumentTypes: [{
@@ -3938,7 +4455,7 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "LanguageService.js",
-                line: 122
+                line: 120
               },
               kind: "named",
               name: "FileVersion"
@@ -3949,10 +4466,63 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "LanguageService.js",
-                line: 123
+                line: 121
               },
               kind: "named",
               name: "atom$Point"
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "LanguageService.js",
+              line: 122
+            },
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 122
+              },
+              kind: "nullable",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "LanguageService.js",
+                  line: 122
+                },
+                kind: "named",
+                name: "NuclideEvaluationExpression"
+              }
+            }
+          }
+        },
+        supportsSymbolSearch: {
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 124
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "directories",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 124
+              },
+              kind: "array",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "LanguageService.js",
+                  line: 124
+                },
+                kind: "named",
+                name: "NuclideUri"
+              }
             }
           }],
           returnType: {
@@ -3968,20 +4538,11 @@ Object.defineProperty(module.exports, "defs", {
                 fileName: "LanguageService.js",
                 line: 124
               },
-              kind: "nullable",
-              type: {
-                location: {
-                  type: "source",
-                  fileName: "LanguageService.js",
-                  line: 124
-                },
-                kind: "named",
-                name: "NuclideEvaluationExpression"
-              }
+              kind: "boolean"
             }
           }
         },
-        supportsSymbolSearch: {
+        symbolSearch: {
           location: {
             type: "source",
             fileName: "LanguageService.js",
@@ -3989,19 +4550,29 @@ Object.defineProperty(module.exports, "defs", {
           },
           kind: "function",
           argumentTypes: [{
+            name: "query",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 127
+              },
+              kind: "string"
+            }
+          }, {
             name: "directories",
             type: {
               location: {
                 type: "source",
                 fileName: "LanguageService.js",
-                line: 126
+                line: 128
               },
               kind: "array",
               type: {
                 location: {
                   type: "source",
                   fileName: "LanguageService.js",
-                  line: 126
+                  line: 128
                 },
                 kind: "named",
                 name: "NuclideUri"
@@ -4012,54 +4583,53 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "LanguageService.js",
-              line: 126
+              line: 129
             },
             kind: "promise",
             type: {
               location: {
                 type: "source",
                 fileName: "LanguageService.js",
-                line: 126
-              },
-              kind: "boolean"
-            }
-          }
-        },
-        symbolSearch: {
-          location: {
-            type: "source",
-            fileName: "LanguageService.js",
-            line: 128
-          },
-          kind: "function",
-          argumentTypes: [{
-            name: "query",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
                 line: 129
               },
-              kind: "string"
-            }
-          }, {
-            name: "directories",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 130
-              },
-              kind: "array",
+              kind: "nullable",
               type: {
                 location: {
                   type: "source",
                   fileName: "LanguageService.js",
-                  line: 130
+                  line: 129
                 },
-                kind: "named",
-                name: "NuclideUri"
+                kind: "array",
+                type: {
+                  location: {
+                    type: "source",
+                    fileName: "LanguageService.js",
+                    line: 129
+                  },
+                  kind: "named",
+                  name: "SymbolResult"
+                }
               }
+            }
+          }
+        },
+        getProjectRoot: {
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 131
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "fileUri",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 131
+              },
+              kind: "named",
+              name: "NuclideUri"
             }
           }],
           returnType: {
@@ -4082,21 +4652,13 @@ Object.defineProperty(module.exports, "defs", {
                   fileName: "LanguageService.js",
                   line: 131
                 },
-                kind: "array",
-                type: {
-                  location: {
-                    type: "source",
-                    fileName: "LanguageService.js",
-                    line: 131
-                  },
-                  kind: "named",
-                  name: "SymbolResult"
-                }
+                kind: "named",
+                name: "NuclideUri"
               }
             }
           }
         },
-        getProjectRoot: {
+        isFileInProject: {
           location: {
             type: "source",
             fileName: "LanguageService.js",
@@ -4128,51 +4690,6 @@ Object.defineProperty(module.exports, "defs", {
                 fileName: "LanguageService.js",
                 line: 133
               },
-              kind: "nullable",
-              type: {
-                location: {
-                  type: "source",
-                  fileName: "LanguageService.js",
-                  line: 133
-                },
-                kind: "named",
-                name: "NuclideUri"
-              }
-            }
-          }
-        },
-        isFileInProject: {
-          location: {
-            type: "source",
-            fileName: "LanguageService.js",
-            line: 135
-          },
-          kind: "function",
-          argumentTypes: [{
-            name: "fileUri",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 135
-              },
-              kind: "named",
-              name: "NuclideUri"
-            }
-          }],
-          returnType: {
-            location: {
-              type: "source",
-              fileName: "LanguageService.js",
-              line: 135
-            },
-            kind: "promise",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 135
-              },
               kind: "boolean"
             }
           }
@@ -4181,7 +4698,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 137
+            line: 135
           },
           kind: "function",
           argumentTypes: [],
@@ -4189,7 +4706,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "LanguageService.js",
-              line: 137
+              line: 135
             },
             kind: "void"
           }
@@ -4400,16 +4917,17 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "rpc-types.js",
-            line: 18
+            line: 16
           },
-          name: "plainText",
+          name: "kind",
           type: {
             location: {
               type: "source",
               fileName: "rpc-types.js",
-              line: 18
+              line: 16
             },
-            kind: "string"
+            kind: "named",
+            name: "OutlineTreeKind"
           },
           optional: true
         }, {
@@ -4418,12 +4936,28 @@ Object.defineProperty(module.exports, "defs", {
             fileName: "rpc-types.js",
             line: 19
           },
-          name: "tokenizedText",
+          name: "plainText",
           type: {
             location: {
               type: "source",
               fileName: "rpc-types.js",
               line: 19
+            },
+            kind: "string"
+          },
+          optional: true
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 20
+          },
+          name: "tokenizedText",
+          type: {
+            location: {
+              type: "source",
+              fileName: "rpc-types.js",
+              line: 20
             },
             kind: "named",
             name: "TokenizedText"
@@ -4433,14 +4967,14 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "rpc-types.js",
-            line: 20
+            line: 21
           },
           name: "representativeName",
           type: {
             location: {
               type: "source",
               fileName: "rpc-types.js",
-              line: 20
+              line: 21
             },
             kind: "string"
           },
@@ -4449,26 +4983,9 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "rpc-types.js",
-            line: 22
-          },
-          name: "startPosition",
-          type: {
-            location: {
-              type: "source",
-              fileName: "rpc-types.js",
-              line: 22
-            },
-            kind: "named",
-            name: "atom$Point"
-          },
-          optional: false
-        }, {
-          location: {
-            type: "source",
-            fileName: "rpc-types.js",
             line: 23
           },
-          name: "endPosition",
+          name: "startPosition",
           type: {
             location: {
               type: "source",
@@ -4478,26 +4995,43 @@ Object.defineProperty(module.exports, "defs", {
             kind: "named",
             name: "atom$Point"
           },
-          optional: true
+          optional: false
         }, {
           location: {
             type: "source",
             fileName: "rpc-types.js",
             line: 24
           },
-          name: "children",
+          name: "endPosition",
           type: {
             location: {
               type: "source",
               fileName: "rpc-types.js",
               line: 24
             },
+            kind: "named",
+            name: "atom$Point"
+          },
+          optional: true
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 25
+          },
+          name: "children",
+          type: {
+            location: {
+              type: "source",
+              fileName: "rpc-types.js",
+              line: 25
+            },
             kind: "array",
             type: {
               location: {
                 type: "source",
                 fileName: "rpc-types.js",
-                line: 24
+                line: 25
               },
               kind: "named",
               name: "OutlineTree"
@@ -4512,41 +5046,203 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "rpc-types.js",
-        line: 27
+        line: 28
       },
       name: "Outline",
       definition: {
         location: {
           type: "source",
           fileName: "rpc-types.js",
-          line: 27
+          line: 28
         },
         kind: "object",
         fields: [{
           location: {
             type: "source",
             fileName: "rpc-types.js",
-            line: 28
+            line: 29
           },
           name: "outlineTrees",
           type: {
             location: {
               type: "source",
               fileName: "rpc-types.js",
-              line: 28
+              line: 29
             },
             kind: "array",
             type: {
               location: {
                 type: "source",
                 fileName: "rpc-types.js",
-                line: 28
+                line: 29
               },
               kind: "named",
               name: "OutlineTree"
             }
           },
           optional: false
+        }]
+      }
+    },
+    OutlineTreeKind: {
+      kind: "alias",
+      location: {
+        type: "source",
+        fileName: "rpc-types.js",
+        line: 33
+      },
+      name: "OutlineTreeKind",
+      definition: {
+        location: {
+          type: "source",
+          fileName: "rpc-types.js",
+          line: 34
+        },
+        kind: "union",
+        types: [{
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 34
+          },
+          kind: "string-literal",
+          value: "file"
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 35
+          },
+          kind: "string-literal",
+          value: "module"
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 36
+          },
+          kind: "string-literal",
+          value: "namespace"
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 37
+          },
+          kind: "string-literal",
+          value: "package"
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 38
+          },
+          kind: "string-literal",
+          value: "class"
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 39
+          },
+          kind: "string-literal",
+          value: "method"
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 40
+          },
+          kind: "string-literal",
+          value: "property"
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 41
+          },
+          kind: "string-literal",
+          value: "field"
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 42
+          },
+          kind: "string-literal",
+          value: "constructor"
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 43
+          },
+          kind: "string-literal",
+          value: "enum"
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 44
+          },
+          kind: "string-literal",
+          value: "interface"
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 45
+          },
+          kind: "string-literal",
+          value: "function"
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 46
+          },
+          kind: "string-literal",
+          value: "variable"
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 47
+          },
+          kind: "string-literal",
+          value: "constant"
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 48
+          },
+          kind: "string-literal",
+          value: "string"
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 49
+          },
+          kind: "string-literal",
+          value: "number"
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 50
+          },
+          kind: "string-literal",
+          value: "boolean"
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 51
+          },
+          kind: "string-literal",
+          value: "array"
         }]
       }
     },

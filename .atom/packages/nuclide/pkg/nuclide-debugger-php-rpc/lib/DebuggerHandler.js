@@ -58,19 +58,19 @@ function _load_ConnectionMultiplexer() {
 var _nuclideUri;
 
 function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../../commons-node/nuclideUri'));
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
 var _promise;
 
 function _load_promise() {
-  return _promise = require('../../commons-node/promise');
+  return _promise = require('nuclide-commons/promise');
 }
 
-var _FileCache;
+var _nuclideDebuggerCommon;
 
-function _load_FileCache() {
-  return _FileCache = _interopRequireDefault(require('./FileCache'));
+function _load_nuclideDebuggerCommon() {
+  return _nuclideDebuggerCommon = require('../../nuclide-debugger-common');
 }
 
 var _events = _interopRequireDefault(require('events'));
@@ -104,7 +104,7 @@ class DebuggerHandler extends (_Handler || _load_Handler()).default {
 
     this._hadFirstContinuationCommand = false;
     this._connectionMultiplexer = connectionMultiplexer;
-    this._files = new (_FileCache || _load_FileCache()).default(clientCallback);
+    this._files = new (_nuclideDebuggerCommon || _load_nuclideDebuggerCommon()).FileCache(clientCallback.sendServerMethod.bind(clientCallback));
     this._emitter = new _events.default();
     this._subscriptions = new (_eventKit || _load_eventKit()).CompositeDisposable(this._connectionMultiplexer.onStatus(this._onStatusChanged.bind(this)), this._connectionMultiplexer.onNotification(this._onNotification.bind(this)));
   }

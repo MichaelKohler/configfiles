@@ -16,7 +16,7 @@ function _load_nuclideWorkingSetsCommon() {
 var _collection;
 
 function _load_collection() {
-  return _collection = require('../../commons-node/collection');
+  return _collection = require('nuclide-commons/collection');
 }
 
 var _nuclideAnalytics;
@@ -34,7 +34,7 @@ function _load_nuclideLogging() {
 var _nuclideUri;
 
 function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../../commons-node/nuclideUri'));
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

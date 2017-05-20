@@ -22,6 +22,10 @@ class ReactNativeProcessInfo extends (_nuclideDebuggerBase || _load_nuclideDebug
     super('react-native', targetUri);
   }
 
+  clone() {
+    return new ReactNativeProcessInfo(this._targetUri);
+  }
+
   debug() {
     // This is the port that the V8 debugger usually listens on.
     // TODO(matthewwithanm): Provide a way to override this in the UI.

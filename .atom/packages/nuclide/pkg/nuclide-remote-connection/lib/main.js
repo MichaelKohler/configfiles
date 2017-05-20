@@ -40,6 +40,7 @@ exports.getArcanistServiceByNuclideUri = getArcanistServiceByNuclideUri;
 exports.getBuckServiceByNuclideUri = getBuckServiceByNuclideUri;
 exports.getClangServiceByNuclideUri = getClangServiceByNuclideUri;
 exports.getCtagsServiceByNuclideUri = getCtagsServiceByNuclideUri;
+exports.getDefinitionPreviewServiceByNuclideUri = getDefinitionPreviewServiceByNuclideUri;
 exports.getFileSystemServiceByNuclideUri = getFileSystemServiceByNuclideUri;
 exports.getFileWatcherServiceByNuclideUri = getFileWatcherServiceByNuclideUri;
 exports.getFlowServiceByNuclideUri = getFlowServiceByNuclideUri;
@@ -48,7 +49,6 @@ exports.getGrepServiceByNuclideUri = getGrepServiceByNuclideUri;
 exports.getHackLanguageForUri = getHackLanguageForUri;
 exports.getHgServiceByNuclideUri = getHgServiceByNuclideUri;
 exports.getInfoServiceByNuclideUri = getInfoServiceByNuclideUri;
-exports.getIwdpDebuggerServiceByNuclideUri = getIwdpDebuggerServiceByNuclideUri;
 exports.getMerlinServiceByNuclideUri = getMerlinServiceByNuclideUri;
 exports.getNativeDebuggerServiceByNuclideUri = getNativeDebuggerServiceByNuclideUri;
 exports.getNodeDebuggerServiceByNuclideUri = getNodeDebuggerServiceByNuclideUri;
@@ -158,6 +158,10 @@ function getCtagsServiceByNuclideUri(uri) {
   return (0, (_nullthrows || _load_nullthrows()).default)((0, (_serviceManager || _load_serviceManager()).getServiceByNuclideUri)('CtagsService', uri));
 }
 
+function getDefinitionPreviewServiceByNuclideUri(uri) {
+  return (0, (_nullthrows || _load_nullthrows()).default)((0, (_serviceManager || _load_serviceManager()).getServiceByNuclideUri)('DefinitionPreviewService', uri));
+}
+
 function getFileSystemServiceByNuclideUri(uri) {
   return (0, (_nullthrows || _load_nullthrows()).default)((0, (_serviceManager || _load_serviceManager()).getServiceByNuclideUri)('FileSystemService', uri));
 }
@@ -188,10 +192,6 @@ function getHgServiceByNuclideUri(uri) {
 
 function getInfoServiceByNuclideUri(uri) {
   return (0, (_nullthrows || _load_nullthrows()).default)((0, (_serviceManager || _load_serviceManager()).getServiceByNuclideUri)('InfoService', uri));
-}
-
-function getIwdpDebuggerServiceByNuclideUri(uri) {
-  return (0, (_nullthrows || _load_nullthrows()).default)((0, (_serviceManager || _load_serviceManager()).getServiceByNuclideUri)('IwdpDebuggerService', uri));
 }
 
 function getMerlinServiceByNuclideUri(uri) {

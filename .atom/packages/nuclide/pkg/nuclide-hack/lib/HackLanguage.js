@@ -24,11 +24,12 @@ let connectionToHackService = (() => {
     const fileNotifier = yield (0, (_nuclideOpenFiles || _load_nuclideOpenFiles()).getNotifierByConnection)(connection);
 
     if (yield getUseLspConnection()) {
+      const host = yield (0, (_nuclideLanguageService || _load_nuclideLanguageService()).getHostServices)();
       return hackService.initializeLsp(config.hhClientPath, // command
       ['lsp'], // arguments
       '.hhconfig', // project file
       ['.php'], // which file-notifications should be sent to LSP
-      config.logLevel, fileNotifier);
+      config.logLevel, fileNotifier, host);
     } else {
       return hackService.initialize(config.hhClientPath, config.logLevel, fileNotifier);
     }
@@ -84,7 +85,7 @@ let createLanguageService = (() => {
       evaluationExpression: {
         version: '0.0.0',
         analyticsEventName: 'hack.evaluationExpression',
-        regexp: (_nuclideHackCommon || _load_nuclideHackCommon()).HACK_WORD_REGEX
+        matcher: { kind: 'custom', matcher: (_evaluationExpression || _load_evaluationExpression()).getEvaluationExpression }
       },
       autocomplete: {
         version: '2.0.0',
@@ -130,7 +131,7 @@ let getHackLanguageForUri = exports.getHackLanguageForUri = (() => {
 let isFileInHackProject = exports.isFileInHackProject = (() => {
   var _ref5 = (0, _asyncToGenerator.default)(function* (fileUri) {
     const fileSystemService = (0, (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).getFileSystemServiceByNuclideUri)(fileUri);
-    const foundDir = yield fileSystemService.findNearestFile('.hhconfig', (_nuclideUri || _load_nuclideUri()).default.getPath(fileUri));
+    const foundDir = yield fileSystemService.findNearestAncestorNamed('.hhconfig', fileUri);
     return foundDir != null;
   });
 
@@ -177,16 +178,16 @@ function _load_autocomplete() {
   return _autocomplete = require('../../nuclide-hack-common/lib/autocomplete');
 }
 
-var _nuclideUri;
-
-function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../../commons-node/nuclideUri'));
-}
-
 var _passesGK;
 
 function _load_passesGK() {
   return _passesGK = _interopRequireDefault(require('../../commons-node/passesGK'));
+}
+
+var _evaluationExpression;
+
+function _load_evaluationExpression() {
+  return _evaluationExpression = require('./evaluationExpression');
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

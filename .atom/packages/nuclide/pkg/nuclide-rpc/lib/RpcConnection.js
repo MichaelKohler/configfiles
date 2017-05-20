@@ -48,7 +48,7 @@ function _load_config() {
 var _string;
 
 function _load_string() {
-  return _string = require('../../commons-node/string');
+  return _string = require('nuclide-commons/string');
 }
 
 var _nuclideLogging;
@@ -450,9 +450,9 @@ class RpcConnection {
     var _this3 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      const { localImplementation, type } = _this3._getFunctionImplemention(call.method);
+      const { getLocalImplementation, type } = _this3._getFunctionImplemention(call.method);
       const marshalledArgs = yield _this3._getTypeRegistry().unmarshalArguments(_this3._objectRegistry, call.args, type.argumentTypes);
-
+      const localImplementation = getLocalImplementation();
       _this3._returnValue(id, localImplementation.apply(_this3, marshalledArgs), type.returnType);
     })();
   }
@@ -468,18 +468,8 @@ class RpcConnection {
       }
 
       const interfaceName = _this4._objectRegistry.getInterface(call.objectId);
-      const classDefinition = _this4._getClassDefinition(interfaceName);
-
-      if (!(classDefinition != null)) {
-        throw new Error('Invariant violation: "classDefinition != null"');
-      }
-
-      const { instanceMethods } = classDefinition.definition;
-      const type = instanceMethods[call.method];
-
-      if (!(instanceMethods.hasOwnProperty(call.method) && type != null)) {
-        throw new Error('Invariant violation: "instanceMethods.hasOwnProperty(call.method) && type != null"');
-      }
+      const { definition } = _this4._getClassDefinition(interfaceName);
+      const type = definition.instanceMethods[call.method];
 
       const marshalledArgs = yield _this4._getTypeRegistry().unmarshalArguments(_this4._objectRegistry, call.args, type.argumentTypes);
 
@@ -491,21 +481,15 @@ class RpcConnection {
     var _this5 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      const classDefinition = _this5._getClassDefinition(constructorMessage.interface);
-
-      if (!(classDefinition != null)) {
-        throw new Error('Invariant violation: "classDefinition != null"');
-      }
-
-      const { localImplementation, definition } = classDefinition;
-      const constructorArgs = definition.constructorArgs;
+      const { getLocalImplementation, definition } = _this5._getClassDefinition(constructorMessage.interface);
+      const { constructorArgs } = definition;
 
       if (!(constructorArgs != null)) {
         throw new Error('Invariant violation: "constructorArgs != null"');
       }
 
       const marshalledArgs = yield _this5._getTypeRegistry().unmarshalArguments(_this5._objectRegistry, constructorMessage.args, constructorArgs);
-
+      const localImplementation = getLocalImplementation();
       // Create a new object and put it in the registry.
       const newObject = new localImplementation(...marshalledArgs);
 

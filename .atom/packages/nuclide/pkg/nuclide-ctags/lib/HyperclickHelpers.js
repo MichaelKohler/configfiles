@@ -9,7 +9,7 @@ var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
 var _goToLocation;
 
 function _load_goToLocation() {
-  return _goToLocation = require('../../commons-atom/go-to-location');
+  return _goToLocation = require('nuclide-commons-atom/go-to-location');
 }
 
 var _nuclideRemoteConnection;
@@ -21,7 +21,7 @@ function _load_nuclideRemoteConnection() {
 var _nuclideUri;
 
 function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../../commons-node/nuclideUri'));
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
 var _utils;

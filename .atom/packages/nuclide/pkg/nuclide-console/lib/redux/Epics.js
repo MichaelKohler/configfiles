@@ -10,7 +10,7 @@ exports.registerRecordProviderEpic = registerRecordProviderEpic;
 var _event;
 
 function _load_event() {
-  return _event = require('../../../commons-node/event');
+  return _event = require('nuclide-commons/event');
 }
 
 var _Actions;
@@ -54,6 +54,7 @@ function registerExecutorEpic(actions, store) {
     const { executor } = action.payload;
     return (_Actions || _load_Actions()).registerRecordProvider({
       id: executor.id,
+      // $FlowIssue: Flow is having some trouble with the spread here.
       records: executor.output.map(message => Object.assign({}, message, {
         kind: 'response',
         sourceId: executor.id,
@@ -98,7 +99,8 @@ function executeEpic(actions, store) {
       kind: 'request',
       level: 'log',
       text: code,
-      scopeName: executor.scopeName
+      scopeName: executor.scopeName,
+      data: null
     }))
     // Execute the code as a side-effect.
     .finally(() => {
@@ -131,6 +133,6 @@ function registerRecordProviderEpic(actions, store) {
       return a.payload.sourceId === recordProvider.id;
     });
 
-    return _rxjsBundlesRxMinJs.Observable.merge(messageActions, statusActions).takeUntil(unregisteredEvents);
+    return _rxjsBundlesRxMinJs.Observable.merge(_rxjsBundlesRxMinJs.Observable.of((_Actions || _load_Actions()).registerSource(Object.assign({}, recordProvider, { name: recordProvider.id }))), messageActions, statusActions).takeUntil(unregisteredEvents);
   });
 }

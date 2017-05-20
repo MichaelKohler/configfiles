@@ -27,13 +27,13 @@ let readFileContents = (() => {
 var _projects;
 
 function _load_projects() {
-  return _projects = require('../../commons-atom/projects');
+  return _projects = require('nuclide-commons-atom/projects');
 }
 
 var _collection;
 
 function _load_collection() {
-  return _collection = require('../../commons-node/collection');
+  return _collection = require('nuclide-commons/collection');
 }
 
 var _nuclideLogging;

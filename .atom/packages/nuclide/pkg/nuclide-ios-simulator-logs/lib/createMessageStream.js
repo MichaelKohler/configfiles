@@ -8,13 +8,13 @@ exports.createMessageStream = createMessageStream;
 var _observable;
 
 function _load_observable() {
-  return _observable = require('../../commons-node/observable');
+  return _observable = require('nuclide-commons/observable');
 }
 
 var _featureConfig;
 
 function _load_featureConfig() {
-  return _featureConfig = _interopRequireDefault(require('../../commons-atom/featureConfig'));
+  return _featureConfig = _interopRequireDefault(require('nuclide-commons-atom/feature-config'));
 }
 
 var _createMessage;

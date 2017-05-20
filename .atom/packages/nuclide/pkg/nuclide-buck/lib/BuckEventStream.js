@@ -49,6 +49,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 const PROGRESS_OUTPUT_INTERVAL = 5 * 1000;
 const BUILD_FAILED_MESSAGE = 'BUILD FAILED:';
+const BUILD_OUTPUT_REGEX = /^OK {3}(.*?) (.*?) (.*?)$/;
 
 function convertJavaLevel(level) {
   switch (level) {
@@ -78,7 +79,19 @@ function getEventsFromSocket(socketStream) {
       case 'ParseFinished':
         return log('Parsing finished. Starting build...');
       case 'ConsoleEvent':
-        return log(message.message, convertJavaLevel(message.level.name));
+        const match = message.message.match(BUILD_OUTPUT_REGEX);
+        if (match != null && match.length === 4) {
+          return _rxjsBundlesRxMinJs.Observable.of({
+            type: 'build-output',
+            output: {
+              target: match[1],
+              successType: match[2],
+              path: match[3]
+            }
+          });
+        } else {
+          return log(message.message, convertJavaLevel(message.level.name));
+        }
       case 'InstallFinished':
         return log('Install finished.', 'info');
       case 'BuildFinished':

@@ -7,13 +7,13 @@ Object.defineProperty(exports, "__esModule", {
 var _UniversalDisposable;
 
 function _load_UniversalDisposable() {
-  return _UniversalDisposable = _interopRequireDefault(require('../../../commons-node/UniversalDisposable'));
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
 var _debounce;
 
 function _load_debounce() {
-  return _debounce = _interopRequireDefault(require('../../../commons-node/debounce'));
+  return _debounce = _interopRequireDefault(require('nuclide-commons/debounce'));
 }
 
 var _react = _interopRequireDefault(require('react'));

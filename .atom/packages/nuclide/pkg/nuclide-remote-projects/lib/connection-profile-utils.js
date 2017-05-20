@@ -16,9 +16,7 @@ let getIPsForHosts = exports.getIPsForHosts = (() => {
       return (0, (_lookupPreferIpV || _load_lookupPreferIpV()).default)(host).catch(function () {});
     });
     const values = yield Promise.all(promise_array);
-    return values.filter(function (element) {
-      return element !== undefined;
-    });
+    return (0, (_collection || _load_collection()).arrayCompact)(values);
   });
 
   return function getIPsForHosts(_x) {
@@ -47,7 +45,13 @@ exports.getOfficialRemoteServerCommand = getOfficialRemoteServerCommand;
 var _featureConfig;
 
 function _load_featureConfig() {
-  return _featureConfig = _interopRequireDefault(require('../../commons-atom/featureConfig'));
+  return _featureConfig = _interopRequireDefault(require('nuclide-commons-atom/feature-config'));
+}
+
+var _collection;
+
+function _load_collection() {
+  return _collection = require('nuclide-commons/collection');
 }
 
 var _lookupPreferIpV;
@@ -67,19 +71,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * the connection dialog and the default settings, plus the update logic we use
  * to change the remote server command.
  */
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
-
-/* global localStorage */
-
 function getDefaultConnectionProfile(options) {
   const defaultConnectionSettings = getDefaultConfig();
   const currentOfficialRSC = defaultConnectionSettings.remoteServerCommand;
@@ -142,6 +133,19 @@ function getDefaultConnectionProfile(options) {
 /**
  * Returns an array of saved connection profiles.
  */
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ * @format
+ */
+
+/* global localStorage */
+
 function getSavedConnectionProfiles() {
   const connectionProfiles = (_featureConfig || _load_featureConfig()).default.get('nuclide-remote-projects.connectionProfiles');
 

@@ -7,7 +7,7 @@ Object.defineProperty(exports, "__esModule", {
 var _debounce;
 
 function _load_debounce() {
-  return _debounce = _interopRequireDefault(require('../../commons-node/debounce'));
+  return _debounce = _interopRequireDefault(require('nuclide-commons/debounce'));
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

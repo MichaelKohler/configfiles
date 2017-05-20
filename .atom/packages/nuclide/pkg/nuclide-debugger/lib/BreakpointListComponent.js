@@ -8,7 +8,7 @@ exports.BreakpointListComponent = undefined;
 var _UniversalDisposable;
 
 function _load_UniversalDisposable() {
-  return _UniversalDisposable = _interopRequireDefault(require('../../commons-node/UniversalDisposable'));
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
 var _react = _interopRequireDefault(require('react'));
@@ -16,13 +16,13 @@ var _react = _interopRequireDefault(require('react'));
 var _nuclideUri;
 
 function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../../commons-node/nuclideUri'));
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
 var _Checkbox;
 
 function _load_Checkbox() {
-  return _Checkbox = require('../../nuclide-ui/Checkbox');
+  return _Checkbox = require('nuclide-commons-ui/Checkbox');
 }
 
 var _ListView;

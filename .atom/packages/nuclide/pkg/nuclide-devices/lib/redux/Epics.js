@@ -39,24 +39,46 @@ let getInfoTables = (() => {
   };
 })();
 
-let getDeviceActions = (() => {
+let getProcessKiller = (() => {
   var _ref3 = (0, _asyncToGenerator.default)(function* (state) {
+    const device = state.device;
+    if (device == null) {
+      return null;
+    }
+    const providers = Array.from((0, (_providers || _load_providers()).getDeviceProcessesProviders)()).filter(function (provider) {
+      return provider.getType() === state.deviceType;
+    });
+    if (providers[0] != null) {
+      return function (p) {
+        return providers[0].killProcess(state.host, device.name, p);
+      };
+    }
+    return null;
+  });
+
+  return function getProcessKiller(_x3) {
+    return _ref3.apply(this, arguments);
+  };
+})();
+
+let getDeviceTasks = (() => {
+  var _ref4 = (0, _asyncToGenerator.default)(function* (state) {
     const device = state.device;
     if (device == null) {
       return [];
     }
-    const actions = yield Promise.all(Array.from((0, (_providers || _load_providers()).getDeviceActionsProviders)()).filter(function (provider) {
+    const actions = yield Promise.all(Array.from((0, (_providers || _load_providers()).getDeviceTasksProviders)()).filter(function (provider) {
       return provider.getType() === state.deviceType;
     }).map((() => {
-      var _ref4 = (0, _asyncToGenerator.default)(function* (provider) {
+      var _ref5 = (0, _asyncToGenerator.default)(function* (provider) {
         if (!(yield provider.isSupported(state.host))) {
           return null;
         }
-        return provider.getActions(state.host, device.name);
+        return provider.getTasks(state.host, device.name);
       });
 
-      return function (_x4) {
-        return _ref4.apply(this, arguments);
+      return function (_x5) {
+        return _ref5.apply(this, arguments);
       };
     })()));
     return (0, (_collection || _load_collection()).arrayFlatten)((0, (_collection || _load_collection()).arrayCompact)(actions)).sort(function (a, b) {
@@ -64,12 +86,11 @@ let getDeviceActions = (() => {
     });
   });
 
-  return function getDeviceActions(_x3) {
-    return _ref3.apply(this, arguments);
+  return function getDeviceTasks(_x4) {
+    return _ref4.apply(this, arguments);
   };
 })();
 
-exports.setDevicesEpic = setDevicesEpic;
 exports.setDeviceEpic = setDeviceEpic;
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
@@ -83,7 +104,7 @@ function _load_Actions() {
 var _collection;
 
 function _load_collection() {
-  return _collection = require('../../../commons-node/collection');
+  return _collection = require('nuclide-commons/collection');
 }
 
 var _providers;
@@ -107,22 +128,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @format
  */
 
-function setDevicesEpic(actions, store) {
-  return actions.ofType((_Actions || _load_Actions()).REFRESH_DEVICES).switchMap(action => {
-    if (!(action.type === (_Actions || _load_Actions()).REFRESH_DEVICES)) {
-      throw new Error('Invariant violation: "action.type === Actions.REFRESH_DEVICES"');
-    }
-
-    const state = store.getState();
-    for (const fetcher of (0, (_providers || _load_providers()).getDeviceListProviders)()) {
-      if (fetcher.getType() === state.deviceType) {
-        return _rxjsBundlesRxMinJs.Observable.fromPromise(fetcher.fetch(state.host)).switchMap(devices => _rxjsBundlesRxMinJs.Observable.of((_Actions || _load_Actions()).setDevices(devices)));
-      }
-    }
-    return _rxjsBundlesRxMinJs.Observable.empty();
-  });
-}
-
 function setDeviceEpic(actions, store) {
   return actions.ofType((_Actions || _load_Actions()).SET_DEVICE).switchMap(action => {
     if (!(action.type === (_Actions || _load_Actions()).SET_DEVICE)) {
@@ -130,6 +135,6 @@ function setDeviceEpic(actions, store) {
     }
 
     const state = store.getState();
-    return _rxjsBundlesRxMinJs.Observable.merge(_rxjsBundlesRxMinJs.Observable.fromPromise(getInfoTables(state)).switchMap(infoTables => _rxjsBundlesRxMinJs.Observable.of((_Actions || _load_Actions()).setInfoTables(infoTables))), _rxjsBundlesRxMinJs.Observable.fromPromise(getDeviceActions(state)).switchMap(deviceActions => _rxjsBundlesRxMinJs.Observable.of((_Actions || _load_Actions()).setDeviceActions(deviceActions))));
+    return _rxjsBundlesRxMinJs.Observable.merge(_rxjsBundlesRxMinJs.Observable.fromPromise(getInfoTables(state)).switchMap(infoTables => _rxjsBundlesRxMinJs.Observable.of((_Actions || _load_Actions()).setInfoTables(infoTables))), _rxjsBundlesRxMinJs.Observable.fromPromise(getProcessKiller(state)).switchMap(processKiller => _rxjsBundlesRxMinJs.Observable.of((_Actions || _load_Actions()).setProcesKiller(processKiller))), _rxjsBundlesRxMinJs.Observable.fromPromise(getDeviceTasks(state)).switchMap(deviceTasks => _rxjsBundlesRxMinJs.Observable.of((_Actions || _load_Actions()).setDeviceTasks(deviceTasks))));
   });
 }

@@ -10,7 +10,7 @@ var _react = _interopRequireDefault(require('react'));
 var _Block;
 
 function _load_Block() {
-  return _Block = require('./Block');
+  return _Block = require('nuclide-commons-ui/Block');
 }
 
 var _ListView;
@@ -22,7 +22,7 @@ function _load_ListView() {
 var _Checkbox;
 
 function _load_Checkbox() {
-  return _Checkbox = require('./Checkbox');
+  return _Checkbox = require('nuclide-commons-ui/Checkbox');
 }
 
 var _MultiSelectList;

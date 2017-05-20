@@ -10,7 +10,7 @@ exports.getOuterResults = getOuterResults;
 var _collection;
 
 function _load_collection() {
-  return _collection = require('../../commons-node/collection');
+  return _collection = require('nuclide-commons/collection');
 }
 
 function filterEmptyResults(resultsGroupedByService) {

@@ -43,31 +43,31 @@ var _crypto = _interopRequireDefault(require('crypto'));
 var _createPackage;
 
 function _load_createPackage() {
-  return _createPackage = _interopRequireDefault(require('../../commons-atom/createPackage'));
+  return _createPackage = _interopRequireDefault(require('nuclide-commons-atom/createPackage'));
 }
 
 var _ContextMenu;
 
 function _load_ContextMenu() {
-  return _ContextMenu = _interopRequireDefault(require('../../commons-atom/ContextMenu'));
+  return _ContextMenu = _interopRequireDefault(require('nuclide-commons-atom/ContextMenu'));
 }
 
 var _mouseToPosition;
 
 function _load_mouseToPosition() {
-  return _mouseToPosition = require('../../commons-atom/mouse-to-position');
+  return _mouseToPosition = require('nuclide-commons-atom/mouse-to-position');
 }
 
 var _textEditor;
 
 function _load_textEditor() {
-  return _textEditor = require('../../commons-atom/text-editor');
+  return _textEditor = require('nuclide-commons-atom/text-editor');
 }
 
 var _UniversalDisposable;
 
 function _load_UniversalDisposable() {
-  return _UniversalDisposable = _interopRequireDefault(require('../../commons-node/UniversalDisposable'));
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
 var _nuclideAnalytics;

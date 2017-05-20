@@ -58,7 +58,7 @@ function _load_DiagnosticsDatatipComponent() {
 var _textEditor;
 
 function _load_textEditor() {
-  return _textEditor = require('../../commons-atom/text-editor');
+  return _textEditor = require('nuclide-commons-atom/text-editor');
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

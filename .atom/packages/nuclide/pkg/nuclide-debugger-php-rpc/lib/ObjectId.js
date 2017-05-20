@@ -31,7 +31,16 @@ exports.getChildIds = getChildIds;
  * of 32, and count of 32^5, the children of the range will have a pagesize of 32
  * and count of 32^4.
  */
-
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ * @format
+ */
 
 /*
  * ObjectIds identify data values with children.
@@ -54,16 +63,7 @@ exports.getChildIds = getChildIds;
  * of children of the value represented by fullname. Note that the children of
  * PagedObjectIds may be a combination of SinglePageObjectIds and PagedObjectIds.
  */
-const WATCH_CONTEXT_ID = 'Watch Context Id'; /**
-                                              * Copyright (c) 2015-present, Facebook, Inc.
-                                              * All rights reserved.
-                                              *
-                                              * This source code is licensed under the license found in the LICENSE file in
-                                              * the root directory of this source tree.
-                                              *
-                                              * 
-                                              * @format
-                                              */
+const WATCH_CONTEXT_ID = 'Watch Context Id';
 
 function getWatchContextObjectId(enableCount, frameIndex) {
   return createContextObjectId(enableCount, frameIndex, WATCH_CONTEXT_ID);

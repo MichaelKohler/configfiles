@@ -29,7 +29,7 @@ function _load_Commands() {
 var _createPackage;
 
 function _load_createPackage() {
-  return _createPackage = _interopRequireDefault(require('../../commons-atom/createPackage'));
+  return _createPackage = _interopRequireDefault(require('nuclide-commons-atom/createPackage'));
 }
 
 var _utils;
@@ -53,19 +53,19 @@ function _load_nuclideLogging() {
 var _featureConfig;
 
 function _load_featureConfig() {
-  return _featureConfig = _interopRequireDefault(require('../../commons-atom/featureConfig'));
+  return _featureConfig = _interopRequireDefault(require('nuclide-commons-atom/feature-config'));
 }
 
 var _UniversalDisposable;
 
 function _load_UniversalDisposable() {
-  return _UniversalDisposable = _interopRequireDefault(require('../../commons-node/UniversalDisposable'));
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
 var _event;
 
 function _load_event() {
-  return _event = require('../../commons-node/event');
+  return _event = require('nuclide-commons/event');
 }
 
 var _nuclideAnalytics;

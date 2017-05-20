@@ -14,7 +14,7 @@ var _react = _interopRequireDefault(require('react'));
 var _UniversalDisposable;
 
 function _load_UniversalDisposable() {
-  return _UniversalDisposable = _interopRequireDefault(require('../../../commons-node/UniversalDisposable'));
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
 var _fsPromise;
@@ -32,7 +32,7 @@ function _load_process() {
 var _event;
 
 function _load_event() {
-  return _event = require('../../../commons-node/event');
+  return _event = require('nuclide-commons/event');
 }
 
 var _tasks;
@@ -86,7 +86,7 @@ function _load_SwiftPMAutocompletionProvider() {
 var _Icon;
 
 function _load_Icon() {
-  return _Icon = require('../../../nuclide-ui/Icon');
+  return _Icon = require('nuclide-commons-ui/Icon');
 }
 
 var _nullthrows;
@@ -98,7 +98,7 @@ function _load_nullthrows() {
 var _nuclideUri;
 
 function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../../../commons-node/nuclideUri.js'));
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri.js'));
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -121,26 +121,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * Actions are routed to the store via a Flux.Dispatcher (instantiated by
  * SwiftPMTaskRunner).
  */
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
-
 class SwiftPMTaskRunner {
 
   constructor(initialState) {
     this.id = 'swiftpm';
     this.name = 'Swift';
     this._initialState = initialState;
-    this._outputMessages = new _rxjsBundlesRxMinJs.Subject();
     this._projectRoot = new _rxjsBundlesRxMinJs.Subject();
-    this._disposables = new (_UniversalDisposable || _load_UniversalDisposable()).default(this._outputMessages, this._projectRoot.subscribe(path => this._getFlux().actions.updateProjectRoot(path)));
+    this._disposables = new (_UniversalDisposable || _load_UniversalDisposable()).default(this._projectRoot.subscribe(path => this._getFlux().actions.updateProjectRoot(path)));
   }
 
   dispose() {
@@ -183,37 +171,27 @@ class SwiftPMTaskRunner {
     }
 
     atom.commands.dispatch(atom.views.getView(atom.workspace), 'nuclide-console:toggle', { visible: true });
-    this._logOutput(`${command.command} ${command.args.join(' ')}`, 'log');
-
-    const observable = (0, (_process || _load_process()).observeProcess)(command.command, command.args, {
+    const observable = (0, (_tasks || _load_tasks()).createMessage)(`${command.command} ${command.args.join(' ')}`, 'log').concat((0, (_process || _load_process()).observeProcess)(command.command, command.args, {
       /* TODO(T17353599) */isExitError: () => false
     }).catch(error => _rxjsBundlesRxMinJs.Observable.of({ kind: 'error', error })) // TODO(T17463635)
-    .do(message => {
+    .flatMap(message => {
       switch (message.kind) {
         case 'stderr':
         case 'stdout':
-          this._logOutput(message.data, 'log');
-          break;
+          return (0, (_tasks || _load_tasks()).createMessage)(message.data, 'log');
         case 'exit':
           if (message.exitCode === 0) {
-            this._logOutput(`${command.command} exited successfully.`, 'success');
             this._getFlux().actions.updateCompileCommands(chdir, configuration, buildPath);
+            return (0, (_tasks || _load_tasks()).createMessage)(`${command.command} exited successfully.`, 'success');
           } else {
-            this._logOutput(`${command.command} failed with ${(0, (_process || _load_process()).exitEventToMessage)(message)}`, 'error');
+            return (0, (_tasks || _load_tasks()).createMessage)(`${command.command} failed with ${(0, (_process || _load_process()).exitEventToMessage)(message)}`, 'error');
           }
-          break;
         default:
-          break;
+          return _rxjsBundlesRxMinJs.Observable.empty();
       }
-    }).ignoreElements();
+    }));
 
-    const task = (0, (_tasks || _load_tasks()).taskFromObservable)(observable);
-    return Object.assign({}, task, {
-      cancel: () => {
-        this._logOutput('Task cancelled.', 'warning');
-        task.cancel();
-      }
-    });
+    return (0, (_tasks || _load_tasks()).taskFromObservable)(observable);
   }
 
   getAutocompletionProvider() {
@@ -221,10 +199,6 @@ class SwiftPMTaskRunner {
       this._autocompletionProvider = new (_SwiftPMAutocompletionProvider || _load_SwiftPMAutocompletionProvider()).default(this._getFlux().store);
     }
     return this._autocompletionProvider;
-  }
-
-  getOutputMessages() {
-    return this._outputMessages;
   }
 
   setProjectRoot(projectRoot, callback) {
@@ -254,10 +228,6 @@ class SwiftPMTaskRunner {
     })();
   }
 
-  _logOutput(text, level) {
-    this._outputMessages.next({ text, level });
-  }
-
   _getFlux() {
     if (!this._flux) {
       const dispatcher = new (_SwiftPMTaskRunnerDispatcher || _load_SwiftPMTaskRunnerDispatcher()).default();
@@ -269,4 +239,13 @@ class SwiftPMTaskRunner {
     return this._flux;
   }
 }
-exports.SwiftPMTaskRunner = SwiftPMTaskRunner;
+exports.SwiftPMTaskRunner = SwiftPMTaskRunner; /**
+                                                * Copyright (c) 2015-present, Facebook, Inc.
+                                                * All rights reserved.
+                                                *
+                                                * This source code is licensed under the license found in the LICENSE file in
+                                                * the root directory of this source tree.
+                                                *
+                                                * 
+                                                * @format
+                                                */

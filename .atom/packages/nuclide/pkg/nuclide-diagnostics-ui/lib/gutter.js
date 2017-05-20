@@ -20,13 +20,13 @@ var _reactDom = _interopRequireDefault(require('react-dom'));
 var _goToLocation;
 
 function _load_goToLocation() {
-  return _goToLocation = require('../../commons-atom/go-to-location');
+  return _goToLocation = require('nuclide-commons-atom/go-to-location');
 }
 
 var _range;
 
 function _load_range() {
-  return _range = require('../../commons-atom/range');
+  return _range = require('nuclide-commons-atom/range');
 }
 
 var _nuclideAnalytics;

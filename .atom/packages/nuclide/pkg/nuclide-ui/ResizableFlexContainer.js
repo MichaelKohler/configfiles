@@ -8,7 +8,7 @@ exports.ResizableFlexItem = exports.ResizableFlexContainer = exports.FlexDirecti
 var _collection;
 
 function _load_collection() {
-  return _collection = require('../commons-node/collection');
+  return _collection = require('nuclide-commons/collection');
 }
 
 var _classnames;

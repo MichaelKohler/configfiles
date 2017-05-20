@@ -21,22 +21,21 @@ function _load_nuclideRemoteConnection() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
+const arcInfoCache = new (_lruCache || _load_lruCache()).default({
+  max: 200
+}); /**
+     * Copyright (c) 2015-present, Facebook, Inc.
+     * All rights reserved.
+     *
+     * This source code is licensed under the license found in the LICENSE file in
+     * the root directory of this source tree.
+     *
+     * 
+     * @format
+     */
 
 /* global localStorage */
 
-const arcInfoCache = new (_lruCache || _load_lruCache()).default({
-  max: 200
-});
 const arcInfoResultCache = new (_lruCache || _load_lruCache()).default({
   max: 200
 });

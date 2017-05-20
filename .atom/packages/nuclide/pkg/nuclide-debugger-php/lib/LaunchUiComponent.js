@@ -10,7 +10,7 @@ var _react = _interopRequireDefault(require('react'));
 var _AtomInput;
 
 function _load_AtomInput() {
-  return _AtomInput = require('../../nuclide-ui/AtomInput');
+  return _AtomInput = require('nuclide-commons-ui/AtomInput');
 }
 
 var _LaunchProcessInfo;
@@ -22,7 +22,7 @@ function _load_LaunchProcessInfo() {
 var _nuclideUri;
 
 function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../../commons-node/nuclideUri'));
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
 var _nuclideDebuggerBase;
@@ -40,7 +40,7 @@ function _load_Dropdown() {
 var _Button;
 
 function _load_Button() {
-  return _Button = require('../../nuclide-ui/Button');
+  return _Button = require('nuclide-commons-ui/Button');
 }
 
 var _nuclideRemoteConnection;

@@ -14,13 +14,13 @@ var _atom = require('atom');
 var _nuclideUri;
 
 function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../../commons-node/nuclideUri'));
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
 var _projects;
 
 function _load_projects() {
-  return _projects = require('../../commons-atom/projects');
+  return _projects = require('nuclide-commons-atom/projects');
 }
 
 var _nuclideAnalytics;

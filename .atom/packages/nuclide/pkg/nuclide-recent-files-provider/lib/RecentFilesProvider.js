@@ -12,7 +12,7 @@ exports.setRecentFilesService = setRecentFilesService;
 var _nuclideUri;
 
 function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../../commons-node/nuclideUri'));
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
 var _react = _interopRequireDefault(require('react'));
@@ -20,13 +20,13 @@ var _react = _interopRequireDefault(require('react'));
 var _collection;
 
 function _load_collection() {
-  return _collection = require('../../commons-node/collection');
+  return _collection = require('nuclide-commons/collection');
 }
 
 var _string;
 
 function _load_string() {
-  return _string = require('../../commons-node/string');
+  return _string = require('nuclide-commons/string');
 }
 
 var _nuclideFuzzyNative;

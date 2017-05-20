@@ -28,7 +28,7 @@ function _load_nuclideRemoteConnection() {
 var _UniversalDisposable;
 
 function _load_UniversalDisposable() {
-  return _UniversalDisposable = _interopRequireDefault(require('../../commons-node/UniversalDisposable'));
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -49,6 +49,10 @@ class AttachProcessInfo extends (_nuclideDebuggerBase || _load_nuclideDebuggerBa
   constructor(targetUri, targetInfo) {
     super('lldb', targetUri);
     this._targetInfo = targetInfo;
+  }
+
+  clone() {
+    return new AttachProcessInfo(this._targetUri, this._targetInfo);
   }
 
   supportThreads() {

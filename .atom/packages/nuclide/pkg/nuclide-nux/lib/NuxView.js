@@ -10,13 +10,13 @@ var _atom = require('atom');
 var _debounce;
 
 function _load_debounce() {
-  return _debounce = _interopRequireDefault(require('../../commons-node/debounce'));
+  return _debounce = _interopRequireDefault(require('nuclide-commons/debounce'));
 }
 
 var _string;
 
 function _load_string() {
-  return _string = require('../../commons-node/string');
+  return _string = require('nuclide-commons/string');
 }
 
 var _nuclideAnalytics;
@@ -41,6 +41,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * the root directory of this source tree.
  *
  * 
+ * @format
  */
 
 /* global getComputedStyle */
@@ -228,7 +229,8 @@ class NuxView {
     this._disposables.add(this._tooltipDisposable);
 
     if (nextLinkStyle === LINK_ENABLED) {
-      const nextElementClickListener = this._handleDisposableClick.bind(this, true /* continue to the next NUX in the tour */);
+      const nextElementClickListener = this._handleDisposableClick.bind(this, true /* continue to the next NUX in the tour */
+      );
       const nextElement = document.querySelector(`.nuclide-nux-next-link-${this._index}`);
 
       if (!(nextElement != null)) {
@@ -241,7 +243,9 @@ class NuxView {
 
     // Record the NUX as dismissed iff it is not the last NUX in the tour.
     // Clicking "Complete Tour" on the last NUX should be tracked as succesful completion.
-    const dismissElementClickListener = !this._finalNuxInTour ? this._handleDisposableClick.bind(this, false /* skip to the end of the tour */) : this._handleDisposableClick.bind(this, true /* continue to the next NUX in the tour */);
+    const dismissElementClickListener = !this._finalNuxInTour ? this._handleDisposableClick.bind(this, false /* skip to the end of the tour */
+    ) : this._handleDisposableClick.bind(this, true /* continue to the next NUX in the tour */
+    );
     const dismissElement = document.querySelector(`.nuclide-nux-dismiss-link-${this._index}`);
 
     if (!(dismissElement != null)) {

@@ -22,7 +22,7 @@ let renameNode = (() => {
     try {
       const service = (0, (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).getFileSystemServiceByNuclideUri)(filePath);
       // Throws if the destPath already exists.
-      yield service.rename((_nuclideUri || _load_nuclideUri()).default.getPath(filePath), (_nuclideUri || _load_nuclideUri()).default.getPath(destPath));
+      yield service.rename(filePath, destPath);
 
       const hgRepository = getHgRepositoryForNode(node);
       if (hgRepository == null) {
@@ -93,9 +93,7 @@ let _moveNodesUnprotected = (() => {
       });
 
       const service = (0, (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).getFileSystemServiceByNuclideUri)(paths[0]);
-      yield service.move(paths.map(function (p) {
-        return (_nuclideUri || _load_nuclideUri()).default.getPath(p);
-      }), (_nuclideUri || _load_nuclideUri()).default.getPath(destPath));
+      yield service.move(paths, destPath);
 
       // All filtered nodes should have the same rootUri, so we simply attempt to
       // retrieve the hg repository using the first node.
@@ -153,9 +151,7 @@ let deleteNodes = (() => {
         var _ref5 = (0, _asyncToGenerator.default)(function* (pathGroup) {
           // Batch delete using fs service.
           const service = (0, (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).getFileSystemServiceByNuclideUri)(pathGroup.get(0));
-          yield service.rmdirAll(pathGroup.map(function (path) {
-            return (_nuclideUri || _load_nuclideUri()).default.getPath(path);
-          }).toJS());
+          yield service.rmdirAll(pathGroup.toJS());
         });
 
         return function (_x8) {
@@ -201,7 +197,7 @@ function _load_immutable() {
 var _nuclideUri;
 
 function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../../commons-node/nuclideUri'));
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
 var _FileTreeHelpers;
@@ -213,7 +209,7 @@ function _load_FileTreeHelpers() {
 var _promise;
 
 function _load_promise() {
-  return _promise = require('../../commons-node/promise');
+  return _promise = require('nuclide-commons/promise');
 }
 
 var _nuclideRemoteConnection;

@@ -10,7 +10,7 @@ var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
 var _nuclideUri;
 
 function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../../commons-node/nuclideUri'));
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
 var _atom = require('atom');
@@ -168,7 +168,7 @@ class RemoteDirectory {
   }
 
   exists() {
-    return this._getFileSystemService().exists(this._localPath);
+    return this._getFileSystemService().exists(this._uri);
   }
 
   existsSync() {
@@ -237,7 +237,7 @@ class RemoteDirectory {
         throw new Error('RemoteDirectory has been deleted');
       }
 
-      const created = yield _this._getFileSystemService().mkdirp(_this._localPath);
+      const created = yield _this._getFileSystemService().mkdirp(_this._uri);
       if (_this._subscriptionCount > 0) {
         _this._subscribeToNativeChangeEvents();
       }
@@ -249,7 +249,7 @@ class RemoteDirectory {
     var _this2 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      yield _this2._getFileSystemService().rmdir(_this2._localPath);
+      yield _this2._getFileSystemService().rmdir(_this2._uri);
       _this2._handleNativeDeleteEvent();
     })();
   }
@@ -271,7 +271,7 @@ class RemoteDirectory {
     return (0, _asyncToGenerator.default)(function* () {
       let entries;
       try {
-        entries = yield _this3._getFileSystemService().readdir(_this3._localPath);
+        entries = yield _this3._getFileSystemService().readdir(_this3._uri);
       } catch (e) {
         callback(e, null);
         return;

@@ -28,7 +28,7 @@ function _load_through() {
 var _UniversalDisposable;
 
 function _load_UniversalDisposable() {
-  return _UniversalDisposable = _interopRequireDefault(require('../../commons-node/UniversalDisposable'));
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
 var _nuclideAnalytics;
@@ -90,6 +90,7 @@ class FlowIDEConnection {
 
     this._diagnostics = _rxjsBundlesRxMinJs.Observable.fromEventPattern(handler => {
       this._connection.onNotification(NOTIFICATION_METHOD_NAME, errors => {
+        // $FlowFixMe
         handler(errors);
       });
     },
@@ -99,9 +100,11 @@ class FlowIDEConnection {
 
     this._recheckBookends = _rxjsBundlesRxMinJs.Observable.fromEventPattern(handler => {
       this._connection.onNotification('startRecheck', () => {
+        // $FlowFixMe
         handler({ kind: 'start-recheck' });
       });
       this._connection.onNotification('endRecheck', () => {
+        // $FlowFixMe
         handler({ kind: 'end-recheck' });
       });
     },

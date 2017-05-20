@@ -274,7 +274,6 @@ let writeFile = exports.writeFile = (() => {
 })();
 
 exports.exists = exists;
-exports.findNearestFile = findNearestFile;
 exports.findFilesInDirectories = findFilesInDirectories;
 exports.lstat = lstat;
 exports.mkdir = mkdir;
@@ -300,13 +299,13 @@ var _fs = _interopRequireDefault(require('fs'));
 var _collection;
 
 function _load_collection() {
-  return _collection = require('../../../commons-node/collection');
+  return _collection = require('nuclide-commons/collection');
 }
 
 var _nuclideUri;
 
 function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../../../commons-node/nuclideUri'));
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
 var _fsPromise;
@@ -361,15 +360,6 @@ const READFILE_SIZE_LIMIT = 10 * 1024 * 1024;
  */
 function exists(path) {
   return (_fsPromise || _load_fsPromise()).default.exists(path);
-}
-
-/**
- * @deprecated: Prefer findNearestAncestorNamed(). It has two major differences:
- *     1. It operates on NuclideUri instead of string.
- *     2. It returns the path to the file, not the directory (or null).
- */
-function findNearestFile(fileName, pathToDirectory) {
-  return (_fsPromise || _load_fsPromise()).default.findNearestFile(fileName, pathToDirectory);
 }function findFilesInDirectories(searchPaths, fileName) {
   if (searchPaths.length === 0) {
     return _rxjsBundlesRxMinJs.Observable.throw(new Error('No directories to search in!')).publish();

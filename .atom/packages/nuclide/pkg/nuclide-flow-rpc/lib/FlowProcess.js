@@ -50,7 +50,7 @@ function _load_process() {
 var _promise;
 
 function _load_promise() {
-  return _promise = require('../../commons-node/promise');
+  return _promise = require('nuclide-commons/promise');
 }
 
 var _nice;
@@ -62,7 +62,7 @@ function _load_nice() {
 var _UniversalDisposable;
 
 function _load_UniversalDisposable() {
-  return _UniversalDisposable = _interopRequireDefault(require('../../commons-node/UniversalDisposable'));
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
 var _FlowHelpers;
@@ -458,7 +458,7 @@ class FlowProcess {
   }
 
   _pingServerOnce() {
-    return this._rawExecFlow(['status']).catch(() => null);
+    return this._rawExecFlow(['status']).catch(() => {}).then(() => {});
   }
 
   /**

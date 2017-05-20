@@ -94,7 +94,9 @@ class GraphQLLanguageService {
       if (graphQLConfig && graphQLConfig.getSchemaPath()) {
         schema = yield _this2._graphQLCache.getSchema(graphQLConfig.getSchemaPath());
 
-        return (0, (_getAutocompleteSuggestions || _load_getAutocompleteSuggestions()).getAutocompleteSuggestions)(schema, query, position) || [];
+        if (schema) {
+          return (0, (_getAutocompleteSuggestions || _load_getAutocompleteSuggestions()).getAutocompleteSuggestions)(schema, query, position) || [];
+        }
       }
       return [];
     })();
@@ -117,14 +119,16 @@ class GraphQLLanguageService {
       }
 
       const node = (0, (_getASTNodeAtPoint || _load_getASTNodeAtPoint()).getASTNodeAtPoint)(query, ast, position);
-      switch (node ? node.kind : null) {
-        case (_kinds || _load_kinds()).FRAGMENT_SPREAD:
-          return _this3._getDefinitionForFragmentSpread(query, ast, node, filePath, graphQLConfig);
-        case (_kinds || _load_kinds()).FRAGMENT_DEFINITION:
-        case (_kinds || _load_kinds()).OPERATION_DEFINITION:
-          return (0, (_getDefinition || _load_getDefinition()).getDefinitionQueryResultForDefinitionNode)(filePath, query, node);
-        default:
-          return null;
+      if (node) {
+        switch (node.kind) {
+          case (_kinds || _load_kinds()).FRAGMENT_SPREAD:
+            return _this3._getDefinitionForFragmentSpread(query, ast, node, filePath, graphQLConfig);
+          case (_kinds || _load_kinds()).FRAGMENT_DEFINITION:
+          case (_kinds || _load_kinds()).OPERATION_DEFINITION:
+            return (0, (_getDefinition || _load_getDefinition()).getDefinitionQueryResultForDefinitionNode)(filePath, query, node);
+          default:
+            return null;
+        }
       }
     })();
   }
@@ -139,7 +143,9 @@ class GraphQLLanguageService {
 
       const localFragDefinitions = ast.definitions.filter(function (definition) {
         return definition.kind === (_kinds || _load_kinds()).FRAGMENT_DEFINITION;
-      }).map(function (definition) {
+      });
+      const typeCastedDefs = localFragDefinitions;
+      const localFragInfos = typeCastedDefs.map(function (definition) {
         return {
           file: filePath,
           content: query,
@@ -147,7 +153,7 @@ class GraphQLLanguageService {
         };
       });
 
-      const result = yield (0, (_getDefinition || _load_getDefinition()).getDefinitionQueryResultForFragmentSpread)(query, node, dependencies.concat(localFragDefinitions));
+      const result = yield (0, (_getDefinition || _load_getDefinition()).getDefinitionQueryResultForFragmentSpread)(query, node, dependencies.concat(localFragInfos));
 
       return result;
     })();

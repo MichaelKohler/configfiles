@@ -59,7 +59,7 @@ function _load_fsPromise() {
 var _nuclideUri;
 
 function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../../../commons-node/nuclideUri'));
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
 var _process;
@@ -71,7 +71,7 @@ function _load_process() {
 var _promise;
 
 function _load_promise() {
-  return _promise = require('../../../commons-node/promise');
+  return _promise = require('nuclide-commons/promise');
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

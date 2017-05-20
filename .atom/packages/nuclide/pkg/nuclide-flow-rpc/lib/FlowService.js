@@ -8,16 +8,16 @@ exports.initialize = undefined;
 var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
 
 let initialize = exports.initialize = (() => {
-  var _ref = (0, _asyncToGenerator.default)(function* (fileNotifier, config) {
+  var _ref = (0, _asyncToGenerator.default)(function* (fileNotifier, host, config) {
     if (!(fileNotifier instanceof (_nuclideOpenFilesRpc || _load_nuclideOpenFilesRpc()).FileCache)) {
       throw new Error('Invariant violation: "fileNotifier instanceof FileCache"');
     }
 
     const fileCache = fileNotifier;
-    return new FlowLanguageService(fileCache, config);
+    return new FlowLanguageService(fileCache, host, config);
   });
 
-  return function initialize(_x, _x2) {
+  return function initialize(_x, _x2, _x3) {
     return _ref.apply(this, arguments);
   };
 })();
@@ -93,9 +93,10 @@ function dispose() {
 }
 
 class FlowLanguageService extends (_nuclideLanguageServiceRpc || _load_nuclideLanguageServiceRpc()).MultiProjectLanguageService {
-  constructor(fileCache, config) {
+  constructor(fileCache, host, config) {
     const logger = (0, (_nuclideLogging || _load_nuclideLogging()).getCategoryLogger)('Flow');
-    super(logger, fileCache, '.flowconfig', ['.js', '.jsx'], projectDir => {
+    super();
+    this.initialize(logger, fileCache, host, '.flowconfig', ['.js', '.jsx'], projectDir => {
       const execInfoContainer = getState().getExecInfoContainer();
       const singleProjectLS = new (_FlowSingleProjectLanguageService || _load_FlowSingleProjectLanguageService()).FlowSingleProjectLanguageService(projectDir, execInfoContainer);
       const languageService = new (_nuclideLanguageServiceRpc || _load_nuclideLanguageServiceRpc()).ServerLanguageService(fileCache, singleProjectLS);

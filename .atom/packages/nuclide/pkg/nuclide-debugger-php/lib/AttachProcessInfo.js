@@ -28,7 +28,7 @@ function _load_nuclideRemoteConnection() {
 var _nuclideUri;
 
 function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../../commons-node/nuclideUri'));
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
 var _utils;
@@ -61,10 +61,15 @@ class AttachProcessInfo extends (_nuclideDebuggerBase || _load_nuclideDebuggerBa
     super('hhvm', targetUri);
   }
 
+  clone() {
+    return new AttachProcessInfo(this._targetUri);
+  }
+
   preAttachActions() {
     return (0, _asyncToGenerator.default)(function* () {
       try {
-        // $FlowFB
+        // TODO(t18124539) @nmote This should require FlowFB but when used flow
+        // complains that it is an unused supression.
         const services = require('./fb/services');
         services.startSlog();
       } catch (_) {}
@@ -136,7 +141,9 @@ class AttachProcessInfo extends (_nuclideDebuggerBase || _load_nuclideDebuggerBa
       onClick: () => atom.commands.dispatch(atom.views.getView(atom.workspace), 'nuclide-http-request-sender:toggle-http-request-edit-dialog')
     }];
     try {
-      return customControlButtons.concat(require('./fb/services').customControlButtons);
+      return customControlButtons.concat(
+      // $FlowFB
+      require('./fb/services').customControlButtons);
     } catch (_) {
       return customControlButtons;
     }

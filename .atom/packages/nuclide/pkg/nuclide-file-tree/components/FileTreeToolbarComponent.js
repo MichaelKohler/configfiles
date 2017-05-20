@@ -18,7 +18,7 @@ function _load_classnames() {
 var _UniversalDisposable;
 
 function _load_UniversalDisposable() {
-  return _UniversalDisposable = _interopRequireDefault(require('../../commons-node/UniversalDisposable'));
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
 var _WorkingSetSelectionComponent;
@@ -54,13 +54,13 @@ function _load_nuclideWorkingSetsCommon() {
 var _Button;
 
 function _load_Button() {
-  return _Button = require('../../nuclide-ui/Button');
+  return _Button = require('nuclide-commons-ui/Button');
 }
 
 var _ButtonGroup;
 
 function _load_ButtonGroup() {
-  return _ButtonGroup = require('../../nuclide-ui/ButtonGroup');
+  return _ButtonGroup = require('nuclide-commons-ui/ButtonGroup');
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

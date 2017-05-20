@@ -5,13 +5,13 @@ var _atom = require('atom');
 var _createPackage;
 
 function _load_createPackage() {
-  return _createPackage = _interopRequireDefault(require('../../commons-atom/createPackage'));
+  return _createPackage = _interopRequireDefault(require('nuclide-commons-atom/createPackage'));
 }
 
 var _event;
 
 function _load_event() {
-  return _event = require('../../commons-node/event');
+  return _event = require('nuclide-commons/event');
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

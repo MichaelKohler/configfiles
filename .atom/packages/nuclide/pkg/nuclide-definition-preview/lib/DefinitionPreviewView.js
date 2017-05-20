@@ -10,13 +10,13 @@ var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
 var _Button;
 
 function _load_Button() {
-  return _Button = require('../../nuclide-ui/Button');
+  return _Button = require('nuclide-commons-ui/Button');
 }
 
 var _Block;
 
 function _load_Block() {
-  return _Block = require('../../nuclide-ui/Block');
+  return _Block = require('nuclide-commons-ui/Block');
 }
 
 var _react = _interopRequireDefault(require('react'));
@@ -24,7 +24,7 @@ var _react = _interopRequireDefault(require('react'));
 var _goToLocation;
 
 function _load_goToLocation() {
-  return _goToLocation = require('../../commons-atom/go-to-location');
+  return _goToLocation = require('nuclide-commons-atom/go-to-location');
 }
 
 var _nuclideRemoteConnection;
@@ -36,13 +36,13 @@ function _load_nuclideRemoteConnection() {
 var _AtomTextEditor;
 
 function _load_AtomTextEditor() {
-  return _AtomTextEditor = require('../../nuclide-ui/AtomTextEditor');
+  return _AtomTextEditor = require('nuclide-commons-ui/AtomTextEditor');
 }
 
 var _textEditor;
 
 function _load_textEditor() {
-  return _textEditor = require('../../commons-atom/text-editor');
+  return _textEditor = require('nuclide-commons-atom/text-editor');
 }
 
 var _nuclideAnalytics;
@@ -54,7 +54,7 @@ function _load_nuclideAnalytics() {
 var _featureConfig;
 
 function _load_featureConfig() {
-  return _featureConfig = _interopRequireDefault(require('../../commons-atom/featureConfig'));
+  return _featureConfig = _interopRequireDefault(require('nuclide-commons-atom/feature-config'));
 }
 
 var _atom = require('atom');

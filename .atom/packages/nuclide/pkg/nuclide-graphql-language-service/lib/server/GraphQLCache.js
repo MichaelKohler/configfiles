@@ -402,9 +402,10 @@ function processGraphQLFiles(responses) {
 
   responses.forEach(response => {
     const { filePath, content, ast, mtime, size } = response;
+    const typeCastedAST = ast;
 
-    if (ast) {
-      ast.definitions.forEach(definition => {
+    if (typeCastedAST) {
+      typeCastedAST.definitions.forEach(definition => {
         if (definition.kind === (_kinds || _load_kinds()).FRAGMENT_DEFINITION) {
           fragmentDefinitions.set(definition.name.value, {
             filePath,

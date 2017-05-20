@@ -9,7 +9,7 @@ function _load_syncAtomCommands() {
 var _createPackage;
 
 function _load_createPackage() {
-  return _createPackage = _interopRequireDefault(require('../../commons-atom/createPackage'));
+  return _createPackage = _interopRequireDefault(require('nuclide-commons-atom/createPackage'));
 }
 
 var _LocalStorageJsonTable;
@@ -27,13 +27,13 @@ function _load_PanelRenderer() {
 var _event;
 
 function _load_event() {
-  return _event = require('../../commons-node/event');
+  return _event = require('nuclide-commons/event');
 }
 
 var _collection;
 
 function _load_collection() {
-  return _collection = require('../../commons-node/collection');
+  return _collection = require('nuclide-commons/collection');
 }
 
 var _reduxObservable;
@@ -45,7 +45,7 @@ function _load_reduxObservable() {
 var _UniversalDisposable;
 
 function _load_UniversalDisposable() {
-  return _UniversalDisposable = _interopRequireDefault(require('../../commons-node/UniversalDisposable'));
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
 var _Actions;
@@ -94,6 +94,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // TODO: use a more general versioning mechanism.
 // Perhaps Atom should provide packages with some way of doing this.
+const SERIALIZED_VERSION = 2;
+// These match task types with shortcuts defined in nuclide-task-runner.json
 /**
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -105,8 +107,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @format
  */
 
-const SERIALIZED_VERSION = 2;
-// These match task types with shortcuts defined in nuclide-task-runner.json
 const COMMON_TASK_TYPES = ['build', 'run', 'test', 'debug'];
 
 function getVisible(event) {
@@ -257,6 +257,11 @@ class Activation {
       this._disposables.remove(buttonUpdatesDisposable);
       this._disposables.remove(buttonPresenceDisposable);
     });
+  }
+
+  consumeConsole(service) {
+    this._actionCreators.setConsoleService(service);
+    return new _atom.Disposable(() => this._actionCreators.setConsoleService(null));
   }
 
   provideTaskRunnerServiceApi() {

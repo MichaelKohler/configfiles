@@ -17,7 +17,7 @@ var _reactDom = _interopRequireDefault(require('react-dom'));
 var _nuclideUri;
 
 function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../../../commons-node/nuclideUri'));
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
 var _url = _interopRequireDefault(require('url'));

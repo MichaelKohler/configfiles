@@ -12,25 +12,25 @@ var _atom = require('atom');
 var _renderReactRoot;
 
 function _load_renderReactRoot() {
-  return _renderReactRoot = require('../../commons-atom/renderReactRoot');
+  return _renderReactRoot = require('nuclide-commons-ui/renderReactRoot');
 }
 
 var _Button;
 
 function _load_Button() {
-  return _Button = require('../../nuclide-ui/Button');
+  return _Button = require('nuclide-commons-ui/Button');
 }
 
 var _ButtonGroup;
 
 function _load_ButtonGroup() {
-  return _ButtonGroup = require('../../nuclide-ui/ButtonGroup');
+  return _ButtonGroup = require('nuclide-commons-ui/ButtonGroup');
 }
 
 var _bindObservableAsProps;
 
 function _load_bindObservableAsProps() {
-  return _bindObservableAsProps = require('../../nuclide-ui/bindObservableAsProps');
+  return _bindObservableAsProps = require('nuclide-commons-ui/bindObservableAsProps');
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

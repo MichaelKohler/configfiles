@@ -16,7 +16,7 @@ function _load_classnames() {
 var _observable;
 
 function _load_observable() {
-  return _observable = require('../commons-node/observable');
+  return _observable = require('nuclide-commons/observable');
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

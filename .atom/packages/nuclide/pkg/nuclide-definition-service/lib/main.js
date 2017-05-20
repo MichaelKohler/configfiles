@@ -17,7 +17,7 @@ var _atom = require('atom');
 var _ProviderRegistry;
 
 function _load_ProviderRegistry() {
-  return _ProviderRegistry = _interopRequireDefault(require('../../commons-atom/ProviderRegistry'));
+  return _ProviderRegistry = _interopRequireDefault(require('nuclide-commons-atom/ProviderRegistry'));
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

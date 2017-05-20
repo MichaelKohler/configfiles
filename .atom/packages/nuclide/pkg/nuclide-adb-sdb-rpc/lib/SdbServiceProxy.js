@@ -123,14 +123,14 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "SdbService.js",
-          line: 42
+          line: 46
         },
         kind: "array",
         type: {
           location: {
             type: "source",
             fileName: "SdbService.js",
-            line: 42
+            line: 46
           },
           kind: "named",
           name: "DeviceDescription"
@@ -146,7 +146,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "SdbService.js",
-          line: 47
+          line: 51
         },
         kind: "string"
       }
@@ -156,7 +156,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "SdbService.js",
-          line: 48
+          line: 52
         },
         kind: "string"
       }
@@ -167,7 +167,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "SdbService.js",
-          line: 49
+          line: 53
         },
         kind: "number"
       });
@@ -181,7 +181,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "SdbService.js",
-          line: 54
+          line: 58
         },
         kind: "string"
       }
@@ -191,7 +191,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "SdbService.js",
-          line: 55
+          line: 59
         },
         kind: "string"
       }
@@ -202,7 +202,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "SdbService.js",
-          line: 56
+          line: 60
         },
         kind: "string"
       });
@@ -216,7 +216,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "SdbService.js",
-          line: 61
+          line: 65
         },
         kind: "string"
       }
@@ -226,7 +226,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "SdbService.js",
-          line: 62
+          line: 66
         },
         kind: "named",
         name: "NuclideUri"
@@ -238,7 +238,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "SdbService.js",
-          line: 63
+          line: 67
         },
         kind: "named",
         name: "LegacyProcessMessage"
@@ -253,7 +253,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "SdbService.js",
-          line: 71
+          line: 75
         },
         kind: "string"
       }
@@ -263,7 +263,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "SdbService.js",
-          line: 72
+          line: 76
         },
         kind: "string"
       }
@@ -274,7 +274,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "SdbService.js",
-          line: 73
+          line: 77
         },
         kind: "string"
       });
@@ -288,7 +288,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "SdbService.js",
-          line: 78
+          line: 82
         },
         kind: "string"
       }
@@ -298,7 +298,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "SdbService.js",
-          line: 79
+          line: 83
         },
         kind: "string"
       }
@@ -309,7 +309,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "SdbService.js",
-          line: 80
+          line: 84
         },
         kind: "named",
         name: "LegacyProcessMessage"
@@ -556,13 +556,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "SdbService.js",
-        line: 42
+        line: 46
       },
       type: {
         location: {
           type: "source",
           fileName: "SdbService.js",
-          line: 42
+          line: 46
         },
         kind: "function",
         argumentTypes: [],
@@ -570,21 +570,21 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "SdbService.js",
-            line: 42
+            line: 46
           },
           kind: "promise",
           type: {
             location: {
               type: "source",
               fileName: "SdbService.js",
-              line: 42
+              line: 46
             },
             kind: "array",
             type: {
               location: {
                 type: "source",
                 fileName: "SdbService.js",
-                line: 42
+                line: 46
               },
               kind: "named",
               name: "DeviceDescription"
@@ -599,13 +599,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "SdbService.js",
-        line: 46
+        line: 50
       },
       type: {
         location: {
           type: "source",
           fileName: "SdbService.js",
-          line: 46
+          line: 50
         },
         kind: "function",
         argumentTypes: [{
@@ -614,7 +614,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "SdbService.js",
-              line: 47
+              line: 51
             },
             kind: "string"
           }
@@ -624,7 +624,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "SdbService.js",
-              line: 48
+              line: 52
             },
             kind: "string"
           }
@@ -633,14 +633,14 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "SdbService.js",
-            line: 49
+            line: 53
           },
           kind: "promise",
           type: {
             location: {
               type: "source",
               fileName: "SdbService.js",
-              line: 49
+              line: 53
             },
             kind: "number"
           }
@@ -653,13 +653,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "SdbService.js",
-        line: 53
+        line: 57
       },
       type: {
         location: {
           type: "source",
           fileName: "SdbService.js",
-          line: 53
+          line: 57
         },
         kind: "function",
         argumentTypes: [{
@@ -668,7 +668,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "SdbService.js",
-              line: 54
+              line: 58
             },
             kind: "string"
           }
@@ -678,7 +678,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "SdbService.js",
-              line: 55
+              line: 59
             },
             kind: "string"
           }
@@ -687,14 +687,14 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "SdbService.js",
-            line: 56
+            line: 60
           },
           kind: "promise",
           type: {
             location: {
               type: "source",
               fileName: "SdbService.js",
-              line: 56
+              line: 60
             },
             kind: "string"
           }
@@ -707,13 +707,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "SdbService.js",
-        line: 60
+        line: 64
       },
       type: {
         location: {
           type: "source",
           fileName: "SdbService.js",
-          line: 60
+          line: 64
         },
         kind: "function",
         argumentTypes: [{
@@ -722,7 +722,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "SdbService.js",
-              line: 61
+              line: 65
             },
             kind: "string"
           }
@@ -732,7 +732,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "SdbService.js",
-              line: 62
+              line: 66
             },
             kind: "named",
             name: "NuclideUri"
@@ -742,14 +742,14 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "SdbService.js",
-            line: 63
+            line: 67
           },
           kind: "observable",
           type: {
             location: {
               type: "source",
               fileName: "SdbService.js",
-              line: 63
+              line: 67
             },
             kind: "named",
             name: "LegacyProcessMessage"
@@ -763,13 +763,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "SdbService.js",
-        line: 70
+        line: 74
       },
       type: {
         location: {
           type: "source",
           fileName: "SdbService.js",
-          line: 70
+          line: 74
         },
         kind: "function",
         argumentTypes: [{
@@ -778,7 +778,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "SdbService.js",
-              line: 71
+              line: 75
             },
             kind: "string"
           }
@@ -788,7 +788,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "SdbService.js",
-              line: 72
+              line: 76
             },
             kind: "string"
           }
@@ -797,14 +797,14 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "SdbService.js",
-            line: 73
+            line: 77
           },
           kind: "promise",
           type: {
             location: {
               type: "source",
               fileName: "SdbService.js",
-              line: 73
+              line: 77
             },
             kind: "string"
           }
@@ -817,13 +817,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "SdbService.js",
-        line: 77
+        line: 81
       },
       type: {
         location: {
           type: "source",
           fileName: "SdbService.js",
-          line: 77
+          line: 81
         },
         kind: "function",
         argumentTypes: [{
@@ -832,7 +832,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "SdbService.js",
-              line: 78
+              line: 82
             },
             kind: "string"
           }
@@ -842,7 +842,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "SdbService.js",
-              line: 79
+              line: 83
             },
             kind: "string"
           }
@@ -851,14 +851,14 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "SdbService.js",
-            line: 80
+            line: 84
           },
           kind: "observable",
           type: {
             location: {
               type: "source",
               fileName: "SdbService.js",
-              line: 80
+              line: 84
             },
             kind: "named",
             name: "LegacyProcessMessage"
@@ -1582,6 +1582,120 @@ Object.defineProperty(module.exports, "defs", {
               line: 24
             },
             kind: "string"
+          },
+          optional: false
+        }]
+      }
+    },
+    Process: {
+      kind: "alias",
+      location: {
+        type: "source",
+        fileName: "types.js",
+        line: 27
+      },
+      name: "Process",
+      definition: {
+        location: {
+          type: "source",
+          fileName: "types.js",
+          line: 27
+        },
+        kind: "object",
+        fields: [{
+          location: {
+            type: "source",
+            fileName: "types.js",
+            line: 28
+          },
+          name: "user",
+          type: {
+            location: {
+              type: "source",
+              fileName: "types.js",
+              line: 28
+            },
+            kind: "string"
+          },
+          optional: false
+        }, {
+          location: {
+            type: "source",
+            fileName: "types.js",
+            line: 29
+          },
+          name: "pid",
+          type: {
+            location: {
+              type: "source",
+              fileName: "types.js",
+              line: 29
+            },
+            kind: "number"
+          },
+          optional: false
+        }, {
+          location: {
+            type: "source",
+            fileName: "types.js",
+            line: 30
+          },
+          name: "name",
+          type: {
+            location: {
+              type: "source",
+              fileName: "types.js",
+              line: 30
+            },
+            kind: "string"
+          },
+          optional: false
+        }, {
+          location: {
+            type: "source",
+            fileName: "types.js",
+            line: 31
+          },
+          name: "cpuUsage",
+          type: {
+            location: {
+              type: "source",
+              fileName: "types.js",
+              line: 31
+            },
+            kind: "nullable",
+            type: {
+              location: {
+                type: "source",
+                fileName: "types.js",
+                line: 31
+              },
+              kind: "number"
+            }
+          },
+          optional: false
+        }, {
+          location: {
+            type: "source",
+            fileName: "types.js",
+            line: 32
+          },
+          name: "memUsage",
+          type: {
+            location: {
+              type: "source",
+              fileName: "types.js",
+              line: 32
+            },
+            kind: "nullable",
+            type: {
+              location: {
+                type: "source",
+                fileName: "types.js",
+                line: 32
+              },
+              kind: "number"
+            }
           },
           optional: false
         }]

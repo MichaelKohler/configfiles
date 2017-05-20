@@ -24,13 +24,13 @@ function _load_Section() {
 var _Button;
 
 function _load_Button() {
-  return _Button = require('../../nuclide-ui/Button');
+  return _Button = require('nuclide-commons-ui/Button');
 }
 
 var _bindObservableAsProps;
 
 function _load_bindObservableAsProps() {
-  return _bindObservableAsProps = require('../../nuclide-ui/bindObservableAsProps');
+  return _bindObservableAsProps = require('nuclide-commons-ui/bindObservableAsProps');
 }
 
 var _ResizableFlexContainer;

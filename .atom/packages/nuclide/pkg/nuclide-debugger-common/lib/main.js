@@ -36,4 +36,17 @@ Object.defineProperty(exports, 'DebuggerRpcWebSocketService', {
   }
 });
 
+var _FileCache;
+
+function _load_FileCache() {
+  return _FileCache = require('./FileCache');
+}
+
+Object.defineProperty(exports, 'FileCache', {
+  enumerable: true,
+  get: function () {
+    return _interopRequireDefault(_FileCache || _load_FileCache()).default;
+  }
+});
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

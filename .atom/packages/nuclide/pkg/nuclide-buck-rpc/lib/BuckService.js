@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getLastCommandInfo = exports.queryWithArgs = exports.query = exports.getHTTPServerPort = exports._buildRuleTypeFor = exports.buildRuleTypeFor = exports.showOutput = exports.resolveAlias = exports.listFlavors = exports.listAliases = exports.getBuckConfig = exports.getOwners = exports.getBuildFile = exports.MULTIPLE_TARGET_RULE_TYPE = undefined;
+exports.getLastCommandInfo = exports.queryWithArgs = exports.query = exports.getHTTPServerPort = exports._buildRuleTypeFor = exports.buildRuleTypeFor = exports.showOutput = exports.listFlavors = exports.listAliases = exports.getBuckConfig = exports.getOwners = exports.getBuildFile = exports.MULTIPLE_TARGET_RULE_TYPE = undefined;
 
 var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
 
@@ -232,8 +232,8 @@ let listAliases = exports.listAliases = (() => {
 })();
 
 let listFlavors = exports.listFlavors = (() => {
-  var _ref9 = (0, _asyncToGenerator.default)(function* (rootPath, targets) {
-    const args = ['audit', 'flavors', '--json'].concat(targets);
+  var _ref9 = (0, _asyncToGenerator.default)(function* (rootPath, targets, additionalArgs = []) {
+    const args = ['audit', 'flavors', '--json'].concat(targets).concat(additionalArgs);
     try {
       const result = yield _runBuckCommandFromProjectRoot(rootPath, args);
       return JSON.parse(result);
@@ -248,23 +248,6 @@ let listFlavors = exports.listFlavors = (() => {
 })();
 
 /**
- * Currently, if `aliasOrTarget` contains a flavor, this will fail.
- */
-
-
-let resolveAlias = exports.resolveAlias = (() => {
-  var _ref10 = (0, _asyncToGenerator.default)(function* (rootPath, aliasOrTarget) {
-    const args = ['query', aliasOrTarget];
-    const result = yield _runBuckCommandFromProjectRoot(rootPath, args);
-    return result.trim();
-  });
-
-  return function resolveAlias(_x20, _x21) {
-    return _ref10.apply(this, arguments);
-  };
-})();
-
-/**
  * Returns the build output metadata for the given target.
  * This will contain one element if the target is unique; otherwise it will
  * contain data for all the targets (e.g. for //path/to/targets:)
@@ -274,19 +257,19 @@ let resolveAlias = exports.resolveAlias = (() => {
 
 
 let showOutput = exports.showOutput = (() => {
-  var _ref11 = (0, _asyncToGenerator.default)(function* (rootPath, aliasOrTarget, extraArguments = []) {
+  var _ref10 = (0, _asyncToGenerator.default)(function* (rootPath, aliasOrTarget, extraArguments = []) {
     const args = ['targets', '--json', '--show-output', aliasOrTarget].concat(extraArguments);
     const result = yield _runBuckCommandFromProjectRoot(rootPath, args);
     return JSON.parse(result.trim());
   });
 
-  return function showOutput(_x22, _x23) {
-    return _ref11.apply(this, arguments);
+  return function showOutput(_x20, _x21) {
+    return _ref10.apply(this, arguments);
   };
 })();
 
 let buildRuleTypeFor = exports.buildRuleTypeFor = (() => {
-  var _ref12 = (0, _asyncToGenerator.default)(function* (rootPath, aliasesOrTargets) {
+  var _ref11 = (0, _asyncToGenerator.default)(function* (rootPath, aliasesOrTargets) {
     const resolvedRuleTypes = yield Promise.all(aliasesOrTargets.trim().split(/\s+/).map(function (target) {
       return _buildRuleTypeFor(rootPath, target);
     }));
@@ -304,13 +287,13 @@ let buildRuleTypeFor = exports.buildRuleTypeFor = (() => {
     }
   });
 
-  return function buildRuleTypeFor(_x24, _x25) {
-    return _ref12.apply(this, arguments);
+  return function buildRuleTypeFor(_x22, _x23) {
+    return _ref11.apply(this, arguments);
   };
 })();
 
 let _buildRuleTypeFor = exports._buildRuleTypeFor = (() => {
-  var _ref13 = (0, _asyncToGenerator.default)(function* (rootPath, aliasOrTarget) {
+  var _ref12 = (0, _asyncToGenerator.default)(function* (rootPath, aliasOrTarget) {
     let flavors;
     if (aliasOrTarget.includes('#')) {
       const nameComponents = aliasOrTarget.split('#');
@@ -348,8 +331,8 @@ let _buildRuleTypeFor = exports._buildRuleTypeFor = (() => {
     };
   });
 
-  return function _buildRuleTypeFor(_x26, _x27) {
-    return _ref13.apply(this, arguments);
+  return function _buildRuleTypeFor(_x24, _x25) {
+    return _ref12.apply(this, arguments);
   };
 })();
 
@@ -357,7 +340,7 @@ let _buildRuleTypeFor = exports._buildRuleTypeFor = (() => {
 
 
 let getHTTPServerPort = exports.getHTTPServerPort = (() => {
-  var _ref14 = (0, _asyncToGenerator.default)(function* (rootPath) {
+  var _ref13 = (0, _asyncToGenerator.default)(function* (rootPath) {
     let port = _cachedPorts.get(rootPath);
     if (port != null) {
       if (port === -1) {
@@ -384,8 +367,8 @@ let getHTTPServerPort = exports.getHTTPServerPort = (() => {
     return port;
   });
 
-  return function getHTTPServerPort(_x28) {
-    return _ref14.apply(this, arguments);
+  return function getHTTPServerPort(_x26) {
+    return _ref13.apply(this, arguments);
   };
 })();
 
@@ -393,15 +376,15 @@ let getHTTPServerPort = exports.getHTTPServerPort = (() => {
 
 
 let query = exports.query = (() => {
-  var _ref15 = (0, _asyncToGenerator.default)(function* (rootPath, queryString) {
+  var _ref14 = (0, _asyncToGenerator.default)(function* (rootPath, queryString) {
     const args = ['query', '--json', queryString];
     const result = yield _runBuckCommandFromProjectRoot(rootPath, args);
     const json = JSON.parse(result);
     return json;
   });
 
-  return function query(_x29, _x30) {
-    return _ref15.apply(this, arguments);
+  return function query(_x27, _x28) {
+    return _ref14.apply(this, arguments);
   };
 })();
 
@@ -417,7 +400,7 @@ let query = exports.query = (() => {
 
 
 let queryWithArgs = exports.queryWithArgs = (() => {
-  var _ref16 = (0, _asyncToGenerator.default)(function* (rootPath, queryString, args) {
+  var _ref15 = (0, _asyncToGenerator.default)(function* (rootPath, queryString, args) {
     const completeArgs = ['query', '--json', queryString].concat(args);
     const result = yield _runBuckCommandFromProjectRoot(rootPath, completeArgs);
     const json = JSON.parse(result);
@@ -432,8 +415,8 @@ let queryWithArgs = exports.queryWithArgs = (() => {
     return json;
   });
 
-  return function queryWithArgs(_x31, _x32, _x33) {
-    return _ref16.apply(this, arguments);
+  return function queryWithArgs(_x29, _x30, _x31) {
+    return _ref15.apply(this, arguments);
   };
 })();
 
@@ -442,7 +425,7 @@ let queryWithArgs = exports.queryWithArgs = (() => {
 
 
 let getLastCommandInfo = exports.getLastCommandInfo = (() => {
-  var _ref17 = (0, _asyncToGenerator.default)(function* (rootPath, maxArgs) {
+  var _ref16 = (0, _asyncToGenerator.default)(function* (rootPath, maxArgs) {
     const logFile = (_nuclideUri || _load_nuclideUri()).default.join(rootPath, LOG_PATH);
     if (yield (_fsPromise || _load_fsPromise()).default.exists(logFile)) {
       let line;
@@ -471,8 +454,8 @@ let getLastCommandInfo = exports.getLastCommandInfo = (() => {
     return null;
   });
 
-  return function getLastCommandInfo(_x34, _x35) {
-    return _ref17.apply(this, arguments);
+  return function getLastCommandInfo(_x32, _x33) {
+    return _ref16.apply(this, arguments);
   };
 })();
 
@@ -506,7 +489,7 @@ function _load_fsPromise() {
 var _nuclideUri;
 
 function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../../commons-node/nuclideUri'));
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');

@@ -12,7 +12,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "AdbService.js",
-          line: 25
+          line: 26
         },
         kind: "string"
       }
@@ -22,7 +22,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "AdbService.js",
-          line: 26
+          line: 27
         },
         kind: "named",
         name: "NuclideUri"
@@ -33,14 +33,14 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "AdbService.js",
-          line: 27
+          line: 28
         },
         kind: "nullable",
         type: {
           location: {
             type: "source",
             fileName: "AdbService.js",
-            line: 27
+            line: 28
           },
           kind: "number"
         }
@@ -52,7 +52,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "AdbService.js",
-          line: 28
+          line: 29
         },
         kind: "void"
       });
@@ -66,7 +66,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "AdbService.js",
-          line: 33
+          line: 34
         },
         kind: "string"
       }
@@ -77,14 +77,14 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "AdbService.js",
-          line: 34
+          line: 35
         },
         kind: "map",
         keyType: {
           location: {
             type: "source",
             fileName: "AdbService.js",
-            line: 34
+            line: 35
           },
           kind: "string"
         },
@@ -92,10 +92,79 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "AdbService.js",
-            line: 34
+            line: 35
           },
           kind: "string"
         }
+      });
+    });
+  };
+
+  remoteModule.getProcesses = function (arg0) {
+    return _client.marshalArguments(Array.from(arguments), [{
+      name: "device",
+      type: {
+        location: {
+          type: "source",
+          fileName: "AdbService.js",
+          line: 39
+        },
+        kind: "string"
+      }
+    }]).then(args => {
+      return _client.callRemoteFunction("AdbService/getProcesses", "promise", args);
+    }).then(value => {
+      return _client.unmarshal(value, {
+        location: {
+          type: "source",
+          fileName: "AdbService.js",
+          line: 39
+        },
+        kind: "array",
+        type: {
+          location: {
+            type: "source",
+            fileName: "AdbService.js",
+            line: 39
+          },
+          kind: "named",
+          name: "Process"
+        }
+      });
+    });
+  };
+
+  remoteModule.killProcess = function (arg0, arg1) {
+    return _client.marshalArguments(Array.from(arguments), [{
+      name: "device",
+      type: {
+        location: {
+          type: "source",
+          fileName: "AdbService.js",
+          line: 44
+        },
+        kind: "string"
+      }
+    }, {
+      name: "packageName",
+      type: {
+        location: {
+          type: "source",
+          fileName: "AdbService.js",
+          line: 45
+        },
+        kind: "string"
+      }
+    }]).then(args => {
+      return _client.callRemoteFunction("AdbService/killProcess", "promise", args);
+    }).then(value => {
+      return _client.unmarshal(value, {
+        location: {
+          type: "source",
+          fileName: "AdbService.js",
+          line: 46
+        },
+        kind: "void"
       });
     });
   };
@@ -108,14 +177,14 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "AdbService.js",
-          line: 38
+          line: 50
         },
         kind: "array",
         type: {
           location: {
             type: "source",
             fileName: "AdbService.js",
-            line: 38
+            line: 50
           },
           kind: "named",
           name: "DeviceDescription"
@@ -132,7 +201,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "AdbService.js",
-          line: 42
+          line: 54
         },
         kind: "boolean"
       });
@@ -146,7 +215,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "AdbService.js",
-          line: 47
+          line: 63
         },
         kind: "string"
       }
@@ -156,7 +225,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "AdbService.js",
-          line: 48
+          line: 64
         },
         kind: "string"
       }
@@ -167,7 +236,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "AdbService.js",
-          line: 49
+          line: 65
         },
         kind: "number"
       });
@@ -181,7 +250,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "AdbService.js",
-          line: 54
+          line: 70
         },
         kind: "string"
       }
@@ -191,7 +260,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "AdbService.js",
-          line: 55
+          line: 71
         },
         kind: "named",
         name: "NuclideUri"
@@ -203,7 +272,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "AdbService.js",
-          line: 56
+          line: 72
         },
         kind: "named",
         name: "LegacyProcessMessage"
@@ -218,7 +287,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "AdbService.js",
-          line: 64
+          line: 80
         },
         kind: "string"
       }
@@ -228,7 +297,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "AdbService.js",
-          line: 65
+          line: 81
         },
         kind: "string"
       }
@@ -239,7 +308,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "AdbService.js",
-          line: 66
+          line: 82
         },
         kind: "named",
         name: "LegacyProcessMessage"
@@ -254,7 +323,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "AdbService.js",
-          line: 74
+          line: 90
         },
         kind: "string"
       }
@@ -264,7 +333,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "AdbService.js",
-          line: 75
+          line: 91
         },
         kind: "number"
       }
@@ -274,7 +343,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "AdbService.js",
-          line: 76
+          line: 92
         },
         kind: "number"
       }
@@ -285,7 +354,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "AdbService.js",
-          line: 77
+          line: 93
         },
         kind: "string"
       });
@@ -293,79 +362,6 @@ module.exports = _client => {
   };
 
   remoteModule.launchActivity = function (arg0, arg1, arg2, arg3, arg4) {
-    return _client.marshalArguments(Array.from(arguments), [{
-      name: "device",
-      type: {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 82
-        },
-        kind: "string"
-      }
-    }, {
-      name: "packageName",
-      type: {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 83
-        },
-        kind: "string"
-      }
-    }, {
-      name: "activity",
-      type: {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 84
-        },
-        kind: "string"
-      }
-    }, {
-      name: "debug",
-      type: {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 85
-        },
-        kind: "boolean"
-      }
-    }, {
-      name: "action",
-      type: {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 86
-        },
-        kind: "nullable",
-        type: {
-          location: {
-            type: "source",
-            fileName: "AdbService.js",
-            line: 86
-          },
-          kind: "string"
-        }
-      }
-    }]).then(args => {
-      return _client.callRemoteFunction("AdbService/launchActivity", "promise", args);
-    }).then(value => {
-      return _client.unmarshal(value, {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 87
-        },
-        kind: "string"
-      });
-    });
-  };
-
-  remoteModule.activityExists = function (arg0, arg1, arg2) {
     return _client.marshalArguments(Array.from(arguments), [{
       name: "device",
       type: {
@@ -396,6 +392,79 @@ module.exports = _client => {
         },
         kind: "string"
       }
+    }, {
+      name: "debug",
+      type: {
+        location: {
+          type: "source",
+          fileName: "AdbService.js",
+          line: 101
+        },
+        kind: "boolean"
+      }
+    }, {
+      name: "action",
+      type: {
+        location: {
+          type: "source",
+          fileName: "AdbService.js",
+          line: 102
+        },
+        kind: "nullable",
+        type: {
+          location: {
+            type: "source",
+            fileName: "AdbService.js",
+            line: 102
+          },
+          kind: "string"
+        }
+      }
+    }]).then(args => {
+      return _client.callRemoteFunction("AdbService/launchActivity", "promise", args);
+    }).then(value => {
+      return _client.unmarshal(value, {
+        location: {
+          type: "source",
+          fileName: "AdbService.js",
+          line: 103
+        },
+        kind: "string"
+      });
+    });
+  };
+
+  remoteModule.activityExists = function (arg0, arg1, arg2) {
+    return _client.marshalArguments(Array.from(arguments), [{
+      name: "device",
+      type: {
+        location: {
+          type: "source",
+          fileName: "AdbService.js",
+          line: 114
+        },
+        kind: "string"
+      }
+    }, {
+      name: "packageName",
+      type: {
+        location: {
+          type: "source",
+          fileName: "AdbService.js",
+          line: 115
+        },
+        kind: "string"
+      }
+    }, {
+      name: "activity",
+      type: {
+        location: {
+          type: "source",
+          fileName: "AdbService.js",
+          line: 116
+        },
+        kind: "string"
+      }
     }]).then(args => {
       return _client.callRemoteFunction("AdbService/activityExists", "promise", args);
     }).then(value => {
@@ -403,7 +472,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "AdbService.js",
-          line: 101
+          line: 117
         },
         kind: "boolean"
       });
@@ -417,7 +486,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "AdbService.js",
-          line: 106
+          line: 122
         },
         kind: "string"
       }
@@ -428,14 +497,14 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "AdbService.js",
-          line: 107
+          line: 123
         },
         kind: "array",
         type: {
           location: {
             type: "source",
             fileName: "AdbService.js",
-            line: 107
+            line: 123
           },
           kind: "named",
           name: "AndroidJavaProcess"
@@ -451,7 +520,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "AdbService.js",
-          line: 112
+          line: 128
         },
         kind: "string"
       }
@@ -461,7 +530,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "AdbService.js",
-          line: 113
+          line: 129
         },
         kind: "string"
       }
@@ -472,9 +541,17 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "AdbService.js",
-          line: 114
+          line: 130
         },
-        kind: "string"
+        kind: "nullable",
+        type: {
+          location: {
+            type: "source",
+            fileName: "AdbService.js",
+            line: 130
+          },
+          kind: "string"
+        }
       });
     });
   };
@@ -551,13 +628,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "AdbService.js",
-        line: 24
+        line: 25
       },
       type: {
         location: {
           type: "source",
           fileName: "AdbService.js",
-          line: 24
+          line: 25
         },
         kind: "function",
         argumentTypes: [{
@@ -566,7 +643,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "AdbService.js",
-              line: 25
+              line: 26
             },
             kind: "string"
           }
@@ -576,7 +653,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "AdbService.js",
-              line: 26
+              line: 27
             },
             kind: "named",
             name: "NuclideUri"
@@ -587,14 +664,14 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "AdbService.js",
-              line: 27
+              line: 28
             },
             kind: "nullable",
             type: {
               location: {
                 type: "source",
                 fileName: "AdbService.js",
-                line: 27
+                line: 28
               },
               kind: "number"
             }
@@ -604,14 +681,14 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "AdbService.js",
-            line: 28
+            line: 29
           },
           kind: "promise",
           type: {
             location: {
               type: "source",
               fileName: "AdbService.js",
-              line: 28
+              line: 29
             },
             kind: "void"
           }
@@ -624,13 +701,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "AdbService.js",
-        line: 32
+        line: 33
       },
       type: {
         location: {
           type: "source",
           fileName: "AdbService.js",
-          line: 32
+          line: 33
         },
         kind: "function",
         argumentTypes: [{
@@ -639,7 +716,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "AdbService.js",
-              line: 33
+              line: 34
             },
             kind: "string"
           }
@@ -648,21 +725,21 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "AdbService.js",
-            line: 34
+            line: 35
           },
           kind: "promise",
           type: {
             location: {
               type: "source",
               fileName: "AdbService.js",
-              line: 34
+              line: 35
             },
             kind: "map",
             keyType: {
               location: {
                 type: "source",
                 fileName: "AdbService.js",
-                line: 34
+                line: 35
               },
               kind: "string"
             },
@@ -670,10 +747,117 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "AdbService.js",
-                line: 34
+                line: 35
               },
               kind: "string"
             }
+          }
+        }
+      }
+    },
+    getProcesses: {
+      kind: "function",
+      name: "getProcesses",
+      location: {
+        type: "source",
+        fileName: "AdbService.js",
+        line: 39
+      },
+      type: {
+        location: {
+          type: "source",
+          fileName: "AdbService.js",
+          line: 39
+        },
+        kind: "function",
+        argumentTypes: [{
+          name: "device",
+          type: {
+            location: {
+              type: "source",
+              fileName: "AdbService.js",
+              line: 39
+            },
+            kind: "string"
+          }
+        }],
+        returnType: {
+          location: {
+            type: "source",
+            fileName: "AdbService.js",
+            line: 39
+          },
+          kind: "promise",
+          type: {
+            location: {
+              type: "source",
+              fileName: "AdbService.js",
+              line: 39
+            },
+            kind: "array",
+            type: {
+              location: {
+                type: "source",
+                fileName: "AdbService.js",
+                line: 39
+              },
+              kind: "named",
+              name: "Process"
+            }
+          }
+        }
+      }
+    },
+    killProcess: {
+      kind: "function",
+      name: "killProcess",
+      location: {
+        type: "source",
+        fileName: "AdbService.js",
+        line: 43
+      },
+      type: {
+        location: {
+          type: "source",
+          fileName: "AdbService.js",
+          line: 43
+        },
+        kind: "function",
+        argumentTypes: [{
+          name: "device",
+          type: {
+            location: {
+              type: "source",
+              fileName: "AdbService.js",
+              line: 44
+            },
+            kind: "string"
+          }
+        }, {
+          name: "packageName",
+          type: {
+            location: {
+              type: "source",
+              fileName: "AdbService.js",
+              line: 45
+            },
+            kind: "string"
+          }
+        }],
+        returnType: {
+          location: {
+            type: "source",
+            fileName: "AdbService.js",
+            line: 46
+          },
+          kind: "promise",
+          type: {
+            location: {
+              type: "source",
+              fileName: "AdbService.js",
+              line: 46
+            },
+            kind: "void"
           }
         }
       }
@@ -684,13 +868,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "AdbService.js",
-        line: 38
+        line: 50
       },
       type: {
         location: {
           type: "source",
           fileName: "AdbService.js",
-          line: 38
+          line: 50
         },
         kind: "function",
         argumentTypes: [],
@@ -698,21 +882,21 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "AdbService.js",
-            line: 38
+            line: 50
           },
           kind: "promise",
           type: {
             location: {
               type: "source",
               fileName: "AdbService.js",
-              line: 38
+              line: 50
             },
             kind: "array",
             type: {
               location: {
                 type: "source",
                 fileName: "AdbService.js",
-                line: 38
+                line: 50
               },
               kind: "named",
               name: "DeviceDescription"
@@ -727,13 +911,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "AdbService.js",
-        line: 42
+        line: 54
       },
       type: {
         location: {
           type: "source",
           fileName: "AdbService.js",
-          line: 42
+          line: 54
         },
         kind: "function",
         argumentTypes: [],
@@ -741,14 +925,14 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "AdbService.js",
-            line: 42
+            line: 54
           },
           kind: "promise",
           type: {
             location: {
               type: "source",
               fileName: "AdbService.js",
-              line: 42
+              line: 54
             },
             kind: "boolean"
           }
@@ -761,13 +945,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "AdbService.js",
-        line: 46
+        line: 62
       },
       type: {
         location: {
           type: "source",
           fileName: "AdbService.js",
-          line: 46
+          line: 62
         },
         kind: "function",
         argumentTypes: [{
@@ -776,7 +960,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "AdbService.js",
-              line: 47
+              line: 63
             },
             kind: "string"
           }
@@ -786,7 +970,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "AdbService.js",
-              line: 48
+              line: 64
             },
             kind: "string"
           }
@@ -795,14 +979,14 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "AdbService.js",
-            line: 49
+            line: 65
           },
           kind: "promise",
           type: {
             location: {
               type: "source",
               fileName: "AdbService.js",
-              line: 49
+              line: 65
             },
             kind: "number"
           }
@@ -815,13 +999,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "AdbService.js",
-        line: 53
+        line: 69
       },
       type: {
         location: {
           type: "source",
           fileName: "AdbService.js",
-          line: 53
+          line: 69
         },
         kind: "function",
         argumentTypes: [{
@@ -830,7 +1014,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "AdbService.js",
-              line: 54
+              line: 70
             },
             kind: "string"
           }
@@ -840,7 +1024,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "AdbService.js",
-              line: 55
+              line: 71
             },
             kind: "named",
             name: "NuclideUri"
@@ -850,14 +1034,14 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "AdbService.js",
-            line: 56
+            line: 72
           },
           kind: "observable",
           type: {
             location: {
               type: "source",
               fileName: "AdbService.js",
-              line: 56
+              line: 72
             },
             kind: "named",
             name: "LegacyProcessMessage"
@@ -871,13 +1055,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "AdbService.js",
-        line: 63
+        line: 79
       },
       type: {
         location: {
           type: "source",
           fileName: "AdbService.js",
-          line: 63
+          line: 79
         },
         kind: "function",
         argumentTypes: [{
@@ -886,7 +1070,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "AdbService.js",
-              line: 64
+              line: 80
             },
             kind: "string"
           }
@@ -896,7 +1080,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "AdbService.js",
-              line: 65
+              line: 81
             },
             kind: "string"
           }
@@ -905,14 +1089,14 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "AdbService.js",
-            line: 66
+            line: 82
           },
           kind: "observable",
           type: {
             location: {
               type: "source",
               fileName: "AdbService.js",
-              line: 66
+              line: 82
             },
             kind: "named",
             name: "LegacyProcessMessage"
@@ -926,13 +1110,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "AdbService.js",
-        line: 73
+        line: 89
       },
       type: {
         location: {
           type: "source",
           fileName: "AdbService.js",
-          line: 73
+          line: 89
         },
         kind: "function",
         argumentTypes: [{
@@ -941,7 +1125,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "AdbService.js",
-              line: 74
+              line: 90
             },
             kind: "string"
           }
@@ -951,7 +1135,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "AdbService.js",
-              line: 75
+              line: 91
             },
             kind: "number"
           }
@@ -961,7 +1145,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "AdbService.js",
-              line: 76
+              line: 92
             },
             kind: "number"
           }
@@ -970,14 +1154,14 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "AdbService.js",
-            line: 77
+            line: 93
           },
           kind: "promise",
           type: {
             location: {
               type: "source",
               fileName: "AdbService.js",
-              line: 77
+              line: 93
             },
             kind: "string"
           }
@@ -987,98 +1171,6 @@ Object.defineProperty(module.exports, "defs", {
     launchActivity: {
       kind: "function",
       name: "launchActivity",
-      location: {
-        type: "source",
-        fileName: "AdbService.js",
-        line: 81
-      },
-      type: {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 81
-        },
-        kind: "function",
-        argumentTypes: [{
-          name: "device",
-          type: {
-            location: {
-              type: "source",
-              fileName: "AdbService.js",
-              line: 82
-            },
-            kind: "string"
-          }
-        }, {
-          name: "packageName",
-          type: {
-            location: {
-              type: "source",
-              fileName: "AdbService.js",
-              line: 83
-            },
-            kind: "string"
-          }
-        }, {
-          name: "activity",
-          type: {
-            location: {
-              type: "source",
-              fileName: "AdbService.js",
-              line: 84
-            },
-            kind: "string"
-          }
-        }, {
-          name: "debug",
-          type: {
-            location: {
-              type: "source",
-              fileName: "AdbService.js",
-              line: 85
-            },
-            kind: "boolean"
-          }
-        }, {
-          name: "action",
-          type: {
-            location: {
-              type: "source",
-              fileName: "AdbService.js",
-              line: 86
-            },
-            kind: "nullable",
-            type: {
-              location: {
-                type: "source",
-                fileName: "AdbService.js",
-                line: 86
-              },
-              kind: "string"
-            }
-          }
-        }],
-        returnType: {
-          location: {
-            type: "source",
-            fileName: "AdbService.js",
-            line: 87
-          },
-          kind: "promise",
-          type: {
-            location: {
-              type: "source",
-              fileName: "AdbService.js",
-              line: 87
-            },
-            kind: "string"
-          }
-        }
-      }
-    },
-    activityExists: {
-      kind: "function",
-      name: "activityExists",
       location: {
         type: "source",
         fileName: "AdbService.js",
@@ -1121,19 +1213,111 @@ Object.defineProperty(module.exports, "defs", {
             },
             kind: "string"
           }
+        }, {
+          name: "debug",
+          type: {
+            location: {
+              type: "source",
+              fileName: "AdbService.js",
+              line: 101
+            },
+            kind: "boolean"
+          }
+        }, {
+          name: "action",
+          type: {
+            location: {
+              type: "source",
+              fileName: "AdbService.js",
+              line: 102
+            },
+            kind: "nullable",
+            type: {
+              location: {
+                type: "source",
+                fileName: "AdbService.js",
+                line: 102
+              },
+              kind: "string"
+            }
+          }
         }],
         returnType: {
           location: {
             type: "source",
             fileName: "AdbService.js",
-            line: 101
+            line: 103
           },
           kind: "promise",
           type: {
             location: {
               type: "source",
               fileName: "AdbService.js",
-              line: 101
+              line: 103
+            },
+            kind: "string"
+          }
+        }
+      }
+    },
+    activityExists: {
+      kind: "function",
+      name: "activityExists",
+      location: {
+        type: "source",
+        fileName: "AdbService.js",
+        line: 113
+      },
+      type: {
+        location: {
+          type: "source",
+          fileName: "AdbService.js",
+          line: 113
+        },
+        kind: "function",
+        argumentTypes: [{
+          name: "device",
+          type: {
+            location: {
+              type: "source",
+              fileName: "AdbService.js",
+              line: 114
+            },
+            kind: "string"
+          }
+        }, {
+          name: "packageName",
+          type: {
+            location: {
+              type: "source",
+              fileName: "AdbService.js",
+              line: 115
+            },
+            kind: "string"
+          }
+        }, {
+          name: "activity",
+          type: {
+            location: {
+              type: "source",
+              fileName: "AdbService.js",
+              line: 116
+            },
+            kind: "string"
+          }
+        }],
+        returnType: {
+          location: {
+            type: "source",
+            fileName: "AdbService.js",
+            line: 117
+          },
+          kind: "promise",
+          type: {
+            location: {
+              type: "source",
+              fileName: "AdbService.js",
+              line: 117
             },
             kind: "boolean"
           }
@@ -1146,13 +1330,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "AdbService.js",
-        line: 105
+        line: 121
       },
       type: {
         location: {
           type: "source",
           fileName: "AdbService.js",
-          line: 105
+          line: 121
         },
         kind: "function",
         argumentTypes: [{
@@ -1161,7 +1345,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "AdbService.js",
-              line: 106
+              line: 122
             },
             kind: "string"
           }
@@ -1170,21 +1354,21 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "AdbService.js",
-            line: 107
+            line: 123
           },
           kind: "promise",
           type: {
             location: {
               type: "source",
               fileName: "AdbService.js",
-              line: 107
+              line: 123
             },
             kind: "array",
             type: {
               location: {
                 type: "source",
                 fileName: "AdbService.js",
-                line: 107
+                line: 123
               },
               kind: "named",
               name: "AndroidJavaProcess"
@@ -1199,13 +1383,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "AdbService.js",
-        line: 111
+        line: 127
       },
       type: {
         location: {
           type: "source",
           fileName: "AdbService.js",
-          line: 111
+          line: 127
         },
         kind: "function",
         argumentTypes: [{
@@ -1214,7 +1398,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "AdbService.js",
-              line: 112
+              line: 128
             },
             kind: "string"
           }
@@ -1224,7 +1408,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "AdbService.js",
-              line: 113
+              line: 129
             },
             kind: "string"
           }
@@ -1233,16 +1417,24 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "AdbService.js",
-            line: 114
+            line: 130
           },
           kind: "promise",
           type: {
             location: {
               type: "source",
               fileName: "AdbService.js",
-              line: 114
+              line: 130
             },
-            kind: "string"
+            kind: "nullable",
+            type: {
+              location: {
+                type: "source",
+                fileName: "AdbService.js",
+                line: 130
+              },
+              kind: "string"
+            }
           }
         }
       }
@@ -1963,6 +2155,120 @@ Object.defineProperty(module.exports, "defs", {
               line: 24
             },
             kind: "string"
+          },
+          optional: false
+        }]
+      }
+    },
+    Process: {
+      kind: "alias",
+      location: {
+        type: "source",
+        fileName: "types.js",
+        line: 27
+      },
+      name: "Process",
+      definition: {
+        location: {
+          type: "source",
+          fileName: "types.js",
+          line: 27
+        },
+        kind: "object",
+        fields: [{
+          location: {
+            type: "source",
+            fileName: "types.js",
+            line: 28
+          },
+          name: "user",
+          type: {
+            location: {
+              type: "source",
+              fileName: "types.js",
+              line: 28
+            },
+            kind: "string"
+          },
+          optional: false
+        }, {
+          location: {
+            type: "source",
+            fileName: "types.js",
+            line: 29
+          },
+          name: "pid",
+          type: {
+            location: {
+              type: "source",
+              fileName: "types.js",
+              line: 29
+            },
+            kind: "number"
+          },
+          optional: false
+        }, {
+          location: {
+            type: "source",
+            fileName: "types.js",
+            line: 30
+          },
+          name: "name",
+          type: {
+            location: {
+              type: "source",
+              fileName: "types.js",
+              line: 30
+            },
+            kind: "string"
+          },
+          optional: false
+        }, {
+          location: {
+            type: "source",
+            fileName: "types.js",
+            line: 31
+          },
+          name: "cpuUsage",
+          type: {
+            location: {
+              type: "source",
+              fileName: "types.js",
+              line: 31
+            },
+            kind: "nullable",
+            type: {
+              location: {
+                type: "source",
+                fileName: "types.js",
+                line: 31
+              },
+              kind: "number"
+            }
+          },
+          optional: false
+        }, {
+          location: {
+            type: "source",
+            fileName: "types.js",
+            line: 32
+          },
+          name: "memUsage",
+          type: {
+            location: {
+              type: "source",
+              fileName: "types.js",
+              line: 32
+            },
+            kind: "nullable",
+            type: {
+              location: {
+                type: "source",
+                fileName: "types.js",
+                line: 32
+              },
+              kind: "number"
+            }
           },
           optional: false
         }]

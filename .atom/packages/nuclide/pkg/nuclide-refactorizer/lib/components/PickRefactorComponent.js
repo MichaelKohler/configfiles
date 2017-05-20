@@ -10,7 +10,7 @@ var _react = _interopRequireDefault(require('react'));
 var _Button;
 
 function _load_Button() {
-  return _Button = require('../../../nuclide-ui/Button');
+  return _Button = require('nuclide-commons-ui/Button');
 }
 
 var _refactorActions;
@@ -49,6 +49,17 @@ class PickRefactorComponent extends _react.default.Component {
   }
 
   _pickRefactor(refactoring) {
+    if (refactoring.kind === 'freeform' && refactoring.arguments.length === 0) {
+      this.props.store.dispatch((_refactorActions || _load_refactorActions()).execute(this.props.pickPhase.provider, {
+        kind: 'freeform',
+        editor: this.props.pickPhase.editor,
+        originalPoint: this.props.pickPhase.originalPoint,
+        id: refactoring.id,
+        range: refactoring.range,
+        arguments: new Map()
+      }));
+      return;
+    }
     this.props.store.dispatch((_refactorActions || _load_refactorActions()).pickedRefactor(refactoring));
   }
 

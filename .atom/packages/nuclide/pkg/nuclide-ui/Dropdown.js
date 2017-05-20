@@ -9,13 +9,13 @@ exports.DropdownButton = DropdownButton;
 var _Button;
 
 function _load_Button() {
-  return _Button = require('./Button');
+  return _Button = require('nuclide-commons-ui/Button');
 }
 
 var _Icon;
 
 function _load_Icon() {
-  return _Icon = require('./Icon');
+  return _Icon = require('nuclide-commons-ui/Icon');
 }
 
 var _classnames;

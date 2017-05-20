@@ -8,7 +8,7 @@ exports.TaskRunnerButton = TaskRunnerButton;
 var _Button;
 
 function _load_Button() {
-  return _Button = require('../../../nuclide-ui/Button');
+  return _Button = require('nuclide-commons-ui/Button');
 }
 
 var _react = _interopRequireDefault(require('react'));

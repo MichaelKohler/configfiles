@@ -3,13 +3,13 @@
 var _createPackage;
 
 function _load_createPackage() {
-  return _createPackage = _interopRequireDefault(require('../../commons-atom/createPackage'));
+  return _createPackage = _interopRequireDefault(require('nuclide-commons-atom/createPackage'));
 }
 
 var _UniversalDisposable;
 
 function _load_UniversalDisposable() {
-  return _UniversalDisposable = _interopRequireDefault(require('../../commons-node/UniversalDisposable'));
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
 var _DevicesPanelState;
@@ -68,20 +68,15 @@ function _load_providers() {
   return _providers = require('./providers');
 }
 
+var _nuclideUri;
+
+function _load_nuclideUri() {
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
+}
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
 
 class Activation {
 
@@ -89,7 +84,7 @@ class Activation {
     const epics = Object.keys(_Epics || _load_Epics()).map(k => (_Epics || _load_Epics())[k]).filter(epic => typeof epic === 'function');
     this._store = (0, (_redux || _load_redux()).createStore)((_Reducers || _load_Reducers()).app, (0, (_createEmptyAppState || _load_createEmptyAppState()).createEmptyAppState)(), (0, (_redux || _load_redux()).applyMiddleware)((0, (_reduxObservable || _load_reduxObservable()).createEpicMiddleware)((0, (_reduxObservable || _load_reduxObservable()).combineEpics)(...epics))));
     this._disposables = new (_UniversalDisposable || _load_UniversalDisposable()).default((_ServerConnection || _load_ServerConnection()).ServerConnection.observeRemoteConnections().subscribe(conns => {
-      const hosts = conns.map(conn => conn.getUriOfRemotePath('/'));
+      const hosts = conns.map(conn => (_nuclideUri || _load_nuclideUri()).default.getHostname(conn.getUriOfRemotePath('/')));
       this._store.dispatch((_Actions || _load_Actions()).setHosts(['local'].concat(hosts)));
     }));
   }
@@ -103,7 +98,7 @@ class Activation {
       if (uri === (_DevicesPanelState || _load_DevicesPanelState()).WORKSPACE_VIEW_URI) {
         return new (_DevicesPanelState || _load_DevicesPanelState()).DevicesPanelState(this._store);
       }
-    }), () => api.destroyWhere(item => item instanceof (_DevicesPanelState || _load_DevicesPanelState()).DevicesPanelState), atom.commands.add('atom-workspace', 'nuclide-devices:toggle', event => {
+    }), () => api.destroyWhere(item => item instanceof (_DevicesPanelState || _load_DevicesPanelState()).DevicesPanelState), atom.commands.add('atom-workspace', 'nuclide-device-panel:toggle', event => {
       api.toggle((_DevicesPanelState || _load_DevicesPanelState()).WORKSPACE_VIEW_URI, event.detail);
     }));
   }
@@ -151,21 +146,46 @@ class Activation {
           }
         });
       },
-      registerActionsProvider: provider => {
+      registerProcessesProvider: provider => {
         if (!(pkg != null)) {
           throw new Error(expiredPackageMessage);
         }
 
-        const providers = (0, (_providers || _load_providers()).getDeviceActionsProviders)();
+        const providers = (0, (_providers || _load_providers()).getDeviceProcessesProviders)();
         providers.add(provider);
         return new _atom.Disposable(() => {
           if (pkg != null) {
             providers.delete(provider);
           }
         });
+      },
+      registerTasksProvider: provider => {
+        if (!(pkg != null)) {
+          throw new Error(expiredPackageMessage);
+        }
+
+        const providers = (0, (_providers || _load_providers()).getDeviceTasksProviders)();
+        providers.add(provider);
+        return new _atom.Disposable(() => {
+          if (pkg != null) {
+            if (typeof provider.dispose === 'function') {
+              provider.dispose();
+            }
+            providers.delete(provider);
+          }
+        });
       }
     };
   }
-}
+} /**
+   * Copyright (c) 2015-present, Facebook, Inc.
+   * All rights reserved.
+   *
+   * This source code is licensed under the license found in the LICENSE file in
+   * the root directory of this source tree.
+   *
+   * 
+   * @format
+   */
 
 (0, (_createPackage || _load_createPackage()).default)(module.exports, Activation);

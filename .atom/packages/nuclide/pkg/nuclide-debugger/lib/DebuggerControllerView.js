@@ -33,7 +33,7 @@ function _load_Bridge() {
 var _LoadingSpinner;
 
 function _load_LoadingSpinner() {
-  return _LoadingSpinner = require('../../nuclide-ui/LoadingSpinner');
+  return _LoadingSpinner = require('nuclide-commons-ui/LoadingSpinner');
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

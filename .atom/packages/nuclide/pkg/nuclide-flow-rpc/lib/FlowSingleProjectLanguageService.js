@@ -9,11 +9,14 @@ var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
 
 exports.processAutocompleteItem = processAutocompleteItem;
 exports.groupParamNames = groupParamNames;
+exports.emptyDiagnosticsState = emptyDiagnosticsState;
+exports.updateDiagnostics = updateDiagnostics;
+exports.getDiagnosticUpdates = getDiagnosticUpdates;
 
 var _range;
 
 function _load_range() {
-  return _range = require('../../commons-node/range');
+  return _range = require('nuclide-commons/range');
 }
 
 var _simpleTextBuffer;
@@ -29,6 +32,12 @@ function _load_config() {
 }
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
+
+var _collection;
+
+function _load_collection() {
+  return _collection = require('nuclide-commons/collection');
+}
 
 var _nuclideFlowCommon;
 
@@ -80,16 +89,18 @@ function _load_diagnosticsParser() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const logger = (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)(); /**
-                                                                              * Copyright (c) 2015-present, Facebook, Inc.
-                                                                              * All rights reserved.
-                                                                              *
-                                                                              * This source code is licensed under the license found in the LICENSE file in
-                                                                              * the root directory of this source tree.
-                                                                              *
-                                                                              * 
-                                                                              * @format
-                                                                              */
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ * @format
+ */
+
+const logger = (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)();
 
 /** Encapsulates all of the state information we need about a specific Flow root */
 class FlowSingleProjectLanguageService {
@@ -282,43 +293,13 @@ class FlowSingleProjectLanguageService {
     const ideConnections = this._process.getIDEConnections();
     return ideConnections.switchMap(ideConnection => {
       if (ideConnection != null) {
-        return ideConnection.observeDiagnostics().filter(msg => msg.kind === 'errors').map(msg => {
-          if (!(msg.kind === 'errors')) {
-            throw new Error('Invariant violation: "msg.kind === \'errors\'"');
-          }
-
-          return msg.errors;
-        }).map(diagnosticsJson => {
-          const diagnostics = (0, (_diagnosticsParser || _load_diagnosticsParser()).flowStatusOutputToDiagnostics)(diagnosticsJson);
-          const filePathToMessages = new Map();
-
-          for (const diagnostic of diagnostics) {
-            const path = diagnostic.filePath;
-            let diagnosticArray = filePathToMessages.get(path);
-            if (!diagnosticArray) {
-              diagnosticArray = [];
-              filePathToMessages.set(path, diagnosticArray);
-            }
-            diagnosticArray.push(diagnostic);
-          }
-          return filePathToMessages;
-        });
+        return ideConnection.observeDiagnostics();
       } else {
         // if ideConnection is null, it means there is currently no connection. So, invalidate the
         // current diagnostics so we don't display stale data.
-        return _rxjsBundlesRxMinJs.Observable.of(new Map());
+        return _rxjsBundlesRxMinJs.Observable.of(null);
       }
-    }).scan((oldDiagnostics, newDiagnostics) => {
-      for (const [filePath, diagnostics] of oldDiagnostics) {
-        if (diagnostics.length > 0 && !newDiagnostics.has(filePath)) {
-          newDiagnostics.set(filePath, []);
-        }
-      }
-      return newDiagnostics;
-    }, new Map()).concatMap(filePathToMessages => {
-      const fileDiagnosticUpdates = [...filePathToMessages.entries()].map(([filePath, messages]) => ({ filePath, messages }));
-      return _rxjsBundlesRxMinJs.Observable.from(fileDiagnosticUpdates);
-    }).catch(err => {
+    }).scan(updateDiagnostics, emptyDiagnosticsState()).concatMap(getDiagnosticUpdates).catch(err => {
       logger.error(err);
       throw err;
     });
@@ -655,4 +636,116 @@ function isOptional(param) {
 
   const lastChar = param[param.length - 1];
   return lastChar === '?';
+}
+
+// This should be immutable, but lacking good immutable data structure implementations, we are just
+// going to mutate it
+// Exported only for testing
+
+
+// Exported only for testing
+function emptyDiagnosticsState() {
+  return {
+    isInRecheck: false,
+    staleMessages: new Map(),
+    currentMessages: new Map(),
+    filesToUpdate: new Set()
+  };
+}
+
+// Exported only for testing
+function updateDiagnostics(state,
+// null means we have received a null ide connection (meaning the previous one has gone away)
+msg) {
+  if (msg == null) {
+    return {
+      isInRecheck: false,
+      staleMessages: new Map(),
+      currentMessages: new Map(),
+      filesToUpdate: (0, (_collection || _load_collection()).setUnion)(new Set(state.staleMessages.keys()), new Set(state.currentMessages.keys()))
+    };
+  }
+  switch (msg.kind) {
+    case 'errors':
+      const newErrors = collateDiagnostics(msg.errors);
+      if (state.isInRecheck) {
+        // Yes we are going to mutate this :(
+        const { currentMessages } = state;
+        for (const [file, newMessages] of newErrors) {
+          let messages = currentMessages.get(file);
+          if (messages == null) {
+            messages = [];
+            currentMessages.set(file, messages);
+          }
+          messages.push(...newMessages);
+        }
+        return {
+          isInRecheck: state.isInRecheck,
+          staleMessages: state.staleMessages,
+          currentMessages,
+          filesToUpdate: new Set(newErrors.keys())
+        };
+      } else {
+        // Update the files that now have errors, and those that had errors the last time (we need
+        // to make sure to remove errors that no longer exist).
+        const filesToUpdate = (0, (_collection || _load_collection()).setUnion)(new Set(newErrors.keys()), new Set(state.currentMessages.keys()));
+        return {
+          isInRecheck: state.isInRecheck,
+          staleMessages: state.staleMessages,
+          currentMessages: newErrors,
+          filesToUpdate
+        };
+      }
+    case 'start-recheck':
+      const staleMessages = new Map();
+      for (const [file, oldMessages] of state.currentMessages.entries()) {
+        const messages = oldMessages.map(message => Object.assign({}, message, {
+          stale: true
+        }));
+        staleMessages.set(file, messages);
+      }
+      return {
+        isInRecheck: true,
+        staleMessages,
+        currentMessages: new Map(),
+        filesToUpdate: new Set(state.currentMessages.keys())
+      };
+    case 'end-recheck':
+      return {
+        isInRecheck: false,
+        staleMessages: new Map(),
+        currentMessages: state.currentMessages,
+        filesToUpdate: new Set(state.staleMessages.keys())
+      };
+    default:
+      // Enforce exhaustiveness
+      msg.kind;
+      throw new Error(`Unknown message kind ${msg.kind}`);
+  }
+}
+
+// Exported only for testing
+function getDiagnosticUpdates(state) {
+  const updates = [];
+  for (const file of state.filesToUpdate) {
+    const messages = [...(0, (_collection || _load_collection()).mapGetWithDefault)(state.staleMessages, file, []), ...(0, (_collection || _load_collection()).mapGetWithDefault)(state.currentMessages, file, [])];
+    updates.push({ filePath: file, messages });
+  }
+  return _rxjsBundlesRxMinJs.Observable.from(updates);
+}
+
+function collateDiagnostics(output) {
+  const diagnostics = (0, (_diagnosticsParser || _load_diagnosticsParser()).flowStatusOutputToDiagnostics)(output);
+  const filePathToMessages = new Map();
+
+  for (const diagnostic of diagnostics) {
+    const path = diagnostic.filePath;
+    let diagnosticArray = filePathToMessages.get(path);
+    if (!diagnosticArray) {
+      diagnosticArray = [];
+      filePathToMessages.set(path, diagnosticArray);
+    }
+    diagnosticArray.push(diagnostic);
+  }
+  return filePathToMessages;
 }

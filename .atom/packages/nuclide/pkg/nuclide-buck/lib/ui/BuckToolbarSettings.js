@@ -15,25 +15,25 @@ function _load_shellQuote() {
 var _string;
 
 function _load_string() {
-  return _string = require('../../../commons-node/string');
+  return _string = require('nuclide-commons/string');
 }
 
 var _AtomInput;
 
 function _load_AtomInput() {
-  return _AtomInput = require('../../../nuclide-ui/AtomInput');
+  return _AtomInput = require('nuclide-commons-ui/AtomInput');
 }
 
 var _Button;
 
 function _load_Button() {
-  return _Button = require('../../../nuclide-ui/Button');
+  return _Button = require('nuclide-commons-ui/Button');
 }
 
 var _ButtonGroup;
 
 function _load_ButtonGroup() {
-  return _ButtonGroup = require('../../../nuclide-ui/ButtonGroup');
+  return _ButtonGroup = require('nuclide-commons-ui/ButtonGroup');
 }
 
 var _Modal;

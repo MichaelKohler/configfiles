@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.hphpdMightBeAttached = exports.DUMMY_FRAME_ID = undefined;
+exports.hphpdMightBeAttached = exports.DUMMY_FRAME_ID = exports.uriToPath = exports.pathToUri = undefined;
 
 var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
 
@@ -28,8 +28,6 @@ exports.base64Decode = base64Decode;
 exports.base64Encode = base64Encode;
 exports.makeDbgpMessage = makeDbgpMessage;
 exports.makeMessage = makeMessage;
-exports.pathToUri = pathToUri;
-exports.uriToPath = uriToPath;
 exports.getBreakpointLocation = getBreakpointLocation;
 exports.launchScriptForDummyConnection = launchScriptForDummyConnection;
 exports.launchScriptToDebug = launchScriptToDebug;
@@ -43,8 +41,6 @@ function _load_dedent() {
 }
 
 var _child_process = _interopRequireDefault(require('child_process'));
-
-var _url = _interopRequireDefault(require('url'));
 
 var _utils;
 
@@ -61,7 +57,7 @@ function _load_config() {
 var _string;
 
 function _load_string() {
-  return _string = require('../../commons-node/string');
+  return _string = require('nuclide-commons/string');
 }
 
 var _process;
@@ -70,18 +66,27 @@ function _load_process() {
   return _process = require('../../commons-node/process');
 }
 
+var _helpers;
+
+function _load_helpers() {
+  return _helpers = require('../../nuclide-debugger-common/lib/helpers');
+}
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const DUMMY_FRAME_ID = exports.DUMMY_FRAME_ID = 'Frame.0'; /**
-                                                            * Copyright (c) 2015-present, Facebook, Inc.
-                                                            * All rights reserved.
-                                                            *
-                                                            * This source code is licensed under the license found in the LICENSE file in
-                                                            * the root directory of this source tree.
-                                                            *
-                                                            * 
-                                                            * @format
-                                                            */
+exports.pathToUri = (_helpers || _load_helpers()).pathToUri;
+exports.uriToPath = (_helpers || _load_helpers()).uriToPath; /**
+                                                              * Copyright (c) 2015-present, Facebook, Inc.
+                                                              * All rights reserved.
+                                                              *
+                                                              * This source code is licensed under the license found in the LICENSE file in
+                                                              * the root directory of this source tree.
+                                                              *
+                                                              * 
+                                                              * @format
+                                                              */
+
+const DUMMY_FRAME_ID = exports.DUMMY_FRAME_ID = 'Frame.0';
 
 function isContinuationCommand(command) {
   return ['run', 'step_into', 'step_over', 'step_out', 'stop', 'detach'].some(continuationCommand => continuationCommand === command);
@@ -112,25 +117,12 @@ function makeMessage(obj, body_) {
   return makeDbgpMessage(result);
 }
 
-function pathToUri(path) {
-  return 'file://' + path;
-}
-
-function uriToPath(uri) {
-  const components = _url.default.parse(uri);
-  // Some filename returned from hhvm does not have protocol.
-  if (components.protocol !== 'file:' && components.protocol != null) {
-    (_utils || _load_utils()).default.logErrorAndThrow(`unexpected file protocol. Got: ${components.protocol}`);
-  }
-  return components.pathname || '';
-}
-
 function getBreakpointLocation(breakpoint) {
   const { filename, lineNumber } = breakpoint.breakpointInfo;
   return {
     // chrome lineNumber is 0-based while xdebug is 1-based.
     lineNumber: lineNumber - 1,
-    scriptId: uriToPath(filename)
+    scriptId: (0, (_helpers || _load_helpers()).uriToPath)(filename)
   };
 }
 

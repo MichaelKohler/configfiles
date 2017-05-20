@@ -36,6 +36,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * the root directory of this source tree.
  *
  * 
+ * @format
  */
 
 /* global localStorage */
@@ -256,33 +257,38 @@ class HyperclickForTextEditor {
           return;
         }
       }
-      // this._lastSuggestionAtMouse will only be set if hyperclick returned a promise that
-      // resolved to a non-null value. So, in order to not ask hyperclick for the same thing
-      // again and again which will be anyway null, we check if the mouse position has changed.
-      if (_this._lastPosition && position.compare(_this._lastPosition) === 0) {
+
+      // if we don't have any prior hyperclick position data, or we don't
+      // have any prior suggestion data, or the cursor has moved since the
+      // last suggestion, then refetch hyperclick suggestions. Otherwise,
+      // we might be able to reuse it below.
+      if (!_this._lastPosition || !_this._lastSuggestionAtMouse || position.compare(_this._lastPosition) !== 0) {
+        _this._isLoading = true;
+        _this._lastPosition = position;
+
+        try {
+          _this._lastSuggestionAtMousePromise = _this._hyperclick.getSuggestion(_this._textEditor, position);
+          _this._lastSuggestionAtMouse = yield _this._lastSuggestionAtMousePromise;
+        } catch (e) {
+          logger.error('Error getting Hyperclick suggestion:', e);
+        } finally {
+          _this._doneLoading();
+        }
+      }
+
+      // it's possible that the text editor buffer (and therefore this hyperclick
+      // provider for the editor) has been closed by the user since we
+      // asynchronously queried for suggestions.
+      if (_this._isDestroyed) {
         return;
       }
 
-      _this._isLoading = true;
-
-      try {
-        _this._lastPosition = position;
-        _this._lastSuggestionAtMousePromise = _this._hyperclick.getSuggestion(_this._textEditor, position);
-        _this._lastSuggestionAtMouse = yield _this._lastSuggestionAtMousePromise;
-        if (_this._isDestroyed) {
-          return;
-        }
-        if (_this._lastSuggestionAtMouse && _this._isMouseAtLastSuggestion()) {
-          // Add the hyperclick markers if there's a new suggestion and it's under the mouse.
-          _this._updateNavigationMarkers(_this._lastSuggestionAtMouse.range);
-        } else {
-          // Remove all the markers if we've finished loading and there's no suggestion.
-          _this._updateNavigationMarkers(null);
-        }
-      } catch (e) {
-        logger.error('Error getting Hyperclick suggestion:', e);
-      } finally {
-        _this._doneLoading();
+      if (_this._lastSuggestionAtMouse && _this._isMouseAtLastSuggestion()) {
+        // Add the hyperclick markers if there's a new suggestion and it's under the mouse.
+        _this._updateNavigationMarkers(_this._lastSuggestionAtMouse.range);
+      } else {
+        // Remove all the markers if we've finished loading and there's no suggestion.
+        _this._updateNavigationMarkers(null);
       }
     })();
   }
@@ -372,8 +378,13 @@ class HyperclickForTextEditor {
     this._textEditorView.classList.add('hyperclick');
     const ranges = Array.isArray(range) ? range : [range];
     this._navigationMarkers = ranges.map(markerRange => {
-      const marker = this._textEditor.markBufferRange(markerRange, { invalidate: 'never' });
-      this._textEditor.decorateMarker(marker, { type: 'highlight', class: 'hyperclick' });
+      const marker = this._textEditor.markBufferRange(markerRange, {
+        invalidate: 'never'
+      });
+      this._textEditor.decorateMarker(marker, {
+        type: 'highlight',
+        class: 'hyperclick'
+      });
       return marker;
     });
   }

@@ -7,32 +7,30 @@ exports.initialize = exports.initializeLsp = undefined;
 
 var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
 
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
-
 let initializeLsp = exports.initializeLsp = (() => {
-  var _ref = (0, _asyncToGenerator.default)(function* (command, args, projectFileName, fileExtensions, logLevel, fileNotifier) {
+  var _ref = (0, _asyncToGenerator.default)(function* (command, args, projectFileName, fileExtensions, logLevel, fileNotifier, host) {
     if (!(fileNotifier instanceof (_nuclideOpenFilesRpc || _load_nuclideOpenFilesRpc()).FileCache)) {
       throw new Error('Invariant violation: "fileNotifier instanceof FileCache"');
     }
 
     (_hackConfig || _load_hackConfig()).logger.setLogLevel(logLevel);
     const cmd = command === '' ? yield (0, (_hackConfig || _load_hackConfig()).getHackCommand)() : command;
-    return new (_nuclideVscodeLanguageService || _load_nuclideVscodeLanguageService()).PerConnectionLanguageService((_hackConfig || _load_hackConfig()).logger, fileNotifier, cmd, args, projectFileName, fileExtensions);
+    return (0, (_nuclideVscodeLanguageService || _load_nuclideVscodeLanguageService()).createMultiLspLanguageService)((_hackConfig || _load_hackConfig()).logger, fileNotifier, host, 'Hack', cmd, args, projectFileName, fileExtensions);
   });
 
-  return function initializeLsp(_x, _x2, _x3, _x4, _x5, _x6) {
+  return function initializeLsp(_x, _x2, _x3, _x4, _x5, _x6, _x7) {
     return _ref.apply(this, arguments);
   };
-})();
+})(); /**
+       * Copyright (c) 2015-present, Facebook, Inc.
+       * All rights reserved.
+       *
+       * This source code is licensed under the license found in the LICENSE file in
+       * the root directory of this source tree.
+       *
+       * 
+       * @format
+       */
 
 let initialize = exports.initialize = (() => {
   var _ref2 = (0, _asyncToGenerator.default)(function* (hackCommand, logLevel, fileNotifier) {
@@ -42,7 +40,7 @@ let initialize = exports.initialize = (() => {
     return new HackLanguageServiceImpl(fileNotifier);
   });
 
-  return function initialize(_x7, _x8, _x9) {
+  return function initialize(_x8, _x9, _x10) {
     return _ref2.apply(this, arguments);
   };
 })();
@@ -52,13 +50,13 @@ var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
 var _range;
 
 function _load_range() {
-  return _range = require('../../commons-node/range');
+  return _range = require('nuclide-commons/range');
 }
 
 var _collection;
 
 function _load_collection() {
-  return _collection = require('../../commons-node/collection');
+  return _collection = require('nuclide-commons/collection');
 }
 
 var _nuclideVscodeLanguageService;
@@ -136,7 +134,7 @@ function _load_nuclideLanguageServiceRpc() {
 var _UniversalDisposable;
 
 function _load_UniversalDisposable() {
-  return _UniversalDisposable = _interopRequireDefault(require('../../commons-node/UniversalDisposable'));
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
 var _nuclideHackCommon;

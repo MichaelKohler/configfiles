@@ -15,13 +15,13 @@ var _react = _interopRequireDefault(require('react'));
 var _AtomInput;
 
 function _load_AtomInput() {
-  return _AtomInput = require('../../../nuclide-ui/AtomInput');
+  return _AtomInput = require('nuclide-commons-ui/AtomInput');
 }
 
 var _ButtonGroup;
 
 function _load_ButtonGroup() {
-  return _ButtonGroup = require('../../../nuclide-ui/ButtonGroup');
+  return _ButtonGroup = require('nuclide-commons-ui/ButtonGroup');
 }
 
 var _FunnelIcon;
@@ -39,31 +39,31 @@ function _load_ModalMultiSelect() {
 var _Toolbar;
 
 function _load_Toolbar() {
-  return _Toolbar = require('../../../nuclide-ui/Toolbar');
+  return _Toolbar = require('nuclide-commons-ui/Toolbar');
 }
 
 var _ToolbarLeft;
 
 function _load_ToolbarLeft() {
-  return _ToolbarLeft = require('../../../nuclide-ui/ToolbarLeft');
+  return _ToolbarLeft = require('nuclide-commons-ui/ToolbarLeft');
 }
 
 var _ToolbarRight;
 
 function _load_ToolbarRight() {
-  return _ToolbarRight = require('../../../nuclide-ui/ToolbarRight');
+  return _ToolbarRight = require('nuclide-commons-ui/ToolbarRight');
 }
 
 var _addTooltip;
 
 function _load_addTooltip() {
-  return _addTooltip = _interopRequireDefault(require('../../../nuclide-ui/add-tooltip'));
+  return _addTooltip = _interopRequireDefault(require('nuclide-commons-ui/addTooltip'));
 }
 
 var _Button;
 
 function _load_Button() {
-  return _Button = require('../../../nuclide-ui/Button');
+  return _Button = require('nuclide-commons-ui/Button');
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

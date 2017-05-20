@@ -13,19 +13,19 @@ var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
 var _textEditor;
 
 function _load_textEditor() {
-  return _textEditor = require('../../commons-atom/text-editor');
+  return _textEditor = require('nuclide-commons-atom/text-editor');
 }
 
 var _debounce;
 
 function _load_debounce() {
-  return _debounce = _interopRequireDefault(require('../../commons-node/debounce'));
+  return _debounce = _interopRequireDefault(require('nuclide-commons/debounce'));
 }
 
 var _event;
 
 function _load_event() {
-  return _event = require('../../commons-node/event');
+  return _event = require('nuclide-commons/event');
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

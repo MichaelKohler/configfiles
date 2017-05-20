@@ -9,7 +9,7 @@ var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
 var _range;
 
 function _load_range() {
-  return _range = require('../../commons-atom/range');
+  return _range = require('nuclide-commons-atom/range');
 }
 
 var _UnescapedUnicodeDatatipComponent;

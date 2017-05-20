@@ -28,6 +28,7 @@ function defaultWordRegExpForEditor(textEditor) {
  * the root directory of this source tree.
  *
  * 
+ * @format
  */
 
 function getWordTextAndRange(textEditor, position, wordRegExp_) {

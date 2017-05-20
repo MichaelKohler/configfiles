@@ -10,7 +10,7 @@ var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
 var _promise;
 
 function _load_promise() {
-  return _promise = require('../../commons-node/promise');
+  return _promise = require('nuclide-commons/promise');
 }
 
 var _nuclideDebuggerBase;

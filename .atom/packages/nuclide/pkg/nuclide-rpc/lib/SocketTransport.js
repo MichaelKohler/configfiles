@@ -20,7 +20,7 @@ function _load_eventKit() {
 var _promise;
 
 function _load_promise() {
-  return _promise = require('../../commons-node/promise');
+  return _promise = require('nuclide-commons/promise');
 }
 
 class SocketTransport extends (_StreamTransport || _load_StreamTransport()).StreamTransport {

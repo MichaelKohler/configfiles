@@ -3,7 +3,7 @@
 var _createPackage;
 
 function _load_createPackage() {
-  return _createPackage = _interopRequireDefault(require('../../commons-atom/createPackage'));
+  return _createPackage = _interopRequireDefault(require('nuclide-commons-atom/createPackage'));
 }
 
 var _viewableFromReactElement;
@@ -21,13 +21,13 @@ function _load_reduxObservable() {
 var _featureConfig;
 
 function _load_featureConfig() {
-  return _featureConfig = _interopRequireDefault(require('../../commons-atom/featureConfig'));
+  return _featureConfig = _interopRequireDefault(require('nuclide-commons-atom/feature-config'));
 }
 
 var _UniversalDisposable;
 
 function _load_UniversalDisposable() {
-  return _UniversalDisposable = _interopRequireDefault(require('../../commons-node/UniversalDisposable'));
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
 var _Actions;
@@ -146,6 +146,83 @@ class Activation {
       store: this._getStore(),
       createPasteFunction: this._createPasteFunction
     }));
+  }
+
+  /**
+   * This service provides a factory for creating a console object tied to a particular source. If
+   * the consumer wants to expose starting and stopping functionality through the Console UI (for
+   * example, to allow the user to decide when to start and stop tailing logs), they can include
+   * `start()` and `stop()` functions on the object they pass to the factory.
+   *
+   * When the factory is invoked, the source will be added to the Console UI's filter list. The
+   * factory returns a Disposable which should be disposed of when the source goes away (e.g. its
+   * package is disabled). This will remove the source from the Console UI's filter list (as long as
+   * there aren't any remaining messages from the source).
+   */
+  provideConsole() {
+    // Create a local, nullable reference so that the service consumers don't keep the Activation
+    // instance in memory.
+    let activation = this;
+    this._disposables.add(() => {
+      activation = null;
+    });
+
+    return sourceInfo => {
+      if (!(activation != null)) {
+        throw new Error('Invariant violation: "activation != null"');
+      }
+
+      let disposed;
+      activation._getStore().dispatch((_Actions || _load_Actions()).registerSource(sourceInfo));
+      const console = {
+        // TODO: Update these to be (object: any, ...objects: Array<any>): void.
+        log(object) {
+          console.append({ text: object, level: 'log' });
+        },
+        warn(object) {
+          console.append({ text: object, level: 'warning' });
+        },
+        error(object) {
+          console.append({ text: object, level: 'error' });
+        },
+        info(object) {
+          console.append({ text: object, level: 'info' });
+        },
+        append(message) {
+          if (!(activation != null && !disposed)) {
+            throw new Error('Invariant violation: "activation != null && !disposed"');
+          }
+
+          activation._getStore().dispatch((_Actions || _load_Actions()).recordReceived({
+            text: message.text,
+            level: message.level,
+            data: message.data,
+            tags: message.tags,
+            scopeName: message.scopeName,
+            sourceId: sourceInfo.id,
+            kind: message.kind || 'message',
+            timestamp: new Date() }));
+        },
+        setStatus(status) {
+          if (!(activation != null && !disposed)) {
+            throw new Error('Invariant violation: "activation != null && !disposed"');
+          }
+
+          activation._getStore().dispatch((_Actions || _load_Actions()).updateStatus(sourceInfo.id, status));
+        },
+        dispose() {
+          if (!(activation != null)) {
+            throw new Error('Invariant violation: "activation != null"');
+          }
+
+          if (!disposed) {
+            disposed = true;
+            activation._getStore().dispatch((_Actions || _load_Actions()).removeSource(sourceInfo.id));
+          }
+        }
+      };
+      return console;
+    };
   }
 
   provideOutputService() {

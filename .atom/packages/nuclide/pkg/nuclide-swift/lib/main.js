@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 exports.activate = activate;
 exports.deactivate = deactivate;
 exports.consumeTaskRunnerServiceApi = consumeTaskRunnerServiceApi;
-exports.consumeOutputService = consumeOutputService;
 exports.serialize = serialize;
 exports.createAutocompleteProvider = createAutocompleteProvider;
 
@@ -18,17 +17,18 @@ function _load_SwiftPMTaskRunner() {
   return _SwiftPMTaskRunner = require('./taskrunner/SwiftPMTaskRunner');
 }
 
-let _disposables = null; /**
-                          * Copyright (c) 2015-present, Facebook, Inc.
-                          * All rights reserved.
-                          *
-                          * This source code is licensed under the license found in the LICENSE file in
-                          * the root directory of this source tree.
-                          *
-                          * 
-                          * @format
-                          */
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ * @format
+ */
 
+let _disposables = null;
 let _taskRunner = null;
 let _initialState = null;
 
@@ -60,17 +60,6 @@ function consumeTaskRunnerServiceApi(serviceApi) {
   }
 
   _disposables.add(serviceApi.register(_getTaskRunner()));
-}
-
-function consumeOutputService(service) {
-  if (!(_disposables != null)) {
-    throw new Error('Invariant violation: "_disposables != null"');
-  }
-
-  _disposables.add(service.registerOutputProvider({
-    messages: _getTaskRunner().getOutputMessages(),
-    id: 'swift'
-  }));
 }
 
 function serialize() {

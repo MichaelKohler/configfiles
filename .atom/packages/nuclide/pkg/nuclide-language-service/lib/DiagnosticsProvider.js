@@ -24,7 +24,7 @@ function _load_nuclideRemoteConnection() {
 var _nuclideUri;
 
 function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../../commons-node/nuclideUri'));
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
 var _nuclideAnalytics;
@@ -36,7 +36,7 @@ function _load_nuclideAnalytics() {
 var _promise;
 
 function _load_promise() {
-  return _promise = require('../../commons-node/promise');
+  return _promise = require('nuclide-commons/promise');
 }
 
 var _DiagnosticsProviderBase;
@@ -48,7 +48,7 @@ function _load_DiagnosticsProviderBase() {
 var _projects;
 
 function _load_projects() {
-  return _projects = require('../../commons-atom/projects');
+  return _projects = require('nuclide-commons-atom/projects');
 }
 
 var _nuclideOpenFiles;
@@ -62,13 +62,13 @@ var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
 var _event;
 
 function _load_event() {
-  return _event = require('../../commons-node/event');
+  return _event = require('nuclide-commons/event');
 }
 
 var _UniversalDisposable;
 
 function _load_UniversalDisposable() {
-  return _UniversalDisposable = _interopRequireDefault(require('../../commons-node/UniversalDisposable'));
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
 var _nuclideLanguageServiceRpc;

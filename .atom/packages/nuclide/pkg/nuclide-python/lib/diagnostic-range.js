@@ -10,7 +10,7 @@ var _atom = require('atom');
 var _range;
 
 function _load_range() {
-  return _range = require('../../commons-atom/range');
+  return _range = require('nuclide-commons-atom/range');
 }
 
 var _nuclideLogging;
@@ -106,12 +106,12 @@ function getDiagnosticRange(diagnostic, editor) {
       case 'E2':
         // '#' comment spacing
         if (code.startsWith('E26')) {
-          return new _atom.Range([line, column - 1], [line, trimmedEndCol]);
+          return new _atom.Range([line, column], [line, trimmedEndCol]);
         }
         const numericCode = parseInt(code.slice(1), 10);
         // Missing whitespace - underline the closest symbol
         if (numericCode >= 225 && numericCode <= 231 || numericCode === 275) {
-          return new _atom.Range([line, column - 1], [line, column]);
+          return new _atom.Range([line, column], [line, column + 1]);
         }
         // Extra whitespace - underline the offending whitespace
         const whitespace = (0, (_range || _load_range()).wordAtPosition)(editor, new _atom.Point(line, column), /\s+/g);

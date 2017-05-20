@@ -39,15 +39,6 @@ function _load_DbgpSocket() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const EVAL_IDENTIFIER = '$__unique_xdebug_variable_name__';
-
-/**
- * Handles data value tracking between Chrome and Dbgp.
- *
- * Maps Dbgp properties to/from Chrome RemoteObjects.
- * RemoteObjects are only valid while the debuggee is paused.
- * Once the debuggee resumes, all RemoteObjects become invalid.
- */
 /**
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -59,6 +50,15 @@ const EVAL_IDENTIFIER = '$__unique_xdebug_variable_name__';
  * @format
  */
 
+const EVAL_IDENTIFIER = '$__unique_xdebug_variable_name__';
+
+/**
+ * Handles data value tracking between Chrome and Dbgp.
+ *
+ * Maps Dbgp properties to/from Chrome RemoteObjects.
+ * RemoteObjects are only valid while the debuggee is paused.
+ * Once the debuggee resumes, all RemoteObjects become invalid.
+ */
 class DataCache {
 
   constructor(socket) {

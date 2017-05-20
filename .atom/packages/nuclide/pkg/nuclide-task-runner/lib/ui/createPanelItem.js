@@ -8,7 +8,7 @@ exports.createPanelItem = createPanelItem;
 var _bindObservableAsProps;
 
 function _load_bindObservableAsProps() {
-  return _bindObservableAsProps = require('../../../nuclide-ui/bindObservableAsProps');
+  return _bindObservableAsProps = require('nuclide-commons-ui/bindObservableAsProps');
 }
 
 var _viewableFromReactElement;
@@ -20,7 +20,7 @@ function _load_viewableFromReactElement() {
 var _observable;
 
 function _load_observable() {
-  return _observable = require('../../../commons-node/observable');
+  return _observable = require('nuclide-commons/observable');
 }
 
 var _Actions;

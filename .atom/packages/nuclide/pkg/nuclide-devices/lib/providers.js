@@ -5,7 +5,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.getDeviceListProviders = getDeviceListProviders;
 exports.getDeviceInfoProviders = getDeviceInfoProviders;
-exports.getDeviceActionsProviders = getDeviceActionsProviders;
+exports.getDeviceTasksProviders = getDeviceTasksProviders;
+exports.getDeviceProcessesProviders = getDeviceProcessesProviders;
 
 var _types;
 
@@ -25,7 +26,8 @@ const deviceListProviders = new Set(); /**
                                         */
 
 const deviceInfoProviders = new Set();
-const deviceActionsProviders = new Set();
+const deviceTasksProviders = new Set();
+const deviceProcessesProviders = new Set();
 
 function getDeviceListProviders() {
   return deviceListProviders;
@@ -35,6 +37,10 @@ function getDeviceInfoProviders() {
   return deviceInfoProviders;
 }
 
-function getDeviceActionsProviders() {
-  return deviceActionsProviders;
+function getDeviceTasksProviders() {
+  return deviceTasksProviders;
+}
+
+function getDeviceProcessesProviders() {
+  return deviceProcessesProviders;
 }

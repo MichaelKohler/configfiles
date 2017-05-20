@@ -7,13 +7,13 @@ Object.defineProperty(exports, "__esModule", {
 var _mouseToPosition;
 
 function _load_mouseToPosition() {
-  return _mouseToPosition = require('../../commons-atom/mouse-to-position');
+  return _mouseToPosition = require('nuclide-commons-atom/mouse-to-position');
 }
 
 var _UniversalDisposable;
 
 function _load_UniversalDisposable() {
-  return _UniversalDisposable = _interopRequireDefault(require('../../commons-node/UniversalDisposable'));
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
 var _contextMenu;

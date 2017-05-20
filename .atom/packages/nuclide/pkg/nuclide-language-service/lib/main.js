@@ -16,3 +16,16 @@ Object.defineProperty(exports, 'AtomLanguageService', {
     return (_AtomLanguageService || _load_AtomLanguageService()).AtomLanguageService;
   }
 });
+
+var _HostServices;
+
+function _load_HostServices() {
+  return _HostServices = require('./HostServices');
+}
+
+Object.defineProperty(exports, 'getHostServices', {
+  enumerable: true,
+  get: function () {
+    return (_HostServices || _load_HostServices()).getHostServices;
+  }
+});

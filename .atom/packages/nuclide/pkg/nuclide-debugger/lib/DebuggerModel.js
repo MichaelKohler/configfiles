@@ -134,11 +134,6 @@ class DebuggerModel {
     this._disposables = new _atom.CompositeDisposable(this._store, this._actions, this._breakpointStore, this._breakpointManager, this._bridge, this._debuggerProviderStore, this._watchExpressionStore, this._debuggerActionStore, this._callstackStore, this._scopesStore, this._threadStore, this._debuggerPauseController);
   }
 
-  destroy() {
-    // Stop debugging when the view's destroyed.
-    this.getActions().stopDebugging();
-  }
-
   dispose() {
     this._disposables.dispose();
   }

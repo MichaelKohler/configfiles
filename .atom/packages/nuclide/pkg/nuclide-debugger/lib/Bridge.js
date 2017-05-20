@@ -7,13 +7,13 @@ Object.defineProperty(exports, "__esModule", {
 var _nuclideUri;
 
 function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../../commons-node/nuclideUri'));
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
 var _UniversalDisposable;
 
 function _load_UniversalDisposable() {
-  return _UniversalDisposable = _interopRequireDefault(require('../../commons-node/UniversalDisposable'));
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
 var _DebuggerStore;
@@ -24,60 +24,26 @@ function _load_DebuggerStore() {
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
 
+var _CommandDispatcher;
+
+function _load_CommandDispatcher() {
+  return _CommandDispatcher = _interopRequireDefault(require('./CommandDispatcher'));
+}
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- */
-
-const INJECTED_CSS = [
-/* Force the inspector to scroll vertically on Atom ≥ 1.4.0 */
-'body > .root-view {overflow-y: scroll;}',
-/* Force the contents of the mini console (on the bottom) to scroll vertically */
-'.insertion-point-sidebar#drawer-contents {overflow-y: auto;}',
-/* imitate chrome table styles for threads window */
-`
-  .nuclide-chrome-debugger-data-grid table {
-    border-spacing: 0;
-  }
-
-  .nuclide-chrome-debugger-data-grid thead {
-    background-color: #eee;
-  }
-
-  .nuclide-chrome-debugger-data-grid thead td {
-    border-bottom: 1px solid #aaa;
-  }
-
-  .nuclide-chrome-debugger-data-grid tbody tr:nth-child(2n+1) {
-    background: aliceblue;
-  }
-
-  .nuclide-chrome-debugger-data-grid td {
-    border-left: 1px solid #aaa;
-    padding: 2px 4px;
-  }
-
-  .nuclide-chrome-debugger-data-grid td:first-child {
-    border-left: none;
-  }
-  `].join('');
-
 class Bridge {
-  // Contains disposable items should be disposed by
-  // cleanup() method.
+
   constructor(debuggerModel) {
     this._handleIpcMessage = this._handleIpcMessage.bind(this);
     this._debuggerModel = debuggerModel;
     this._suppressBreakpointSync = false;
+    this._commandDipatcher = new (_CommandDispatcher || _load_CommandDispatcher()).default();
     this._disposables = new (_UniversalDisposable || _load_UniversalDisposable()).default(debuggerModel.getBreakpointStore().onUserChange(this._handleUserBreakpointChange.bind(this)));
   }
+  // Contains disposable items should be disposed by
+  // cleanup() method.
+
 
   dispose() {
     this.cleanup();
@@ -93,75 +59,51 @@ class Bridge {
   }
 
   continue() {
-    if (this._webview) {
-      this._webview.send('command', 'Continue');
-    }
+    this._commandDipatcher.send('Continue');
   }
 
   stepOver() {
-    if (this._webview) {
-      this._webview.send('command', 'StepOver');
-    }
+    this._commandDipatcher.send('StepOver');
   }
 
   stepInto() {
-    if (this._webview) {
-      this._webview.send('command', 'StepInto');
-    }
+    this._commandDipatcher.send('StepInto');
   }
 
   stepOut() {
-    if (this._webview) {
-      this._webview.send('command', 'StepOut');
-    }
+    this._commandDipatcher.send('StepOut');
   }
 
   runToLocation(filePath, line) {
-    if (this._webview) {
-      this._webview.send('command', 'RunToLocation', filePath, line);
-    }
+    this._commandDipatcher.send('RunToLocation', filePath, line);
   }
 
   triggerAction(actionId) {
-    if (this._webview) {
-      this._webview.send('command', 'triggerDebuggerAction', actionId);
-    }
+    this._commandDipatcher.send('triggerDebuggerAction', actionId);
   }
 
   setSelectedCallFrameIndex(callFrameIndex) {
-    if (this._webview != null) {
-      this._webview.send('command', 'setSelectedCallFrameIndex', callFrameIndex);
-    }
+    this._commandDipatcher.send('setSelectedCallFrameIndex', callFrameIndex);
   }
 
   setPauseOnException(pauseOnExceptionEnabled) {
-    if (this._webview) {
-      this._webview.send('command', 'setPauseOnException', pauseOnExceptionEnabled);
-    }
+    this._commandDipatcher.send('setPauseOnException', pauseOnExceptionEnabled);
   }
 
   setPauseOnCaughtException(pauseOnCaughtExceptionEnabled) {
-    if (this._webview) {
-      this._webview.send('command', 'setPauseOnCaughtException', pauseOnCaughtExceptionEnabled);
-    }
+    this._commandDipatcher.send('setPauseOnCaughtException', pauseOnCaughtExceptionEnabled);
   }
 
   setSingleThreadStepping(singleThreadStepping) {
-    if (this._webview) {
-      this._webview.send('command', 'setSingleThreadStepping', singleThreadStepping);
-    }
+    this._commandDipatcher.send('setSingleThreadStepping', singleThreadStepping);
   }
 
   selectThread(threadId) {
-    if (this._webview) {
-      this._webview.send('command', 'selectThread', threadId);
-    }
+    this._commandDipatcher.send('selectThread', threadId);
   }
 
   sendEvaluationCommand(command, evalId, ...args) {
-    if (this._webview != null) {
-      this._webview.send('command', command, evalId, ...args);
-    }
+    this._commandDipatcher.send(command, evalId, ...args);
   }
 
   _handleExpressionEvaluationResponse(response) {
@@ -188,9 +130,11 @@ class Bridge {
       case 'notification':
         switch (event.args[0]) {
           case 'ready':
+            if (atom.config.get('nuclide.nuclide-debugger.openDevToolsOnDebuggerStart')) {
+              this.openDevTools();
+            }
             this._updateDebuggerSettings();
             this._sendAllBreakpoints();
-            this._injectCSS();
             this._syncDebuggerState();
             break;
           case 'CallFrameSelected':
@@ -243,10 +187,7 @@ class Bridge {
   }
 
   _updateDebuggerSettings() {
-    const webview = this._webview;
-    if (webview != null) {
-      webview.send('command', 'UpdateSettings', this._debuggerModel.getStore().getSettings().getSerializedData());
-    }
+    this._commandDipatcher.send('UpdateSettings', this._debuggerModel.getStore().getSettings().getSerializedData());
   }
 
   _syncDebuggerState() {
@@ -325,16 +266,13 @@ class Bridge {
   }
 
   _handleUserBreakpointChange(params) {
-    const webview = this._webview;
-    if (webview != null) {
-      const { action, breakpoint } = params;
-      webview.send('command', action, {
-        sourceURL: (_nuclideUri || _load_nuclideUri()).default.nuclideUriToUri(breakpoint.path),
-        lineNumber: breakpoint.line,
-        condition: breakpoint.condition,
-        enabled: breakpoint.enabled
-      });
-    }
+    const { action, breakpoint } = params;
+    this._commandDipatcher.send(action, {
+      sourceURL: (_nuclideUri || _load_nuclideUri()).default.nuclideUriToUri(breakpoint.path),
+      lineNumber: breakpoint.line,
+      condition: breakpoint.condition,
+      enabled: breakpoint.enabled
+    });
   }
 
   _handleThreadsUpdate(threadData) {
@@ -351,8 +289,7 @@ class Bridge {
 
   _sendAllBreakpoints() {
     // Send an array of file/line objects.
-    const webview = this._webview;
-    if (webview && !this._suppressBreakpointSync) {
+    if (!this._suppressBreakpointSync) {
       const results = [];
       this._debuggerModel.getBreakpointStore().getAllBreakpoints().forEach(breakpoint => {
         results.push({
@@ -362,13 +299,7 @@ class Bridge {
           enabled: breakpoint.enabled
         });
       });
-      webview.send('command', 'SyncBreakpoints', results);
-    }
-  }
-
-  _injectCSS() {
-    if (this._webview != null) {
-      this._webview.insertCSS(INJECTED_CSS);
+      this._commandDipatcher.send('SyncBreakpoints', results);
     }
   }
 
@@ -404,6 +335,7 @@ class Bridge {
   // Exposed for tests
   _setWebviewElement(webview) {
     this._webview = webview;
+    this._commandDipatcher.setupChromeChannel(webview);
 
     if (!(this._cleanupDisposables == null)) {
       throw new Error('Invariant violation: "this._cleanupDisposables == null"');
@@ -416,6 +348,10 @@ class Bridge {
     });
   }
 
+  setupNuclideChannel(debuggerInstance) {
+    return this._commandDipatcher.setupNuclideChannel(debuggerInstance);
+  }
+
   openDevTools() {
     if (this._webview == null) {
       return;
@@ -423,4 +359,13 @@ class Bridge {
     this._webview.openDevTools();
   }
 }
-exports.default = Bridge;
+exports.default = Bridge; /**
+                           * Copyright (c) 2015-present, Facebook, Inc.
+                           * All rights reserved.
+                           *
+                           * This source code is licensed under the license found in the LICENSE file in
+                           * the root directory of this source tree.
+                           *
+                           * 
+                           * @format
+                           */

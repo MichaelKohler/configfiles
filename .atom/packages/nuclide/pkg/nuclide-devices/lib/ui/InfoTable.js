@@ -10,7 +10,7 @@ var _react = _interopRequireDefault(require('react'));
 var _Table;
 
 function _load_Table() {
-  return _Table = require('../../../nuclide-ui/Table');
+  return _Table = require('nuclide-commons-ui/Table');
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -48,17 +48,13 @@ class InfoTable extends _react.default.Component {
     return _react.default.createElement(
       'div',
       null,
-      _react.default.createElement(
-        'strong',
-        null,
-        this.props.title
-      ),
       _react.default.createElement((_Table || _load_Table()).Table, {
         collapsable: false,
         columns: columns,
         maxBodyHeight: '99999px',
         emptyComponent: emptyComponent,
-        rows: rows
+        rows: rows,
+        headerTitle: this.props.title
       })
     );
   }

@@ -8,7 +8,7 @@ exports.HunkDiff = undefined;
 var _AtomTextEditor;
 
 function _load_AtomTextEditor() {
-  return _AtomTextEditor = require('./AtomTextEditor');
+  return _AtomTextEditor = require('nuclide-commons-ui/AtomTextEditor');
 }
 
 var _nullthrows;
@@ -20,7 +20,7 @@ function _load_nullthrows() {
 var _string;
 
 function _load_string() {
-  return _string = require('../commons-node/string');
+  return _string = require('nuclide-commons/string');
 }
 
 var _atom = require('atom');
@@ -38,7 +38,7 @@ function _load_Section() {
 var _UniversalDisposable;
 
 function _load_UniversalDisposable() {
-  return _UniversalDisposable = _interopRequireDefault(require('../commons-node/UniversalDisposable'));
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

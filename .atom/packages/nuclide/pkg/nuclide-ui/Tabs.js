@@ -7,7 +7,7 @@ Object.defineProperty(exports, "__esModule", {
 var _Icon;
 
 function _load_Icon() {
-  return _Icon = require('./Icon');
+  return _Icon = require('nuclide-commons-ui/Icon');
 }
 
 var _react = _interopRequireDefault(require('react'));

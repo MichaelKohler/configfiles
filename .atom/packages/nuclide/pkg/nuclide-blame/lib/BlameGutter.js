@@ -9,7 +9,7 @@ var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
 var _addTooltip;
 
 function _load_addTooltip() {
-  return _addTooltip = _interopRequireDefault(require('../../nuclide-ui/add-tooltip'));
+  return _addTooltip = _interopRequireDefault(require('nuclide-commons-ui/addTooltip'));
 }
 
 var _hideAllTooltips;

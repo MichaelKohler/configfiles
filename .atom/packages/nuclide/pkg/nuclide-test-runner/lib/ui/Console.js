@@ -7,7 +7,7 @@ Object.defineProperty(exports, "__esModule", {
 var _AtomTextEditor;
 
 function _load_AtomTextEditor() {
-  return _AtomTextEditor = require('../../../nuclide-ui/AtomTextEditor');
+  return _AtomTextEditor = require('nuclide-commons-ui/AtomTextEditor');
 }
 
 var _react = _interopRequireDefault(require('react'));

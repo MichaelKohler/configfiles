@@ -11,13 +11,13 @@ var _reactDom = _interopRequireDefault(require('react-dom'));
 var _observePaneItemVisibility;
 
 function _load_observePaneItemVisibility() {
-  return _observePaneItemVisibility = _interopRequireDefault(require('../../commons-atom/observePaneItemVisibility'));
+  return _observePaneItemVisibility = _interopRequireDefault(require('nuclide-commons-atom/observePaneItemVisibility'));
 }
 
 var _addTooltip;
 
 function _load_addTooltip() {
-  return _addTooltip = _interopRequireDefault(require('../../nuclide-ui/add-tooltip'));
+  return _addTooltip = _interopRequireDefault(require('nuclide-commons-ui/addTooltip'));
 }
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
@@ -43,7 +43,7 @@ function _load_nuclideVcsBase() {
 var _LoadingSpinner;
 
 function _load_LoadingSpinner() {
-  return _LoadingSpinner = require('../../nuclide-ui/LoadingSpinner');
+  return _LoadingSpinner = require('nuclide-commons-ui/LoadingSpinner');
 }
 
 var _FileTree;
@@ -55,7 +55,7 @@ function _load_FileTree() {
 var _Icon;
 
 function _load_Icon() {
-  return _Icon = require('../../nuclide-ui/Icon');
+  return _Icon = require('nuclide-commons-ui/Icon');
 }
 
 var _FileTreeSideBarFilterComponent;
@@ -97,25 +97,25 @@ function _load_MultiRootChangedFilesView() {
 var _PanelComponentScroller;
 
 function _load_PanelComponentScroller() {
-  return _PanelComponentScroller = require('../../nuclide-ui/PanelComponentScroller');
+  return _PanelComponentScroller = require('nuclide-commons-ui/PanelComponentScroller');
 }
 
 var _observable;
 
 function _load_observable() {
-  return _observable = require('../../commons-node/observable');
+  return _observable = require('nuclide-commons/observable');
 }
 
 var _UniversalDisposable;
 
 function _load_UniversalDisposable() {
-  return _UniversalDisposable = _interopRequireDefault(require('../../commons-node/UniversalDisposable'));
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
 var _event;
 
 function _load_event() {
-  return _event = require('../../commons-node/event');
+  return _event = require('nuclide-commons/event');
 }
 
 var _Section;
@@ -127,13 +127,13 @@ function _load_Section() {
 var _featureConfig;
 
 function _load_featureConfig() {
-  return _featureConfig = _interopRequireDefault(require('../../commons-atom/featureConfig'));
+  return _featureConfig = _interopRequireDefault(require('nuclide-commons-atom/feature-config'));
 }
 
 var _goToLocation;
 
 function _load_goToLocation() {
-  return _goToLocation = require('../../commons-atom/go-to-location');
+  return _goToLocation = require('nuclide-commons-atom/go-to-location');
 }
 
 var _nuclideAnalytics;
@@ -616,6 +616,10 @@ All the changes across your entire stacked diff.
   copy() {
     // The file tree store wasn't written to support multiple instances, so try to prevent it.
     return false;
+  }
+
+  isPermanentDockItem() {
+    return true;
   }
 }
 

@@ -9,7 +9,7 @@ exports.makeDiagnosticsDatatipComponent = makeDiagnosticsDatatipComponent;
 var _goToLocation;
 
 function _load_goToLocation() {
-  return _goToLocation = require('../../commons-atom/go-to-location');
+  return _goToLocation = require('nuclide-commons-atom/go-to-location');
 }
 
 var _react = _interopRequireDefault(require('react'));

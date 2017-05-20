@@ -8,13 +8,13 @@ exports.Toolbar = undefined;
 var _Button;
 
 function _load_Button() {
-  return _Button = require('../../../nuclide-ui/Button');
+  return _Button = require('nuclide-commons-ui/Button');
 }
 
 var _ButtonGroup;
 
 function _load_ButtonGroup() {
-  return _ButtonGroup = require('../../../nuclide-ui/ButtonGroup');
+  return _ButtonGroup = require('nuclide-commons-ui/ButtonGroup');
 }
 
 var _ProgressBar;
@@ -72,6 +72,7 @@ class Toolbar extends _react.default.Component {
     }
 
     const ButtonComponent = buttonProps => _react.default.createElement((_TaskRunnerButton || _load_TaskRunnerButton()).TaskRunnerButton, Object.assign({}, buttonProps, {
+      disabled: this.props.taskIsRunning,
       iconComponent: this.props.iconComponent
     }));
 

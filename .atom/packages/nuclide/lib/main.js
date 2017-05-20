@@ -13,7 +13,7 @@ require('./preload-dependencies');
 var _featureConfig;
 
 function _load_featureConfig() {
-  return _featureConfig = _interopRequireDefault(require('../pkg/commons-atom/featureConfig'));
+  return _featureConfig = _interopRequireDefault(require('nuclide-commons-atom/feature-config'));
 }
 
 var _fs = _interopRequireDefault(require('fs'));
@@ -59,6 +59,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * the root directory of this source tree.
  *
  * 
+ * @format
  */
 
 /**
@@ -104,7 +105,7 @@ atom.deserializers.add({
 const config = exports.config = {
   installRecommendedPackages: {
     default: false,
-    description: 'On start up, check for and install Atom packages recommended for use with Nuclide. The' + ' list of packages can be found in the <code>package-deps</code> setting in this package\'s' + ' "package.json" file. Disabling this setting will not uninstall packages it previously' + ' installed. Restart Atom after changing this setting for it to take effect.',
+    description: 'On start up, check for and install Atom packages recommended for use with Nuclide. The' + " list of packages can be found in the <code>package-deps</code> setting in this package's" + ' "package.json" file. Disabling this setting will not uninstall packages it previously' + ' installed. Restart Atom after changing this setting for it to take effect.',
     title: 'Install Recommended Packages on Startup',
     type: 'boolean'
   },
@@ -116,6 +117,7 @@ const config = exports.config = {
   },
   use: {
     type: 'object',
+    collapsed: true,
     properties: {}
   }
 };
@@ -208,6 +210,7 @@ Object.keys(features).forEach(name => {
   if (pkgConfig) {
     config[name] = {
       type: 'object',
+      collapsed: true,
       properties: {}
     };
     Object.keys(pkgConfig).forEach(key => {

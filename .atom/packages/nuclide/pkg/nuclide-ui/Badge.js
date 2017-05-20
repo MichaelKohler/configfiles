@@ -16,7 +16,7 @@ var _react = _interopRequireDefault(require('react'));
 var _string;
 
 function _load_string() {
-  return _string = require('../commons-node/string');
+  return _string = require('nuclide-commons/string');
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

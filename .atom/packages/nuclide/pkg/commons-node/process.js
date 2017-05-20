@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.killUnixProcessTree = exports.loggedCalls = exports.ProcessTimeoutError = exports.MaxBufferExceededError = exports.ProcessExitError = exports.psTree = exports.getChildrenOfProcess = exports.getOriginalEnvironment = undefined;
+exports.killUnixProcessTree = exports.loggedCalls = exports.ProcessTimeoutError = exports.MaxBufferExceededError = exports.ProcessSystemError = exports.ProcessExitError = exports.psTree = exports.getChildrenOfProcess = exports.getOriginalEnvironment = undefined;
 
 var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
 
@@ -150,7 +150,7 @@ exports.parsePsOutput = parsePsOutput;
 var _event;
 
 function _load_event() {
-  return _event = require('../commons-node/event');
+  return _event = require('nuclide-commons/event');
 }
 
 var _child_process = _interopRequireDefault(require('child_process'));
@@ -158,19 +158,19 @@ var _child_process = _interopRequireDefault(require('child_process'));
 var _collection;
 
 function _load_collection() {
-  return _collection = require('./collection');
+  return _collection = require('nuclide-commons/collection');
 }
 
 var _nuclideUri;
 
 function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('./nuclideUri'));
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
 var _observable;
 
 function _load_observable() {
-  return _observable = require('./observable');
+  return _observable = require('nuclide-commons/observable');
 }
 
 var _stream;
@@ -569,9 +569,6 @@ function parsePsOutput(psOutput) {
 // Types
 //
 
-// Copied from https://github.com/facebook/flow/blob/v0.43.1/lib/node.js#L11-L16
-
-
 //
 // Errors
 //
@@ -604,7 +601,25 @@ class ProcessExitError extends Error {
   }
 }
 
-exports.ProcessExitError = ProcessExitError;
+exports.ProcessExitError = ProcessExitError; /**
+                                              * Process system errors are just augmented Error objects. We wrap the errors and expose the process
+                                              * since our utilities throw the errors before returning the process.
+                                              */
+
+class ProcessSystemError extends Error {
+
+  constructor(err, proc) {
+    super(err.message);
+    this.name = 'ProcessSystemError';
+    this.errno = err.errono;
+    this.code = err.code;
+    this.path = err.path;
+    this.syscall = err.syscall;
+    this.process = proc;
+  }
+}
+
+exports.ProcessSystemError = ProcessSystemError;
 class MaxBufferExceededError extends Error {
   constructor(streamName) {
     super(`${streamName} maxBuffer exceeded`);
@@ -760,7 +775,16 @@ function createProcessStream(type = 'spawn', commandOrModulePath, args = [], opt
     }
 
     let finished = false;
-    return enforceTimeout(_rxjsBundlesRxMinJs.Observable.merge(_rxjsBundlesRxMinJs.Observable.of(proc), _rxjsBundlesRxMinJs.Observable.never(), // Don't complete until we say so!
+    return enforceTimeout(_rxjsBundlesRxMinJs.Observable.merge(
+    // Node [delays the emission of process errors][1] by a tick in order to give consumers a
+    // chance to subscribe to the error event. This means that our observable would normally
+    // emit the process and then, a tick later, error. However, it's more convenient to never
+    // emit the process if there was an error. Although observables don't require the error to
+    // be delayed at all, the underlying event emitter abstraction does, so we'll just roll
+    // with that and use `pid == null` as a signal that an error is forthcoming.
+    //
+    // [1]: https://github.com/nodejs/node/blob/v7.10.0/lib/internal/child_process.js#L301
+    proc.pid == null ? _rxjsBundlesRxMinJs.Observable.empty() : _rxjsBundlesRxMinJs.Observable.of(proc), _rxjsBundlesRxMinJs.Observable.never(), // Don't complete until we say so!
     stdioErrorMonitors).takeUntil(errors).takeUntil(exitEvents).merge(
     // Write any input to stdin. This observable is just created for the side-effect and we
     // merge it here to ensure that it happens after the listeners are added.
@@ -774,7 +798,14 @@ function createProcessStream(type = 'spawn', commandOrModulePath, args = [], opt
       complete: () => {
         finished = true;
       }
-    })).finally(() => {
+    })).catch(err => {
+      // Since this utility errors *before* emitting the process, add the process to the error
+      // so that users can get whatever info they need off of it.
+      if (err instanceof Error && err.name === 'Error' && 'errno' in err) {
+        throw new ProcessSystemError(err, proc);
+      }
+      throw err;
+    }).finally(() => {
       if (!proc.wasKilled && !finished) {
         killProcess(proc, Boolean(killTreeWhenDone));
       }

@@ -24,6 +24,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * the root directory of this source tree.
  *
  * 
+ * @format
  */
 
 const { ipcRenderer } = _electron.default;
@@ -41,12 +42,16 @@ if (!(ipcRenderer != null)) {
 if (process.argv.indexOf('--v=-3')) {
   // https://github.com/nodejs/node/blob/v5.1.1/lib/console.js
   global.console = new _console.Console(
-  /* stdout */{ write(chunk) {
+  /* stdout */{
+    write(chunk) {
       ipcRenderer.send('write-to-stdout', chunk);
-    } },
-  /* stderr */{ write(chunk) {
+    }
+  },
+  /* stderr */{
+    write(chunk) {
       ipcRenderer.send('write-to-stderr', chunk);
-    } });
+    }
+  });
 }
 
 const integrationTestsDir = _path.default.join(__dirname, '../spec');

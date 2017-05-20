@@ -4,4 +4,28 @@
   flex-direction: column;
   padding: 5px 5px 0px 5px;
   flex: 0 0 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.nuclide-device-panel-link-with-icon {
+  .icon {
+    vertical-align: bottom;
+  }
+  .icon:hover {
+    color: @text-color-highlight;
+  }
+  .icon::before {
+    vertical-align: bottom;
+    margin-right: 0px;
+  }
+}
+
+.nuclide-device-panel-tasks-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.nuclide-device-panel-host-selector {
+  padding-bottom: 5px;
 }

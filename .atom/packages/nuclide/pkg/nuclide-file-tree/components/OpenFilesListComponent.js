@@ -16,7 +16,7 @@ function _load_classnames() {
 var _PanelComponentScroller;
 
 function _load_PanelComponentScroller() {
-  return _PanelComponentScroller = require('../../nuclide-ui/PanelComponentScroller');
+  return _PanelComponentScroller = require('nuclide-commons-ui/PanelComponentScroller');
 }
 
 var _FileTreeHelpers;
@@ -34,7 +34,7 @@ function _load_nuclideAnalytics() {
 var _goToLocation;
 
 function _load_goToLocation() {
-  return _goToLocation = require('../../commons-atom/go-to-location');
+  return _goToLocation = require('nuclide-commons-atom/go-to-location');
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

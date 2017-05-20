@@ -12,7 +12,7 @@ var _react = _interopRequireDefault(require('react'));
 var _Block;
 
 function _load_Block() {
-  return _Block = require('./Block');
+  return _Block = require('nuclide-commons-ui/Block');
 }
 
 var _DiagnosticsMessage;

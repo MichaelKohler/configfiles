@@ -7,7 +7,7 @@ Object.defineProperty(exports, "__esModule", {
 var _AtomInput;
 
 function _load_AtomInput() {
-  return _AtomInput = require('../../nuclide-ui/AtomInput');
+  return _AtomInput = require('nuclide-commons-ui/AtomInput');
 }
 
 var _react = _interopRequireDefault(require('react'));

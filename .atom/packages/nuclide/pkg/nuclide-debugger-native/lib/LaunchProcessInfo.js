@@ -28,7 +28,7 @@ function _load_utils() {
 var _UniversalDisposable;
 
 function _load_UniversalDisposable() {
-  return _UniversalDisposable = _interopRequireDefault(require('../../commons-node/UniversalDisposable'));
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -38,6 +38,10 @@ class LaunchProcessInfo extends (_nuclideDebuggerBase || _load_nuclideDebuggerBa
   constructor(targetUri, launchTargetInfo) {
     super('lldb', targetUri);
     this._launchTargetInfo = launchTargetInfo;
+  }
+
+  clone() {
+    return new LaunchProcessInfo(this._targetUri, this._launchTargetInfo);
   }
 
   supportThreads() {

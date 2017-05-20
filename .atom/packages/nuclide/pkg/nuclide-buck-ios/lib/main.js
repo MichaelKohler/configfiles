@@ -9,7 +9,7 @@ exports.consumePlatformService = consumePlatformService;
 var _nuclideUri;
 
 function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../../commons-node/nuclideUri'));
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
 var _atom = require('atom');
@@ -69,7 +69,7 @@ function provideIosDevices(buckRoot, ruleType, buildTarget) {
       platforms: [{
         name: 'iOS Simulators',
         tasksForDevice: device => getTasks(buckRoot, ruleType),
-        runTask: (builder, taskType, target, device) => _runTask(buckRoot, builder, taskType, ruleType, target, device),
+        runTask: (builder, taskType, target, settings, device) => _runTask(builder, taskType, ruleType, target, settings, device, buckRoot),
         deviceGroups: [{
           name: 'iOS Simulators',
           devices: simulators.map(simulator => ({
@@ -95,7 +95,7 @@ function getTasks(buckRoot, ruleType) {
   return tasks;
 }
 
-function _runTask(buckRoot, builder, taskType, ruleType, buildTarget, device) {
+function _runTask(builder, taskType, ruleType, buildTarget, settings, device, buckRoot) {
   if (!device) {
     throw new Error('Invariant violation: "device"');
   }
@@ -130,7 +130,7 @@ function _runTask(buckRoot, builder, taskType, ruleType, buildTarget, device) {
       // $FlowFB
       const remoteWorkflow = require('./fb-RemoteWorkflow');
       runRemoteTask = () => {
-        return remoteWorkflow.runRemoteTask(buckRoot, builder, taskType, ruleType, buildTarget, udid, flavor);
+        return remoteWorkflow.runRemoteTask(buckRoot, builder, taskType, ruleType, buildTarget, settings, udid, flavor);
       };
     } catch (_) {
       runRemoteTask = () => {
@@ -140,7 +140,7 @@ function _runTask(buckRoot, builder, taskType, ruleType, buildTarget, device) {
 
     return runRemoteTask();
   } else {
-    return builder.runSubcommand(_getLocalSubcommand(taskType, ruleType), newTarget, {}, taskType === 'debug', udid);
+    return builder.runSubcommand(buckRoot, _getLocalSubcommand(taskType, ruleType), newTarget, settings, taskType === 'debug', udid);
   }
 }
 

@@ -10,7 +10,7 @@ var _react = _interopRequireDefault(require('react'));
 var _string;
 
 function _load_string() {
-  return _string = require('../../commons-node/string');
+  return _string = require('nuclide-commons/string');
 }
 
 var _MarkedStringDatatip;
@@ -43,22 +43,33 @@ const IconsForAction = {
 };
 
 class DatatipComponent extends _react.default.Component {
+  constructor(...args) {
+    var _temp;
 
-  constructor(props) {
-    super(props);
-    this.handleActionClick = this.handleActionClick.bind(this);
-  }
-
-  handleActionClick(event) {
-    this.props.onActionClick();
+    return _temp = super(...args), this.handleActionClick = event => {
+      this.props.onActionClick();
+    }, _temp;
   }
 
   render() {
     const _props = this.props,
-          { className, action, actionTitle, datatip } = _props,
-          props = _objectWithoutProperties(_props, ['className', 'action', 'actionTitle', 'datatip']);
-    delete props.onActionClick;
-    let actionButton;
+          {
+      className,
+      action,
+      actionTitle,
+      datatip,
+      onActionClick
+    } = _props,
+          props = _objectWithoutProperties(_props, ['className', 'action', 'actionTitle', 'datatip', 'onActionClick']);
+
+    let content;
+    if (datatip.component != null) {
+      content = _react.default.createElement(datatip.component, null);
+    } else if (datatip.markedStrings != null) {
+      content = _react.default.createElement((_MarkedStringDatatip || _load_MarkedStringDatatip()).default, { markedStrings: datatip.markedStrings });
+    }
+
+    let actionButton = null;
     if (action != null && IconsForAction[action] != null) {
       const actionIcon = IconsForAction[action];
       actionButton = _react.default.createElement('div', {
@@ -67,12 +78,7 @@ class DatatipComponent extends _react.default.Component {
         title: actionTitle
       });
     }
-    let content;
-    if (datatip.component != null) {
-      content = _react.default.createElement(datatip.component, null);
-    } else if (datatip.markedStrings != null) {
-      content = _react.default.createElement((_MarkedStringDatatip || _load_MarkedStringDatatip()).default, { markedStrings: datatip.markedStrings });
-    }
+
     return _react.default.createElement(
       'div',
       Object.assign({

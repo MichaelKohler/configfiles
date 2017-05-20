@@ -12,7 +12,7 @@ var _atom = require('atom');
 var _observable;
 
 function _load_observable() {
-  return _observable = require('../../commons-node/observable');
+  return _observable = require('nuclide-commons/observable');
 }
 
 var _RevisionsCache;
@@ -38,7 +38,7 @@ function _load_lruCache() {
 var _featureConfig;
 
 function _load_featureConfig() {
-  return _featureConfig = _interopRequireDefault(require('../../commons-atom/featureConfig'));
+  return _featureConfig = _interopRequireDefault(require('nuclide-commons-atom/feature-config'));
 }
 
 var _textBuffer;
@@ -56,19 +56,19 @@ function _load_nuclideLogging() {
 var _UniversalDisposable;
 
 function _load_UniversalDisposable() {
-  return _UniversalDisposable = _interopRequireDefault(require('../../commons-node/UniversalDisposable'));
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
 var _event;
 
 function _load_event() {
-  return _event = require('../../commons-node/event');
+  return _event = require('nuclide-commons/event');
 }
 
 var _collection;
 
 function _load_collection() {
-  return _collection = require('../../commons-node/collection');
+  return _collection = require('nuclide-commons/collection');
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -204,7 +204,7 @@ class HgRepositoryClient {
       this._emitter.emit('did-change-statuses');
     });
 
-    const shouldRevisionsUpdate = _rxjsBundlesRxMinJs.Observable.merge(activeBookmarkChanges, allBookmarkChanges, commitChanges, repoStateChanges).debounceTime(REVISION_DEBOUNCE_DELAY);
+    const shouldRevisionsUpdate = _rxjsBundlesRxMinJs.Observable.merge(this._bookmarks.asObservable(), commitChanges, repoStateChanges).debounceTime(REVISION_DEBOUNCE_DELAY);
 
     const bookmarksUpdates = _rxjsBundlesRxMinJs.Observable.merge(activeBookmarkChanges, allBookmarkChanges).startWith(null).debounceTime(BOOKMARKS_DEBOUNCE_DELAY).switchMap(() => _rxjsBundlesRxMinJs.Observable.defer(() => {
       return this._service.fetchBookmarks().refCount().timeout(FETCH_BOOKMARKS_TIMEOUT);

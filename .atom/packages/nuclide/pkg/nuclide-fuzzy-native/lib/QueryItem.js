@@ -8,7 +8,7 @@ exports.__test__ = undefined;
 var _nuclideUri;
 
 function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../../commons-node/nuclideUri'));
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -30,7 +30,9 @@ const NON_UPPERCASE_CHARS_REGEXP = /[^a-z0-9]/g;
  * @format
  */
 
-function scoreCommonSubsequence(needle, haystack_) {
+function scoreCommonSubsequence(needle_, haystack_) {
+  // Don't ignore the needle's case, but strip punctuation.
+  const needle = needle_.replace(/[^a-zA-Z0-9]/g, '');
   let haystack = haystack_;
   haystack = haystack.toLowerCase();
   haystack = haystack.replace(NON_UPPERCASE_CHARS_REGEXP, '');

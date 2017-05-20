@@ -10,13 +10,13 @@ var _react = _interopRequireDefault(require('react'));
 var _renderReactRoot;
 
 function _load_renderReactRoot() {
-  return _renderReactRoot = require('../../commons-atom/renderReactRoot');
+  return _renderReactRoot = require('nuclide-commons-ui/renderReactRoot');
 }
 
-var _DevicePanel;
+var _RootPanel;
 
-function _load_DevicePanel() {
-  return _DevicePanel = require('./ui/DevicePanel');
+function _load_RootPanel() {
+  return _RootPanel = require('./ui/RootPanel');
 }
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
@@ -24,13 +24,25 @@ var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
 var _bindObservableAsProps;
 
 function _load_bindObservableAsProps() {
-  return _bindObservableAsProps = require('../../nuclide-ui/bindObservableAsProps');
+  return _bindObservableAsProps = require('nuclide-commons-ui/bindObservableAsProps');
 }
 
 var _Actions;
 
 function _load_Actions() {
   return _Actions = _interopRequireWildcard(require('./redux/Actions'));
+}
+
+var _providers;
+
+function _load_providers() {
+  return _providers = require('./providers');
+}
+
+var _shallowequal;
+
+function _load_shallowequal() {
+  return _shallowequal = _interopRequireDefault(require('shallowequal'));
 }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
@@ -54,6 +66,28 @@ class DevicesPanelState {
 
   constructor(store) {
     this._store = store;
+    // $FlowFixMe: Teach flow about Symbol.observable
+    this._deviceObs = _rxjsBundlesRxMinJs.Observable.from(this._store).distinctUntilChanged((stateA, stateB) => stateA.deviceType === stateB.deviceType && stateA.host === stateB.host).switchMap(state => {
+      if (state.deviceType === null) {
+        return _rxjsBundlesRxMinJs.Observable.empty();
+      }
+      for (const fetcher of (0, (_providers || _load_providers()).getDeviceListProviders)()) {
+        if (fetcher.getType() === state.deviceType) {
+          return fetcher.observe(state.host).do(devices => this._store.dispatch((_Actions || _load_Actions()).setDevices(devices)));
+        }
+      }
+    });
+    // $FlowFixMe: Teach flow about Symbol.observable
+    this._processesObs = _rxjsBundlesRxMinJs.Observable.from(this._store).distinctUntilChanged((stateA, stateB) => stateA.deviceType === stateB.deviceType && stateA.host === stateB.host && (0, (_shallowequal || _load_shallowequal()).default)(stateA.device, stateB.device)).switchMap(state => {
+      if (state.device === null) {
+        return _rxjsBundlesRxMinJs.Observable.empty();
+      }
+      const providers = Array.from((0, (_providers || _load_providers()).getDeviceProcessesProviders)()).filter(provider => provider.getType() === state.deviceType);
+      if (providers[0] != null) {
+        return providers[0].observe(state.host, state.device.name);
+      }
+      return _rxjsBundlesRxMinJs.Observable.empty();
+    }).do(processes => this._store.dispatch((_Actions || _load_Actions()).setProcesses(processes)));
   }
 
   getTitle() {
@@ -77,8 +111,11 @@ class DevicesPanelState {
   }
 
   _appStateToProps(state) {
-    const refreshDevices = host => {
-      this._store.dispatch((_Actions || _load_Actions()).refreshDevices());
+    const startFetchingDevices = () => {
+      return this._deviceObs.subscribe();
+    };
+    const startFetchingProcesses = () => {
+      return this._processesObs.subscribe();
     };
     const setHost = host => {
       this._store.dispatch((_Actions || _load_Actions()).setHost(host));
@@ -97,18 +134,21 @@ class DevicesPanelState {
       deviceType: state.deviceType,
       device: state.device,
       infoTables: state.infoTables,
-      deviceActions: state.deviceActions,
-      refreshDevices,
+      processes: state.processes,
+      deviceTasks: state.deviceTasks,
+      startFetchingDevices,
+      startFetchingProcesses,
       setHost,
       setDeviceType,
-      setDevice
+      setDevice,
+      killProcess: state.processKiller
     };
   }
 
   getElement() {
     const PreparedDevicePanel = (0, (_bindObservableAsProps || _load_bindObservableAsProps()).bindObservableAsProps)(
     // $FlowFixMe: Teach flow about Symbol.observable
-    _rxjsBundlesRxMinJs.Observable.from(this._store).distinctUntilChanged().map(state => this._appStateToProps(state)), (_DevicePanel || _load_DevicePanel()).DevicePanel);
+    _rxjsBundlesRxMinJs.Observable.from(this._store).distinctUntilChanged().map(state => this._appStateToProps(state)), (_RootPanel || _load_RootPanel()).RootPanel);
 
     return (0, (_renderReactRoot || _load_renderReactRoot()).renderReactRoot)(_react.default.createElement(PreparedDevicePanel, null));
   }

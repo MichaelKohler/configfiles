@@ -9,7 +9,7 @@ var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
 var _nuclideUri;
 
 function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../../commons-node/nuclideUri'));
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
 var _DebuggerDispatcher;
@@ -104,8 +104,8 @@ class DebuggerActions {
       _this.setDebuggerMode((_DebuggerStore || _load_DebuggerStore()).DebuggerMode.STARTING);
       _this.setDebugProcessInfo(processInfo);
       try {
-        atom.commands.dispatch(atom.views.getView(atom.workspace), 'nuclide-debugger:show');
         const debuggerInstance = yield processInfo.debug();
+        yield _this._store.getBridge().setupNuclideChannel(debuggerInstance);
         _this._registerConsole();
         const supportThreadsWindow = processInfo.supportThreads() && (yield _this._allowThreadsForPhp(processInfo));
         _this._store.getSettings().set('SupportThreadsWindow', supportThreadsWindow);
@@ -130,6 +130,8 @@ class DebuggerActions {
         } else {
           _this.updateConfigureSourcePathsCallback(null);
         }
+
+        atom.commands.dispatch(atom.views.getView(atom.workspace), 'nuclide-debugger:show');
 
         yield _this._waitForChromeConnection(debuggerInstance);
       } catch (err) {
@@ -233,6 +235,24 @@ class DebuggerActions {
     if (!(this._store.getDebuggerInstance() == null)) {
       throw new Error('Invariant violation: "this._store.getDebuggerInstance() == null"');
     }
+  }
+
+  restartDebugger() {
+    const currentDebuggerInfo = this._store.getDebugProcessInfo();
+    if (currentDebuggerInfo == null || this._store.getDebuggerMode() === (_DebuggerStore || _load_DebuggerStore()).DebuggerMode.STOPPED) {
+      atom.notifications.addWarning('Cannot restart the debugger: the debugger is not currently running!');
+      return;
+    }
+
+    // Clone the current debugger info before stopping debugging, as stop will dispose it.
+    const newDebuggerInfo = currentDebuggerInfo.clone();
+
+    if (!newDebuggerInfo) {
+      throw new Error('Invariant violation: "newDebuggerInfo"');
+    }
+
+    atom.notifications.addInfo('Restarting debugger...');
+    this.startDebugging(newDebuggerInfo);
   }
 
   _registerConsole() {

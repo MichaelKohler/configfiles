@@ -15,8 +15,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // Exported for testing.
 function separateUrls(message) {
   // Don't match periods at the end of URLs, because those are usually just to
-  // end the sentence and not actually part of the URL.
-  const urlRegex = /https?:\/\/[a-zA-Z0-9/._-]*[a-zA-Z0-9/_-]/g;
+  // end the sentence and not actually part of the URL. Optionally match
+  // parameters following a question mark.
+  const urlRegex = /https?:\/\/[\w/._-]*[\w/_-](?:\?[\w/_=&-]*)?/g;
 
   const urls = message.match(urlRegex);
   const nonUrls = message.split(urlRegex);

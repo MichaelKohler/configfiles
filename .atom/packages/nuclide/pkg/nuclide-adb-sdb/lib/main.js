@@ -3,13 +3,13 @@
 var _createPackage;
 
 function _load_createPackage() {
-  return _createPackage = _interopRequireDefault(require('../../commons-atom/createPackage'));
+  return _createPackage = _interopRequireDefault(require('nuclide-commons-atom/createPackage'));
 }
 
 var _UniversalDisposable;
 
 function _load_UniversalDisposable() {
-  return _UniversalDisposable = _interopRequireDefault(require('../../commons-node/UniversalDisposable'));
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
 var _android_providers;
@@ -51,6 +51,7 @@ class Activation {
     this._disposables.add(api.registerListProvider((0, (_android_providers || _load_android_providers()).createAndroidDeviceListProvider)()));
     this._disposables.add(api.registerListProvider((0, (_tizen_providers || _load_tizen_providers()).createTizenDeviceListProvider)()));
     this._disposables.add(api.registerInfoProvider((0, (_android_providers || _load_android_providers()).createAndroidInfoProvider)()));
+    this._disposables.add(api.registerProcessesProvider((0, (_android_providers || _load_android_providers()).createAndroidProcessesProvider)()));
     this._disposables.add(api.registerInfoProvider((0, (_tizen_providers || _load_tizen_providers()).createTizenInfoProvider)()));
   }
 }

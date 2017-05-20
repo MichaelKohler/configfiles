@@ -7,23 +7,24 @@ exports.DatatipManager = undefined;
 
 var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
 
-let fetchDatatip = (() => {
-  var _ref = (0, _asyncToGenerator.default)(function* (editor, position, mouseEvent, allProviders, onPinClick) {
+let getTopDatatipAndProvider = (() => {
+  var _ref = (0, _asyncToGenerator.default)(function* (providers, editor, position, invoke) {
     const { scopeName } = editor.getGrammar();
-    const providers = filterProvidersByScopeName(allProviders, scopeName);
-    if (providers.length === 0) {
+    const filteredDatatipProviders = filterProvidersByScopeName(providers, scopeName);
+    if (filteredDatatipProviders.length === 0) {
       return null;
     }
 
-    const datatipsAndProviders = (0, (_collection || _load_collection()).arrayCompact)((yield Promise.all(providers.map((() => {
+    const datatipPromises = providers.map((() => {
       var _ref2 = (0, _asyncToGenerator.default)(function* (provider) {
         const name = getProviderName(provider);
         const timingTracker = new (_nuclideAnalytics || _load_nuclideAnalytics()).TimingTracker(name + '.datatip');
         try {
-          const datatip = yield provider.datatip(editor, position, mouseEvent);
+          const datatip = yield invoke(provider);
           if (!datatip) {
             return null;
           }
+
           timingTracker.onSuccess();
 
           return {
@@ -37,44 +38,17 @@ let fetchDatatip = (() => {
         }
       });
 
-      return function (_x6) {
+      return function (_x5) {
         return _ref2.apply(this, arguments);
       };
-    })()))));
+    })());
 
-    // Providers are already sorted by priority and we've already removed the ones
-    // with no datatip, so just grab the first one.
-    const [topDatatipAndProvider] = datatipsAndProviders;
-    if (topDatatipAndProvider == null) {
-      return null;
-    }
-    const topDatatip = topDatatipAndProvider.datatip;
-
-    if (!(topDatatip != null)) {
-      throw new Error('Invariant violation: "topDatatip != null"');
-    }
-
-    const { range } = topDatatip;
-    const providerName = getProviderName(topDatatipAndProvider.provider);
-
-    (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)('datatip-popup', {
-      scope: scopeName,
-      providerName,
-      rangeStartRow: String(range.start.row),
-      rangeStartColumn: String(range.start.column),
-      rangeEndRow: String(range.end.row),
-      rangeEndColumn: String(range.end.column)
+    return (0, (_promise || _load_promise()).asyncFind)(datatipPromises, function (p) {
+      return p;
     });
-
-    const renderedProvider = renderProvider(topDatatip, editor, providerName, onPinClick);
-
-    return {
-      range,
-      renderedProvider
-    };
   });
 
-  return function fetchDatatip(_x, _x2, _x3, _x4, _x5) {
+  return function getTopDatatipAndProvider(_x, _x2, _x3, _x4) {
     return _ref.apply(this, arguments);
   };
 })();
@@ -86,13 +60,13 @@ var _reactDom = _interopRequireDefault(require('react-dom'));
 var _debounce;
 
 function _load_debounce() {
-  return _debounce = _interopRequireDefault(require('../../commons-node/debounce'));
+  return _debounce = _interopRequireDefault(require('nuclide-commons/debounce'));
 }
 
 var _collection;
 
 function _load_collection() {
-  return _collection = require('../../commons-node/collection');
+  return _collection = require('nuclide-commons/collection');
 }
 
 var _nuclideAnalytics;
@@ -107,13 +81,31 @@ function _load_nuclideLogging() {
   return _nuclideLogging = require('../../nuclide-logging');
 }
 
+var _promise;
+
+function _load_promise() {
+  return _promise = require('nuclide-commons/promise');
+}
+
 var _UniversalDisposable;
 
 function _load_UniversalDisposable() {
-  return _UniversalDisposable = _interopRequireDefault(require('../../commons-node/UniversalDisposable'));
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
+
+var _immutable;
+
+function _load_immutable() {
+  return _immutable = _interopRequireDefault(require('immutable'));
+}
+
+var _getModifierKeys;
+
+function _load_getModifierKeys() {
+  return _getModifierKeys = require('./getModifierKeys');
+}
 
 var _DatatipComponent;
 
@@ -130,13 +122,13 @@ function _load_PinnedDatatip() {
 var _featureConfig;
 
 function _load_featureConfig() {
-  return _featureConfig = _interopRequireDefault(require('../../commons-atom/featureConfig'));
+  return _featureConfig = _interopRequireDefault(require('nuclide-commons-atom/feature-config'));
 }
 
 var _textEditor;
 
 function _load_textEditor() {
-  return _textEditor = require('../../commons-atom/text-editor');
+  return _textEditor = require('nuclide-commons-atom/text-editor');
 }
 
 var _performanceNow;
@@ -147,20 +139,18 @@ function _load_performanceNow() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
+const logger = (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)(); /**
+                                                                              * Copyright (c) 2015-present, Facebook, Inc.
+                                                                              * All rights reserved.
+                                                                              *
+                                                                              * This source code is licensed under the license found in the LICENSE file in
+                                                                              * the root directory of this source tree.
+                                                                              *
+                                                                              * 
+                                                                              * @format
+                                                                              */
 
 /* global performance */
-
-const logger = (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)();
 
 const CUMULATIVE_WHEELX_THRESHOLD = 20;
 const DEFAULT_DATATIP_DEBOUNCE_DELAY = 1000;
@@ -175,11 +165,7 @@ function getProviderName(provider) {
 }
 
 function filterProvidersByScopeName(providers, scopeName) {
-  return providers.filter(provider => {
-    return provider.inclusionPriority > 0 && provider.validForScope(scopeName);
-  }).sort((providerA, providerB) => {
-    return providerB.inclusionPriority - providerA.inclusionPriority;
-  });
+  return providers.filter(provider => provider.inclusionPriority > 0 && provider.validForScope(scopeName)).sort((providerA, providerB) => providerB.inclusionPriority - providerA.inclusionPriority);
 }
 
 function getBufferPosition(editor, editorView, event) {
@@ -206,7 +192,11 @@ function getBufferPosition(editor, editorView, event) {
   return editor.bufferPositionForScreenPosition(screenPosition);
 }
 
-function renderProvider(datatip, editor, providerName, onPinClick) {
+function PinnableDatatip({
+  datatip,
+  editor,
+  onPinClick
+}) {
   let action;
   let actionTitle;
   // Datatips are pinnable by default, unless explicitly specified
@@ -220,21 +210,20 @@ function renderProvider(datatip, editor, providerName, onPinClick) {
     action: action,
     actionTitle: actionTitle,
     datatip: datatip,
-    onActionClick: () => onPinClick(editor, datatip),
-    key: providerName
+    onActionClick: () => onPinClick(editor, datatip)
   });
 }
 
-function renderDatatip(editor, element, {
+function mountDatatipWithMarker(editor, element, {
   range,
-  renderedProvider
+  renderedProviders
 }) {
   // Transform the matched element range to the hint range.
   const marker = editor.markBufferRange(range, {
     invalidate: 'never'
   });
 
-  _reactDom.default.render(renderedProvider, element);
+  _reactDom.default.render(renderedProviders, element);
   element.style.display = 'block';
 
   editor.decorateMarker(marker, {
@@ -267,15 +256,19 @@ function ensurePositiveNumber(value, defaultValue) {
 
 class DatatipManagerForEditor {
 
-  constructor(editor, datatipProviders) {
+  constructor(editor, datatipProviders, modifierDatatipProviders) {
+    _initialiseProps.call(this);
+
     this._editor = editor;
     this._editorView = atom.views.getView(editor);
     this._pinnedDatatips = new Set();
     this._subscriptions = new (_UniversalDisposable || _load_UniversalDisposable()).default();
     this._datatipProviders = datatipProviders;
+    this._modifierDatatipProviders = modifierDatatipProviders;
     this._datatipElement = document.createElement('div');
     this._datatipElement.className = 'nuclide-datatip-overlay';
     this._datatipState = DatatipState.HIDDEN;
+    this._heldKeys = new (_immutable || _load_immutable()).default.Set();
     this._interactedWith = false;
     this._cumulativeWheelX = 0;
     this._lastHiddenTime = 0;
@@ -297,6 +290,7 @@ class DatatipManagerForEditor {
       }
 
       this._lastMoveEvent = e;
+      this._heldKeys = (0, (_getModifierKeys || _load_getModifierKeys()).getModifierKeysFromMouseEvent)(e);
       if (this._datatipState === DatatipState.HIDDEN) {
         this._startFetchingDebounce();
       } else {
@@ -316,10 +310,19 @@ class DatatipManagerForEditor {
 
       this._hideOrCancel();
     }), _rxjsBundlesRxMinJs.Observable.fromEvent(this._editorView, 'keydown').subscribe(e => {
-      if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) {
-        return;
+      const modifierKey = (0, (_getModifierKeys || _load_getModifierKeys()).getModifierKeyFromKeyboardEvent)(e);
+      if (modifierKey) {
+        this._heldKeys = this._heldKeys.add(modifierKey);
+        this._startFetching(() => getBufferPosition(this._editor, this._editorView, this._lastMoveEvent));
+      } else {
+        this._hideOrCancel();
       }
-      this._hideOrCancel();
+    }), _rxjsBundlesRxMinJs.Observable.fromEvent(this._editorView, 'keyup').subscribe(e => {
+      const modifierKey = (0, (_getModifierKeys || _load_getModifierKeys()).getModifierKeyFromKeyboardEvent)(e);
+      if (modifierKey) {
+        this._heldKeys = this._heldKeys.delete(modifierKey);
+        this._startFetching(() => getBufferPosition(this._editor, this._editorView, this._lastMoveEvent));
+      }
     }), _rxjsBundlesRxMinJs.Observable.fromEvent(this._datatipElement, 'wheel').subscribe(e => {
       this._cumulativeWheelX += Math.abs(e.deltaX);
       if (this._cumulativeWheelX > CUMULATIVE_WHEELX_THRESHOLD) {
@@ -341,12 +344,12 @@ class DatatipManagerForEditor {
       if (this._datatipState === DatatipState.VISIBLE) {
         this._setState(DatatipState.HIDDEN);
       }
-    }), atom.commands.add('atom-text-editor', 'nuclide-datatip:toggle', this._toggleDatatip.bind(this)));
+    }), atom.commands.add('atom-text-editor', 'nuclide-datatip:toggle', this._toggleDatatip));
   }
 
   _setStartFetchingDebounce() {
     this._startFetchingDebounce = (0, (_debounce || _load_debounce()).default)(() => {
-      this._startFetching(() => getBufferPosition(this._editor, this._editorView, this._lastMoveEvent), this._lastMoveEvent);
+      this._startFetching(() => getBufferPosition(this._editor, this._editorView, this._lastMoveEvent));
     }, ensurePositiveNumber((_featureConfig || _load_featureConfig()).default.get('nuclide-datatip.datatipDebounceDelay'), DEFAULT_DATATIP_DEBOUNCE_DELAY),
     /* immediate */false);
   }
@@ -370,29 +373,25 @@ class DatatipManagerForEditor {
 
     if (newState === DatatipState.HIDDEN) {
       this._blacklistedPosition = null;
-    }
-    if (oldState === DatatipState.VISIBLE && newState === DatatipState.HIDDEN) {
-      this._hideDatatip();
-      return;
+      if (oldState !== DatatipState.HIDDEN) {
+        this._hideDatatip();
+      }
     }
   }
 
-  _startFetching(getPosition, lastMoveEvent) {
+  _startFetching(getPosition) {
     var _this = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      if (_this._datatipState !== DatatipState.HIDDEN) {
-        return;
-      }
       const position = getPosition();
       if (!position) {
         return;
       }
 
       _this._setState(DatatipState.FETCHING);
-      const data = yield fetchDatatip(_this._editor, position, lastMoveEvent, _this._datatipProviders, _this._handlePinClicked.bind(_this));
 
-      if (data === null) {
+      const data = yield _this._fetchAndRender(position);
+      if (data == null) {
         _this._setState(DatatipState.HIDDEN);
         return;
       }
@@ -420,7 +419,64 @@ class DatatipManagerForEditor {
       _this._interactedWith = false;
       _this._cumulativeWheelX = 0;
       _this._range = data.range;
-      _this._marker = renderDatatip(_this._editor, _this._datatipElement, data);
+
+      if (_this._marker) {
+        _this._marker.destroy();
+      }
+      _this._marker = mountDatatipWithMarker(_this._editor, _this._datatipElement, data);
+    })();
+  }
+
+  _fetchAndRender(position) {
+    var _this2 = this;
+
+    return (0, _asyncToGenerator.default)(function* () {
+      let datatipAndProviderPromise;
+      if (_this2._lastPosition && position.isEqual(_this2._lastPosition)) {
+        datatipAndProviderPromise = _this2._lastDatatipAndProviderPromise;
+      } else {
+        _this2._lastDatatipAndProviderPromise = getTopDatatipAndProvider(_this2._datatipProviders, _this2._editor, position, function (provider) {
+          return provider.datatip(_this2._editor, position);
+        });
+        datatipAndProviderPromise = _this2._lastDatatipAndProviderPromise;
+        _this2._lastPosition = position;
+      }
+
+      const datatipsAndProviders = (0, (_collection || _load_collection()).arrayCompact)((yield Promise.all([datatipAndProviderPromise, getTopDatatipAndProvider(_this2._modifierDatatipProviders, _this2._editor, position, function (provider) {
+        return provider.modifierDatatip(_this2._editor, position, _this2._heldKeys);
+      })])));
+
+      if (datatipsAndProviders.length === 0) {
+        return null;
+      }
+
+      const range = datatipsAndProviders[0].datatip.range;
+      (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)('datatip-popup', {
+        scope: _this2._editor.getGrammar().scopeName,
+        providerName: getProviderName(datatipsAndProviders[0].provider),
+        rangeStartRow: String(range.start.row),
+        rangeStartColumn: String(range.start.column),
+        rangeEndRow: String(range.end.row),
+        rangeEndColumn: String(range.end.column)
+      });
+
+      const renderedProviders = _react.default.createElement(
+        'div',
+        null,
+        datatipsAndProviders.map(function ({ datatip, provider }) {
+          return _react.default.createElement(PinnableDatatip, {
+            datatip: datatip,
+            editor: _this2._editor,
+            key: getProviderName(provider),
+            onPinClick: _this2._handlePinClicked
+          });
+        })
+      );
+
+      return {
+        range,
+        renderedProviders
+      };
     })();
   }
 
@@ -494,7 +550,10 @@ class DatatipManagerForEditor {
     return pinnedDatatip;
   }
 
-  _handlePinClicked(editor, datatip) {
+}
+
+var _initialiseProps = function () {
+  this._handlePinClicked = (editor, datatip) => {
     (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)('datatip-pinned-open');
     const startTime = (0, (_performanceNow || _load_performanceNow()).default)();
     this._setState(DatatipState.HIDDEN);
@@ -508,9 +567,9 @@ class DatatipManagerForEditor {
     /* hideDataTips */() => {
       this._hideDatatip();
     }));
-  }
+  };
 
-  _toggleDatatip() {
+  this._toggleDatatip = () => {
     if (atom.workspace.getActiveTextEditor() !== this._editor) {
       return;
     }
@@ -525,11 +584,11 @@ class DatatipManagerForEditor {
     // it up right away. We assume that a keypress is done within 100ms
     // and don't show it again if it was hidden so soon.
     performance.now() - this._lastHiddenTime > 100) {
-      this._startFetching(() => this._editor.getCursorScreenPosition(), null);
+      this._startFetching(() => this._editor.getCursorScreenPosition());
       return;
     }
-  }
-}
+  };
+};
 
 class DatatipManager {
 
@@ -537,9 +596,10 @@ class DatatipManager {
     this._subscriptions = new (_UniversalDisposable || _load_UniversalDisposable()).default();
     this._editorManagers = new Map();
     this._datatipProviders = [];
+    this._modifierDatatipProviders = [];
 
     this._subscriptions.add((0, (_textEditor || _load_textEditor()).observeTextEditors)(editor => {
-      const manager = new DatatipManagerForEditor(editor, this._datatipProviders);
+      const manager = new DatatipManagerForEditor(editor, this._datatipProviders, this._modifierDatatipProviders);
       this._editorManagers.set(editor, manager);
       const dispose = () => {
         manager.dispose();
@@ -554,6 +614,13 @@ class DatatipManager {
     this._datatipProviders.push(provider);
     return new (_UniversalDisposable || _load_UniversalDisposable()).default(() => {
       (0, (_collection || _load_collection()).arrayRemove)(this._datatipProviders, provider);
+    });
+  }
+
+  addModifierProvider(provider) {
+    this._modifierDatatipProviders.push(provider);
+    return new (_UniversalDisposable || _load_UniversalDisposable()).default(() => {
+      (0, (_collection || _load_collection()).arrayRemove)(this._modifierDatatipProviders, provider);
     });
   }
 

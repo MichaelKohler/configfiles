@@ -22,13 +22,13 @@ function _load_classnames() {
 var _AtomInput;
 
 function _load_AtomInput() {
-  return _AtomInput = require('../../nuclide-ui/AtomInput');
+  return _AtomInput = require('nuclide-commons-ui/AtomInput');
 }
 
 var _bindObservableAsProps;
 
 function _load_bindObservableAsProps() {
-  return _bindObservableAsProps = require('../../nuclide-ui/bindObservableAsProps');
+  return _bindObservableAsProps = require('nuclide-commons-ui/bindObservableAsProps');
 }
 
 var _LazyNestedValueComponent;

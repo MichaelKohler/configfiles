@@ -14,7 +14,7 @@ function _load_nuclideAnalytics() {
 var _string;
 
 function _load_string() {
-  return _string = require('../../commons-node/string');
+  return _string = require('nuclide-commons/string');
 }
 
 var _NuxView;

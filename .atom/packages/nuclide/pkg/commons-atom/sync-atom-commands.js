@@ -8,7 +8,7 @@ exports.default = syncAtomCommands;
 var _observable;
 
 function _load_observable() {
-  return _observable = require('../commons-node/observable');
+  return _observable = require('nuclide-commons/observable');
 }
 
 var _atom = require('atom');

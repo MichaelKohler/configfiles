@@ -43,7 +43,7 @@ exports.watchDirectoryRecursive = watchDirectoryRecursive;
 var _nuclideUri;
 
 function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../../commons-node/nuclideUri'));
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
 var _SharedObservableCache;
@@ -153,7 +153,7 @@ function watchDirectoryRecursive(directoryPath) {
 function onWatcherChange(subscription, entries) {
   const directoryChanges = new Set();
   entries.forEach(entry => {
-    const entryPath = (_nuclideUri || _load_nuclideUri()).default.join(subscription.root, entry.name);
+    const entryPath = (_nuclideUri || _load_nuclideUri()).default.join(subscription.path, entry.name);
     const observer = entityObserver.get(entryPath);
     if (observer != null) {
       // TODO(most): handle `rename`, if needed.

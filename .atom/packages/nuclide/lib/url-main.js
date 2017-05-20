@@ -21,18 +21,24 @@ function _load_idx() {
   return _idx = _interopRequireDefault(require('idx'));
 }
 
+var _windowLoadSettings;
+
+function _load_windowLoadSettings() {
+  return _windowLoadSettings = require('../pkg/commons-atom/window-load-settings');
+}
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// eslint-disable-next-line nuclide-internal/prefer-nuclide-uri
-const { remote } = _electron.default; /**
-                                       * Copyright (c) 2015-present, Facebook, Inc.
-                                       * All rights reserved.
-                                       *
-                                       * This source code is licensed under the license found in the LICENSE file in
-                                       * the root directory of this source tree.
-                                       *
-                                       * 
-                                       */
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ * @format
+ */
 
 /**
  * This is a temporary hack to hook into atom://nuclide URIs until
@@ -58,36 +64,34 @@ const { remote } = _electron.default; /**
 
 /* global localStorage */
 
+const { remote } = _electron.default;
+// eslint-disable-next-line nuclide-internal/prefer-nuclide-uri
+
 if (!(remote != null)) {
   throw new Error('for Flow');
 }
 
 const CHANNEL = 'nuclide-url-open';
 
-// See: https://github.com/atom/atom/blob/master/src/get-window-load-settings.js
-function getLoadSettings(browserWindow = remote.getCurrentWindow()) {
-  return browserWindow.loadSettings || {};
-}
-
 // Contains initialPaths for each previously-running Atom window.
 // Atom can handle retrieving the more detailed state by itself.
 function getApplicationState(home) {
   // $FlowIgnore
-  const StorageFolder = require(_path.default.join(getLoadSettings().resourcePath, 'src/storage-folder.js'));
+  const StorageFolder = require(_path.default.join((0, (_windowLoadSettings || _load_windowLoadSettings()).getWindowLoadSettings)().resourcePath, 'src/storage-folder.js'));
   return new StorageFolder(home).load('application.json');
 }
 
 // This is the function that Atom normally calls to initialize a new window.
 // By calling it, we can simulate starting up a regular Atom window.
 function getAtomInitializerScript() {
-  return _path.default.join(getLoadSettings().resourcePath, 'src/initialize-application-window.js');
+  return _path.default.join((0, (_windowLoadSettings || _load_windowLoadSettings()).getWindowLoadSettings)().resourcePath, 'src/initialize-application-window.js');
 }
 
 function initAtomWindow(blobStore, initialPaths) {
   const initScript = getAtomInitializerScript();
 
   // Modify some of the load settings to match a real Atom window.
-  const loadSettings = getLoadSettings();
+  const loadSettings = (0, (_windowLoadSettings || _load_windowLoadSettings()).getWindowLoadSettings)();
   // Replace the initialization script so reloading works.
   loadSettings.windowInitializationScript = initScript;
   // Inherit the initialPaths from the first state.
@@ -97,6 +101,7 @@ function initAtomWindow(blobStore, initialPaths) {
   if (loadSettings.env == null) {
     loadSettings.env = process.env;
   }
+  (0, (_windowLoadSettings || _load_windowLoadSettings()).setWindowLoadSettings)(loadSettings);
 
   // Start up a real Atom instance in the current window.
   // Note that the `atom` global becomes accessible synchronously.
@@ -115,8 +120,7 @@ function restoreWindows(blobStore, newWindow) {
 
   const windowStates = getApplicationState(process.env.ATOM_HOME) || [];
 
-  const windowsToRestore = newWindow ?
-  // The current window will replace any previously blank windows.
+  const windowsToRestore = newWindow ? // The current window will replace any previously blank windows.
   windowStates.filter(state => {
     var _ref, _ref2;
 
@@ -153,7 +157,7 @@ function releaseLock() {
 function hasPaths(browserWindow) {
   var _ref5, _ref6;
 
-  return ((_ref5 = getLoadSettings(browserWindow)) != null ? (_ref6 = _ref5.initialPaths) != null ? _ref6[0] : _ref6 : _ref5) != null;
+  return ((_ref5 = (0, (_windowLoadSettings || _load_windowLoadSettings()).getWindowLoadSettings)(browserWindow)) != null ? (_ref6 = _ref5.initialPaths) != null ? _ref6[0] : _ref6 : _ref5) != null;
 }
 
 // This function gets called by the Atom package-level URL handler.
@@ -163,7 +167,7 @@ exports.default = (() => {
   var _ref7 = (0, _asyncToGenerator.default)(function* (blobStore) {
     const currentWindow = remote.getCurrentWindow();
     try {
-      const { urlToOpen } = getLoadSettings();
+      const { urlToOpen } = (0, (_windowLoadSettings || _load_windowLoadSettings()).getWindowLoadSettings)();
       const { host, pathname, query } = _url.default.parse(urlToOpen);
 
       if (!(host === 'nuclide' && pathname != null && pathname !== '')) {
@@ -224,7 +228,6 @@ exports.default = (() => {
 
 
 const __test__ = exports.__test__ = {
-  getLoadSettings,
   getApplicationState,
   getAtomInitializerScript,
   acquireLock,

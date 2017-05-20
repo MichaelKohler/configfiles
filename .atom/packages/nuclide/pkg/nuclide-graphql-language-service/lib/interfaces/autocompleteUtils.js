@@ -63,7 +63,7 @@ function getFieldDef(schema, type, fieldName) {
   if (fieldName === (_introspection || _load_introspection()).TypeNameMetaFieldDef.name && (0, (_graphql || _load_graphql()).isCompositeType)(type)) {
     return (_introspection || _load_introspection()).TypeNameMetaFieldDef;
   }
-  if (type.getFields) {
+  if (type.getFields && typeof type.getFields === 'function') {
     return type.getFields()[fieldName];
   }
 

@@ -38,7 +38,7 @@ function _load_resolveFrom() {
 var _nuclideUri;
 
 function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../../commons-node/nuclideUri'));
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
 var _fs = _interopRequireDefault(require('fs'));
@@ -452,13 +452,19 @@ class FileParser {
     this._assert(definition, definition.type === 'ObjectTypeProperty', 'This is a ObjectTypeProperty object.');
     this._assert(definition, definition.key && definition.key.type === 'Identifier', 'This method definition has an key (a name).');
     this._assert(definition, definition.value.returnType != null, `${definition.key.name} missing a return type annotation.`);
-
     const returnType = this._parseTypeAnnotation(definition.value.returnType);
 
     if (!(typeof definition.key.name === 'string')) {
       throw new Error('Invariant violation: "typeof definition.key.name === \'string\'"');
     }
 
+    if (!(typeof definition.optional === 'boolean')) {
+      throw new Error('Invariant violation: "typeof definition.optional === \'boolean\'"');
+    }
+
+    if (definition.optional) {
+      throw this._error(definition, `${definition.key.name} optional interface methods are not supported.`);
+    }
     return {
       location: this._locationOfNode(definition.key),
       name: definition.key.name,
@@ -601,6 +607,8 @@ class FileParser {
         };
       case 'GenericTypeAnnotation':
         return this._parseGenericTypeAnnotation(typeAnnotation);
+      case 'FunctionTypeAnnotation':
+        throw this._error(typeAnnotation, 'Properties that are of a function type are not supported. Use a method instead.');
       default:
         throw this._error(typeAnnotation, `Unknown type annotation ${typeAnnotation.type}.`);
     }

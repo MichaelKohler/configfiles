@@ -20,6 +20,10 @@
     "name": "CtagsService"
   },
   {
+    "implementation": "../nuclide-definition-preview-rpc/lib/DefinitionPreviewService.js",
+    "name": "DefinitionPreviewService"
+  },
+  {
     "implementation": "./lib/services/FileSystemService.js",
     "name": "FileSystemService"
   },
@@ -54,10 +58,6 @@
   {
     "implementation": "./lib/services/InfoService.js",
     "name": "InfoService"
-  },
-  {
-    "implementation": "../nuclide-debugger-iwdp-rpc/lib/IwdpDebuggerService.js",
-    "name": "IwdpDebuggerService"
   },
   {
     "implementation": "../nuclide-ocaml-rpc/lib/MerlinService.js",

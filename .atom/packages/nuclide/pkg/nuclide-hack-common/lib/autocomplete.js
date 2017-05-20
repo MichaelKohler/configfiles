@@ -18,7 +18,7 @@ function _load_simpleTextBuffer() {
 var _range;
 
 function _load_range() {
-  return _range = require('../../commons-node/range');
+  return _range = require('nuclide-commons/range');
 }
 
 var _constants;

@@ -15,7 +15,7 @@ function _load_constants() {
 var _AtomInput;
 
 function _load_AtomInput() {
-  return _AtomInput = require('../../nuclide-ui/AtomInput');
+  return _AtomInput = require('nuclide-commons-ui/AtomInput');
 }
 
 var _Dropdown;
@@ -27,7 +27,7 @@ function _load_Dropdown() {
 var _Button;
 
 function _load_Button() {
-  return _Button = require('../../nuclide-ui/Button');
+  return _Button = require('nuclide-commons-ui/Button');
 }
 
 var _react = _interopRequireDefault(require('react'));

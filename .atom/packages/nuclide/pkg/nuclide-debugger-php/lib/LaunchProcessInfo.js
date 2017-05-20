@@ -28,7 +28,7 @@ function _load_nuclideRemoteConnection() {
 var _nuclideUri;
 
 function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../../commons-node/nuclideUri'));
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
 var _utils;
@@ -61,6 +61,10 @@ class LaunchProcessInfo extends (_nuclideDebuggerBase || _load_nuclideDebuggerBa
   constructor(targetUri, launchTarget) {
     super('hhvm', targetUri);
     this._launchTarget = launchTarget;
+  }
+
+  clone() {
+    return new LaunchProcessInfo(this._targetUri, this._launchTarget);
   }
 
   debug() {

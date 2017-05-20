@@ -11,12 +11,6 @@ var _atom = require('atom');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const TASKS = exports.TASKS = [];
-
-/*
- * This will provide the toolbar functionality for the open-source-supported HHVM targets.
- * e.g. HHVM Debugger
- */
 /**
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -28,18 +22,18 @@ const TASKS = exports.TASKS = [];
  * @format
  */
 
+const TASKS = exports.TASKS = [];
+
+/*
+ * This will provide the toolbar functionality for the open-source-supported HHVM targets.
+ * e.g. HHVM Debugger
+ */
 class ArcToolbarModel {
 
-  constructor(outputMessages) {
-    this._outputMessages = outputMessages;
-  }
+  constructor() {}
 
   setProjectPath(projectPath) {
     this._projectPath = projectPath;
-  }
-
-  logOutput(text, level) {
-    this._outputMessages.next({ text, level });
   }
 
   getActiveProjectPath() {

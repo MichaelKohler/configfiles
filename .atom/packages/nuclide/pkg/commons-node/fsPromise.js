@@ -178,7 +178,7 @@ function _load_mkdirp() {
 var _nuclideUri;
 
 function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../commons-node/nuclideUri'));
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
 var _rimraf;
@@ -372,10 +372,10 @@ function mkdir(path, mode) {
 // This workaround is adapted from the Flow declarations.
 
 
-const readFile = function () {
+const readFile = function (...args) {
   return new Promise((resolve, reject) => {
     // $FlowIssue: spread operator doesn't preserve any-type
-    _fs.default.readFile(...arguments, (err, result) => {
+    _fs.default.readFile(...args, (err, result) => {
       if (err == null) {
         resolve(result);
       } else {

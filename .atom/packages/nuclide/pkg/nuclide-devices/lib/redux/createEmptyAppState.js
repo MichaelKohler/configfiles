@@ -12,8 +12,10 @@ function createEmptyAppState() {
     deviceType: null,
     deviceTypes: [],
     device: null,
-    deviceActions: [],
-    infoTables: new Map()
+    deviceTasks: [],
+    infoTables: new Map(),
+    processes: [],
+    processKiller: null
   };
 } /**
    * Copyright (c) 2015-present, Facebook, Inc.

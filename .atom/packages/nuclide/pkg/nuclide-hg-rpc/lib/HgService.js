@@ -30,7 +30,7 @@ let getForkBaseName = (() => {
 var _nuclideUri;
 
 function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../../commons-node/nuclideUri'));
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
 var _nuclideWatchmanHelpers;
@@ -82,7 +82,7 @@ function _load_fsPromise() {
 var _debounce;
 
 function _load_debounce() {
-  return _debounce = _interopRequireDefault(require('../../commons-node/debounce'));
+  return _debounce = _interopRequireDefault(require('nuclide-commons/debounce'));
 }
 
 var _hgBookmarkHelpers;
@@ -859,7 +859,7 @@ class HgService {
    * Undoes the effect of a local commit, specifically the working directory parent.
    */
   uncommit() {
-    return this._runSimpleInWorkingDirectory('uncommit', []);
+    return this._runSimpleInWorkingDirectory('strip', ['.', '--keep']);
   }
 
   /**
@@ -1041,7 +1041,7 @@ class HgService {
     const execOptions = {
       cwd: this._workingDirectory
     };
-    return (0, (_hgUtils || _load_hgUtils()).hgRunCommand)(args, execOptions).map(data => {
+    return this._hgRunCommand(args, execOptions).map(data => {
       const parsedData = JSON.parse(data)[0];
       if (parsedData.command == null) {
         return null;

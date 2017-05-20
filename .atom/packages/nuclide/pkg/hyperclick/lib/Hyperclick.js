@@ -37,6 +37,7 @@ let findTruthyReturnValue = (() => {
  * the root directory of this source tree.
  *
  * 
+ * @format
  */
 
 var _HyperclickForTextEditor;
@@ -60,7 +61,7 @@ function _load_hyperclickUtils() {
 var _textEditor;
 
 function _load_textEditor() {
-  return _textEditor = require('../../commons-atom/text-editor');
+  return _textEditor = require('nuclide-commons-atom/text-editor');
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

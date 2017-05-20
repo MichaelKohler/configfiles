@@ -7,13 +7,13 @@ Object.defineProperty(exports, "__esModule", {
 var _addTooltip;
 
 function _load_addTooltip() {
-  return _addTooltip = _interopRequireDefault(require('../../nuclide-ui/add-tooltip'));
+  return _addTooltip = _interopRequireDefault(require('nuclide-commons-ui/addTooltip'));
 }
 
 var _Icon;
 
 function _load_Icon() {
-  return _Icon = require('../../nuclide-ui/Icon');
+  return _Icon = require('nuclide-commons-ui/Icon');
 }
 
 var _classnames;
@@ -29,7 +29,7 @@ var _reactDom = _interopRequireDefault(require('react-dom'));
 var _UniversalDisposable;
 
 function _load_UniversalDisposable() {
-  return _UniversalDisposable = _interopRequireDefault(require('../../commons-node/UniversalDisposable'));
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
 var _nuclideAnalytics;

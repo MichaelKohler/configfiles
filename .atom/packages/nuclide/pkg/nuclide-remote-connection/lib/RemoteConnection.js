@@ -10,7 +10,7 @@ var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
 var _UniversalDisposable;
 
 function _load_UniversalDisposable() {
-  return _UniversalDisposable = _interopRequireDefault(require('../../commons-node/UniversalDisposable'));
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
 var _ServerConnection;
@@ -24,7 +24,7 @@ var _atom = require('atom');
 var _nuclideUri;
 
 function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../../commons-node/nuclideUri'));
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
 var _RemoteConnectionConfigurationManager;
@@ -167,8 +167,8 @@ class RemoteConnection {
       // in a possible race.
       _this2._connection.addConnection(_this2);
       try {
-        const FileSystemService = _this2.getService(FILE_SYSTEM_SERVICE);
-        const resolvedPath = yield FileSystemService.resolveRealPath(_this2._cwd);
+        const fileSystemService = _this2.getService(FILE_SYSTEM_SERVICE);
+        const resolvedPath = yield fileSystemService.resolveRealPath(_this2._cwd);
 
         // Now that we know the real path, it's possible this collides with an existing connection.
         // If so, we should just stop immediately.
@@ -222,8 +222,8 @@ class RemoteConnection {
     }, (() => {
       var _ref = (0, _asyncToGenerator.default)(function* (error) {
         let warningMessageToUser = '';
-        const FileSystemService = _this3.getService(FILE_SYSTEM_SERVICE);
-        if (yield FileSystemService.isNfs(rootDirectoryPath)) {
+        const fileSystemService = _this3.getService(FILE_SYSTEM_SERVICE);
+        if (yield fileSystemService.isNfs(rootDirectoryUri)) {
           warningMessageToUser += `This project directory: \`${rootDirectoryPath}\` is on <b>\`NFS\`</b> filesystem. ` + 'Nuclide works best with local (non-NFS) root directory.' + 'e.g. `/data/users/$USER`' + 'features such as synced remote file editing, file search, ' + 'and Mercurial-related updates will not work.<br/>';
         } else {
           warningMessageToUser += 'You just connected to a remote project ' + `\`${rootDirectoryPath}\` without Watchman support, which means that ` + 'crucial features such as synced remote file editing, file search, ' + 'and Mercurial-related updates will not work.<br/><br/>' + 'A possible workaround is to create an empty `.watchmanconfig` file ' + 'in the remote folder, which will enable Watchman if you have it installed.<br/><br/>';

@@ -10,13 +10,13 @@ var _react = _interopRequireDefault(require('react'));
 var _observePaneItemVisibility;
 
 function _load_observePaneItemVisibility() {
-  return _observePaneItemVisibility = _interopRequireDefault(require('../../commons-atom/observePaneItemVisibility'));
+  return _observePaneItemVisibility = _interopRequireDefault(require('nuclide-commons-atom/observePaneItemVisibility'));
 }
 
 var _renderReactRoot;
 
 function _load_renderReactRoot() {
-  return _renderReactRoot = require('../../commons-atom/renderReactRoot');
+  return _renderReactRoot = require('nuclide-commons-ui/renderReactRoot');
 }
 
 var _OutlineView;

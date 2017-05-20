@@ -48,3 +48,16 @@ Object.defineProperty(exports, 'MultiProjectLanguageService', {
     return (_MultiProjectLanguageService || _load_MultiProjectLanguageService()).MultiProjectLanguageService;
   }
 });
+
+var _HostServicesAggregator;
+
+function _load_HostServicesAggregator() {
+  return _HostServicesAggregator = require('./HostServicesAggregator');
+}
+
+Object.defineProperty(exports, 'forkHostServices', {
+  enumerable: true,
+  get: function () {
+    return (_HostServicesAggregator || _load_HostServicesAggregator()).forkHostServices;
+  }
+});

@@ -8,13 +8,13 @@ exports.default = formatEnoentNotification;
 var _featureConfig;
 
 function _load_featureConfig() {
-  return _featureConfig = _interopRequireDefault(require('./featureConfig'));
+  return _featureConfig = _interopRequireDefault(require('nuclide-commons-atom/feature-config'));
 }
 
 var _string;
 
 function _load_string() {
-  return _string = require('../commons-node/string');
+  return _string = require('nuclide-commons/string');
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

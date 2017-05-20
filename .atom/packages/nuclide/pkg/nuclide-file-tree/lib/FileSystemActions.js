@@ -37,7 +37,7 @@ var _reactDom = _interopRequireDefault(require('react-dom'));
 var _nuclideUri;
 
 function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../../commons-node/nuclideUri'));
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
 var _atom = require('atom');
@@ -204,7 +204,7 @@ class FileSystemActions {
     })();
   }
 
-  _onConfirmDuplicate(file, nodePath, newBasename, addToVCS, onDidConfirm) {
+  _onConfirmDuplicate(file, newBasename, addToVCS, onDidConfirm) {
     var _this = this;
 
     return (0, _asyncToGenerator.default)(function* () {
@@ -212,7 +212,7 @@ class FileSystemActions {
       const newFile = directory.getFile(newBasename);
       const newPath = newFile.getPath();
       const service = (0, (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).getFileSystemServiceByNuclideUri)(newPath);
-      const exists = !(yield service.copy(nodePath, (_nuclideUri || _load_nuclideUri()).default.getPath(newPath)));
+      const exists = !(yield service.copy(file.getPath(), newPath));
       if (exists) {
         atom.notifications.addError(`'${newPath}' already exists.`);
         onDidConfirm(null);
@@ -300,7 +300,7 @@ class FileSystemActions {
           // TODO: Connection could have been lost for remote file.
           return;
         }
-        this._onConfirmDuplicate(file, nodePath, newBasename.trim(), Boolean(options.addToVCS), onDidConfirm).catch(error => {
+        this._onConfirmDuplicate(file, newBasename.trim(), Boolean(options.addToVCS), onDidConfirm).catch(error => {
           atom.notifications.addError(`Failed to duplicate '${file.getPath()}'`);
         });
       },

@@ -28,7 +28,7 @@ function _load_utils() {
 var _UniversalDisposable;
 
 function _load_UniversalDisposable() {
-  return _UniversalDisposable = _interopRequireDefault(require('../../commons-node/UniversalDisposable'));
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -38,6 +38,10 @@ class BootstrapInfo extends (_nuclideDebuggerBase || _load_nuclideDebuggerBase()
   constructor(targetUri, bootstrapInfo) {
     super('lldb', targetUri);
     this._bootstrapInfo = bootstrapInfo;
+  }
+
+  clone() {
+    return new BootstrapInfo(this._targetUri, this._bootstrapInfo);
   }
 
   supportThreads() {

@@ -42,6 +42,17 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * the source text, provide a list of typeahead entries.
  */
 
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ * @format
+ */
+
 function getAutocompleteSuggestions(schema, queryText, cursor) {
   const token = getTokenAtPosition(queryText, cursor);
 
@@ -119,21 +130,10 @@ function getAutocompleteSuggestions(schema, queryText, cursor) {
 }
 
 // Helper functions to get suggestions for each kinds
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
-
 function getSuggestionsForFieldNames(cursor, token, typeInfo, schema) {
   if (typeInfo.parentType) {
     const parentType = typeInfo.parentType;
-    const fields = parentType.getFields ? (0, (_autocompleteUtils || _load_autocompleteUtils()).objectValues)(parentType.getFields()) : [];
+    const fields = parentType.getFields instanceof Function ? (0, (_autocompleteUtils || _load_autocompleteUtils()).objectValues)(parentType.getFields()) : [];
     if ((0, (_graphql || _load_graphql()).isAbstractType)(parentType)) {
       fields.push((_introspection || _load_introspection()).TypeNameMetaFieldDef);
     }
@@ -154,8 +154,7 @@ function getSuggestionsForFieldNames(cursor, token, typeInfo, schema) {
 function getSuggestionsForInputValues(cursor, token, typeInfo) {
   const namedInputType = (0, (_graphql || _load_graphql()).getNamedType)(typeInfo.inputType);
   if (namedInputType instanceof (_graphql || _load_graphql()).GraphQLEnumType) {
-    const valueMap = namedInputType.getValues();
-    const values = (0, (_autocompleteUtils || _load_autocompleteUtils()).objectValues)(valueMap);
+    const values = namedInputType.getValues();
     return (0, (_autocompleteUtils || _load_autocompleteUtils()).hintList)(cursor, token, values.map(value => ({
       text: value.name,
       type: namedInputType,
@@ -193,10 +192,13 @@ function getSuggestionsForFragmentTypeConditions(cursor, token, typeInfo, schema
     const typeMap = schema.getTypeMap();
     possibleTypes = (0, (_autocompleteUtils || _load_autocompleteUtils()).objectValues)(typeMap).filter((_graphql || _load_graphql()).isCompositeType);
   }
-  return (0, (_autocompleteUtils || _load_autocompleteUtils()).hintList)(cursor, token, possibleTypes.map(type => ({
-    text: type.name,
-    description: type.description
-  })));
+  return (0, (_autocompleteUtils || _load_autocompleteUtils()).hintList)(cursor, token, possibleTypes.map(type => {
+    const namedType = (0, (_graphql || _load_graphql()).getNamedType)(type);
+    return {
+      text: String(type),
+      description: namedType && namedType.description || ''
+    };
+  }));
 }
 
 function getSuggestionsForFragmentSpread(cursor, token, typeInfo, schema, queryText) {
@@ -211,7 +213,7 @@ function getSuggestionsForFragmentSpread(cursor, token, typeInfo, schema, queryT
   // Only include fragments which are not cyclic.
   !(defState && defState.kind === 'FragmentDefinition' && defState.name === frag.name.value) &&
   // Only include fragments which could possibly be spread here.
-  (0, (_graphql || _load_graphql()).doTypesOverlap)(schema, typeInfo.parentType, typeMap[frag.typeCondition.name.value]));
+  (0, (_graphql || _load_graphql()).isCompositeType)(typeInfo.parentType) && (0, (_graphql || _load_graphql()).isCompositeType)(typeMap[frag.typeCondition.name.value]) && (0, (_graphql || _load_graphql()).doTypesOverlap)(schema, typeInfo.parentType, typeMap[frag.typeCondition.name.value]));
 
   return (0, (_autocompleteUtils || _load_autocompleteUtils()).hintList)(cursor, token, relevantFrags.map(frag => ({
     text: frag.name.value,
@@ -229,6 +231,10 @@ function getFragmentDefinitions(queryText) {
         name: {
           kind: 'Name',
           value: state.name
+        },
+        selectionSet: {
+          kind: 'SelectionSet',
+          selections: []
         },
         typeCondition: {
           kind: 'NamedType',
@@ -358,117 +364,125 @@ function canUseDirective(kind, directive) {
 // Utility for collecting rich type information given any token's state
 // from the graphql-mode parser.
 function getTypeInfo(schema, tokenState) {
-  const info = {
-    schema,
-    type: null,
-    parentType: null,
-    inputType: null,
-    directiveDef: null,
-    enumValue: null,
-    fieldDef: null,
-    argDef: null,
-    argDefs: null,
-    objectFieldDefs: null
-  };
+  let type;
+  let parentType;
+  let inputType;
+  let directiveDef;
+  let enumValue;
+  let fieldDef;
+  let argDef;
+  let argDefs;
+  let objectFieldDefs;
 
   (0, (_autocompleteUtils || _load_autocompleteUtils()).forEachState)(tokenState, state => {
     switch (state.kind) {
       case 'Query':
       case 'ShortQuery':
-        info.type = schema.getQueryType();
+        type = schema.getQueryType();
         break;
       case 'Mutation':
-        info.type = schema.getMutationType();
+        type = schema.getMutationType();
         break;
       case 'Subscription':
-        info.type = schema.getSubscriptionType();
+        type = schema.getSubscriptionType();
         break;
       case 'InlineFragment':
       case 'FragmentDefinition':
         if (state.type) {
-          info.type = schema.getType(state.type);
+          type = schema.getType(state.type);
         }
         break;
       case 'Field':
       case 'AliasedField':
-        if (!info.type || !state.name) {
-          info.fieldDef = null;
+        if (!type || !state.name) {
+          fieldDef = null;
         } else {
-          info.fieldDef = (0, (_autocompleteUtils || _load_autocompleteUtils()).getFieldDef)(schema, info.parentType, state.name);
-          info.type = info.fieldDef ? info.fieldDef.type : null;
+          fieldDef = parentType ? (0, (_autocompleteUtils || _load_autocompleteUtils()).getFieldDef)(schema, parentType, state.name) : null;
+          type = fieldDef ? fieldDef.type : null;
         }
         break;
       case 'SelectionSet':
-        info.parentType = (0, (_graphql || _load_graphql()).getNamedType)(info.type);
+        parentType = (0, (_graphql || _load_graphql()).getNamedType)(type);
         break;
       case 'Directive':
-        info.directiveDef = state.name ? schema.getDirective(state.name) : null;
+        directiveDef = state.name ? schema.getDirective(state.name) : null;
         break;
       case 'Arguments':
         if (!state.prevState) {
-          info.argDefs = null;
+          argDefs = null;
         } else {
           switch (state.prevState.kind) {
             case 'Field':
-              info.argDefs = info.fieldDef && info.fieldDef.args;
+              argDefs = fieldDef && fieldDef.args;
               break;
             case 'Directive':
-              info.argDefs = info.directiveDef && info.directiveDef.args;
+              argDefs = directiveDef && directiveDef.args;
               break;
             case 'AliasedField':
               const name = state.prevState && state.prevState.name;
               if (!name) {
-                info.argDefs = null;
+                argDefs = null;
                 break;
               }
-              const fieldDef = (0, (_autocompleteUtils || _load_autocompleteUtils()).getFieldDef)(schema, info.parentType, name);
-              if (!fieldDef) {
-                info.argDefs = null;
+              const field = parentType ? (0, (_autocompleteUtils || _load_autocompleteUtils()).getFieldDef)(schema, parentType, name) : null;
+              if (!field) {
+                argDefs = null;
                 break;
               }
-              info.argDefs = fieldDef.args;
+              argDefs = field.args;
               break;
             default:
-              info.argDefs = null;
+              argDefs = null;
               break;
           }
         }
         break;
       case 'Argument':
-        info.argDef = null;
-        if (info.argDefs) {
-          for (let i = 0; i < info.argDefs.length; i++) {
-            if (info.argDefs[i].name === state.name) {
-              info.argDef = info.argDefs[i];
+        if (argDefs) {
+          for (let i = 0; i < argDefs.length; i++) {
+            if (argDefs[i].name === state.name) {
+              argDef = argDefs[i];
               break;
             }
           }
         }
-        info.inputType = info.argDef && info.argDef.type;
+        inputType = argDef && argDef.type;
         break;
       case 'EnumValue':
-        const enumType = (0, (_graphql || _load_graphql()).getNamedType)(info.inputType);
-        info.enumValue = enumType instanceof (_graphql || _load_graphql()).GraphQLEnumType ? find(enumType.getValues(), val => val.value === state.name) : null;
+        const enumType = (0, (_graphql || _load_graphql()).getNamedType)(inputType);
+        enumValue = enumType instanceof (_graphql || _load_graphql()).GraphQLEnumType ? find(enumType.getValues(), val => val.value === state.name) : null;
         break;
       case 'ListValue':
-        const nullableType = (0, (_graphql || _load_graphql()).getNullableType)(info.inputType);
-        info.inputType = nullableType instanceof (_graphql || _load_graphql()).GraphQLList ? nullableType.ofType : null;
+        const nullableType = (0, (_graphql || _load_graphql()).getNullableType)(inputType);
+        inputType = nullableType instanceof (_graphql || _load_graphql()).GraphQLList ? nullableType.ofType : null;
         break;
       case 'ObjectValue':
-        const objectType = (0, (_graphql || _load_graphql()).getNamedType)(info.inputType);
-        info.objectFieldDefs = objectType instanceof (_graphql || _load_graphql()).GraphQLInputObjectType ? objectType.getFields() : null;
+        const objectType = (0, (_graphql || _load_graphql()).getNamedType)(inputType);
+        objectFieldDefs = objectType instanceof (_graphql || _load_graphql()).GraphQLInputObjectType ? objectType.getFields() : null;
         break;
       case 'ObjectField':
-        const objectField = state.name && info.objectFieldDefs ? info.objectFieldDefs[state.name] : null;
-        info.inputType = objectField && objectField.type;
+        const objectField = state.name && objectFieldDefs ? objectFieldDefs[state.name] : null;
+        inputType = objectField && objectField.type;
         break;
       case 'NamedType':
-        info.type = schema.getType(state.name);
+        if (state.name) {
+          type = schema.getType(state.name);
+        }
         break;
     }
   });
 
-  return info;
+  return {
+    type,
+    parentType,
+    inputType,
+    directiveDef,
+    enumValue,
+    fieldDef,
+    argDef,
+    argDefs,
+    objectFieldDefs
+  };
 }
 
 // Returns the first item in the array which causes predicate to return truthy.

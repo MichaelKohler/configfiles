@@ -23,13 +23,13 @@ function _load_QuickSelectionComponent() {
 var _featureConfig;
 
 function _load_featureConfig() {
-  return _featureConfig = _interopRequireDefault(require('../../commons-atom/featureConfig'));
+  return _featureConfig = _interopRequireDefault(require('nuclide-commons-atom/feature-config'));
 }
 
 var _goToLocation;
 
 function _load_goToLocation() {
-  return _goToLocation = require('../../commons-atom/go-to-location');
+  return _goToLocation = require('nuclide-commons-atom/go-to-location');
 }
 
 var _nuclideAnalytics;
@@ -41,13 +41,13 @@ function _load_nuclideAnalytics() {
 var _debounce;
 
 function _load_debounce() {
-  return _debounce = _interopRequireDefault(require('../../commons-node/debounce'));
+  return _debounce = _interopRequireDefault(require('nuclide-commons/debounce'));
 }
 
 var _UniversalDisposable;
 
 function _load_UniversalDisposable() {
-  return _UniversalDisposable = _interopRequireDefault(require('../../commons-node/UniversalDisposable'));
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
 var _SearchResultManager;
@@ -133,7 +133,11 @@ class Activation {
   _handleSelection(selections, providerName, query) {
     for (let i = 0; i < selections.length; i++) {
       const selection = selections[i];
-      (0, (_goToLocation || _load_goToLocation()).goToLocation)(selection.path, selection.line, selection.column);
+      if (selection.callback != null) {
+        selection.callback();
+      } else {
+        (0, (_goToLocation || _load_goToLocation()).goToLocation)(selection.path, selection.line, selection.column);
+      }
       (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)('quickopen-select-file', {
         'quickopen-filepath': selection.path,
         'quickopen-query': query,

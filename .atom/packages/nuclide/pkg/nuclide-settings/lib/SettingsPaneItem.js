@@ -10,7 +10,7 @@ var _atom = require('atom');
 var _featureConfig;
 
 function _load_featureConfig() {
-  return _featureConfig = _interopRequireDefault(require('../../commons-atom/featureConfig'));
+  return _featureConfig = _interopRequireDefault(require('nuclide-commons-atom/feature-config'));
 }
 
 var _react = _interopRequireDefault(require('react'));
@@ -24,7 +24,7 @@ function _load_SettingsCategory() {
 var _AtomInput;
 
 function _load_AtomInput() {
-  return _AtomInput = require('../../nuclide-ui/AtomInput');
+  return _AtomInput = require('nuclide-commons-ui/AtomInput');
 }
 
 var _Section;

@@ -7,7 +7,7 @@ Object.defineProperty(exports, "__esModule", {
 var _collection;
 
 function _load_collection() {
-  return _collection = require('../../../commons-node/collection');
+  return _collection = require('nuclide-commons/collection');
 }
 
 var _atom = require('atom');

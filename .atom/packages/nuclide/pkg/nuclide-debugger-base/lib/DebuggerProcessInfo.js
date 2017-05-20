@@ -71,6 +71,10 @@ class DebuggerProcessInfo {
     return false;
   }
 
+  clone() {
+    throw new Error('abstract method');
+  }
+
   customControlButtons() {
     return [];
   }

@@ -16,7 +16,7 @@ function _load_MeasuredComponent() {
 var _Button;
 
 function _load_Button() {
-  return _Button = require('./Button');
+  return _Button = require('nuclide-commons-ui/Button');
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

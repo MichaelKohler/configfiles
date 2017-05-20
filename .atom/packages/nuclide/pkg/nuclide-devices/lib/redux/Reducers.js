@@ -20,7 +20,9 @@ function app(state, action) {
       return Object.assign({}, state, {
         deviceType: null,
         device: null,
+        devices: [],
         infoTables: new Map(),
+        processes: [],
         actions: [],
         host
       });
@@ -30,7 +32,9 @@ function app(state, action) {
       return Object.assign({}, state, {
         deviceType,
         device: null,
+        devices: [],
         infoTables: new Map(),
+        processes: [],
         actions: []
       });
 
@@ -58,16 +62,28 @@ function app(state, action) {
         infoTables
       });
 
+    case (_Actions || _load_Actions()).SET_PROCESSES:
+      const { processes } = action.payload;
+      return Object.assign({}, state, {
+        processes
+      });
+
+    case (_Actions || _load_Actions()).SET_PROCESS_KILLER:
+      const { processKiller } = action.payload;
+      return Object.assign({}, state, {
+        processKiller
+      });
+
     case (_Actions || _load_Actions()).SET_HOSTS:
       const { hosts } = action.payload;
       return Object.assign({}, state, {
         hosts
       });
 
-    case (_Actions || _load_Actions()).SET_DEVICE_ACTIONS:
-      const { actions } = action.payload;
+    case (_Actions || _load_Actions()).SET_DEVICE_TASKS:
+      const { deviceTasks } = action.payload;
       return Object.assign({}, state, {
-        actions
+        deviceTasks
       });
 
     default:

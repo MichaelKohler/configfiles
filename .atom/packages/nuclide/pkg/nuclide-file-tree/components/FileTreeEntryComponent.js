@@ -24,13 +24,13 @@ function _load_classnames() {
 var _observable;
 
 function _load_observable() {
-  return _observable = require('../../commons-node/observable');
+  return _observable = require('nuclide-commons/observable');
 }
 
 var _UniversalDisposable;
 
 function _load_UniversalDisposable() {
-  return _UniversalDisposable = _interopRequireDefault(require('../../commons-node/UniversalDisposable'));
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
 var _FileTreeFilterHelper;
@@ -42,7 +42,7 @@ function _load_FileTreeFilterHelper() {
 var _Checkbox;
 
 function _load_Checkbox() {
-  return _Checkbox = require('../../nuclide-ui/Checkbox');
+  return _Checkbox = require('nuclide-commons-ui/Checkbox');
 }
 
 var _hgConstants;
@@ -66,7 +66,7 @@ function _load_FileTreeHgHelpers() {
 var _addTooltip;
 
 function _load_addTooltip() {
-  return _addTooltip = _interopRequireDefault(require('../../nuclide-ui/add-tooltip'));
+  return _addTooltip = _interopRequireDefault(require('nuclide-commons-ui/addTooltip'));
 }
 
 var _PathWithFileIcon;

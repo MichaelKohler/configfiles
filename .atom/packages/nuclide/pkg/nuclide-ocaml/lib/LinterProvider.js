@@ -25,7 +25,7 @@ function _load_nuclideRemoteConnection() {
 var _featureConfig;
 
 function _load_featureConfig() {
-  return _featureConfig = _interopRequireDefault(require('../../commons-atom/featureConfig'));
+  return _featureConfig = _interopRequireDefault(require('nuclide-commons-atom/feature-config'));
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -52,7 +52,7 @@ module.exports = {
       }
       yield instance.pushNewBuffer(filePath, textEditor.getText());
       const diagnostics = yield instance.errors(filePath);
-      if (diagnostics == null) {
+      if (diagnostics == null || textEditor.isDestroyed()) {
         return [];
       }
       return diagnostics.map(function (diagnostic) {

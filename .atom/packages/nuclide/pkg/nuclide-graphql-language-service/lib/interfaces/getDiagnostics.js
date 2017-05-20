@@ -37,6 +37,17 @@ function _load_validateWithCustomRules() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ * @format
+ */
+
 function getDiagnostics(filePath, queryText, schema = null, customRules) {
   if (filePath == null) {
     return [];
@@ -62,17 +73,6 @@ function getDiagnostics(filePath, queryText, schema = null, customRules) {
 }
 
 // General utility for map-cating (aka flat-mapping).
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
-
 function mapCat(array, mapper) {
   return Array.prototype.concat.apply([], array.map(mapper));
 }
@@ -83,13 +83,20 @@ function errorAnnotations(error, filePath) {
   }
   return error.nodes.map(node => {
     const highlightNode = node.kind !== 'Variable' && node.name ? node.name : node.variable ? node.variable : node;
+    const typeCastedNode = highlightNode;
 
     if (!error.locations) {
       throw new Error('GraphQL validation error requires locations.');
     }
 
     const loc = error.locations[0];
-    const end = loc.column + (highlightNode.loc.end - highlightNode.loc.start);
+    const highlightNodeLoc = typeCastedNode.loc;
+
+    if (!highlightNodeLoc) {
+      throw new Error('Highlighted node requires location.');
+    }
+
+    const end = loc.column + (highlightNodeLoc.end - highlightNodeLoc.start);
     return {
       name: 'graphql: Validation',
       text: error.message,

@@ -12,7 +12,7 @@ exports.parsePsTableOutput = parsePsTableOutput;
 var _nuclideUri;
 
 function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../../commons-node/nuclideUri'));
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
 var _process;
@@ -21,10 +21,10 @@ function _load_process() {
   return _process = require('../../commons-node/process');
 }
 
-var _DebugBridge;
+var _AdbSdbBase;
 
-function _load_DebugBridge() {
-  return _DebugBridge = require('./DebugBridge');
+function _load_AdbSdbBase() {
+  return _AdbSdbBase = require('./AdbSdbBase');
 }
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
@@ -42,13 +42,34 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @format
  */
 
-class Adb extends (_DebugBridge || _load_DebugBridge()).DebugBridge {
+class Adb extends (_AdbSdbBase || _load_AdbSdbBase()).AdbSdbBase {
   getAndroidProp(device, key) {
-    return this.runShortAdbCommand(device, ['shell', 'getprop', key]).map(s => s.trim());
+    return this.runShortCommand(device, ['shell', 'getprop', key]).map(s => s.trim());
   }
 
   getDeviceArchitecture(device) {
     return this.getAndroidProp(device, 'ro.product.cpu.abi').toPromise();
+  }
+
+  getInstalledPackages(device) {
+    var _this = this;
+
+    return (0, _asyncToGenerator.default)(function* () {
+      const prefix = 'package:';
+      const stdout = yield _this.runShortCommand(device, ['shell', 'pm', 'list', 'packages']).toPromise();
+      return stdout.trim().split(/\s+/).map(function (s) {
+        return s.substring(prefix.length);
+      });
+    })();
+  }
+
+  isPackageInstalled(device, pkg) {
+    var _this2 = this;
+
+    return (0, _asyncToGenerator.default)(function* () {
+      const packages = yield _this2.getInstalledPackages(device);
+      return packages.includes(pkg);
+    })();
   }
 
   getDeviceModel(device) {
@@ -68,17 +89,32 @@ class Adb extends (_DebugBridge || _load_DebugBridge()).DebugBridge {
   }
 
   getDeviceInfo(device) {
-    var _this = this;
+    var _this3 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      const infoTable = yield _this.getCommonDeviceInfo(device);
+      const infoTable = yield _this3.getCommonDeviceInfo(device);
       const unknownCB = function () {
         return null;
       };
-      infoTable.set('android_version', (yield _this.getOSVersion(device).catch(unknownCB)));
-      infoTable.set('manufacturer', (yield _this.getManufacturer(device).catch(unknownCB)));
-      infoTable.set('brand', (yield _this.getBrand(device).catch(unknownCB)));
+      infoTable.set('android_version', (
+      // $FlowFixMe will resolve to null if an error is caught
+      yield _this3.getOSVersion(device).catch(unknownCB)));
+      infoTable.set('manufacturer', (
+      // $FlowFixMe will resolve to null if an error is caught
+      yield _this3.getManufacturer(device).catch(unknownCB)));
+      // $FlowFixMe will resolve to null if an error is caught
+      infoTable.set('brand', (yield _this3.getBrand(device).catch(unknownCB)));
       return infoTable;
+    })();
+  }
+
+  // Can't use kill, the only option is to use the package name
+  // http://stackoverflow.com/questions/17154961/adb-shell-operation-not-permitted
+  killProcess(device, packageName) {
+    var _this4 = this;
+
+    return (0, _asyncToGenerator.default)(function* () {
+      yield _this4.runShortCommand(device, ['shell', 'am', 'force-stop', packageName]).toPromise();
     })();
   }
 
@@ -92,16 +128,16 @@ class Adb extends (_DebugBridge || _load_DebugBridge()).DebugBridge {
       throw new Error('Invariant violation: "!nuclideUri.isRemote(packagePath)"');
     }
 
-    return this.runLongAdbCommand(device, ['install', '-r', packagePath]);
+    return this.runLongCommand(device, ['install', '-r', packagePath]);
   }
 
   uninstallPackage(device, packageName) {
     // TODO(T17463635)
-    return this.runLongAdbCommand(device, ['uninstall', packageName]);
+    return this.runLongCommand(device, ['uninstall', packageName]);
   }
 
   forwardJdwpPortToPid(device, tcpPort, pid) {
-    return this.runShortAdbCommand(device, ['forward', `tcp:${tcpPort}`, `jdwp:${pid}`]).toPromise();
+    return this.runShortCommand(device, ['forward', `tcp:${tcpPort}`, `jdwp:${pid}`]).toPromise();
   }
 
   launchActivity(device, packageName, activity, debug, action) {
@@ -113,27 +149,27 @@ class Adb extends (_DebugBridge || _load_DebugBridge()).DebugBridge {
       args.push('-N', '-D');
     }
     args.push(`${packageName}/${activity}`);
-    return this.runShortAdbCommand(device, args).toPromise();
+    return this.runShortCommand(device, args).toPromise();
   }
 
   activityExists(device, packageName, activity) {
     const packageActivityString = `${packageName}/${activity}`;
     const deviceArg = device !== '' ? ['-s', device] : [];
     const command = deviceArg.concat(['shell', 'dumpsys', 'package']);
-    return (0, (_process || _load_process()).runCommand)(this._adbPath, command).map(stdout => stdout.includes(packageActivityString)).toPromise();
+    return (0, (_process || _load_process()).runCommand)(this._dbPath, command).map(stdout => stdout.includes(packageActivityString)).toPromise();
   }
 
   getJavaProcesses(device) {
-    var _this2 = this;
+    var _this5 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      const allProcesses = yield _this2.runShortAdbCommand(device, ['shell', 'ps']).map(function (stdout) {
+      const allProcesses = yield _this5.runShortCommand(device, ['shell', 'ps']).map(function (stdout) {
         const psOutput = stdout.trim();
         return parsePsTableOutput(psOutput, ['user', 'pid', 'name']);
       }).toPromise();
 
       const args = (device !== '' ? ['-s', device] : []).concat('jdwp');
-      return (0, (_process || _load_process()).observeProcessRaw)(_this2._adbPath, args, {
+      return (0, (_process || _load_process()).observeProcessRaw)(_this5._dbPath, args, {
         killTreeWhenDone: true,
         /* TDOO(17353599) */isExitError: function () {
           return false;
@@ -157,11 +193,14 @@ class Adb extends (_DebugBridge || _load_DebugBridge()).DebugBridge {
     })();
   }
 
-  dumpsysPackage(device, identifier) {
-    var _this3 = this;
+  dumpsysPackage(device, pkg) {
+    var _this6 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      return _this3.runShortAdbCommand(device, ['shell', 'dumpsys', 'package', identifier]).toPromise();
+      if (!(yield _this6.isPackageInstalled(device, pkg))) {
+        return null;
+      }
+      return _this6.runShortCommand(device, ['shell', 'dumpsys', 'package', pkg]).toPromise();
     })();
   }
 }

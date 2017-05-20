@@ -9,7 +9,7 @@ var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
 var _nuclideUri;
 
 function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../../commons-node/nuclideUri'));
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
 var _nuclideRemoteConnection;
@@ -59,6 +59,9 @@ class LintHelpers {
     return (0, (_nuclideAnalytics || _load_nuclideAnalytics()).trackTiming)('nuclide-python.lint', (0, _asyncToGenerator.default)(function* () {
       const service = (0, (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).getPythonServiceByNuclideUri)(src);
       const diagnostics = yield service.getDiagnostics(src, editor.getText());
+      if (editor.isDestroyed()) {
+        return [];
+      }
       return diagnostics.map(function (diagnostic) {
         return {
           name: 'flake8: ' + diagnostic.code,

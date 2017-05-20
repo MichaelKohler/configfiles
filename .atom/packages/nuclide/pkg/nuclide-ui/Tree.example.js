@@ -10,13 +10,13 @@ var _react = _interopRequireDefault(require('react'));
 var _Block;
 
 function _load_Block() {
-  return _Block = require('./Block');
+  return _Block = require('nuclide-commons-ui/Block');
 }
 
 var _Icon;
 
 function _load_Icon() {
-  return _Icon = require('./Icon');
+  return _Icon = require('nuclide-commons-ui/Icon');
 }
 
 var _Tree;

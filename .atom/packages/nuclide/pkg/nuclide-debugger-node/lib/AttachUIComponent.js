@@ -10,7 +10,7 @@ var _react = _interopRequireDefault(require('react'));
 var _AtomInput;
 
 function _load_AtomInput() {
-  return _AtomInput = require('../../nuclide-ui/AtomInput');
+  return _AtomInput = require('nuclide-commons-ui/AtomInput');
 }
 
 var _nuclideDebuggerBase;
@@ -22,19 +22,19 @@ function _load_nuclideDebuggerBase() {
 var _Table;
 
 function _load_Table() {
-  return _Table = require('../../nuclide-ui/Table');
+  return _Table = require('nuclide-commons-ui/Table');
 }
 
 var _Button;
 
 function _load_Button() {
-  return _Button = require('../../nuclide-ui/Button');
+  return _Button = require('nuclide-commons-ui/Button');
 }
 
 var _ButtonGroup;
 
 function _load_ButtonGroup() {
-  return _ButtonGroup = require('../../nuclide-ui/ButtonGroup');
+  return _ButtonGroup = require('nuclide-commons-ui/ButtonGroup');
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -198,7 +198,7 @@ class AttachUIComponent extends _react.default.Component {
       }),
       _react.default.createElement(
         'div',
-        { className: 'nuclide-debugger-native-launch-attach-actions' },
+        { className: 'nuclide-debugger-launch-attach-actions' },
         _react.default.createElement(
           (_ButtonGroup || _load_ButtonGroup()).ButtonGroup,
           null,

@@ -22,7 +22,7 @@ function _load_nuclideAnalytics() {
 var _goToLocation;
 
 function _load_goToLocation() {
-  return _goToLocation = require('../../commons-atom/go-to-location');
+  return _goToLocation = require('nuclide-commons-atom/go-to-location');
 }
 
 var _nuclideLogging;
@@ -34,19 +34,19 @@ function _load_nuclideLogging() {
 var _LoadingSpinner;
 
 function _load_LoadingSpinner() {
-  return _LoadingSpinner = require('../../nuclide-ui/LoadingSpinner');
+  return _LoadingSpinner = require('nuclide-commons-ui/LoadingSpinner');
 }
 
 var _PanelComponentScroller;
 
 function _load_PanelComponentScroller() {
-  return _PanelComponentScroller = require('../../nuclide-ui/PanelComponentScroller');
+  return _PanelComponentScroller = require('nuclide-commons-ui/PanelComponentScroller');
 }
 
 var _Message;
 
 function _load_Message() {
-  return _Message = require('../../nuclide-ui/Message');
+  return _Message = require('nuclide-commons-ui/Message');
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -197,7 +197,11 @@ class OutlineTree extends _react.default.PureComponent {
       }
     };
 
-    const classes = (0, (_classnames || _load_classnames()).default)('list-nested-item', {
+    const classNames = ['list-nested-item'];
+    if (outline.kind) {
+      classNames.push(`kind-${outline.kind}`);
+    }
+    const classes = (0, (_classnames || _load_classnames()).default)(classNames, {
       selected: outline.highlighted
     });
     return _react.default.createElement(

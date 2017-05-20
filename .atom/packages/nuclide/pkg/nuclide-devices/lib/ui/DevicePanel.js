@@ -5,32 +5,32 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.DevicePanel = undefined;
 
-var _react = _interopRequireDefault(require('react'));
-
-var _PanelComponentScroller;
-
-function _load_PanelComponentScroller() {
-  return _PanelComponentScroller = require('../../../nuclide-ui/PanelComponentScroller');
-}
-
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
 
-var _Selectors;
+var _Icon;
 
-function _load_Selectors() {
-  return _Selectors = require('./Selectors');
+function _load_Icon() {
+  return _Icon = require('nuclide-commons-ui/Icon');
 }
 
-var _DeviceTable;
-
-function _load_DeviceTable() {
-  return _DeviceTable = require('./DeviceTable');
-}
+var _react = _interopRequireDefault(require('react'));
 
 var _InfoTable;
 
 function _load_InfoTable() {
   return _InfoTable = require('./InfoTable');
+}
+
+var _ProcessTable;
+
+function _load_ProcessTable() {
+  return _ProcessTable = require('./ProcessTable');
+}
+
+var _TaskButton;
+
+function _load_TaskButton() {
+  return _TaskButton = require('./TaskButton');
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -48,35 +48,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 class DevicePanel extends _react.default.Component {
 
-  constructor(props) {
-    super(props);
-
-    if (!(props.hosts.length > 0)) {
-      throw new Error('Invariant violation: "props.hosts.length > 0"');
-    }
-
-    this._deviceFetcherSubscription = new _rxjsBundlesRxMinJs.Subscription();
-  }
-
-  componentDidMount() {
-    this._deviceFetcherSubscription = _rxjsBundlesRxMinJs.Observable.interval(3000).startWith(0).subscribe(() => this.props.refreshDevices());
-  }
-
-  componentWillUnmount() {
-    this._deviceFetcherSubscription.unsubscribe();
-  }
-
-  _createDeviceTable() {
-    if (this.props.deviceType === null) {
-      return null;
-    }
-    return _react.default.createElement((_DeviceTable || _load_DeviceTable()).DeviceTable, {
-      devices: this.props.devices,
-      device: this.props.device,
-      setDevice: this.props.setDevice
-    });
-  }
-
   _createInfoTables() {
     return Array.from(this.props.infoTables.entries()).map(([title, infoTable]) => _react.default.createElement(
       'div',
@@ -85,33 +56,53 @@ class DevicePanel extends _react.default.Component {
     ));
   }
 
+  _createProcessTable() {
+    return _react.default.createElement(
+      'div',
+      { className: 'block', key: 'process-table' },
+      _react.default.createElement((_ProcessTable || _load_ProcessTable()).ProcessTable, {
+        processes: this.props.processes,
+        killProcess: this.props.killProcess,
+        startFetchingProcesses: this.props.startFetchingProcesses
+      })
+    );
+  }
+
+  _getTasks() {
+    const tasks = this.props.deviceTasks.map(task => _react.default.createElement((_TaskButton || _load_TaskButton()).TaskButton, { task: task, key: task.name }));
+    return _react.default.createElement(
+      'div',
+      { className: 'block nuclide-device-panel-tasks-container' },
+      tasks
+    );
+  }
+
+  _getBackButton() {
+    return _react.default.createElement(
+      'div',
+      { className: 'block' },
+      _react.default.createElement(
+        'span',
+        {
+          className: 'nuclide-device-panel-link-with-icon',
+          onClick: () => this.props.goToRootPanel() },
+        _react.default.createElement(
+          (_Icon || _load_Icon()).Icon,
+          { icon: 'chevron-left' },
+          'Choose another device'
+        )
+      )
+    );
+  }
+
   render() {
     return _react.default.createElement(
-      (_PanelComponentScroller || _load_PanelComponentScroller()).PanelComponentScroller,
+      'div',
       null,
-      _react.default.createElement(
-        'div',
-        { className: 'nuclide-device-panel-container' },
-        _react.default.createElement(
-          'div',
-          { className: 'block' },
-          _react.default.createElement((_Selectors || _load_Selectors()).Selectors, {
-            deviceType: this.props.deviceType,
-            deviceTypes: this.props.deviceTypes,
-            hosts: this.props.hosts,
-            host: this.props.host,
-            setDeviceType: this.props.setDeviceType,
-            setHost: this.props.setHost,
-            deviceActions: this.props.deviceActions
-          })
-        ),
-        _react.default.createElement(
-          'div',
-          { className: 'block' },
-          this._createDeviceTable()
-        ),
-        this._createInfoTables()
-      )
+      this._getBackButton(),
+      this._getTasks(),
+      this._createInfoTables(),
+      this._createProcessTable()
     );
   }
 }

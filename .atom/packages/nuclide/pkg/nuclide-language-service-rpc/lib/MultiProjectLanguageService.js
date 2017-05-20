@@ -24,19 +24,19 @@ var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
 var _UniversalDisposable;
 
 function _load_UniversalDisposable() {
-  return _UniversalDisposable = _interopRequireDefault(require('../../commons-node/UniversalDisposable'));
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
 var _observable;
 
 function _load_observable() {
-  return _observable = require('../../commons-node/observable');
+  return _observable = require('nuclide-commons/observable');
 }
 
 var _collection;
 
 function _load_collection() {
-  return _collection = require('../../commons-node/collection');
+  return _collection = require('nuclide-commons/collection');
 }
 
 var _ConfigCache;
@@ -53,9 +53,28 @@ function _load_() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ * @format
+ */
+
 class MultiProjectLanguageService {
+  // A promise for when AtomLanguageService has called into this feature
+
   // Maps project dir => LanguageService
-  constructor(logger, fileCache, projectFileName, fileExtensions, languageServiceFactory) {
+  constructor() {
+    this._observeDiagnosticsPromise = new Promise((resolve, reject) => {
+      this._observeDiagnosticsPromiseResolver = resolve;
+    });
+  }
+
+  initialize(logger, fileCache, host, projectFileName, fileExtensions, languageServiceFactory) {
     this._logger = logger;
     this._resources = new (_UniversalDisposable || _load_UniversalDisposable()).default();
     this._configCache = new (_ConfigCache || _load_ConfigCache()).ConfigCache(projectFileName);
@@ -68,7 +87,7 @@ class MultiProjectLanguageService {
       });
     });
 
-    this._resources.add(this._processes);
+    this._resources.add(host, this._processes);
 
     // Observe projects as they are opened
     const configObserver = new (_nuclideOpenFilesRpc || _load_nuclideOpenFilesRpc()).ConfigObserver(fileCache, fileExtensions, filePath => this._configCache.getConfigDir(filePath));
@@ -185,7 +204,13 @@ class MultiProjectLanguageService {
     })();
   }
 
+  hasObservedDiagnostics() {
+    return this._observeDiagnosticsPromise;
+  }
+
   observeDiagnostics() {
+    this._observeDiagnosticsPromiseResolver();
+
     return this.observeLanguageServices().mergeMap(process => {
       this._logger.logTrace('observeDiagnostics');
       return (0, (_ || _load_()).ensureInvalidations)(this._logger, process.observeDiagnostics().refCount().catch(error => {
@@ -334,15 +359,5 @@ class MultiProjectLanguageService {
 }
 
 exports.MultiProjectLanguageService = MultiProjectLanguageService; // Enforces that an instance of MultiProjectLanguageService satisfies the LanguageService type
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
 
 null;

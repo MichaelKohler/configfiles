@@ -8,7 +8,7 @@ exports.DebuggerSteppingComponent = undefined;
 var _LoadingSpinner;
 
 function _load_LoadingSpinner() {
-  return _LoadingSpinner = require('../../nuclide-ui/LoadingSpinner');
+  return _LoadingSpinner = require('nuclide-commons-ui/LoadingSpinner');
 }
 
 var _react = _interopRequireDefault(require('react'));
@@ -16,19 +16,19 @@ var _react = _interopRequireDefault(require('react'));
 var _Button;
 
 function _load_Button() {
-  return _Button = require('../../nuclide-ui/Button');
+  return _Button = require('nuclide-commons-ui/Button');
 }
 
 var _ButtonGroup;
 
 function _load_ButtonGroup() {
-  return _ButtonGroup = require('../../nuclide-ui/ButtonGroup');
+  return _ButtonGroup = require('nuclide-commons-ui/ButtonGroup');
 }
 
 var _Checkbox;
 
 function _load_Checkbox() {
-  return _Checkbox = require('../../nuclide-ui/Checkbox');
+  return _Checkbox = require('nuclide-commons-ui/Checkbox');
 }
 
 var _ChromeActionRegistryActions;
@@ -46,7 +46,7 @@ function _load_DebuggerStore() {
 var _UniversalDisposable;
 
 function _load_UniversalDisposable() {
-  return _UniversalDisposable = _interopRequireDefault(require('../../commons-node/UniversalDisposable'));
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -195,12 +195,24 @@ class DebuggerSteppingComponent extends _react.default.Component {
       onClick: () => actions.configureSourcePaths()
     });
 
+    const restartDebuggerButton = !this.props.debuggerStore.getCanRestartDebugger() ? null : _react.default.createElement((_Button || _load_Button()).Button, {
+      icon: 'sync',
+      className: 'nuclide-debugger-stepping-button-separated',
+      disabled: isStopped,
+      tooltip: Object.assign({}, defaultTooltipOptions, {
+        title: 'Restart the debugger using the same settings as the current debug session',
+        keyBindingCommand: 'nuclide-debugger:restart-debugging'
+      }),
+      onClick: () => actions.restartDebugger()
+    });
+
     return _react.default.createElement(
       'div',
       { className: 'nuclide-debugger-stepping-component' },
       _react.default.createElement(
         (_ButtonGroup || _load_ButtonGroup()).ButtonGroup,
         { className: 'nuclide-debugger-stepping-buttongroup' },
+        restartDebuggerButton,
         _react.default.createElement(
           (_Button || _load_Button()).Button,
           {

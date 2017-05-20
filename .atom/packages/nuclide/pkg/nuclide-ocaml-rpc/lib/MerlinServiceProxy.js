@@ -132,28 +132,28 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "MerlinService.js",
-          line: 78
+          line: 77
         },
         kind: "nullable",
         type: {
           location: {
             type: "source",
             fileName: "MerlinService.js",
-            line: 78
+            line: 77
           },
           kind: "object",
           fields: [{
             location: {
               type: "source",
               fileName: "MerlinService.js",
-              line: 79
+              line: 78
             },
             name: "file",
             type: {
               location: {
                 type: "source",
                 fileName: "MerlinService.js",
-                line: 79
+                line: 78
               },
               kind: "named",
               name: "NuclideUri"
@@ -163,28 +163,28 @@ module.exports = _client => {
             location: {
               type: "source",
               fileName: "MerlinService.js",
-              line: 80
+              line: 79
             },
             name: "pos",
             type: {
               location: {
                 type: "source",
                 fileName: "MerlinService.js",
-                line: 80
+                line: 79
               },
               kind: "object",
               fields: [{
                 location: {
                   type: "source",
                   fileName: "MerlinService.js",
-                  line: 81
+                  line: 80
                 },
                 name: "line",
                 type: {
                   location: {
                     type: "source",
                     fileName: "MerlinService.js",
-                    line: 81
+                    line: 80
                   },
                   kind: "number"
                 },
@@ -193,14 +193,14 @@ module.exports = _client => {
                 location: {
                   type: "source",
                   fileName: "MerlinService.js",
-                  line: 82
+                  line: 81
                 },
                 name: "col",
                 type: {
                   location: {
                     type: "source",
                     fileName: "MerlinService.js",
-                    line: 82
+                    line: 81
                   },
                   kind: "number"
                 },
@@ -221,7 +221,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "MerlinService.js",
-          line: 95
+          line: 93
         },
         kind: "named",
         name: "NuclideUri"
@@ -232,7 +232,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "MerlinService.js",
-          line: 96
+          line: 94
         },
         kind: "number"
       }
@@ -242,7 +242,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "MerlinService.js",
-          line: 97
+          line: 95
         },
         kind: "number"
       }
@@ -253,21 +253,21 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "MerlinService.js",
-          line: 98
+          line: 96
         },
         kind: "nullable",
         type: {
           location: {
             type: "source",
             fileName: "MerlinService.js",
-            line: 98
+            line: 96
           },
           kind: "array",
           type: {
             location: {
               type: "source",
               fileName: "MerlinService.js",
-              line: 98
+              line: 96
             },
             kind: "named",
             name: "MerlinType"
@@ -284,7 +284,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "MerlinService.js",
-          line: 104
+          line: 102
         },
         kind: "named",
         name: "NuclideUri"
@@ -295,7 +295,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "MerlinService.js",
-          line: 105
+          line: 103
         },
         kind: "number"
       }
@@ -305,7 +305,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "MerlinService.js",
-          line: 106
+          line: 104
         },
         kind: "number"
       }
@@ -315,7 +315,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "MerlinService.js",
-          line: 107
+          line: 105
         },
         kind: "string"
       }
@@ -326,7 +326,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "MerlinService.js",
-          line: 108
+          line: 106
         },
         kind: "any"
       });
@@ -340,7 +340,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "MerlinService.js",
-          line: 113
+          line: 111
         },
         kind: "named",
         name: "NuclideUri"
@@ -352,21 +352,21 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "MerlinService.js",
-          line: 113
+          line: 111
         },
         kind: "nullable",
         type: {
           location: {
             type: "source",
             fileName: "MerlinService.js",
-            line: 113
+            line: 111
           },
           kind: "array",
           type: {
             location: {
               type: "source",
               fileName: "MerlinService.js",
-              line: 113
+              line: 111
             },
             kind: "named",
             name: "MerlinError"
@@ -383,7 +383,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "MerlinService.js",
-          line: 119
+          line: 117
         },
         kind: "named",
         name: "NuclideUri"
@@ -395,21 +395,21 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "MerlinService.js",
-          line: 120
+          line: 118
         },
         kind: "nullable",
         type: {
           location: {
             type: "source",
             fileName: "MerlinService.js",
-            line: 120
+            line: 118
           },
           kind: "array",
           type: {
             location: {
               type: "source",
               fileName: "MerlinService.js",
-              line: 120
+              line: 118
             },
             kind: "named",
             name: "MerlinOutline"
@@ -426,7 +426,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "MerlinService.js",
-          line: 126
+          line: 124
         },
         kind: "named",
         name: "NuclideUri"
@@ -437,7 +437,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "MerlinService.js",
-          line: 127
+          line: 125
         },
         kind: "named",
         name: "atom$Point"
@@ -449,14 +449,14 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "MerlinService.js",
-          line: 128
+          line: 126
         },
         kind: "nullable",
         type: {
           location: {
             type: "source",
             fileName: "MerlinService.js",
-            line: 128
+            line: 126
           },
           kind: "named",
           name: "MerlinCases"
@@ -472,7 +472,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "MerlinService.js",
-          line: 146
+          line: 144
         },
         kind: "named",
         name: "NuclideUri"
@@ -483,7 +483,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "MerlinService.js",
-          line: 147
+          line: 145
         },
         kind: "named",
         name: "atom$Point"
@@ -495,14 +495,14 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "MerlinService.js",
-          line: 148
+          line: 146
         },
         kind: "nullable",
         type: {
           location: {
             type: "source",
             fileName: "MerlinService.js",
-            line: 148
+            line: 146
           },
           kind: "named",
           name: "MerlinOccurrences"
@@ -518,7 +518,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "MerlinService.js",
-          line: 160
+          line: 158
         },
         kind: "named",
         name: "NuclideUri"
@@ -529,7 +529,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "MerlinService.js",
-          line: 161
+          line: 159
         },
         kind: "mixed"
       }
@@ -540,7 +540,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "MerlinService.js",
-          line: 162
+          line: 160
         },
         kind: "any"
       });
@@ -1333,28 +1333,28 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "MerlinService.js",
-              line: 78
+              line: 77
             },
             kind: "nullable",
             type: {
               location: {
                 type: "source",
                 fileName: "MerlinService.js",
-                line: 78
+                line: 77
               },
               kind: "object",
               fields: [{
                 location: {
                   type: "source",
                   fileName: "MerlinService.js",
-                  line: 79
+                  line: 78
                 },
                 name: "file",
                 type: {
                   location: {
                     type: "source",
                     fileName: "MerlinService.js",
-                    line: 79
+                    line: 78
                   },
                   kind: "named",
                   name: "NuclideUri"
@@ -1364,28 +1364,28 @@ Object.defineProperty(module.exports, "defs", {
                 location: {
                   type: "source",
                   fileName: "MerlinService.js",
-                  line: 80
+                  line: 79
                 },
                 name: "pos",
                 type: {
                   location: {
                     type: "source",
                     fileName: "MerlinService.js",
-                    line: 80
+                    line: 79
                   },
                   kind: "object",
                   fields: [{
                     location: {
                       type: "source",
                       fileName: "MerlinService.js",
-                      line: 81
+                      line: 80
                     },
                     name: "line",
                     type: {
                       location: {
                         type: "source",
                         fileName: "MerlinService.js",
-                        line: 81
+                        line: 80
                       },
                       kind: "number"
                     },
@@ -1394,14 +1394,14 @@ Object.defineProperty(module.exports, "defs", {
                     location: {
                       type: "source",
                       fileName: "MerlinService.js",
-                      line: 82
+                      line: 81
                     },
                     name: "col",
                     type: {
                       location: {
                         type: "source",
                         fileName: "MerlinService.js",
-                        line: 82
+                        line: 81
                       },
                       kind: "number"
                     },
@@ -1421,13 +1421,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "MerlinService.js",
-        line: 94
+        line: 92
       },
       type: {
         location: {
           type: "source",
           fileName: "MerlinService.js",
-          line: 94
+          line: 92
         },
         kind: "function",
         argumentTypes: [{
@@ -1436,7 +1436,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "MerlinService.js",
-              line: 95
+              line: 93
             },
             kind: "named",
             name: "NuclideUri"
@@ -1447,7 +1447,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "MerlinService.js",
-              line: 96
+              line: 94
             },
             kind: "number"
           }
@@ -1457,7 +1457,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "MerlinService.js",
-              line: 97
+              line: 95
             },
             kind: "number"
           }
@@ -1466,28 +1466,28 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "MerlinService.js",
-            line: 98
+            line: 96
           },
           kind: "promise",
           type: {
             location: {
               type: "source",
               fileName: "MerlinService.js",
-              line: 98
+              line: 96
             },
             kind: "nullable",
             type: {
               location: {
                 type: "source",
                 fileName: "MerlinService.js",
-                line: 98
+                line: 96
               },
               kind: "array",
               type: {
                 location: {
                   type: "source",
                   fileName: "MerlinService.js",
-                  line: 98
+                  line: 96
                 },
                 kind: "named",
                 name: "MerlinType"
@@ -1503,13 +1503,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "MerlinService.js",
-        line: 103
+        line: 101
       },
       type: {
         location: {
           type: "source",
           fileName: "MerlinService.js",
-          line: 103
+          line: 101
         },
         kind: "function",
         argumentTypes: [{
@@ -1518,7 +1518,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "MerlinService.js",
-              line: 104
+              line: 102
             },
             kind: "named",
             name: "NuclideUri"
@@ -1529,7 +1529,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "MerlinService.js",
-              line: 105
+              line: 103
             },
             kind: "number"
           }
@@ -1539,7 +1539,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "MerlinService.js",
-              line: 106
+              line: 104
             },
             kind: "number"
           }
@@ -1549,7 +1549,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "MerlinService.js",
-              line: 107
+              line: 105
             },
             kind: "string"
           }
@@ -1558,14 +1558,14 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "MerlinService.js",
-            line: 108
+            line: 106
           },
           kind: "promise",
           type: {
             location: {
               type: "source",
               fileName: "MerlinService.js",
-              line: 108
+              line: 106
             },
             kind: "any"
           }
@@ -1578,13 +1578,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "MerlinService.js",
-        line: 113
+        line: 111
       },
       type: {
         location: {
           type: "source",
           fileName: "MerlinService.js",
-          line: 113
+          line: 111
         },
         kind: "function",
         argumentTypes: [{
@@ -1593,7 +1593,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "MerlinService.js",
-              line: 113
+              line: 111
             },
             kind: "named",
             name: "NuclideUri"
@@ -1603,28 +1603,28 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "MerlinService.js",
-            line: 113
+            line: 111
           },
           kind: "promise",
           type: {
             location: {
               type: "source",
               fileName: "MerlinService.js",
-              line: 113
+              line: 111
             },
             kind: "nullable",
             type: {
               location: {
                 type: "source",
                 fileName: "MerlinService.js",
-                line: 113
+                line: 111
               },
               kind: "array",
               type: {
                 location: {
                   type: "source",
                   fileName: "MerlinService.js",
-                  line: 113
+                  line: 111
                 },
                 kind: "named",
                 name: "MerlinError"
@@ -1640,13 +1640,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "MerlinService.js",
-        line: 118
+        line: 116
       },
       type: {
         location: {
           type: "source",
           fileName: "MerlinService.js",
-          line: 118
+          line: 116
         },
         kind: "function",
         argumentTypes: [{
@@ -1655,7 +1655,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "MerlinService.js",
-              line: 119
+              line: 117
             },
             kind: "named",
             name: "NuclideUri"
@@ -1665,28 +1665,28 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "MerlinService.js",
-            line: 120
+            line: 118
           },
           kind: "promise",
           type: {
             location: {
               type: "source",
               fileName: "MerlinService.js",
-              line: 120
+              line: 118
             },
             kind: "nullable",
             type: {
               location: {
                 type: "source",
                 fileName: "MerlinService.js",
-                line: 120
+                line: 118
               },
               kind: "array",
               type: {
                 location: {
                   type: "source",
                   fileName: "MerlinService.js",
-                  line: 120
+                  line: 118
                 },
                 kind: "named",
                 name: "MerlinOutline"
@@ -1702,13 +1702,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "MerlinService.js",
-        line: 125
+        line: 123
       },
       type: {
         location: {
           type: "source",
           fileName: "MerlinService.js",
-          line: 125
+          line: 123
         },
         kind: "function",
         argumentTypes: [{
@@ -1717,7 +1717,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "MerlinService.js",
-              line: 126
+              line: 124
             },
             kind: "named",
             name: "NuclideUri"
@@ -1728,7 +1728,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "MerlinService.js",
-              line: 127
+              line: 125
             },
             kind: "named",
             name: "atom$Point"
@@ -1738,21 +1738,21 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "MerlinService.js",
-            line: 128
+            line: 126
           },
           kind: "promise",
           type: {
             location: {
               type: "source",
               fileName: "MerlinService.js",
-              line: 128
+              line: 126
             },
             kind: "nullable",
             type: {
               location: {
                 type: "source",
                 fileName: "MerlinService.js",
-                line: 128
+                line: 126
               },
               kind: "named",
               name: "MerlinCases"
@@ -1767,13 +1767,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "MerlinService.js",
-        line: 145
+        line: 143
       },
       type: {
         location: {
           type: "source",
           fileName: "MerlinService.js",
-          line: 145
+          line: 143
         },
         kind: "function",
         argumentTypes: [{
@@ -1782,7 +1782,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "MerlinService.js",
-              line: 146
+              line: 144
             },
             kind: "named",
             name: "NuclideUri"
@@ -1793,7 +1793,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "MerlinService.js",
-              line: 147
+              line: 145
             },
             kind: "named",
             name: "atom$Point"
@@ -1803,21 +1803,21 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "MerlinService.js",
-            line: 148
+            line: 146
           },
           kind: "promise",
           type: {
             location: {
               type: "source",
               fileName: "MerlinService.js",
-              line: 148
+              line: 146
             },
             kind: "nullable",
             type: {
               location: {
                 type: "source",
                 fileName: "MerlinService.js",
-                line: 148
+                line: 146
               },
               kind: "named",
               name: "MerlinOccurrences"
@@ -1832,13 +1832,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "MerlinService.js",
-        line: 159
+        line: 157
       },
       type: {
         location: {
           type: "source",
           fileName: "MerlinService.js",
-          line: 159
+          line: 157
         },
         kind: "function",
         argumentTypes: [{
@@ -1847,7 +1847,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "MerlinService.js",
-              line: 160
+              line: 158
             },
             kind: "named",
             name: "NuclideUri"
@@ -1858,7 +1858,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "MerlinService.js",
-              line: 161
+              line: 159
             },
             kind: "mixed"
           }
@@ -1867,14 +1867,14 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "MerlinService.js",
-            line: 162
+            line: 160
           },
           kind: "promise",
           type: {
             location: {
               type: "source",
               fileName: "MerlinService.js",
-              line: 162
+              line: 160
             },
             kind: "any"
           }

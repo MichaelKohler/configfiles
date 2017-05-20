@@ -9,7 +9,7 @@ var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
 
 let registerSdbPath = exports.registerSdbPath = (() => {
   var _ref = (0, _asyncToGenerator.default)(function* (id, path, priority = -1) {
-    (0, (_DebugBridgePathStore || _load_DebugBridgePathStore()).getStore)('sdb').registerPath(id, { path, priority });
+    (0, (_AdbSdbPathStore || _load_AdbSdbPathStore()).getStore)('sdb').registerPath(id, { path, priority });
   });
 
   return function registerSdbPath(_x, _x2) {
@@ -28,7 +28,7 @@ let registerSdbPath = exports.registerSdbPath = (() => {
 
 let getSdb = (() => {
   var _ref2 = (0, _asyncToGenerator.default)(function* () {
-    return new (_Sdb || _load_Sdb()).Sdb((yield (0, (_DebugBridgePathStore || _load_DebugBridgePathStore()).pathForDebugBridge)('sdb')));
+    return new (_Sdb || _load_Sdb()).Sdb((yield (0, (_AdbSdbPathStore || _load_AdbSdbPathStore()).pathForDebugBridge)('sdb')));
   });
 
   return function getSdb() {
@@ -48,7 +48,11 @@ let getDeviceInfo = exports.getDeviceInfo = (() => {
 
 let startServer = exports.startServer = (() => {
   var _ref4 = (0, _asyncToGenerator.default)(function* () {
-    return (yield getSdb()).startServer();
+    try {
+      return (yield getSdb()).startServer();
+    } catch (e) {
+      return false;
+    }
   });
 
   return function startServer() {
@@ -99,10 +103,10 @@ let launchApp = exports.launchApp = (() => {
 exports.installPackage = installPackage;
 exports.uninstallPackage = uninstallPackage;
 
-var _DebugBridgePathStore;
+var _AdbSdbPathStore;
 
-function _load_DebugBridgePathStore() {
-  return _DebugBridgePathStore = require('./DebugBridgePathStore');
+function _load_AdbSdbPathStore() {
+  return _AdbSdbPathStore = require('./AdbSdbPathStore');
 }
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');

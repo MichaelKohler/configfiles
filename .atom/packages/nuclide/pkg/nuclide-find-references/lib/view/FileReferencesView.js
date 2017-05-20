@@ -15,19 +15,19 @@ function _load_classnames() {
 var _nuclideUri;
 
 function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../../../commons-node/nuclideUri'));
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
 var _goToLocation;
 
 function _load_goToLocation() {
-  return _goToLocation = require('../../../commons-atom/go-to-location');
+  return _goToLocation = require('nuclide-commons-atom/go-to-location');
 }
 
 var _CodeSnippet;
 
 function _load_CodeSnippet() {
-  return _CodeSnippet = require('../../../nuclide-ui/CodeSnippet');
+  return _CodeSnippet = require('nuclide-commons-ui/CodeSnippet');
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

@@ -5,6 +5,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.offsetToPoint = offsetToPoint;
 exports.locToRange = locToRange;
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ * @format
+ */
+
 class Range {
   constructor(start, end) {
     this.start = start;
@@ -18,17 +29,7 @@ class Range {
   }
 }
 
-exports.Range = Range; /**
-                        * Copyright (c) 2015-present, Facebook, Inc.
-                        * All rights reserved.
-                        *
-                        * This source code is licensed under the license found in the LICENSE file in
-                        * the root directory of this source tree.
-                        *
-                        * 
-                        * @format
-                        */
-
+exports.Range = Range;
 class Point {
   constructor(row, column) {
     this.row = row;
@@ -54,6 +55,10 @@ function offsetToPoint(text, loc) {
 }
 
 function locToRange(text, loc) {
+  if (!loc) {
+    throw new Error('Location expected.');
+  }
+
   const start = offsetToPoint(text, loc.start);
   const end = offsetToPoint(text, loc.end);
   return new Range(start, end);

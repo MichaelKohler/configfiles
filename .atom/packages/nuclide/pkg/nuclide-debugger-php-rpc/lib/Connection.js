@@ -23,18 +23,16 @@ function _load_eventKit() {
   return _eventKit = require('event-kit');
 }
 
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
-
-let connectionCount = 1;
+let connectionCount = 1; /**
+                          * Copyright (c) 2015-present, Facebook, Inc.
+                          * All rights reserved.
+                          *
+                          * This source code is licensed under the license found in the LICENSE file in
+                          * the root directory of this source tree.
+                          *
+                          * 
+                          * @format
+                          */
 
 const ASYNC_BREAK = exports.ASYNC_BREAK = 'async_break';
 const BREAKPOINT = exports.BREAKPOINT = 'breakpoint';

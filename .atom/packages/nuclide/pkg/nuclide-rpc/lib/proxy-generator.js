@@ -30,6 +30,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
  * the root directory of this source tree.
  *
  * 
+ * @format
  */
 
 const thenIdent = (_babelTypes || _load_babelTypes()).identifier('then');
@@ -342,11 +343,9 @@ function objectToLiteral(obj) {
     // [...]
     return (_babelTypes || _load_babelTypes()).arrayExpression(obj.map(elem => objectToLiteral(elem)));
   } else if (obj instanceof Map) {
-    return (_babelTypes || _load_babelTypes()).newExpression((_babelTypes || _load_babelTypes()).identifier('Map'), obj.size
-    // new Map([...])
-    ? [objectToLiteral(Array.from(obj.entries()))]
-    // new Map()
-    : []);
+    return (_babelTypes || _load_babelTypes()).newExpression((_babelTypes || _load_babelTypes()).identifier('Map'), obj.size ? // new Map([...])
+    [objectToLiteral(Array.from(obj.entries()))] : // new Map()
+    []);
   } else if (typeof obj === 'object') {
     // {a: 1, b: 2}
     return (_babelTypes || _load_babelTypes()).objectExpression(Object.keys(obj).map(key => (_babelTypes || _load_babelTypes()).objectProperty((_babelTypes || _load_babelTypes()).isValidIdentifier(key) ? (_babelTypes || _load_babelTypes()).identifier(key) : (_babelTypes || _load_babelTypes()).stringLiteral(key), objectToLiteral(obj[key]))));

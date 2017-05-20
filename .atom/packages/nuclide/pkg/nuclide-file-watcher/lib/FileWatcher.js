@@ -17,7 +17,7 @@ function _load_nuclideAnalytics() {
 var _nuclideUri;
 
 function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../../commons-node/nuclideUri'));
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
 var _nuclideRemoteConnection;
@@ -101,8 +101,7 @@ class FileWatcher {
 
       // Load the file contents locally or remotely.
       const service = (0, (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).getFileSystemServiceByNuclideUri)(filePath);
-      const localFilePath = (_nuclideUri || _load_nuclideUri()).default.getPath(filePath);
-      const contents = (yield service.readFile(localFilePath)).toString(encoding);
+      const contents = (yield service.readFile(filePath)).toString(encoding);
 
       // Open a right split pane to compare the contents.
       // TODO: We can use the diff-view here when ready.

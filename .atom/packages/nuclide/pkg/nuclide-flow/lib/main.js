@@ -42,11 +42,12 @@ let connectionToFlowService = (() => {
   var _ref2 = (0, _asyncToGenerator.default)(function* (connection) {
     const flowService = (0, (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).getServiceByConnection)('FlowService', connection);
     const fileNotifier = yield (0, (_nuclideOpenFiles || _load_nuclideOpenFiles()).getNotifierByConnection)(connection);
+    const host = yield (0, (_nuclideLanguageService || _load_nuclideLanguageService()).getHostServices)();
     const config = {
       functionSnippetShouldIncludeArguments: Boolean((_featureConfig || _load_featureConfig()).default.get('nuclide-flow.functionSnippetShouldIncludeArguments')),
       stopFlowOnExit: Boolean((_featureConfig || _load_featureConfig()).default.get('nuclide-flow.stopFlowOnExit'))
     };
-    const languageService = yield flowService.initialize(fileNotifier, config);
+    const languageService = yield flowService.initialize(fileNotifier, host, config);
 
     return languageService;
   });
@@ -136,7 +137,7 @@ let getLanguageServiceConfig = (() => {
       evaluationExpression: {
         version: '0.0.0',
         analyticsEventName: 'flow.evaluationExpression',
-        regexp: (_nuclideFlowCommon || _load_nuclideFlowCommon()).JAVASCRIPT_IDENTIFIER_REGEX
+        matcher: { kind: 'default' }
       }
     };
   });
@@ -174,7 +175,7 @@ var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
 var _featureConfig;
 
 function _load_featureConfig() {
-  return _featureConfig = _interopRequireDefault(require('../../commons-atom/featureConfig'));
+  return _featureConfig = _interopRequireDefault(require('nuclide-commons-atom/feature-config'));
 }
 
 var _registerGrammar;
@@ -222,13 +223,13 @@ function _load_nuclideRemoteConnection() {
 var _UniversalDisposable;
 
 function _load_UniversalDisposable() {
-  return _UniversalDisposable = _interopRequireDefault(require('../../commons-node/UniversalDisposable'));
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
 var _nuclideUri;
 
 function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../../commons-node/nuclideUri'));
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
 var _FlowServiceWatcher;

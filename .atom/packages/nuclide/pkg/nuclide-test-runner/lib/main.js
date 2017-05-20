@@ -5,7 +5,7 @@ var _atom = require('atom');
 var _createPackage;
 
 function _load_createPackage() {
-  return _createPackage = _interopRequireDefault(require('../../commons-atom/createPackage'));
+  return _createPackage = _interopRequireDefault(require('nuclide-commons-atom/createPackage'));
 }
 
 var _TestRunnerController;
@@ -30,6 +30,7 @@ const logger = (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)(); /**
                                                                               * the root directory of this source tree.
                                                                               *
                                                                               * 
+                                                                              * @format
                                                                               */
 
 const FILE_TREE_CONTEXT_MENU_PRIORITY = 200;
@@ -84,8 +85,10 @@ class Activation {
   }
 
   addItemsToFileTreeContextMenu(contextMenu) {
-    const fileItem = this._createRunTestsContextMenuItem( /* isForFile */true, contextMenu);
-    const directoryItem = this._createRunTestsContextMenuItem( /* isForFile */false, contextMenu);
+    const fileItem = this._createRunTestsContextMenuItem(
+    /* isForFile */true, contextMenu);
+    const directoryItem = this._createRunTestsContextMenuItem(
+    /* isForFile */false, contextMenu);
 
     // Create a separator menu item that displays if either the file or directory item displays.
 

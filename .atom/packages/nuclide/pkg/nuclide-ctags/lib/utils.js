@@ -26,7 +26,7 @@ let getLineNumberForTag = exports.getLineNumberForTag = (() => {
       try {
         // Search for the pattern in the file.
         const service = (0, (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).getFileSystemServiceByNuclideUri)(tag.file);
-        const contents = yield service.readFile((_nuclideUri || _load_nuclideUri()).default.getPath(tag.file));
+        const contents = yield service.readFile(tag.file);
         const lines = contents.toString('utf8').split('\n');
         lineNumber = 0;
         for (let i = 0; i < lines.length; i++) {
@@ -60,26 +60,9 @@ function _load_nuclideRemoteConnection() {
   return _nuclideRemoteConnection = require('../../nuclide-remote-connection');
 }
 
-var _nuclideUri;
-
-function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../../commons-node/nuclideUri'));
-}
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // Taken from http://ctags.sourceforge.net/FORMAT
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
-
 const CTAGS_KIND_NAMES = exports.CTAGS_KIND_NAMES = {
   c: 'class',
   d: 'define',
@@ -93,7 +76,16 @@ const CTAGS_KIND_NAMES = exports.CTAGS_KIND_NAMES = {
   t: 'typedef',
   u: 'union',
   v: 'var'
-};
+}; /**
+    * Copyright (c) 2015-present, Facebook, Inc.
+    * All rights reserved.
+    *
+    * This source code is licensed under the license found in the LICENSE file in
+    * the root directory of this source tree.
+    *
+    * 
+    * @format
+    */
 
 const CTAGS_KIND_ICONS = exports.CTAGS_KIND_ICONS = {
   c: 'icon-code',

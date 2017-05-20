@@ -105,15 +105,14 @@ let confirmAndDeletePath = exports.confirmAndDeletePath = (() => {
 
 let deleteFile = (() => {
   var _ref8 = (0, _asyncToGenerator.default)(function* (nuclideFilePath) {
-    const filePath = (_nuclideUri || _load_nuclideUri()).default.getPath(nuclideFilePath);
     const fsService = (0, (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).getFileSystemServiceByNuclideUri)(nuclideFilePath);
     try {
-      yield fsService.unlink(filePath);
+      yield fsService.unlink(nuclideFilePath);
       const repository = repositoryForPath(nuclideFilePath);
       if (repository == null || repository.getType() !== 'hg') {
         return false;
       }
-      yield repository.remove([filePath], true);
+      yield repository.remove([nuclideFilePath], true);
     } catch (error) {
       atom.notifications.addError('Failed to delete file', {
         detail: error
@@ -144,7 +143,7 @@ exports.getMultiRootFileChanges = getMultiRootFileChanges;
 var _collection;
 
 function _load_collection() {
-  return _collection = require('../../commons-node/collection');
+  return _collection = require('nuclide-commons/collection');
 }
 
 var _process;
@@ -156,7 +155,7 @@ function _load_process() {
 var _observable;
 
 function _load_observable() {
-  return _observable = require('../../commons-node/observable');
+  return _observable = require('nuclide-commons/observable');
 }
 
 var _atom = require('atom');
@@ -176,7 +175,7 @@ function _load_nuclideHgRpc() {
 var _nuclideUri;
 
 function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../../commons-node/nuclideUri'));
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
@@ -184,7 +183,7 @@ var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
 var _event;
 
 function _load_event() {
-  return _event = require('../../commons-node/event');
+  return _event = require('nuclide-commons/event');
 }
 
 var _nuclideAnalytics;
@@ -275,9 +274,8 @@ function getDirtyFileChanges(repository) {
   return dirtyFileChanges;
 }
 
-const UPDATE_STATUS_DEBOUNCE_MS = 50;
 function observeStatusChanges(repository) {
-  return (0, (_event || _load_event()).observableFromSubscribeFunction)(repository.onDidChangeStatuses.bind(repository)).debounceTime(UPDATE_STATUS_DEBOUNCE_MS).startWith(null).map(() => getDirtyFileChanges(repository));
+  return (0, (_event || _load_event()).observableFromSubscribeFunction)(repository.onDidChangeStatuses.bind(repository)).startWith(null).map(() => getDirtyFileChanges(repository));
 }
 
 function forgetPath(nodePath) {

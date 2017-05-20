@@ -16,7 +16,7 @@ var _atom = require('atom');
 var _projects;
 
 function _load_projects() {
-  return _projects = require('../../commons-atom/projects');
+  return _projects = require('nuclide-commons-atom/projects');
 }
 
 class Activation {

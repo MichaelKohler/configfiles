@@ -45,30 +45,34 @@ function _load_MeasuredComponent() {
 var _debounce;
 
 function _load_debounce() {
-  return _debounce = _interopRequireDefault(require('../../../commons-node/debounce'));
+  return _debounce = _interopRequireDefault(require('nuclide-commons/debounce'));
 }
 
 var _observable;
 
 function _load_observable() {
-  return _observable = require('../../../commons-node/observable');
+  return _observable = require('nuclide-commons/observable');
+}
+
+var _string;
+
+function _load_string() {
+  return _string = require('nuclide-commons/string');
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
+const ONE_DAY = 1000 * 60 * 60 * 24; /**
+                                      * Copyright (c) 2015-present, Facebook, Inc.
+                                      * All rights reserved.
+                                      *
+                                      * This source code is licensed under the license found in the LICENSE file in
+                                      * the root directory of this source tree.
+                                      *
+                                      * 
+                                      * @format
+                                      */
 
-const URL_REGEX = /(https?:\/\/[\S]+)/i;
-const ONE_DAY = 1000 * 60 * 60 * 24;
 class RecordView extends _react.default.Component {
 
   constructor(props) {
@@ -262,7 +266,7 @@ function getIconName(record) {
 }
 
 function parseText(text) {
-  return text.split(URL_REGEX).map((chunk, i) => {
+  return text.split((_string || _load_string()).URL_REGEX).map((chunk, i) => {
     // Since we're splitting on the URL regex, every other piece will be a URL.
     const isURL = i % 2 !== 0;
     return isURL ? _react.default.createElement(

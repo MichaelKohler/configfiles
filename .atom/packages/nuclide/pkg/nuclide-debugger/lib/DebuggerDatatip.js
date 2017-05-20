@@ -55,7 +55,7 @@ let debuggerDatatip = exports.debuggerDatatip = (() => {
 var _bindObservableAsProps;
 
 function _load_bindObservableAsProps() {
-  return _bindObservableAsProps = require('../../nuclide-ui/bindObservableAsProps');
+  return _bindObservableAsProps = require('nuclide-commons-ui/bindObservableAsProps');
 }
 
 var _EvaluationExpressionProvider;

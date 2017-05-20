@@ -11,6 +11,8 @@ exports.projectRoot = projectRoot;
 exports.visible = visible;
 exports.activeTaskRunner = activeTaskRunner;
 exports.runningTask = runningTask;
+exports.consoleService = consoleService;
+exports.consolesForTaskRunners = consolesForTaskRunners;
 
 var _Actions;
 
@@ -20,6 +22,17 @@ function _load_Actions() {
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ * @format
+ */
+
 function taskRunnersReady(state = false, action) {
   switch (action.type) {
     case (_Actions || _load_Actions()).DID_ACTIVATE_INITIAL_PACKAGES:
@@ -27,16 +40,7 @@ function taskRunnersReady(state = false, action) {
     default:
       return state;
   }
-} /**
-   * Copyright (c) 2015-present, Facebook, Inc.
-   * All rights reserved.
-   *
-   * This source code is licensed under the license found in the LICENSE file in
-   * the root directory of this source tree.
-   *
-   * 
-   * @format
-   */
+}
 
 function isUpdatingTaskRunners(state = true, action) {
   switch (action.type) {
@@ -120,6 +124,40 @@ function runningTask(state = null, action) {
       return action.payload.taskStatus;
     case (_Actions || _load_Actions()).TASK_STOPPED:
       return null;
+    default:
+      return state;
+  }
+}
+
+function consoleService(state = null, action) {
+  switch (action.type) {
+    case (_Actions || _load_Actions()).SET_CONSOLE_SERVICE:
+      return action.payload.service;
+    default:
+      return state;
+  }
+}
+
+function consolesForTaskRunners(state = new Map(), action) {
+  switch (action.type) {
+    case (_Actions || _load_Actions()).SET_CONSOLES_FOR_TASK_RUNNERS:
+      state.forEach((value, key) => {
+        value.dispose();
+      });
+      return action.payload.consolesForTaskRunners;
+    case (_Actions || _load_Actions()).SET_CONSOLE_SERVICE:
+      return new Map();
+    case (_Actions || _load_Actions()).ADD_CONSOLE_FOR_TASK_RUNNER:
+      const { consoleApi, taskRunner } = action.payload;
+      return new Map(state.entries()).set(taskRunner, consoleApi);
+    case (_Actions || _load_Actions()).REMOVE_CONSOLE_FOR_TASK_RUNNER:
+      const previous = state.get(action.payload.taskRunner);
+      const newState = new Map(state.entries());
+      if (previous) {
+        previous.dispose();
+        newState.delete(action.payload.taskRunner);
+      }
+      return newState;
     default:
       return state;
   }

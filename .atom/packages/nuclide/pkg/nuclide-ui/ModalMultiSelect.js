@@ -8,13 +8,13 @@ exports.ModalMultiSelect = undefined;
 var _Button;
 
 function _load_Button() {
-  return _Button = require('./Button');
+  return _Button = require('nuclide-commons-ui/Button');
 }
 
 var _ButtonGroup;
 
 function _load_ButtonGroup() {
-  return _ButtonGroup = require('./ButtonGroup');
+  return _ButtonGroup = require('nuclide-commons-ui/ButtonGroup');
 }
 
 var _Modal;

@@ -37,7 +37,7 @@ function parseFlake8Output(src, output) {
     results.push({
       file: src,
       line: parseInt(line, 10) - 1 || 0,
-      column: parseInt(column, 10) || 0,
+      column: parseInt(column, 10) - 1 || 0,
       code,
       type: classifyCode(code),
       message

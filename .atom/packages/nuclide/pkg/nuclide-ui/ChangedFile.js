@@ -7,7 +7,7 @@ Object.defineProperty(exports, "__esModule", {
 var _addTooltip;
 
 function _load_addTooltip() {
-  return _addTooltip = _interopRequireDefault(require('./add-tooltip'));
+  return _addTooltip = _interopRequireDefault(require('nuclide-commons-ui/addTooltip'));
 }
 
 var _classnames;
@@ -19,7 +19,7 @@ function _load_classnames() {
 var _projects;
 
 function _load_projects() {
-  return _projects = require('../commons-atom/projects');
+  return _projects = require('nuclide-commons-atom/projects');
 }
 
 var _nuclideVcsBase;
@@ -31,7 +31,7 @@ function _load_nuclideVcsBase() {
 var _nuclideUri;
 
 function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../commons-node/nuclideUri'));
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
 var _react = _interopRequireDefault(require('react'));
@@ -39,7 +39,7 @@ var _react = _interopRequireDefault(require('react'));
 var _Icon;
 
 function _load_Icon() {
-  return _Icon = require('./Icon');
+  return _Icon = require('nuclide-commons-ui/Icon');
 }
 
 var _PathWithFileIcon;
@@ -58,6 +58,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * the root directory of this source tree.
  *
  * 
+ * @format
  */
 
 const ANALYTICS_SOURCE_KEY = 'inline';
@@ -65,12 +66,7 @@ const LF = '\u000A';
 class ChangedFile extends _react.default.Component {
 
   _getFileClassname() {
-    const {
-      commandPrefix,
-      fileStatus,
-      isHgPath,
-      isSelected
-    } = this.props;
+    const { commandPrefix, fileStatus, isHgPath, isSelected } = this.props;
     return (0, (_classnames || _load_classnames()).default)('nuclide-changed-file', 'list-item', {
       selected: isSelected,
       [`${commandPrefix}-file-entry`]: isHgPath
@@ -94,54 +90,49 @@ class ChangedFile extends _react.default.Component {
   }
 
   _renderForgetAction(filePath) {
-    return this._renderAction('forget', /* key */
-    'circle-slash', /* icon */
-    'Forget (stop tracking file in version control)', /* title */
-    this.props.onForgetFile.bind(this, filePath, ANALYTICS_SOURCE_KEY));
+    return this._renderAction('forget' /* key */
+    , 'circle-slash' /* icon */
+    , 'Forget (stop tracking file in version control)' /* title */
+    , this.props.onForgetFile.bind(this, filePath, ANALYTICS_SOURCE_KEY));
   }
 
   _renderDeleteAction(filePath) {
-    return this._renderAction('delete', /* key */
-    'trashcan', /* icon */
-    'Delete file from file system', /* title */
-    this.props.onDeleteFile.bind(this, filePath, ANALYTICS_SOURCE_KEY));
+    return this._renderAction('delete' /* key */
+    , 'trashcan' /* icon */
+    , 'Delete file from file system' /* title */
+    , this.props.onDeleteFile.bind(this, filePath, ANALYTICS_SOURCE_KEY));
   }
 
   _renderMarkDeletedAction(filePath) {
-    return this._renderAction('mark-deleted', /* key */
-    'circle-slash', /* icon */
-    'Mark file as deleted (remove from version control)', /* title */
-    this.props.onForgetFile.bind(this, filePath, ANALYTICS_SOURCE_KEY));
+    return this._renderAction('mark-deleted' /* key */
+    , 'circle-slash' /* icon */
+    , 'Mark file as deleted (remove from version control)' /* title */
+    , this.props.onForgetFile.bind(this, filePath, ANALYTICS_SOURCE_KEY));
   }
 
   _renderRestoreAction(filePath) {
-    return this._renderAction('restore', /* key */
-    'playback-rewind', /* icon */
-    'Restore file (revert to last known version)', /* title */
-    this.props.onRevertFile.bind(this, filePath, ANALYTICS_SOURCE_KEY));
+    return this._renderAction('restore' /* key */
+    , 'playback-rewind' /* icon */
+    , 'Restore file (revert to last known version)' /* title */
+    , this.props.onRevertFile.bind(this, filePath, ANALYTICS_SOURCE_KEY));
   }
 
   _renderAddAction(filePath) {
-    return this._renderAction('add', /* key */
-    'plus', /* icon */
-    'Add file to version control', /* title */
-    this.props.onAddFile.bind(this, filePath, ANALYTICS_SOURCE_KEY));
+    return this._renderAction('add' /* key */
+    , 'plus' /* icon */
+    , 'Add file to version control' /* title */
+    , this.props.onAddFile.bind(this, filePath, ANALYTICS_SOURCE_KEY));
   }
 
   _renderOpenInDiffViewAction(filePath) {
-    return this._renderAction('diff', /* key */
-    'diff', /* icon */
-    'Open file in Diff View', /* title */
-    this.props.onOpenFileInDiffView.bind(this, filePath, ANALYTICS_SOURCE_KEY));
+    return this._renderAction('diff' /* key */
+    , 'diff' /* icon */
+    , 'Open file in Diff View' /* title */
+    , this.props.onOpenFileInDiffView.bind(this, filePath, ANALYTICS_SOURCE_KEY));
   }
 
   render() {
-    const {
-      enableInlineActions,
-      isHgPath,
-      filePath,
-      fileStatus
-    } = this.props;
+    const { enableInlineActions, isHgPath, filePath, fileStatus } = this.props;
     const baseName = (_nuclideUri || _load_nuclideUri()).default.basename(filePath);
     let actions;
     if (enableInlineActions && isHgPath) {

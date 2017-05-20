@@ -12,7 +12,7 @@ var _net = _interopRequireDefault(require('net'));
 var _promise;
 
 function _load_promise() {
-  return _promise = require('../../commons-node/promise');
+  return _promise = require('nuclide-commons/promise');
 }
 
 var _RpcConnection;

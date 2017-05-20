@@ -13,7 +13,7 @@ function _load_nuclideVcsBase() {
 var _addTooltip;
 
 function _load_addTooltip() {
-  return _addTooltip = _interopRequireDefault(require('./add-tooltip'));
+  return _addTooltip = _interopRequireDefault(require('nuclide-commons-ui/addTooltip'));
 }
 
 var _classnames;
@@ -25,7 +25,7 @@ function _load_classnames() {
 var _nuclideUri;
 
 function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../commons-node/nuclideUri'));
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
 var _react = _interopRequireDefault(require('react'));
@@ -46,6 +46,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * the root directory of this source tree.
  *
  * 
+ * @format
  */
 
 function isHgPath(path) {
@@ -99,7 +100,9 @@ class ChangedFilesList extends _react.default.Component {
         delay: 300,
         placement: 'bottom'
       }),
-      onClick: () => this.setState({ visiblePagesCount: this.state.visiblePagesCount + 1 })
+      onClick: () => this.setState({
+        visiblePagesCount: this.state.visiblePagesCount + 1
+      })
     }) : null;
 
     const isHgRoot = isHgPath(rootPath);

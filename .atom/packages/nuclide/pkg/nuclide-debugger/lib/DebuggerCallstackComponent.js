@@ -10,13 +10,13 @@ var _react = _interopRequireDefault(require('react'));
 var _nuclideUri;
 
 function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../../commons-node/nuclideUri'));
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
 var _UniversalDisposable;
 
 function _load_UniversalDisposable() {
-  return _UniversalDisposable = _interopRequireDefault(require('../../commons-node/UniversalDisposable'));
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
 var _Bridge;
@@ -28,7 +28,7 @@ function _load_Bridge() {
 var _Table;
 
 function _load_Table() {
-  return _Table = require('../../nuclide-ui/Table');
+  return _Table = require('nuclide-commons-ui/Table');
 }
 
 var _classnames;
@@ -40,7 +40,7 @@ function _load_classnames() {
 var _addTooltip;
 
 function _load_addTooltip() {
-  return _addTooltip = _interopRequireDefault(require('../../nuclide-ui/add-tooltip'));
+  return _addTooltip = _interopRequireDefault(require('nuclide-commons-ui/addTooltip'));
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

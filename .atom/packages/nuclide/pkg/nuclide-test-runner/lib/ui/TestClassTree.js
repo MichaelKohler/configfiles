@@ -9,7 +9,7 @@ var _react = _interopRequireDefault(require('react'));
 var _PanelComponentScroller;
 
 function _load_PanelComponentScroller() {
-  return _PanelComponentScroller = require('../../../nuclide-ui/PanelComponentScroller');
+  return _PanelComponentScroller = require('nuclide-commons-ui/PanelComponentScroller');
 }
 
 var _TestClassTreeNode;

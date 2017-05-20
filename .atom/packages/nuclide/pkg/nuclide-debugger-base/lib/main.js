@@ -87,6 +87,19 @@ Object.defineProperty(exports, 'LaunchAttachActionsBase', {
   }
 });
 
+var _evaluationExpression;
+
+function _load_evaluationExpression() {
+  return _evaluationExpression = require('./evaluationExpression');
+}
+
+Object.defineProperty(exports, 'getDefaultEvaluationExpression', {
+  enumerable: true,
+  get: function () {
+    return (_evaluationExpression || _load_evaluationExpression()).getDefaultEvaluationExpression;
+  }
+});
+
 var _AtomServiceContainer;
 
 function _load_AtomServiceContainer() {

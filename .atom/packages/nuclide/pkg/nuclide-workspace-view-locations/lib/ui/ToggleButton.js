@@ -8,7 +8,7 @@ exports.ToggleButton = undefined;
 var _Icon;
 
 function _load_Icon() {
-  return _Icon = require('../../../nuclide-ui/Icon');
+  return _Icon = require('nuclide-commons-ui/Icon');
 }
 
 var _classnames;

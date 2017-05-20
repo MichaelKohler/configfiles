@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 exports.activate = activate;
 exports.deactivate = deactivate;
 exports.consumeTaskRunnerServiceApi = consumeTaskRunnerServiceApi;
-exports.consumeOutputService = consumeOutputService;
 exports.provideObservableDiagnosticUpdates = provideObservableDiagnosticUpdates;
 exports.serialize = serialize;
 exports.getHyperclickProvider = getHyperclickProvider;
@@ -39,10 +38,10 @@ function _load_nuclideAnalytics() {
   return _nuclideAnalytics = require('../../nuclide-analytics');
 }
 
-var _BuckBuildSystem;
+var _BuckTaskRunner;
 
-function _load_BuckBuildSystem() {
-  return _BuckBuildSystem = require('./BuckBuildSystem');
+function _load_BuckTaskRunner() {
+  return _BuckTaskRunner = require('./BuckTaskRunner');
 }
 
 var _PlatformService;
@@ -65,7 +64,7 @@ const OPEN_NEAREST_BUILD_FILE_COMMAND = 'nuclide-buck:open-nearest-build-file'; 
                                                                                  */
 
 let disposables = null;
-let buildSystem = null;
+let taskRunner = null;
 let initialState = null;
 
 function activate(rawState) {
@@ -75,7 +74,7 @@ function activate(rawState) {
 
   initialState = rawState;
   disposables = new _atom.CompositeDisposable(new _atom.Disposable(() => {
-    buildSystem = null;
+    taskRunner = null;
   }), new _atom.Disposable(() => {
     initialState = null;
   }), atom.commands.add('atom-workspace', OPEN_NEAREST_BUILD_FILE_COMMAND, event => {
@@ -103,39 +102,28 @@ function consumeTaskRunnerServiceApi(api) {
     throw new Error('Invariant violation: "disposables != null"');
   }
 
-  disposables.add(api.register(getBuildSystem()));
+  disposables.add(api.register(getTaskRunner()));
 }
 
-function getBuildSystem() {
-  if (buildSystem == null) {
+function getTaskRunner() {
+  if (taskRunner == null) {
     if (!(disposables != null)) {
       throw new Error('Invariant violation: "disposables != null"');
     }
 
-    buildSystem = new (_BuckBuildSystem || _load_BuckBuildSystem()).BuckBuildSystem(initialState);
-    disposables.add(buildSystem);
+    taskRunner = new (_BuckTaskRunner || _load_BuckTaskRunner()).BuckTaskRunner(initialState);
+    disposables.add(taskRunner);
   }
-  return buildSystem;
-}
-
-function consumeOutputService(service) {
-  if (!(disposables != null)) {
-    throw new Error('Invariant violation: "disposables != null"');
-  }
-
-  disposables.add(service.registerOutputProvider({
-    messages: getBuildSystem().getOutputMessages(),
-    id: 'Buck'
-  }));
+  return taskRunner;
 }
 
 function provideObservableDiagnosticUpdates() {
-  return getBuildSystem().getDiagnosticProvider();
+  return getTaskRunner().getBuildSystem().getDiagnosticProvider();
 }
 
 function serialize() {
-  if (buildSystem != null) {
-    return buildSystem.serialize();
+  if (taskRunner != null) {
+    return taskRunner.serialize();
   }
 }
 
@@ -150,11 +138,9 @@ function getHyperclickProvider() {
 }
 
 function provideBuckBuilder() {
-  return {
-    build: options => getBuildSystem().buildArtifact(options)
-  };
+  return getTaskRunner().getBuildSystem();
 }
 
 function providePlatformService() {
-  return getBuildSystem().getPlatformService();
+  return getTaskRunner().getPlatformService();
 }

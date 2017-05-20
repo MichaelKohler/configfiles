@@ -12,7 +12,7 @@ var _atom = require('atom');
 var _UniversalDisposable;
 
 function _load_UniversalDisposable() {
-  return _UniversalDisposable = _interopRequireDefault(require('../../commons-node/UniversalDisposable'));
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
 var _ChromeMessageRemoting;
@@ -24,7 +24,7 @@ function _load_ChromeMessageRemoting() {
 var _nuclideUri;
 
 function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../../commons-node/nuclideUri'));
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
 var _WebSocketServer;
@@ -36,7 +36,7 @@ function _load_WebSocketServer() {
 var _string;
 
 function _load_string() {
-  return _string = require('../../commons-node/string');
+  return _string = require('nuclide-commons/string');
 }
 
 var _nuclideLogging;
@@ -59,6 +59,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  */
 
 const SESSION_END_EVENT = 'session-end-event';
+const RECEIVED_MESSAGE_EVENT = 'received-message-event';
 
 class DebuggerInstanceBase {
 
@@ -148,6 +149,10 @@ class DebuggerInstance extends DebuggerInstanceBase {
   }
 
   _handleWebSocketServerConnection(webSocket) {
+    if (webSocket == null) {
+      // This means there was an error, which was already handled by _handleWebSocketServerError
+      return;
+    }
     if (this._chromeWebSocket) {
       this.getLogger().log('Already connected to Chrome WebSocket. Discarding new connection.');
       webSocket.close();
@@ -213,6 +218,21 @@ class DebuggerInstance extends DebuggerInstanceBase {
       const processedMessage = yield _this.preProcessClientMessage(message);
       _this._rpcService.sendCommand((0, (_ChromeMessageRemoting || _load_ChromeMessageRemoting()).translateMessageToServer)(processedMessage));
     })();
+  }
+
+  /**
+   * The following three methods are used by new Nuclide channel.
+   */
+  sendNuclideMessage(message) {
+    return this._handleChromeSocketMessage(message);
+  }
+
+  registerNuclideNotificationHandler(callback) {
+    return this._emitter.on(RECEIVED_MESSAGE_EVENT, callback);
+  }
+
+  receiveNuclideMessage(message) {
+    this._emitter.emit(RECEIVED_MESSAGE_EVENT, message);
   }
 
   // Preprocessing hook for client messsages before sending to server.

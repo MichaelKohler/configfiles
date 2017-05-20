@@ -8,7 +8,7 @@ exports.default = getElementFilePath;
 var _textEditor;
 
 function _load_textEditor() {
-  return _textEditor = require('./text-editor');
+  return _textEditor = require('nuclide-commons-atom/text-editor');
 }
 
 /**

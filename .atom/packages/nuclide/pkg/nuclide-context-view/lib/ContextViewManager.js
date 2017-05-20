@@ -8,19 +8,19 @@ exports.ContextViewManager = exports.WORKSPACE_VIEW_URI = undefined;
 var _featureConfig;
 
 function _load_featureConfig() {
-  return _featureConfig = _interopRequireDefault(require('../../commons-atom/featureConfig'));
+  return _featureConfig = _interopRequireDefault(require('nuclide-commons-atom/feature-config'));
 }
 
 var _observePaneItemVisibility;
 
 function _load_observePaneItemVisibility() {
-  return _observePaneItemVisibility = _interopRequireDefault(require('../../commons-atom/observePaneItemVisibility'));
+  return _observePaneItemVisibility = _interopRequireDefault(require('nuclide-commons-atom/observePaneItemVisibility'));
 }
 
 var _collection;
 
 function _load_collection() {
-  return _collection = require('../../commons-node/collection');
+  return _collection = require('nuclide-commons/collection');
 }
 
 var _react = _interopRequireDefault(require('react'));
@@ -30,7 +30,7 @@ var _reactDom = _interopRequireDefault(require('react-dom'));
 var _debounced;
 
 function _load_debounced() {
-  return _debounced = require('../../commons-atom/debounced');
+  return _debounced = require('nuclide-commons-atom/debounced');
 }
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');

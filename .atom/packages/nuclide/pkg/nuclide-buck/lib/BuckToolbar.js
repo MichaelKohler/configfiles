@@ -27,13 +27,13 @@ function _load_BuckToolbarTargetSelector() {
 var _string;
 
 function _load_string() {
-  return _string = require('../../commons-node/string');
+  return _string = require('nuclide-commons/string');
 }
 
 var _Button;
 
 function _load_Button() {
-  return _Button = require('../../nuclide-ui/Button');
+  return _Button = require('nuclide-commons-ui/Button');
 }
 
 var _Dropdown;
@@ -45,13 +45,13 @@ function _load_Dropdown() {
 var _LoadingSpinner;
 
 function _load_LoadingSpinner() {
-  return _LoadingSpinner = require('../../nuclide-ui/LoadingSpinner');
+  return _LoadingSpinner = require('nuclide-commons-ui/LoadingSpinner');
 }
 
 var _addTooltip;
 
 function _load_addTooltip() {
-  return _addTooltip = _interopRequireDefault(require('../../nuclide-ui/add-tooltip'));
+  return _addTooltip = _interopRequireDefault(require('nuclide-commons-ui/addTooltip'));
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -201,17 +201,24 @@ class BuckToolbar extends _react.default.Component {
       disabled: true
     };
 
-    if (!(platform.deviceGroups.length === 1)) {
-      throw new Error('Invariant violation: "platform.deviceGroups.length === 1"');
+    let selectableOptions;
+
+    if (platform.deviceGroups.length === 0) {
+      selectableOptions = [{
+        label: `  ${platform.name}`,
+        selectedLabel: platform.name,
+        value: { platform, device: null }
+      }];
+    } else {
+      selectableOptions = platform.deviceGroups[0].devices.map(device => {
+        return {
+          label: `  ${device.name}`,
+          selectedLabel: device.name,
+          value: { platform, device }
+        };
+      });
     }
 
-    const selectableOptions = platform.deviceGroups[0].devices.map(device => {
-      return {
-        label: `  ${device.name}`,
-        selectedLabel: device.name,
-        value: { platform, device }
-      };
-    });
     return { header, selectableOptions };
   }
 

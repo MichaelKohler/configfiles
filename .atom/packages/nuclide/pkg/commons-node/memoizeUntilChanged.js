@@ -8,7 +8,7 @@ exports.default = memoizeUntilChanged;
 var _collection;
 
 function _load_collection() {
-  return _collection = require('./collection');
+  return _collection = require('nuclide-commons/collection');
 }
 
 var _Hasher;

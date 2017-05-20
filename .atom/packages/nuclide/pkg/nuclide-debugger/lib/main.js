@@ -27,7 +27,7 @@ function _load_constants() {
 var _UniversalDisposable;
 
 function _load_UniversalDisposable() {
-  return _UniversalDisposable = _interopRequireDefault(require('../../commons-node/UniversalDisposable'));
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
@@ -58,12 +58,6 @@ function _load_DebuggerModel() {
   return _DebuggerModel = _interopRequireDefault(require('./DebuggerModel'));
 }
 
-var _DebuggerModel2;
-
-function _load_DebuggerModel2() {
-  return _DebuggerModel2 = require('./DebuggerModel');
-}
-
 var _DebuggerDatatip;
 
 function _load_DebuggerDatatip() {
@@ -81,13 +75,13 @@ function _load_DebuggerLaunchAttachUI() {
 var _renderReactRoot;
 
 function _load_renderReactRoot() {
-  return _renderReactRoot = require('../../commons-atom/renderReactRoot');
+  return _renderReactRoot = require('nuclide-commons-ui/renderReactRoot');
 }
 
 var _nuclideUri;
 
 function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('../../commons-node/nuclideUri'));
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
 var _nuclideRemoteConnection;
@@ -123,7 +117,19 @@ function _load_DebuggerControllerView() {
 var _range;
 
 function _load_range() {
-  return _range = require('../../commons-atom/range');
+  return _range = require('nuclide-commons-atom/range');
+}
+
+var _DebuggerLayoutManager;
+
+function _load_DebuggerLayoutManager() {
+  return _DebuggerLayoutManager = require('./DebuggerLayoutManager');
+}
+
+var _DebuggerPaneViewModel;
+
+function _load_DebuggerPaneViewModel() {
+  return _DebuggerPaneViewModel = require('./DebuggerPaneViewModel');
 }
 
 var _os = _interopRequireDefault(require('os'));
@@ -271,12 +277,20 @@ class DebuggerView extends _react.default.Component {
 }
 
 function createDebuggerView(model) {
-  if (!(model instanceof (_DebuggerModel || _load_DebuggerModel()).default)) {
-    return;
+  let view = null;
+  if (model instanceof (_DebuggerModel || _load_DebuggerModel()).default) {
+    view = _react.default.createElement(DebuggerView, { model: model });
+  } else if (model instanceof (_DebuggerPaneViewModel || _load_DebuggerPaneViewModel()).DebuggerPaneViewModel) {
+    view = model.createView();
   }
-  const elem = (0, (_renderReactRoot || _load_renderReactRoot()).renderReactRoot)(_react.default.createElement(DebuggerView, { model: model }));
-  elem.className = 'nuclide-debugger-container';
-  return elem;
+
+  if (view != null) {
+    const elem = (0, (_renderReactRoot || _load_renderReactRoot()).renderReactRoot)(view);
+    elem.className = 'nuclide-debugger-container';
+    return elem;
+  }
+
+  return null;
 }
 
 class Activation {
@@ -284,7 +298,8 @@ class Activation {
   constructor(state) {
     this._model = new (_DebuggerModel || _load_DebuggerModel()).default(state);
     this._launchAttachDialog = null;
-    this._disposables = new (_UniversalDisposable || _load_UniversalDisposable()).default(this._model,
+    this._layoutManager = new (_DebuggerLayoutManager || _load_DebuggerLayoutManager()).DebuggerLayoutManager(this._model);
+    this._disposables = new (_UniversalDisposable || _load_UniversalDisposable()).default(this._model, this._layoutManager,
     // Listen for removed connections and kill the debugger if it is using that connection.
     (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).ServerConnection.onDidCloseServerConnection(connection => {
       const debuggerProcess = this._model.getStore().getDebuggerInstance();
@@ -306,6 +321,8 @@ class Activation {
       'nuclide-debugger:continue-debugging': this._continue.bind(this)
     }), atom.commands.add('atom-workspace', {
       'nuclide-debugger:stop-debugging': this._stop.bind(this)
+    }), atom.commands.add('atom-workspace', {
+      'nuclide-debugger:restart-debugging': this._restart.bind(this)
     }), atom.commands.add('atom-workspace', {
       'nuclide-debugger:step-over': this._stepOver.bind(this)
     }), atom.commands.add('atom-workspace', {
@@ -409,20 +426,35 @@ class Activation {
 
   consumeWorkspaceViewsService(api) {
     this._disposables.add(api.addOpener(uri => {
-      if (uri === (_DebuggerModel2 || _load_DebuggerModel2()).WORKSPACE_VIEW_URI) {
-        return this._model;
-      }
+      return this._layoutManager.getModelForDebuggerUri(uri);
     }), () => {
-      api.destroyWhere(item => item instanceof (_DebuggerModel || _load_DebuggerModel()).default);
+      this._layoutManager.hideDebuggerViews(api, false);
     }, atom.commands.add('atom-workspace', {
       'nuclide-debugger:show': () => {
-        api.open((_DebuggerModel2 || _load_DebuggerModel2()).WORKSPACE_VIEW_URI, { searchAllPanes: true });
+        this._layoutManager.showDebuggerViews(api);
       }
     }), atom.commands.add('atom-workspace', {
       'nuclide-debugger:hide': () => {
-        api.destroyWhere(item => item instanceof (_DebuggerModel || _load_DebuggerModel()).default);
+        this._layoutManager.hideDebuggerViews(api, false);
+        this._model.getActions().stopDebugging();
+      }
+    }), this._model.getStore().onDebuggerModeChange(() => this._layoutManager.debuggerModeChanged(api)), atom.commands.add('atom-workspace', {
+      'nuclide-debugger:reset-layout': () => {
+        this._layoutManager.resetLayout(api);
       }
     }));
+
+    this._disposables.add(atom.contextMenu.add({
+      '.nuclide-debugger-container': [{
+        label: 'Debugger Views',
+        submenu: [{
+          label: 'Reset Layout',
+          command: 'nuclide-debugger:reset-layout'
+        }]
+      }]
+    }));
+
+    this._layoutManager.consumeWorkspaceViewsService(api);
   }
 
   setTriggerNux(triggerNux) {
@@ -444,6 +476,10 @@ class Activation {
 
   _stop() {
     this._model.getActions().stopDebugging();
+  }
+
+  _restart() {
+    this._model.getActions().restartDebugger();
   }
 
   _stepOver() {

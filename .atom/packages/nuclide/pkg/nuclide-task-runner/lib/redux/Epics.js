@@ -4,6 +4,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.setProjectRootEpic = setProjectRootEpic;
+exports.setConsolesForTaskRunnersEpic = setConsolesForTaskRunnersEpic;
+exports.addConsoleForTaskRunnerEpic = addConsoleForTaskRunnerEpic;
+exports.removeConsoleForTaskRunnerEpic = removeConsoleForTaskRunnerEpic;
 exports.setActiveTaskRunnerEpic = setActiveTaskRunnerEpic;
 exports.combineTaskRunnerStatesEpic = combineTaskRunnerStatesEpic;
 exports.toggleToolbarVisibilityEpic = toggleToolbarVisibilityEpic;
@@ -13,6 +16,9 @@ exports.verifySavedBeforeRunningTaskEpic = verifySavedBeforeRunningTaskEpic;
 exports.runTaskEpic = runTaskEpic;
 exports.stopTaskEpic = stopTaskEpic;
 exports.setToolbarVisibilityEpic = setToolbarVisibilityEpic;
+exports.printTaskCancelledEpic = printTaskCancelledEpic;
+exports.printTaskSucceededEpic = printTaskSucceededEpic;
+exports.appendMessageToConsoleEpic = appendMessageToConsoleEpic;
 
 var _nuclideRemoteConnection;
 
@@ -29,7 +35,7 @@ function _load_tasks() {
 var _UniversalDisposable;
 
 function _load_UniversalDisposable() {
-  return _UniversalDisposable = _interopRequireDefault(require('../../../commons-node/UniversalDisposable'));
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
 var _nuclideLogging;
@@ -56,7 +62,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function setProjectRootEpic(actions, store, options) {
+function setProjectRootEpic(actions, store) {
   return actions.ofType((_Actions || _load_Actions()).REGISTER_TASK_RUNNER, (_Actions || _load_Actions()).UNREGISTER_TASK_RUNNER, (_Actions || _load_Actions()).DID_ACTIVATE_INITIAL_PACKAGES)
   // Refreshes everything. Not the most efficient, but good enough
   .map(() => (_Actions || _load_Actions()).setProjectRoot(store.getState().projectRoot));
@@ -70,6 +76,50 @@ function setProjectRootEpic(actions, store, options) {
    * 
    * @format
    */
+
+function setConsolesForTaskRunnersEpic(actions, store) {
+  return actions.ofType((_Actions || _load_Actions()).SET_CONSOLE_SERVICE, (_Actions || _load_Actions()).DID_ACTIVATE_INITIAL_PACKAGES).switchMap(() => {
+    const { consoleService, taskRunnersReady } = store.getState();
+    if (consoleService == null || !taskRunnersReady) {
+      return _rxjsBundlesRxMinJs.Observable.empty();
+    }
+
+    const consolesForTaskRunners = store.getState().taskRunners.map(runner => [runner, consoleService({ id: runner.name, name: runner.name })]);
+    return _rxjsBundlesRxMinJs.Observable.of((_Actions || _load_Actions()).setConsolesForTaskRunners(new Map(consolesForTaskRunners)));
+  });
+}
+
+function addConsoleForTaskRunnerEpic(actions, store) {
+  return actions.ofType((_Actions || _load_Actions()).REGISTER_TASK_RUNNER).switchMap(action => {
+    const { consoleService, taskRunnersReady } = store.getState();
+    if (consoleService == null || !taskRunnersReady) {
+      return _rxjsBundlesRxMinJs.Observable.empty();
+    }
+
+    if (!(action.type === (_Actions || _load_Actions()).REGISTER_TASK_RUNNER)) {
+      throw new Error('Invariant violation: "action.type === Actions.REGISTER_TASK_RUNNER"');
+    }
+
+    const { taskRunner } = action.payload;
+    const { id, name } = taskRunner;
+    return _rxjsBundlesRxMinJs.Observable.of((_Actions || _load_Actions()).addConsoleForTaskRunner(taskRunner, consoleService({ id, name })));
+  });
+}
+
+function removeConsoleForTaskRunnerEpic(actions, store) {
+  return actions.ofType((_Actions || _load_Actions()).UNREGISTER_TASK_RUNNER).switchMap(action => {
+    const { consoleService, taskRunnersReady } = store.getState();
+    if (consoleService == null || !taskRunnersReady) {
+      return _rxjsBundlesRxMinJs.Observable.empty();
+    }
+
+    if (!(action.type === (_Actions || _load_Actions()).UNREGISTER_TASK_RUNNER)) {
+      throw new Error('Invariant violation: "action.type === Actions.UNREGISTER_TASK_RUNNER"');
+    }
+
+    return _rxjsBundlesRxMinJs.Observable.of((_Actions || _load_Actions()).removeConsoleForTaskRunner(action.payload.taskRunner));
+  });
+}
 
 function setActiveTaskRunnerEpic(actions, store, options) {
   return actions.ofType((_Actions || _load_Actions()).SET_STATES_FOR_TASK_RUNNERS).switchMap(() => {
@@ -278,13 +328,18 @@ function runTaskEpic(actions, store) {
 
 function stopTaskEpic(actions, store) {
   return actions.ofType((_Actions || _load_Actions()).STOP_TASK).switchMap(action => {
-    const { runningTask } = store.getState();
+    const { activeTaskRunner, runningTask } = store.getState();
     if (!runningTask) {
       return _rxjsBundlesRxMinJs.Observable.empty();
     }
+
+    if (!activeTaskRunner) {
+      throw new Error('Invariant violation: "activeTaskRunner"');
+    }
+
     return _rxjsBundlesRxMinJs.Observable.of({
       type: (_Actions || _load_Actions()).TASK_STOPPED,
-      payload: { taskStatus: runningTask }
+      payload: { taskStatus: runningTask, taskRunner: activeTaskRunner }
     });
   });
 }
@@ -312,6 +367,58 @@ function setToolbarVisibilityEpic(actions, store) {
   });
 }
 
+function printTaskCancelledEpic(actions, store) {
+  return actions.ofType((_Actions || _load_Actions()).TASK_STOPPED).map(action => {
+    if (!(action.type === (_Actions || _load_Actions()).TASK_STOPPED)) {
+      throw new Error('Invariant violation: "action.type === Actions.TASK_STOPPED"');
+    }
+
+    const { type } = action.payload.taskStatus.metadata;
+    const { taskRunner } = action.payload;
+    const capitalizedType = type.slice(0, 1).toUpperCase() + type.slice(1);
+    return {
+      type: (_Actions || _load_Actions()).TASK_MESSAGE,
+      payload: {
+        message: { text: `${capitalizedType} cancelled.`, level: 'warning' },
+        taskRunner
+      }
+    };
+  });
+}
+
+function printTaskSucceededEpic(actions, store) {
+  return actions.ofType((_Actions || _load_Actions()).TASK_COMPLETED).map(action => {
+    if (!(action.type === (_Actions || _load_Actions()).TASK_COMPLETED)) {
+      throw new Error('Invariant violation: "action.type === Actions.TASK_COMPLETED"');
+    }
+
+    const { type } = action.payload.taskStatus.metadata;
+    const { taskRunner } = action.payload;
+    const capitalizedType = type.slice(0, 1).toUpperCase() + type.slice(1);
+    return {
+      type: (_Actions || _load_Actions()).TASK_MESSAGE,
+      payload: {
+        message: { text: `${capitalizedType} succeeded.`, level: 'success' },
+        taskRunner
+      }
+    };
+  });
+}
+
+function appendMessageToConsoleEpic(actions, store) {
+  return actions.ofType((_Actions || _load_Actions()).TASK_MESSAGE).do(action => {
+    if (!(action.type === (_Actions || _load_Actions()).TASK_MESSAGE)) {
+      throw new Error('Invariant violation: "action.type === Actions.TASK_MESSAGE"');
+    }
+
+    const { message, taskRunner } = action.payload;
+    const consoleApi = store.getState().consolesForTaskRunners.get(taskRunner);
+    if (consoleApi) {
+      consoleApi.append(Object.assign({}, message));
+    }
+  }).ignoreElements();
+}
+
 let taskFailedNotification;
 
 /**
@@ -329,12 +436,37 @@ function createTaskObservable(taskMeta, getState) {
     return _rxjsBundlesRxMinJs.Observable.of({
       type: (_Actions || _load_Actions()).TASK_STARTED,
       payload: { taskStatus }
-    }).concat(events.filter(event => event.type === 'progress').map(event => ({
-      type: (_Actions || _load_Actions()).TASK_PROGRESS,
-      payload: { progress: event.progress }
-    }))).concat(_rxjsBundlesRxMinJs.Observable.of({
+    }).concat(events.flatMap(event => {
+      if (event.type === 'progress') {
+        return _rxjsBundlesRxMinJs.Observable.of({
+          type: (_Actions || _load_Actions()).TASK_PROGRESS,
+          payload: { progress: event.progress }
+        });
+      } else if (event.type === 'message') {
+        return _rxjsBundlesRxMinJs.Observable.of({
+          type: (_Actions || _load_Actions()).TASK_MESSAGE,
+          payload: {
+            message: event.message,
+            taskRunner: taskMeta.taskRunner
+          }
+        });
+      } else if (event.type === 'status' && event.status != null) {
+        return _rxjsBundlesRxMinJs.Observable.of({
+          type: (_Actions || _load_Actions()).TASK_MESSAGE,
+          payload: {
+            message: { text: event.status, level: 'info' },
+            taskRunner: taskMeta.taskRunner
+          }
+        });
+      } else {
+        return _rxjsBundlesRxMinJs.Observable.empty();
+      }
+    })).concat(_rxjsBundlesRxMinJs.Observable.of({
       type: (_Actions || _load_Actions()).TASK_COMPLETED,
-      payload: { taskStatus: Object.assign({}, taskStatus, { progress: 1 }) }
+      payload: {
+        taskStatus: Object.assign({}, taskStatus, { progress: 1 }),
+        taskRunner: taskMeta.taskRunner
+      }
     }));
   }).catch(error => {
     taskFailedNotification = atom.notifications.addError(`The task "${taskMeta.label}" failed`, {

@@ -56,7 +56,7 @@ function _load_simpleTextBuffer() {
 var _range;
 
 function _load_range() {
-  return _range = require('../../commons-node/range');
+  return _range = require('nuclide-commons/range');
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
