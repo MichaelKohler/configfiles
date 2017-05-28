@@ -4,6 +4,12 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _analytics;
+
+function _load_analytics() {
+  return _analytics = _interopRequireDefault(require('nuclide-commons-atom/analytics'));
+}
+
 var _classnames;
 
 function _load_classnames() {
@@ -16,12 +22,6 @@ var _goToLocation;
 
 function _load_goToLocation() {
   return _goToLocation = require('nuclide-commons-atom/go-to-location');
-}
-
-var _nuclideAnalytics;
-
-function _load_nuclideAnalytics() {
-  return _nuclideAnalytics = require('../../nuclide-analytics');
 }
 
 var _Table;
@@ -143,7 +143,7 @@ function goToDiagnosticLocation(rowData) {
     return;
   }
 
-  (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)('diagnostics-panel-goto-location');
+  (_analytics || _load_analytics()).default.track('diagnostics-panel-goto-location');
 
   const uri = rowData.filePath;
   // If initialLine is N, Atom will navigate to line N+1.

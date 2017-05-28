@@ -856,14 +856,14 @@ class HgRepositoryClient {
     return this._service.add(filePaths);
   }
 
-  commit(message) {
+  commit(message, filePaths = []) {
     // TODO(T17463635)
-    return this._service.commit(message).refCount().do(processMessage => this._clearOnSuccessExit(processMessage));
+    return this._service.commit(message, filePaths).refCount().do(processMessage => this._clearOnSuccessExit(processMessage));
   }
 
-  amend(message, amendMode) {
+  amend(message, amendMode, filePaths = []) {
     // TODO(T17463635)
-    return this._service.amend(message, amendMode).refCount().do(processMessage => this._clearOnSuccessExit(processMessage));
+    return this._service.amend(message, amendMode, filePaths).refCount().do(processMessage => this._clearOnSuccessExit(processMessage));
   }
 
   splitRevision() {

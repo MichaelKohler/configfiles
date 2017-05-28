@@ -30,10 +30,10 @@ function _load_UniversalDisposable() {
   return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
-var _nuclideAnalytics;
+var _analytics;
 
-function _load_nuclideAnalytics() {
-  return _nuclideAnalytics = require('../../nuclide-analytics');
+function _load_analytics() {
+  return _analytics = _interopRequireDefault(require('nuclide-commons-atom/analytics'));
 }
 
 var _OutlineViewPanel;
@@ -73,7 +73,7 @@ class Activation {
     this._disposables = new (_UniversalDisposable || _load_UniversalDisposable()).default();
 
     this._editorService = new (_ActiveEditorRegistry || _load_ActiveEditorRegistry()).default((provider, editor) => {
-      (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)('nuclide-outline-view-getoutline');
+      (_analytics || _load_analytics()).default.track('nuclide-outline-view-getoutline');
       return provider.getOutline(editor);
     }, {}, getActiveEditorRegistryEventSources());
   }
@@ -104,7 +104,7 @@ class Activation {
   }
 
   _createOutlineViewPanelState() {
-    (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)('nuclide-outline-view-show');
+    (_analytics || _load_analytics()).default.track('nuclide-outline-view-show');
     return new (_OutlineViewPanel || _load_OutlineViewPanel()).OutlineViewPanelState((0, (_createOutlines || _load_createOutlines()).createOutlines)(this._editorService));
   }
 

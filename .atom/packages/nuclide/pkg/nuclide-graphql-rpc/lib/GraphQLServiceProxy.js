@@ -5,26 +5,105 @@ let Observable;
 module.exports = _client => {
   const remoteModule = {};
 
-  remoteModule.initialize = function (arg0) {
+  remoteModule.initializeLsp = function (arg0, arg1, arg2, arg3, arg4, arg5, arg6) {
     return _client.marshalArguments(Array.from(arguments), [{
+      name: "command",
+      type: {
+        location: {
+          type: "source",
+          fileName: "GraphQLService.js",
+          line: 35
+        },
+        kind: "string"
+      }
+    }, {
+      name: "args",
+      type: {
+        location: {
+          type: "source",
+          fileName: "GraphQLService.js",
+          line: 36
+        },
+        kind: "array",
+        type: {
+          location: {
+            type: "source",
+            fileName: "GraphQLService.js",
+            line: 36
+          },
+          kind: "string"
+        }
+      }
+    }, {
+      name: "projectFileName",
+      type: {
+        location: {
+          type: "source",
+          fileName: "GraphQLService.js",
+          line: 37
+        },
+        kind: "string"
+      }
+    }, {
+      name: "fileExtensions",
+      type: {
+        location: {
+          type: "source",
+          fileName: "GraphQLService.js",
+          line: 38
+        },
+        kind: "array",
+        type: {
+          location: {
+            type: "source",
+            fileName: "GraphQLService.js",
+            line: 38
+          },
+          kind: "named",
+          name: "NuclideUri"
+        }
+      }
+    }, {
+      name: "logLevel",
+      type: {
+        location: {
+          type: "source",
+          fileName: "GraphQLService.js",
+          line: 39
+        },
+        kind: "named",
+        name: "LogLevel"
+      }
+    }, {
       name: "fileNotifier",
       type: {
         location: {
           type: "source",
           fileName: "GraphQLService.js",
-          line: 53
+          line: 40
         },
         kind: "named",
         name: "FileNotifier"
       }
+    }, {
+      name: "host",
+      type: {
+        location: {
+          type: "source",
+          fileName: "GraphQLService.js",
+          line: 41
+        },
+        kind: "named",
+        name: "HostServices"
+      }
     }]).then(args => {
-      return _client.callRemoteFunction("GraphQLService/initialize", "promise", args);
+      return _client.callRemoteFunction("GraphQLService/initializeLsp", "promise", args);
     }).then(value => {
       return _client.unmarshal(value, {
         location: {
           type: "source",
           fileName: "GraphQLService.js",
-          line: 54
+          line: 42
         },
         kind: "named",
         name: "LanguageService"
@@ -32,6 +111,216 @@ module.exports = _client => {
     });
   };
 
+  remoteModule.HostServices = class {
+    consoleNotification(arg0, arg1, arg2) {
+      return _client.marshalArguments(Array.from(arguments), [{
+        name: "source",
+        type: {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 19
+          },
+          kind: "string"
+        }
+      }, {
+        name: "level",
+        type: {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 20
+          },
+          kind: "named",
+          name: "ShowNotificationLevel"
+        }
+      }, {
+        name: "text",
+        type: {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 21
+          },
+          kind: "string"
+        }
+      }]).then(args => {
+        return _client.marshal(this, {
+          kind: "named",
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 17
+          },
+          name: "HostServices"
+        }).then(id => {
+          return _client.callRemoteMethod(id, "consoleNotification", "void", args);
+        });
+      });
+    }
+
+    dialogNotification(arg0, arg1) {
+      return Observable.fromPromise(_client.marshalArguments(Array.from(arguments), [{
+        name: "level",
+        type: {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 25
+          },
+          kind: "named",
+          name: "ShowNotificationLevel"
+        }
+      }, {
+        name: "text",
+        type: {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 26
+          },
+          kind: "string"
+        }
+      }]).then(args => {
+        return _client.marshal(this, {
+          kind: "named",
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 17
+          },
+          name: "HostServices"
+        }).then(id => {
+          return _client.callRemoteMethod(id, "dialogNotification", "observable", args);
+        });
+      })).concatMap(id => id).concatMap(value => {
+        return _client.unmarshal(value, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 27
+          },
+          kind: "void"
+        });
+      }).publish();
+    }
+
+    dialogRequest(arg0, arg1, arg2, arg3) {
+      return Observable.fromPromise(_client.marshalArguments(Array.from(arguments), [{
+        name: "level",
+        type: {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 30
+          },
+          kind: "named",
+          name: "ShowNotificationLevel"
+        }
+      }, {
+        name: "text",
+        type: {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 31
+          },
+          kind: "string"
+        }
+      }, {
+        name: "buttonLabels",
+        type: {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 32
+          },
+          kind: "array",
+          type: {
+            location: {
+              type: "source",
+              fileName: "rpc-types.js",
+              line: 32
+            },
+            kind: "string"
+          }
+        }
+      }, {
+        name: "closeLabel",
+        type: {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 33
+          },
+          kind: "string"
+        }
+      }]).then(args => {
+        return _client.marshal(this, {
+          kind: "named",
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 17
+          },
+          name: "HostServices"
+        }).then(id => {
+          return _client.callRemoteMethod(id, "dialogRequest", "observable", args);
+        });
+      })).concatMap(id => id).concatMap(value => {
+        return _client.unmarshal(value, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 34
+          },
+          kind: "string"
+        });
+      }).publish();
+    }
+
+    childRegister(arg0) {
+      return _client.marshalArguments(Array.from(arguments), [{
+        name: "child",
+        type: {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 40
+          },
+          kind: "named",
+          name: "HostServices"
+        }
+      }]).then(args => {
+        return _client.marshal(this, {
+          kind: "named",
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 17
+          },
+          name: "HostServices"
+        }).then(id => {
+          return _client.callRemoteMethod(id, "childRegister", "promise", args);
+        });
+      }).then(value => {
+        return _client.unmarshal(value, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 40
+          },
+          kind: "named",
+          name: "HostServices"
+        });
+      });
+    }
+
+    dispose() {
+      return _client.disposeRemoteObject(this);
+    }
+
+  };
   remoteModule.FileNotifier = class {
     onFileEvent(arg0) {
       return _client.marshalArguments(Array.from(arguments), [{
@@ -1118,48 +1407,412 @@ Object.defineProperty(module.exports, "defs", {
         type: "builtin"
       }
     },
-    initialize: {
+    initializeLsp: {
       kind: "function",
-      name: "initialize",
+      name: "initializeLsp",
       location: {
         type: "source",
         fileName: "GraphQLService.js",
-        line: 52
+        line: 34
       },
       type: {
         location: {
           type: "source",
           fileName: "GraphQLService.js",
-          line: 52
+          line: 34
         },
         kind: "function",
         argumentTypes: [{
+          name: "command",
+          type: {
+            location: {
+              type: "source",
+              fileName: "GraphQLService.js",
+              line: 35
+            },
+            kind: "string"
+          }
+        }, {
+          name: "args",
+          type: {
+            location: {
+              type: "source",
+              fileName: "GraphQLService.js",
+              line: 36
+            },
+            kind: "array",
+            type: {
+              location: {
+                type: "source",
+                fileName: "GraphQLService.js",
+                line: 36
+              },
+              kind: "string"
+            }
+          }
+        }, {
+          name: "projectFileName",
+          type: {
+            location: {
+              type: "source",
+              fileName: "GraphQLService.js",
+              line: 37
+            },
+            kind: "string"
+          }
+        }, {
+          name: "fileExtensions",
+          type: {
+            location: {
+              type: "source",
+              fileName: "GraphQLService.js",
+              line: 38
+            },
+            kind: "array",
+            type: {
+              location: {
+                type: "source",
+                fileName: "GraphQLService.js",
+                line: 38
+              },
+              kind: "named",
+              name: "NuclideUri"
+            }
+          }
+        }, {
+          name: "logLevel",
+          type: {
+            location: {
+              type: "source",
+              fileName: "GraphQLService.js",
+              line: 39
+            },
+            kind: "named",
+            name: "LogLevel"
+          }
+        }, {
           name: "fileNotifier",
           type: {
             location: {
               type: "source",
               fileName: "GraphQLService.js",
-              line: 53
+              line: 40
             },
             kind: "named",
             name: "FileNotifier"
+          }
+        }, {
+          name: "host",
+          type: {
+            location: {
+              type: "source",
+              fileName: "GraphQLService.js",
+              line: 41
+            },
+            kind: "named",
+            name: "HostServices"
           }
         }],
         returnType: {
           location: {
             type: "source",
             fileName: "GraphQLService.js",
-            line: 54
+            line: 42
           },
           kind: "promise",
           type: {
             location: {
               type: "source",
               fileName: "GraphQLService.js",
-              line: 54
+              line: 42
             },
             kind: "named",
             name: "LanguageService"
+          }
+        }
+      }
+    },
+    ShowNotificationLevel: {
+      kind: "alias",
+      location: {
+        type: "source",
+        fileName: "rpc-types.js",
+        line: 14
+      },
+      name: "ShowNotificationLevel",
+      definition: {
+        location: {
+          type: "source",
+          fileName: "rpc-types.js",
+          line: 14
+        },
+        kind: "union",
+        types: [{
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 14
+          },
+          kind: "string-literal",
+          value: "info"
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 14
+          },
+          kind: "string-literal",
+          value: "log"
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 14
+          },
+          kind: "string-literal",
+          value: "warning"
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 14
+          },
+          kind: "string-literal",
+          value: "error"
+        }]
+      }
+    },
+    HostServices: {
+      kind: "interface",
+      name: "HostServices",
+      location: {
+        type: "source",
+        fileName: "rpc-types.js",
+        line: 17
+      },
+      constructorArgs: null,
+      staticMethods: {},
+      instanceMethods: {
+        consoleNotification: {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 18
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "source",
+            type: {
+              location: {
+                type: "source",
+                fileName: "rpc-types.js",
+                line: 19
+              },
+              kind: "string"
+            }
+          }, {
+            name: "level",
+            type: {
+              location: {
+                type: "source",
+                fileName: "rpc-types.js",
+                line: 20
+              },
+              kind: "named",
+              name: "ShowNotificationLevel"
+            }
+          }, {
+            name: "text",
+            type: {
+              location: {
+                type: "source",
+                fileName: "rpc-types.js",
+                line: 21
+              },
+              kind: "string"
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "rpc-types.js",
+              line: 22
+            },
+            kind: "void"
+          }
+        },
+        dialogNotification: {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 24
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "level",
+            type: {
+              location: {
+                type: "source",
+                fileName: "rpc-types.js",
+                line: 25
+              },
+              kind: "named",
+              name: "ShowNotificationLevel"
+            }
+          }, {
+            name: "text",
+            type: {
+              location: {
+                type: "source",
+                fileName: "rpc-types.js",
+                line: 26
+              },
+              kind: "string"
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "rpc-types.js",
+              line: 27
+            },
+            kind: "observable",
+            type: {
+              location: {
+                type: "source",
+                fileName: "rpc-types.js",
+                line: 27
+              },
+              kind: "void"
+            }
+          }
+        },
+        dialogRequest: {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 29
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "level",
+            type: {
+              location: {
+                type: "source",
+                fileName: "rpc-types.js",
+                line: 30
+              },
+              kind: "named",
+              name: "ShowNotificationLevel"
+            }
+          }, {
+            name: "text",
+            type: {
+              location: {
+                type: "source",
+                fileName: "rpc-types.js",
+                line: 31
+              },
+              kind: "string"
+            }
+          }, {
+            name: "buttonLabels",
+            type: {
+              location: {
+                type: "source",
+                fileName: "rpc-types.js",
+                line: 32
+              },
+              kind: "array",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "rpc-types.js",
+                  line: 32
+                },
+                kind: "string"
+              }
+            }
+          }, {
+            name: "closeLabel",
+            type: {
+              location: {
+                type: "source",
+                fileName: "rpc-types.js",
+                line: 33
+              },
+              kind: "string"
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "rpc-types.js",
+              line: 34
+            },
+            kind: "observable",
+            type: {
+              location: {
+                type: "source",
+                fileName: "rpc-types.js",
+                line: 34
+              },
+              kind: "string"
+            }
+          }
+        },
+        dispose: {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 36
+          },
+          kind: "function",
+          argumentTypes: [],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "rpc-types.js",
+              line: 36
+            },
+            kind: "void"
+          }
+        },
+        childRegister: {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 40
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "child",
+            type: {
+              location: {
+                type: "source",
+                fileName: "rpc-types.js",
+                line: 40
+              },
+              kind: "named",
+              name: "HostServices"
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "rpc-types.js",
+              line: 40
+            },
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "rpc-types.js",
+                line: 40
+              },
+              kind: "named",
+              name: "HostServices"
+            }
           }
         }
       }
@@ -2157,6 +2810,88 @@ Object.defineProperty(module.exports, "defs", {
             kind: "number"
           },
           optional: false
+        }]
+      }
+    },
+    LogLevel: {
+      kind: "alias",
+      location: {
+        type: "source",
+        fileName: "rpc-types.js",
+        line: 12
+      },
+      name: "LogLevel",
+      definition: {
+        location: {
+          type: "source",
+          fileName: "rpc-types.js",
+          line: 13
+        },
+        kind: "union",
+        types: [{
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 13
+          },
+          kind: "string-literal",
+          value: "ALL"
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 14
+          },
+          kind: "string-literal",
+          value: "TRACE"
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 15
+          },
+          kind: "string-literal",
+          value: "DEBUG"
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 16
+          },
+          kind: "string-literal",
+          value: "INFO"
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 17
+          },
+          kind: "string-literal",
+          value: "WARN"
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 18
+          },
+          kind: "string-literal",
+          value: "ERROR"
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 19
+          },
+          kind: "string-literal",
+          value: "FATAL"
+        }, {
+          location: {
+            type: "source",
+            fileName: "rpc-types.js",
+            line: 20
+          },
+          kind: "string-literal",
+          value: "OFF"
         }]
       }
     },

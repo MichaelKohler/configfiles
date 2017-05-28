@@ -201,10 +201,10 @@ class ConsoleContainer extends _react.default.Component {
 
       const { displayableRecords } = _this._getFilterInfo();
       const lines = displayableRecords.filter(function (displayable) {
-        return displayable.record.kind === 'message';
+        return displayable.record.kind === 'message' || displayable.record.kind === 'request' || displayable.record.kind === 'response';
       }).map(function (displayable) {
         const record = displayable.record;
-        const level = record.level.toString().toUpperCase();
+        const level = record.level != null ? record.level.toString().toUpperCase() : 'LOG';
         const timestamp = record.timestamp.toLocaleString();
         return `[${level}][${record.sourceId}][${timestamp}]\t ${record.text}`;
       }).join('\n');

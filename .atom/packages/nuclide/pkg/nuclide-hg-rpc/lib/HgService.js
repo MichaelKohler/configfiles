@@ -745,10 +745,11 @@ class HgService {
   /**
    * Commit code to version control.
    * @param message Commit message.
+   * @param filePaths List of changed files to commit. If empty, all will be committed
    */
-  commit(message) {
+  commit(message, filePaths = []) {
     // TODO(T17463635)
-    return this._commitCode(message, ['commit']).publish();
+    return this._commitCode(message, ['commit', ...filePaths]).publish();
   }
 
   /**
@@ -758,10 +759,11 @@ class HgService {
    *  Clean to just amend.
    *  Rebase to amend and rebase the stacked diffs.
    *  Fixup to fix the stacked commits, rebasing them on top of this commit.
+   * @param filePaths List of changed files to commit. If empty, all will be committed
    */
-  amend(message, amendMode) {
+  amend(message, amendMode, filePaths = []) {
     // TODO(T17463635)
-    const args = ['amend'];
+    const args = ['amend', ...filePaths];
     switch (amendMode) {
       case (_hgConstants || _load_hgConstants()).AmendMode.CLEAN:
         break;

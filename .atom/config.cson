@@ -69,6 +69,8 @@
     fontFamily: "FiraCode Light"
   "linter-jshint":
     disableWhenNoJshintrcFileInPath: true
+  "linter-ui-default":
+    panelHeight: 81
   nuclide:
     "nuclide-home":
       showHome: false

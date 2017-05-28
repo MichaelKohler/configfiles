@@ -5,6 +5,12 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.RootPanel = undefined;
 
+var _DeviceTask;
+
+function _load_DeviceTask() {
+  return _DeviceTask = require('../DeviceTask');
+}
+
 var _react = _interopRequireDefault(require('react'));
 
 var _PanelComponentScroller;
@@ -34,17 +40,6 @@ function _load_DevicePanel() {
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
 
 class RootPanel extends _react.default.Component {
 
@@ -85,7 +80,9 @@ class RootPanel extends _react.default.Component {
           killProcess: this.props.killProcess,
           deviceTasks: this.props.deviceTasks,
           goToRootPanel: this._goToRootPanel,
-          startFetchingProcesses: this.props.startFetchingProcesses
+          startFetchingProcesses: this.props.startFetchingProcesses,
+          host: this.props.host,
+          device: this.props.device
         })
       );
     }
@@ -124,4 +121,13 @@ class RootPanel extends _react.default.Component {
     );
   }
 }
-exports.RootPanel = RootPanel;
+exports.RootPanel = RootPanel; /**
+                                * Copyright (c) 2015-present, Facebook, Inc.
+                                * All rights reserved.
+                                *
+                                * This source code is licensed under the license found in the LICENSE file in
+                                * the root directory of this source tree.
+                                *
+                                * 
+                                * @format
+                                */

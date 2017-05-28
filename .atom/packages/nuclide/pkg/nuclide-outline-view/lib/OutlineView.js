@@ -13,10 +13,10 @@ function _load_classnames() {
   return _classnames = _interopRequireDefault(require('classnames'));
 }
 
-var _nuclideAnalytics;
+var _analytics;
 
-function _load_nuclideAnalytics() {
-  return _nuclideAnalytics = require('../../nuclide-analytics');
+function _load_analytics() {
+  return _analytics = _interopRequireDefault(require('nuclide-commons-atom/analytics'));
 }
 
 var _goToLocation;
@@ -182,7 +182,7 @@ class OutlineTree extends _react.default.PureComponent {
       if (pane == null) {
         return;
       }
-      (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)('nuclide-outline-view:go-to-location');
+      (_analytics || _load_analytics()).default.track('nuclide-outline-view:go-to-location');
       pane.activate();
       pane.activateItem(editor);
       (0, (_goToLocation || _load_goToLocation()).goToLocationInEditor)(editor, outline.startPosition.row, outline.startPosition.column);

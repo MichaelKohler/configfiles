@@ -25,35 +25,35 @@ function _load_nuclideAnalytics() {
  * @format
  */
 
-function moveUp() {
-  doSplit('up', (pane, params) => pane.splitUp(params));
+function moveUp(el) {
+  doSplit(el, 'up', (pane, params) => pane.splitUp(params));
 }
 
-function moveDown() {
-  doSplit('down', (pane, params) => pane.splitDown(params));
+function moveDown(el) {
+  doSplit(el, 'down', (pane, params) => pane.splitDown(params));
 }
 
-function moveRight() {
-  doSplit('right', (pane, params) => pane.splitRight(params));
+function moveRight(el) {
+  doSplit(el, 'right', (pane, params) => pane.splitRight(params));
 }
 
-function moveLeft() {
-  doSplit('left', (pane, params) => pane.splitLeft(params));
+function moveLeft(el) {
+  doSplit(el, 'left', (pane, params) => pane.splitLeft(params));
 }
 
-function doSplit(operation, splitOperation) {
-  const activePane = atom.workspace.getActivePane();
-  if (activePane == null) {
+function doSplit(el, operation, splitOperation) {
+  const pane = findNearestPane(el) || getCenter().getActivePane();
+  if (pane == null) {
     return;
   }
 
   (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)('nuclide-move-item-to-available-pane');
-  const activeItem = activePane.getActiveItem();
+  const activeItem = pane.getActiveItem();
   if (activeItem != null) {
-    const targetPane = findTargetPane(activePane, operation);
+    const targetPane = findTargetPane(pane, operation);
     if (targetPane != null) {
       const index = targetPane.getItems().length;
-      activePane.moveItemToPane(activeItem, targetPane, index);
+      pane.moveItemToPane(activeItem, targetPane, index);
       targetPane.activateItemAtIndex(index);
       targetPane.activate();
       return;
@@ -64,12 +64,28 @@ function doSplit(operation, splitOperation) {
   // pane contains exactly zero or one items.
   // The new empty pane will be kept if the global atom setting
   // 'Destroy Empty Panes' is false, otherwise it will be removed.
-  const newPane = splitOperation(activePane, { copyActiveItem: false });
-  const item = activePane.getActiveItem();
+  const newPane = splitOperation(pane, { copyActiveItem: false });
+  const item = pane.getActiveItem();
   if (item) {
-    activePane.moveItemToPane(item, newPane, 0);
+    pane.moveItemToPane(item, newPane, 0);
   }
 }
+
+/**
+ * Find the Pane that contains the provided element.
+ */
+function findNearestPane(el_) {
+  let el = el_;
+  while (el != null) {
+    if (el.tagName === 'ATOM-PANE' && typeof el.getModel === 'function') {
+      return el.getModel();
+    }
+    el = el.parentElement;
+  }
+}
+
+// TODO: Replace this once our lowest supported version is 1.17
+const getCenter = () => atom.workspace.getCenter ? atom.workspace.getCenter() : atom.workspace;
 
 /**
  * See if there is already a pane in the direction the user is trying to split.

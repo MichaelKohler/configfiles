@@ -7,10 +7,10 @@ exports.ProjectSelection = undefined;
 
 var _react = _interopRequireDefault(require('react'));
 
-var _Button;
+var _UniversalDisposable;
 
-function _load_Button() {
-  return _Button = require('nuclide-commons-ui/Button');
+function _load_UniversalDisposable() {
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
 var _FileTreeStore;
@@ -19,10 +19,10 @@ function _load_FileTreeStore() {
   return _FileTreeStore = require('../lib/FileTreeStore');
 }
 
-var _UniversalDisposable;
+var _TruncatedButton;
 
-function _load_UniversalDisposable() {
-  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
+function _load_TruncatedButton() {
+  return _TruncatedButton = _interopRequireDefault(require('nuclide-commons-ui/TruncatedButton'));
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -77,22 +77,16 @@ class ProjectSelection extends _react.default.Component {
     return _react.default.createElement(
       'div',
       { className: 'padded' },
-      _react.default.createElement(
-        (_Button || _load_Button()).Button,
-        {
-          onClick: () => this.runCommand('application:add-project-folder'),
-          icon: 'device-desktop',
-          className: 'btn-block' },
-        'Add Project Folder'
-      ),
-      _react.default.createElement(
-        (_Button || _load_Button()).Button,
-        {
-          onClick: () => this.runCommand('nuclide-remote-projects:connect'),
-          icon: 'cloud-upload',
-          className: 'btn-block' },
-        'Add Remote Project Folder'
-      ),
+      _react.default.createElement((_TruncatedButton || _load_TruncatedButton()).default, {
+        onClick: () => this.runCommand('application:add-project-folder'),
+        icon: 'device-desktop',
+        label: 'Add Project Folder'
+      }),
+      _react.default.createElement((_TruncatedButton || _load_TruncatedButton()).default, {
+        onClick: () => this.runCommand('nuclide-remote-projects:connect'),
+        icon: 'cloud-upload',
+        label: 'Add Remote Project Folder'
+      }),
       this.state.extraContent
     );
   }

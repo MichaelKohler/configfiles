@@ -6,8 +6,23 @@ Object.defineProperty(exports, "__esModule", {
 
 var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
 
-let main = (() => {
+let getServerCredentials = (() => {
   var _ref = (0, _asyncToGenerator.default)(function* (args) {
+    const { key, cert, ca } = args;
+    if (key && cert && ca) {
+      const [serverKey, serverCertificate, certificateAuthorityCertificate] = yield Promise.all([(_fsPromise || _load_fsPromise()).default.readFile(key), (_fsPromise || _load_fsPromise()).default.readFile(cert), (_fsPromise || _load_fsPromise()).default.readFile(ca)]);
+      return { serverKey, serverCertificate, certificateAuthorityCertificate };
+    }
+    return null;
+  });
+
+  return function getServerCredentials(_x) {
+    return _ref.apply(this, arguments);
+  };
+})();
+
+let main = (() => {
+  var _ref2 = (0, _asyncToGenerator.default)(function* (args) {
     const serverStartTimer = (0, (_nuclideAnalytics || _load_nuclideAnalytics()).startTracking)('nuclide-server:start');
     process.on('SIGHUP', function () {});
 
@@ -19,26 +34,21 @@ let main = (() => {
           (0, (_nuclideLogging || _load_nuclideLogging()).flushLogsAndExit)(0);
         }, expirationDays * 24 * 60 * 60 * 1000);
       }
-      let { key, cert, ca } = args;
-      if (key && cert && ca) {
-        key = _fs.default.readFileSync(key);
-        cert = _fs.default.readFileSync(cert);
-        ca = _fs.default.readFileSync(ca);
-      }
-      const server = new (_NuclideServer || _load_NuclideServer()).default({
-        port,
-        serverKey: key,
-        serverCertificate: cert,
-        certificateAuthorityCertificate: ca,
+      const [serverCredentials] = yield Promise.all([getServerCredentials(args),
+      // Ensure logging is configured.
+      (0, (_nuclideLogging || _load_nuclideLogging()).initialUpdateConfig)()]);
+      const server = new (_NuclideServer || _load_NuclideServer()).default(Object.assign({
+        port
+      }, serverCredentials, {
         trackEventLoop: true
-      }, (_servicesConfig || _load_servicesConfig()).default);
+      }), (_servicesConfig || _load_servicesConfig()).default);
       yield server.connect();
       serverStartTimer.onSuccess();
       logger.info(`NuclideServer started on port ${port}.`);
       logger.info(`Using node ${process.version}.`);
       logger.info(`Server ready time: ${process.uptime() * 1000}ms`);
     } catch (e) {
-      // Ensure logging is configured.
+      // In case the exception occurred before logging initialization finished.
       yield (0, (_nuclideLogging || _load_nuclideLogging()).initialUpdateConfig)();
       yield serverStartTimer.onError(e);
       logger.fatal(e);
@@ -46,15 +56,19 @@ let main = (() => {
     }
   });
 
-  return function main(_x) {
-    return _ref.apply(this, arguments);
+  return function main(_x2) {
+    return _ref2.apply(this, arguments);
   };
 })();
 
 // This should never happen because the server must be started with stderr redirected to a log file.
 
 
-var _fs = _interopRequireDefault(require('fs'));
+var _fsPromise;
+
+function _load_fsPromise() {
+  return _fsPromise = _interopRequireDefault(require('../../commons-node/fsPromise'));
+}
 
 var _nuclideLogging;
 

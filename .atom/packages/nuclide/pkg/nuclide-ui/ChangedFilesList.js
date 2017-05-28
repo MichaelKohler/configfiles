@@ -68,6 +68,7 @@ class ChangedFilesList extends _react.default.Component {
 
   render() {
     const {
+      checkedFiles,
       commandPrefix,
       enableFileExpansion,
       enableInlineActions,
@@ -75,6 +76,7 @@ class ChangedFilesList extends _react.default.Component {
       fileStatuses,
       onAddFile,
       onDeleteFile,
+      onFileChecked,
       onFileChosen,
       onForgetFile,
       onOpenFileInDiffView,
@@ -136,11 +138,13 @@ class ChangedFilesList extends _react.default.Component {
             fileChanges: fileChanges == null ? null : fileChanges.get(filePath),
             filePath: filePath,
             fileStatus: fileStatus,
+            isChecked: checkedFiles == null ? null : checkedFiles.has(filePath),
             isHgPath: isHgRoot,
             isSelected: selectedFile === filePath,
             key: filePath,
             onAddFile: onAddFile,
             onDeleteFile: onDeleteFile,
+            onFileChecked: onFileChecked,
             onFileChosen: onFileChosen,
             onForgetFile: onForgetFile,
             onOpenFileInDiffView: onOpenFileInDiffView,

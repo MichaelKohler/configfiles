@@ -40,6 +40,12 @@ const FB_HOST_SUFFIX = '.facebook.com'; /**
 
 class Selectors extends _react.default.Component {
 
+  componentDidMount() {
+    if (this.props.deviceTypes.length > 0) {
+      this.props.setDeviceType(this.props.deviceTypes[0]);
+    }
+  }
+
   _getHostOptions() {
     return this.props.hosts.map(host => {
       return host.endsWith(FB_HOST_SUFFIX) ? host.substring(0, host.length - FB_HOST_SUFFIX.length) : host;

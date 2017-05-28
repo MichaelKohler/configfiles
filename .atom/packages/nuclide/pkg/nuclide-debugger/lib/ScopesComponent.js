@@ -44,6 +44,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @format
  */
 
+function isLocalScopeName(scopeName) {
+  return ['Local', 'Locals'].indexOf(scopeName) !== -1;
+}
+
 class ScopesComponent extends _react.default.Component {
 
   constructor(props) {
@@ -86,8 +90,8 @@ class ScopesComponent extends _react.default.Component {
 
   _renderScopeSection(fetchChildren, scope) {
     // Non-local scopes should be collapsed by default since users typically care less about them.
-    const collapsedByDefault = scope.name !== 'Locals';
-    const noLocals = scope.name !== 'Locals' || scope.scopeVariables.length > 0 ? null : _react.default.createElement(
+    const collapsedByDefault = !isLocalScopeName(scope.name);
+    const noLocals = collapsedByDefault || scope.scopeVariables.length > 0 ? null : _react.default.createElement(
       'div',
       { className: 'nuclide-debugger-expression-value-row' },
       _react.default.createElement(

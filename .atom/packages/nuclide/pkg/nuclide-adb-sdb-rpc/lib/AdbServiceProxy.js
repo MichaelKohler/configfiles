@@ -2271,6 +2271,22 @@ Object.defineProperty(module.exports, "defs", {
             }
           },
           optional: false
+        }, {
+          location: {
+            type: "source",
+            fileName: "types.js",
+            line: 33
+          },
+          name: "isJava",
+          type: {
+            location: {
+              type: "source",
+              fileName: "types.js",
+              line: 33
+            },
+            kind: "boolean"
+          },
+          optional: false
         }]
       }
     }

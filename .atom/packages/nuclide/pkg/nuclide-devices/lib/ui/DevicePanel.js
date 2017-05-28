@@ -5,6 +5,18 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.DevicePanel = undefined;
 
+var _bindObservableAsProps;
+
+function _load_bindObservableAsProps() {
+  return _bindObservableAsProps = require('nuclide-commons-ui/bindObservableAsProps');
+}
+
+var _DeviceTask;
+
+function _load_DeviceTask() {
+  return _DeviceTask = require('../DeviceTask');
+}
+
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
 
 var _Icon;
@@ -63,13 +75,28 @@ class DevicePanel extends _react.default.Component {
       _react.default.createElement((_ProcessTable || _load_ProcessTable()).ProcessTable, {
         processes: this.props.processes,
         killProcess: this.props.killProcess,
-        startFetchingProcesses: this.props.startFetchingProcesses
+        startFetchingProcesses: this.props.startFetchingProcesses,
+        host: this.props.host,
+        device: this.props.device
       })
     );
   }
 
+  _taskEventsToProps(task, taskEvent) {
+    return {
+      name: task.getName(),
+      start: () => task.start(),
+      cancel: () => task.cancel(),
+      isRunning: taskEvent != null,
+      progress: null
+    };
+  }
+
   _getTasks() {
-    const tasks = this.props.deviceTasks.map(task => _react.default.createElement((_TaskButton || _load_TaskButton()).TaskButton, { task: task, key: task.name }));
+    const tasks = Array.from(this.props.deviceTasks).map(task => {
+      const StreamedTaskButton = (0, (_bindObservableAsProps || _load_bindObservableAsProps()).bindObservableAsProps)(task.getTaskEvents().distinctUntilChanged().map(taskEvent => this._taskEventsToProps(task, taskEvent)), (_TaskButton || _load_TaskButton()).TaskButton);
+      return _react.default.createElement(StreamedTaskButton, { key: task.getName() });
+    });
     return _react.default.createElement(
       'div',
       { className: 'block nuclide-device-panel-tasks-container' },

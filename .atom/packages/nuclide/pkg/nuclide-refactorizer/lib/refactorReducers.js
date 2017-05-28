@@ -27,6 +27,10 @@ function refactorReducers(state_, action) {
       return pickedRefactor(state, action);
     case 'execute':
       return executeRefactor(state, action);
+    case 'confirm':
+      return confirmRefactor(state, action);
+    case 'progress':
+      return progress(state, action);
     default:
       return state;
   }
@@ -142,5 +146,34 @@ function executeRefactor(state, action) {
     phase: {
       type: 'execute'
     }
+  };
+}
+
+function confirmRefactor(state, action) {
+  if (!(state.type === 'open')) {
+    throw new Error('Invariant violation: "state.type === \'open\'"');
+  }
+
+  return {
+    type: 'open',
+    ui: state.ui,
+    phase: {
+      type: 'confirm',
+      response: action.payload.response
+    }
+  };
+}
+
+function progress(state, action) {
+  if (!(state.type === 'open')) {
+    throw new Error('Invariant violation: "state.type === \'open\'"');
+  }
+
+  return {
+    type: 'open',
+    ui: state.ui,
+    phase: Object.assign({
+      type: 'progress'
+    }, action.payload)
   };
 }

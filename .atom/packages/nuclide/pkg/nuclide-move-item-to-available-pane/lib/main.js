@@ -34,10 +34,10 @@ class Activation {
   activate() {
     this._disposables.add(atom.commands.add('atom-text-editor', {
       // Pass the eta expansion of these functions to defer the loading of move.js.
-      'nuclide-move-item-to-available-pane:right': () => (0, (_move || _load_move()).moveRight)(),
-      'nuclide-move-item-to-available-pane:left': () => (0, (_move || _load_move()).moveLeft)(),
-      'nuclide-move-item-to-available-pane:up': () => (0, (_move || _load_move()).moveUp)(),
-      'nuclide-move-item-to-available-pane:down': () => (0, (_move || _load_move()).moveDown)()
+      'nuclide-move-item-to-available-pane:right': event => (0, (_move || _load_move()).moveRight)(event.target),
+      'nuclide-move-item-to-available-pane:left': event => (0, (_move || _load_move()).moveLeft)(event.target),
+      'nuclide-move-item-to-available-pane:up': event => (0, (_move || _load_move()).moveUp)(event.target),
+      'nuclide-move-item-to-available-pane:down': event => (0, (_move || _load_move()).moveDown)(event.target)
     }));
   }
 

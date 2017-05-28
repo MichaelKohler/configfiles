@@ -83,35 +83,31 @@ let debugPidWithLLDB = (() => {
 })();
 
 let debugAndroidActivity = (() => {
-  var _ref4 = (0, _asyncToGenerator.default)(function* (buckProjectPath, androidActivity) {
+  var _ref4 = (0, _asyncToGenerator.default)(function* (buckProjectPath, androidPackage, deviceName, javaDebugger) {
     const service = (0, (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).getServiceByNuclideUri)('JavaDebuggerService', buckProjectPath);
     if (service == null) {
       throw new Error('Java debugger service is not available.');
     }
 
     const debuggerService = yield getDebuggerService();
-    try {
-      (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)('fb-java-debugger-start', {
-        startType: 'buck-toolbar',
-        target: buckProjectPath,
-        targetType: 'android',
-        targetClass: androidActivity
-      });
+    (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)('fb-java-debugger-start', {
+      startType: 'buck-toolbar',
+      target: buckProjectPath,
+      targetType: 'android',
+      targetClass: androidPackage
+    });
 
-      /* eslint-disable nuclide-internal/no-cross-atom-imports */
-      // $FlowFB
-      const procInfo = require('../../fb-debugger-java/lib/AdbProcessInfo');
-      debuggerService.startDebugging(new procInfo.AdbProcessInfo(buckProjectPath, null, null, androidActivity));
-      /* eslint-enable nuclide-internal/no-cross-atom-imports */
-    } catch (e) {
-      (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)('fb-java-debugger-unavailable', {
-        error: e.toString()
+    if (javaDebugger != null) {
+      const debugInfo = javaDebugger.createAndroidDebugInfo({
+        targetUri: buckProjectPath,
+        packageName: androidPackage,
+        device: deviceName
       });
-      throw new Error('Java debugger service is not available.');
+      debuggerService.startDebugging(debugInfo);
     }
   });
 
-  return function debugAndroidActivity(_x7, _x8) {
+  return function debugAndroidActivity(_x7, _x8, _x9, _x10) {
     return _ref4.apply(this, arguments);
   };
 })();
@@ -133,7 +129,7 @@ let _getAttachProcessInfoFromPid = (() => {
     return new (_AttachProcessInfo || _load_AttachProcessInfo()).AttachProcessInfo(buckProjectPath, attachTargetInfo);
   });
 
-  return function _getAttachProcessInfoFromPid(_x9, _x10) {
+  return function _getAttachProcessInfoFromPid(_x11, _x12) {
     return _ref5.apply(this, arguments);
   };
 })();
@@ -209,6 +205,7 @@ const LLDB_PROCESS_ID_REGEX = /lldb -p ([0-9]+)/;
  */
 
 const ANDROID_ACTIVITY_REGEX = /Starting activity (.*)\/(.*)\.\.\./;
+const ANDROID_DEVICE_REGEX = /Installing apk on ([^ ]+).*/;
 const LLDB_TARGET_TYPE = 'LLDB';
 const ANDROID_TARGET_TYPE = 'android';
 
@@ -239,10 +236,16 @@ buckService, buckRoot, buildTarget, runArguments) {
 }
 
 function getDeployInstallEvents(processStream, // TODO(T17463635)
-buckRoot) {
+buckRoot, javaDebugger) {
   let targetType = LLDB_TARGET_TYPE;
+  let deviceName = null;
   return (0, (_observable || _load_observable()).compact)(processStream.map(message => {
     if (message.kind === 'stdout' || message.kind === 'stderr') {
+      const deviceMatch = message.data.match(ANDROID_DEVICE_REGEX);
+      if (deviceMatch != null && deviceMatch.length > 0) {
+        deviceName = deviceMatch[1];
+      }
+
       const activity = message.data.match(ANDROID_ACTIVITY_REGEX);
       if (activity != null) {
         targetType = ANDROID_TARGET_TYPE;
@@ -263,7 +266,7 @@ buckRoot) {
           level: 'info'
         });
       } else if (targetInfo.targetType === ANDROID_TARGET_TYPE) {
-        return _rxjsBundlesRxMinJs.Observable.fromPromise(debugAndroidActivity(buckRoot, targetInfo.targetApp)).ignoreElements().startWith({
+        return _rxjsBundlesRxMinJs.Observable.fromPromise(debugAndroidActivity(buckRoot, targetInfo.targetApp, deviceName, javaDebugger)).ignoreElements().startWith({
           type: 'log',
           message: `Attaching Java debugger to pid ${targetInfo.targetApp}...`,
           level: 'info'

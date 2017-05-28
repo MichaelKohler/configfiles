@@ -49,20 +49,25 @@ function _load_ChangedFilesList() {
   return _ChangedFilesList = _interopRequireDefault(require('./ChangedFilesList'));
 }
 
+var _Tree;
+
+function _load_Tree() {
+  return _Tree = require('./Tree');
+}
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
+const ANALYTICS_PREFIX = 'changed-files-view'; /**
+                                                * Copyright (c) 2015-present, Facebook, Inc.
+                                                * All rights reserved.
+                                                *
+                                                * This source code is licensed under the license found in the LICENSE file in
+                                                * the root directory of this source tree.
+                                                *
+                                                * 
+                                                * @format
+                                                */
 
-const ANALYTICS_PREFIX = 'changed-files-view';
 const DEFAULT_ANALYTICS_SOURCE_KEY = 'command';
 
 class MultiRootChangedFilesView extends _react.default.PureComponent {
@@ -252,21 +257,29 @@ class MultiRootChangedFilesView extends _react.default.PureComponent {
 
   render() {
     const {
+      checkedFiles: checkedFilesByRoot,
       commandPrefix,
       enableFileExpansion,
       enableInlineActions,
       fileChanges: fileChangesByRoot,
       fileStatuses: fileStatusesByRoot,
       hideEmptyFolders,
+      onFileChecked,
       onFileChosen,
       selectedFile
     } = this.props;
     if (fileStatusesByRoot.size === 0) {
       return _react.default.createElement(
-        'div',
-        null,
-        'No changes'
+        (_Tree || _load_Tree()).TreeList,
+        { showArrows: true },
+        _react.default.createElement(
+          (_Tree || _load_Tree()).TreeItem,
+          null,
+          'No changes'
+        )
       );
+      // The 'showArrows' is so CSS styling gives this the same indent as
+      // real changes do (which themselves have showArrows=true).
     }
     const shouldShowFolderName = fileStatusesByRoot.size > 1;
     return _react.default.createElement(
@@ -274,7 +287,9 @@ class MultiRootChangedFilesView extends _react.default.PureComponent {
       { className: 'nuclide-ui-multi-root-file-tree-container' },
       Array.from(fileStatusesByRoot.entries()).map(([root, fileStatuses]) => {
         const fileChanges = fileChangesByRoot == null ? null : fileChangesByRoot.get(root);
+        const checkedFiles = checkedFilesByRoot == null ? null : checkedFilesByRoot.get(root);
         return _react.default.createElement((_ChangedFilesList || _load_ChangedFilesList()).default, {
+          checkedFiles: checkedFiles,
           commandPrefix: commandPrefix,
           enableFileExpansion: enableFileExpansion === true,
           enableInlineActions: enableInlineActions === true,
@@ -284,6 +299,7 @@ class MultiRootChangedFilesView extends _react.default.PureComponent {
           key: root,
           onAddFile: this._handleAddFile,
           onDeleteFile: this._handleDeleteFile,
+          onFileChecked: onFileChecked,
           onFileChosen: onFileChosen,
           onForgetFile: this._handleForgetFile,
           onOpenFileInDiffView: this._handleOpenFileInDiffView,
@@ -301,3 +317,7 @@ class MultiRootChangedFilesView extends _react.default.PureComponent {
   }
 }
 exports.MultiRootChangedFilesView = MultiRootChangedFilesView;
+MultiRootChangedFilesView.defaultProps = {
+  checkedFiles: null,
+  onFileChecked: () => {}
+};

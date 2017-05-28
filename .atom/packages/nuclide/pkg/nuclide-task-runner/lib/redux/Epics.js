@@ -160,7 +160,7 @@ function setActiveTaskRunnerEpic(actions, store, options) {
         // Advertise the toolbar if there's a chance it's useful at this new working root.
         visibilityAction = _rxjsBundlesRxMinJs.Observable.of((_Actions || _load_Actions()).setToolbarVisibility(true, true));
       } else {
-        visibilityAction = _rxjsBundlesRxMinJs.Observable.empty();
+        visibilityAction = _rxjsBundlesRxMinJs.Observable.of((_Actions || _load_Actions()).setToolbarVisibility(false, false));
       }
       taskRunner = activeTaskRunner;
     }
@@ -205,14 +205,30 @@ function combineTaskRunnerStatesEpic(actions, store, options) {
 }
 
 function toggleToolbarVisibilityEpic(actions, store) {
-  return actions.ofType((_Actions || _load_Actions()).REQUEST_TOGGLE_TOOLBAR_VISIBILITY).map(action => {
+  return actions.ofType((_Actions || _load_Actions()).REQUEST_TOGGLE_TOOLBAR_VISIBILITY).flatMap(action => {
     if (!(action.type === (_Actions || _load_Actions()).REQUEST_TOGGLE_TOOLBAR_VISIBILITY)) {
       throw new Error('Invariant violation: "action.type === Actions.REQUEST_TOGGLE_TOOLBAR_VISIBILITY"');
     }
 
     const state = store.getState();
+    const { activeTaskRunner, projectRoot } = state;
+    const currentlyVisible = state.visible;
     const { visible, taskRunner } = action.payload;
-    return state.activeTaskRunner == null ? (_Actions || _load_Actions()).setToolbarVisibility(false, true) : (_Actions || _load_Actions()).toggleToolbarVisibility(visible, taskRunner);
+
+    if (visible === true || visible === null && !currentlyVisible) {
+      if (projectRoot == null) {
+        atom.notifications.addError('Add a project to use the task runner toolbar', {
+          dismissable: true
+        });
+        return _rxjsBundlesRxMinJs.Observable.empty();
+      } else if (activeTaskRunner == null) {
+        atom.notifications.addError('No task runner available for the current working root selected in file tree', {
+          dismissable: true
+        });
+        return _rxjsBundlesRxMinJs.Observable.of((_Actions || _load_Actions()).setToolbarVisibility(false, true));
+      }
+    }
+    return _rxjsBundlesRxMinJs.Observable.of((_Actions || _load_Actions()).toggleToolbarVisibility(visible, taskRunner));
   });
 }
 
@@ -226,23 +242,13 @@ function updatePreferredVisibilityEpic(actions, store, options) {
     const { projectRoot, activeTaskRunner } = store.getState();
 
     // Only act if responding to an explicit user action
-    if (updateUserPreferences) {
-      if (projectRoot == null) {
-        atom.notifications.addError('Add a project to use the task runner toolbar', {
-          dismissable: true
-        });
-      } else if (activeTaskRunner == null) {
-        atom.notifications.addError('No task runner available for the current working root selected in file tree', {
-          dismissable: true
-        });
-      } else {
-        // The user explicitly changed the visibility, remember this state
-        const { preferencesForWorkingRoots } = options;
-        preferencesForWorkingRoots.setItem(projectRoot.getPath(), {
-          taskRunnerId: activeTaskRunner.id,
-          visible
-        });
-      }
+    if (updateUserPreferences && projectRoot != null && activeTaskRunner != null) {
+      // The user explicitly changed the visibility, remember this state
+      const { preferencesForWorkingRoots } = options;
+      preferencesForWorkingRoots.setItem(projectRoot.getPath(), {
+        taskRunnerId: activeTaskRunner.id,
+        visible
+      });
     }
   }).ignoreElements();
 }

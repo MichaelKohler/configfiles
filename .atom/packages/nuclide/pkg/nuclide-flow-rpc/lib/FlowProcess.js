@@ -124,7 +124,9 @@ const NO_RETRY_ARGS = ['--retry-if-init', 'false', '--retries', '0', '--no-auto-
 const TEMP_SERVER_STATES = [(_FlowConstants || _load_FlowConstants()).ServerStatus.NOT_RUNNING, (_FlowConstants || _load_FlowConstants()).ServerStatus.BUSY, (_FlowConstants || _load_FlowConstants()).ServerStatus.INIT];
 
 class FlowProcess {
-  // The current state of the Flow server in this directory
+  // The path to the directory where the .flowconfig is -- i.e. the root of the Flow project.
+
+  // If we had to start a Flow server, store the process here so we can kill it when we shut down.
   constructor(root, execInfoContainer) {
     this._subscriptions = new (_UniversalDisposable || _load_UniversalDisposable()).default();
     this._execInfoContainer = execInfoContainer;
@@ -132,6 +134,7 @@ class FlowProcess {
     this._root = root;
     this._isDisposed = new _rxjsBundlesRxMinJs.BehaviorSubject(false);
 
+    this._optionalIDEConnections = new _rxjsBundlesRxMinJs.BehaviorSubject(null);
     this._ideConnections = this._createIDEConnectionStream();
 
     this._serverStatus.subscribe(status => {
@@ -157,9 +160,11 @@ class FlowProcess {
       (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)('flow-server-failed');
     });
   }
-  // The path to the directory where the .flowconfig is -- i.e. the root of the Flow project.
 
-  // If we had to start a Flow server, store the process here so we can kill it when we shut down.
+  // If someone subscribes to _ideConnections, we will also publish them here. But subscribing to
+  // this does not actually cause a connection to be created or maintained.
+
+  // The current state of the Flow server in this directory
 
 
   dispose() {
@@ -196,9 +201,14 @@ class FlowProcess {
     return this._ideConnections;
   }
 
+  // This will not cause an IDE connection to be established or maintained, and the return value is
+  // not safe to store. If there happens to be an IDE connection it will be returned.
+  getCurrentIDEConnection() {
+    return this._optionalIDEConnections.getValue();
+  }
+
   _createIDEConnectionStream() {
-    const optionalIDEConnections = new _rxjsBundlesRxMinJs.Subject();
-    this._subscriptions.add(optionalIDEConnections.filter(conn => conn != null).switchMap(conn => {
+    this._subscriptions.add(this._optionalIDEConnections.filter(conn => conn != null).switchMap(conn => {
       if (!(conn != null)) {
         throw new Error('Invariant violation: "conn != null"');
       }
@@ -223,7 +233,13 @@ class FlowProcess {
     // want to use it to more quickly update the Flow server status, but it's not crucial to
     // correctness so we only want to do this if somebody is using the IDE connections anyway.
     // Don't pass the Subject as an Observer since then it will complete if a client unsubscribes.
-    .do(conn => optionalIDEConnections.next(conn))
+    .do(conn => this._optionalIDEConnections.next(conn), () => {
+      // If we get an error, set the current ide connection to null
+      this._optionalIDEConnections.next(null);
+    }, () => {
+      // If we get a completion (happens when the downstream client unsubscribes), set the current ide connection to null.
+      this._optionalIDEConnections.next(null);
+    })
     // multicast and store the current connection and immediately deliver it to new subscribers
     .publishReplay(1).refCount();
   }

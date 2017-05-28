@@ -51,16 +51,18 @@ function _load_DeployEventStream() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const SOCKET_TIMEOUT = 30000; /**
-                               * Copyright (c) 2015-present, Facebook, Inc.
-                               * All rights reserved.
-                               *
-                               * This source code is licensed under the license found in the LICENSE file in
-                               * the root directory of this source tree.
-                               *
-                               * 
-                               * @format
-                               */
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ * @format
+ */
+
+const SOCKET_TIMEOUT = 30000;
 
 class BuckBuildSystem {
   constructor() {
@@ -87,7 +89,7 @@ class BuckBuildSystem {
     });
   }
 
-  runSubcommand(buckRoot, subcommand, buildTarget, taskSettings, isDebug, udid) {
+  runSubcommand(buckRoot, subcommand, buildTarget, taskSettings, isDebug, udid, javaDebuggerProvider) {
     // Clear Buck diagnostics every time we run a buck command.
     this._diagnosticInvalidations.next({ scope: 'all' });
     const buckService = (0, (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).getBuckServiceByNuclideUri)(buckRoot);
@@ -127,7 +129,7 @@ class BuckBuildSystem {
           throw Error('Timed out connecting to Buck server.');
         }
         throw err;
-      }).ignoreElements(), this._consumeEventStream(_rxjsBundlesRxMinJs.Observable.merge(mergedEvents, (_featureConfig || _load_featureConfig()).default.get('nuclide-buck.compileErrorDiagnostics') ? (0, (_BuckEventStream || _load_BuckEventStream()).getDiagnosticEvents)(mergedEvents, buckRoot) : _rxjsBundlesRxMinJs.Observable.empty(), isDebug && subcommand === 'install' ? (0, (_DeployEventStream || _load_DeployEventStream()).getDeployInstallEvents)(processMessages, buckRoot) : _rxjsBundlesRxMinJs.Observable.empty(), isDebug && subcommand === 'build' ? (0, (_DeployEventStream || _load_DeployEventStream()).getDeployBuildEvents)(processMessages, buckService, buckRoot, targetString, runArguments) : _rxjsBundlesRxMinJs.Observable.empty(), isDebug && subcommand === 'test' ? (0, (_DeployEventStream || _load_DeployEventStream()).getDeployTestEvents)(processMessages, buckRoot) : _rxjsBundlesRxMinJs.Observable.empty()), buckRoot));
+      }).ignoreElements(), this._consumeEventStream(_rxjsBundlesRxMinJs.Observable.merge(mergedEvents, (_featureConfig || _load_featureConfig()).default.get('nuclide-buck.compileErrorDiagnostics') ? (0, (_BuckEventStream || _load_BuckEventStream()).getDiagnosticEvents)(mergedEvents, buckRoot) : _rxjsBundlesRxMinJs.Observable.empty(), isDebug && subcommand === 'install' ? (0, (_DeployEventStream || _load_DeployEventStream()).getDeployInstallEvents)(processMessages, buckRoot, javaDebuggerProvider) : _rxjsBundlesRxMinJs.Observable.empty(), isDebug && subcommand === 'build' ? (0, (_DeployEventStream || _load_DeployEventStream()).getDeployBuildEvents)(processMessages, buckService, buckRoot, targetString, runArguments) : _rxjsBundlesRxMinJs.Observable.empty(), isDebug && subcommand === 'test' ? (0, (_DeployEventStream || _load_DeployEventStream()).getDeployTestEvents)(processMessages, buckRoot) : _rxjsBundlesRxMinJs.Observable.empty()), buckRoot));
     }).share();
   }
 

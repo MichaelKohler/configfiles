@@ -18,6 +18,14 @@ let checkDiagnostics = (() => {
   };
 })();
 
+var _observable;
+
+function _load_observable() {
+  return _observable = require('nuclide-commons/observable');
+}
+
+var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
+
 var _nuclideAnalytics;
 
 function _load_nuclideAnalytics() {
@@ -74,7 +82,7 @@ class RefactoringHelpers {
   }
 
   static refactor(request) {
-    return (0, (_nuclideAnalytics || _load_nuclideAnalytics()).trackTiming)('nuclide-clang:refactor', () => RefactoringHelpers._refactor(request));
+    return (0, (_observable || _load_observable()).compact)(_rxjsBundlesRxMinJs.Observable.fromPromise(RefactoringHelpers._refactor(request)));
   }
 
   // TODO(hansonw): Move this to the clang-rpc service.
@@ -106,6 +114,7 @@ class RefactoringHelpers {
       });
 
       return {
+        type: 'edit',
         edits: new Map([[path, edits]])
       };
     })();

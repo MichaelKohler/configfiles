@@ -27,24 +27,6 @@ function _load_collection() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
-
-/**
- * It tries to mimic what the top utility would report, but we have to do it manually because
- * different devices can have different versions of top.
- *
- * Reference for calculations: https://github.com/scaidermern/top-processes
- */
-
 class AdbTop {
 
   constructor(adb, device) {
@@ -56,7 +38,10 @@ class AdbTop {
     var _this = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      const [processes, cpuAndMemUsage] = yield Promise.all([_this._getProcessList(), _this._getProcessAndMemoryUsage()]);
+      const [processes, javaProcesses, cpuAndMemUsage] = yield Promise.all([_this._getProcessList(), _this._getJavaProcessList(), _this._getProcessAndMemoryUsage()]);
+      const javaPids = new Set(javaProcesses.map(function (javaProc) {
+        return Number(javaProc.pid);
+      }));
       return (0, (_collection || _load_collection()).arrayCompact)(processes.map(function (x) {
         const info = x.trim().split(/\s+/);
         const pid = parseInt(info[1], 10);
@@ -70,12 +55,14 @@ class AdbTop {
           cpu = parseFloat(cpuAndMem[0]);
           mem = parseFloat(cpuAndMem[1]);
         }
+        const isJava = javaPids.has(pid);
         return {
           user: info[0],
           pid,
           name: info[info.length - 1],
           cpuUsage: cpu,
-          memUsage: mem
+          memUsage: mem,
+          isJava
         };
       }));
     })();
@@ -89,13 +76,21 @@ class AdbTop {
     })();
   }
 
-  _getProcessAndMemoryUsage() {
+  _getJavaProcessList() {
     var _this3 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      const [procTimePrev, cpuTimePrev] = yield Promise.all([_this3._getProcessesTime(), _this3._getGlobalCPUTime()]);
+      return _this3._adb.getJavaProcesses(_this3._device);
+    })();
+  }
+
+  _getProcessAndMemoryUsage() {
+    var _this4 = this;
+
+    return (0, _asyncToGenerator.default)(function* () {
+      const [procTimePrev, cpuTimePrev] = yield Promise.all([_this4._getProcessesTime(), _this4._getGlobalCPUTime()]);
       yield (0, (_promise || _load_promise()).sleep)(500);
-      const [procTime, cpuTime] = yield Promise.all([_this3._getProcessesTime(), _this3._getGlobalCPUTime()]);
+      const [procTime, cpuTime] = yield Promise.all([_this4._getProcessesTime(), _this4._getGlobalCPUTime()]);
 
       // pid => cpuUsage, memory usage
       const cpuAndMemUsage = new Map();
@@ -119,13 +114,13 @@ class AdbTop {
    * Returns a map: pid => utime + stime
    */
   _getProcessesTime() {
-    var _this4 = this;
+    var _this5 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
       const validProcessRegex = new RegExp(/\d+\s()/);
       // We look for the all the /proc/PID/stat files failing silently if the process dies as the
       // command runs.
-      const procTime = (yield _this4._adb.runShortCommand(_this4._device, ['shell', 'for file in /proc/[0-9]*/stat; do cat "$file" 2>/dev/null || true; done']).toPromise()).split(/\n/).filter(function (x) {
+      const procTime = (yield _this5._adb.runShortCommand(_this5._device, ['shell', 'for file in /proc/[0-9]*/stat; do cat "$file" 2>/dev/null || true; done']).toPromise()).split(/\n/).filter(function (x) {
         return validProcessRegex.test(x);
       });
       return new Map(procTime.map(function (x) {
@@ -137,10 +132,10 @@ class AdbTop {
   }
 
   _getGlobalCPUTime() {
-    var _this5 = this;
+    var _this6 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      return (yield _this5._getGlobalProcessStat()).split(/\s+/).slice(1, -2).reduce(function (acc, current) {
+      return (yield _this6._getGlobalProcessStat()).split(/\s+/).slice(1, -2).reduce(function (acc, current) {
         const val = parseInt(current, 10);
         return acc + val;
       }, 0);
@@ -148,11 +143,27 @@ class AdbTop {
   }
 
   _getGlobalProcessStat() {
-    var _this6 = this;
+    var _this7 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      return (yield _this6._adb.runShortCommand(_this6._device, ['shell', 'cat', '/proc/stat']).toPromise()).split(/\n/)[0].trim();
+      return (yield _this7._adb.runShortCommand(_this7._device, ['shell', 'cat', '/proc/stat']).toPromise()).split(/\n/)[0].trim();
     })();
   }
 }
-exports.AdbTop = AdbTop;
+exports.AdbTop = AdbTop; /**
+                          * Copyright (c) 2015-present, Facebook, Inc.
+                          * All rights reserved.
+                          *
+                          * This source code is licensed under the license found in the LICENSE file in
+                          * the root directory of this source tree.
+                          *
+                          * 
+                          * @format
+                          */
+
+/**
+ * It tries to mimic what the top utility would report, but we have to do it manually because
+ * different devices can have different versions of top.
+ *
+ * Reference for calculations: https://github.com/scaidermern/top-processes
+ */

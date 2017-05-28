@@ -12,7 +12,7 @@ let getInfoTables = (() => {
     if (device == null) {
       return new Map();
     }
-    const sortedProviders = Array.from((0, (_providers || _load_providers()).getDeviceInfoProviders)()).filter(function (provider) {
+    const sortedProviders = Array.from((0, (_providers || _load_providers()).getProviders)().deviceInfo).filter(function (provider) {
       return provider.getType() === state.deviceType;
     }).sort(function (a, b) {
       const pa = a.getPriority === undefined ? -1 : a.getPriority();
@@ -21,10 +21,14 @@ let getInfoTables = (() => {
     });
     const infoTables = yield Promise.all(sortedProviders.map((() => {
       var _ref2 = (0, _asyncToGenerator.default)(function* (provider) {
-        if (!(yield provider.isSupported(state.host))) {
+        try {
+          if (!(yield provider.isSupported(state.host))) {
+            return null;
+          }
+          return [provider.getTitle(), yield provider.fetch(state.host, device.name)];
+        } catch (e) {
           return null;
         }
-        return [provider.getTitle(), yield provider.fetch(state.host, device.name)];
       });
 
       return function (_x2) {
@@ -45,7 +49,7 @@ let getProcessKiller = (() => {
     if (device == null) {
       return null;
     }
-    const providers = Array.from((0, (_providers || _load_providers()).getDeviceProcessesProviders)()).filter(function (provider) {
+    const providers = Array.from((0, (_providers || _load_providers()).getProviders)().deviceProcesses).filter(function (provider) {
       return provider.getType() === state.deviceType;
     });
     if (providers[0] != null) {
@@ -61,28 +65,40 @@ let getProcessKiller = (() => {
   };
 })();
 
+// The actual device tasks are cached so that if a task is running when the store switches back and
+// forth from the device associated with that task, the same running task is used
+
+
 let getDeviceTasks = (() => {
   var _ref4 = (0, _asyncToGenerator.default)(function* (state) {
     const device = state.device;
     if (device == null) {
       return [];
     }
-    const actions = yield Promise.all(Array.from((0, (_providers || _load_providers()).getDeviceTasksProviders)()).filter(function (provider) {
+    const actions = yield Promise.all(Array.from((0, (_providers || _load_providers()).getProviders)().deviceTask).filter(function (provider) {
       return provider.getType() === state.deviceType;
     }).map((() => {
       var _ref5 = (0, _asyncToGenerator.default)(function* (provider) {
-        if (!(yield provider.isSupported(state.host))) {
+        try {
+          if (!(yield provider.isSupported(state.host))) {
+            return null;
+          }
+          return deviceTaskCache.getOrCreate(`${state.host}-${device.name}-${provider.getName()}`, function () {
+            return new (_DeviceTask || _load_DeviceTask()).DeviceTask(function () {
+              return provider.getTask(state.host, device.name);
+            }, provider.getName());
+          });
+        } catch (e) {
           return null;
         }
-        return provider.getTasks(state.host, device.name);
       });
 
       return function (_x5) {
         return _ref5.apply(this, arguments);
       };
     })()));
-    return (0, (_collection || _load_collection()).arrayFlatten)((0, (_collection || _load_collection()).arrayCompact)(actions)).sort(function (a, b) {
-      return a.name.localeCompare(b.name);
+    return (0, (_collection || _load_collection()).arrayCompact)(actions).sort(function (a, b) {
+      return a.getName().localeCompare(b.getName());
     });
   });
 
@@ -113,6 +129,18 @@ function _load_providers() {
   return _providers = require('../providers');
 }
 
+var _DeviceTask;
+
+function _load_DeviceTask() {
+  return _DeviceTask = require('../DeviceTask');
+}
+
+var _Cache;
+
+function _load_Cache() {
+  return _Cache = require('../Cache');
+}
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -138,3 +166,5 @@ function setDeviceEpic(actions, store) {
     return _rxjsBundlesRxMinJs.Observable.merge(_rxjsBundlesRxMinJs.Observable.fromPromise(getInfoTables(state)).switchMap(infoTables => _rxjsBundlesRxMinJs.Observable.of((_Actions || _load_Actions()).setInfoTables(infoTables))), _rxjsBundlesRxMinJs.Observable.fromPromise(getProcessKiller(state)).switchMap(processKiller => _rxjsBundlesRxMinJs.Observable.of((_Actions || _load_Actions()).setProcesKiller(processKiller))), _rxjsBundlesRxMinJs.Observable.fromPromise(getDeviceTasks(state)).switchMap(deviceTasks => _rxjsBundlesRxMinJs.Observable.of((_Actions || _load_Actions()).setDeviceTasks(deviceTasks))));
   });
 }
+
+const deviceTaskCache = (0, (_Cache || _load_Cache()).createCache)();

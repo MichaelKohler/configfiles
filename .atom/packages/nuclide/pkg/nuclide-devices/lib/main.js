@@ -1,5 +1,10 @@
 'use strict';
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.consumeJavaDebuggerApi = consumeJavaDebuggerApi;
+
 var _createPackage;
 
 function _load_createPackage() {
@@ -44,6 +49,12 @@ function _load_createEmptyAppState() {
   return _createEmptyAppState = require('./redux/createEmptyAppState');
 }
 
+var _JavaDebuggerApi;
+
+function _load_JavaDebuggerApi() {
+  return _JavaDebuggerApi = require('./JavaDebuggerApi');
+}
+
 var _Reducers;
 
 function _load_Reducers() {
@@ -78,6 +89,19 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ * @format
+ */
+
+let activation = null;
+
 class Activation {
 
   constructor(state) {
@@ -108,84 +132,43 @@ class Activation {
   }
 
   _refreshDeviceTypes() {
-    this._store.dispatch((_Actions || _load_Actions()).setDeviceTypes(Array.from((0, (_providers || _load_providers()).getDeviceListProviders)()).map(p => p.getType())));
+    this._store.dispatch((_Actions || _load_Actions()).setDeviceTypes(Array.from((0, (_providers || _load_providers()).getProviders)().deviceList).map(p => p.getType())));
+  }
+
+  _createProviderRegistration(providers, onDispose) {
+    return provider => {
+      if (!(activation != null)) {
+        throw new Error('Device panel service API used after deactivation');
+      }
+
+      providers.add(provider);
+      if (onDispose != null) {
+        onDispose();
+      }
+      return new _atom.Disposable(() => {
+        if (activation != null) {
+          providers.delete(provider);
+        }
+      });
+    };
   }
 
   provideDevicePanelServiceApi() {
-    let pkg = this;
+    activation = this;
     this._disposables.add(() => {
-      pkg = null;
+      activation = null;
     });
-    const expiredPackageMessage = 'Device panel service API used after deactivation';
     return {
-      registerListProvider: provider => {
-        if (!(pkg != null)) {
-          throw new Error(expiredPackageMessage);
-        }
-
-        const providers = (0, (_providers || _load_providers()).getDeviceListProviders)();
-        providers.add(provider);
-        this._refreshDeviceTypes();
-        return new _atom.Disposable(() => {
-          if (pkg != null) {
-            providers.delete(provider);
-            this._refreshDeviceTypes();
-          }
-        });
-      },
-      registerInfoProvider: provider => {
-        if (!(pkg != null)) {
-          throw new Error(expiredPackageMessage);
-        }
-
-        const providers = (0, (_providers || _load_providers()).getDeviceInfoProviders)();
-        providers.add(provider);
-        return new _atom.Disposable(() => {
-          if (pkg != null) {
-            providers.delete(provider);
-          }
-        });
-      },
-      registerProcessesProvider: provider => {
-        if (!(pkg != null)) {
-          throw new Error(expiredPackageMessage);
-        }
-
-        const providers = (0, (_providers || _load_providers()).getDeviceProcessesProviders)();
-        providers.add(provider);
-        return new _atom.Disposable(() => {
-          if (pkg != null) {
-            providers.delete(provider);
-          }
-        });
-      },
-      registerTasksProvider: provider => {
-        if (!(pkg != null)) {
-          throw new Error(expiredPackageMessage);
-        }
-
-        const providers = (0, (_providers || _load_providers()).getDeviceTasksProviders)();
-        providers.add(provider);
-        return new _atom.Disposable(() => {
-          if (pkg != null) {
-            if (typeof provider.dispose === 'function') {
-              provider.dispose();
-            }
-            providers.delete(provider);
-          }
-        });
-      }
+      registerListProvider: this._createProviderRegistration((0, (_providers || _load_providers()).getProviders)().deviceList, () => this._refreshDeviceTypes()),
+      registerInfoProvider: this._createProviderRegistration((0, (_providers || _load_providers()).getProviders)().deviceInfo),
+      registerProcessesProvider: this._createProviderRegistration((0, (_providers || _load_providers()).getProviders)().deviceProcesses),
+      registerTaskProvider: this._createProviderRegistration((0, (_providers || _load_providers()).getProviders)().deviceTask)
     };
   }
-} /**
-   * Copyright (c) 2015-present, Facebook, Inc.
-   * All rights reserved.
-   *
-   * This source code is licensed under the license found in the LICENSE file in
-   * the root directory of this source tree.
-   *
-   * 
-   * @format
-   */
+}
+
+function consumeJavaDebuggerApi(api) {
+  (0, (_JavaDebuggerApi || _load_JavaDebuggerApi()).setJavaDebuggerApi)(api);
+}
 
 (0, (_createPackage || _load_createPackage()).default)(module.exports, Activation);

@@ -6,16 +6,16 @@ Object.defineProperty(exports, "__esModule", {
 
 var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
 
+var _analytics;
+
+function _load_analytics() {
+  return _analytics = _interopRequireDefault(require('nuclide-commons-atom/analytics'));
+}
+
 var _collection;
 
 function _load_collection() {
   return _collection = require('nuclide-commons/collection');
-}
-
-var _nuclideAnalytics;
-
-function _load_nuclideAnalytics() {
-  return _nuclideAnalytics = require('../../nuclide-analytics');
 }
 
 var _nuclideLogging;
@@ -66,7 +66,7 @@ class TypeHintManager {
         name = 'unknown';
         logger.error('Type hint provider has no name', provider);
       }
-      const typeHint = yield (0, (_nuclideAnalytics || _load_nuclideAnalytics()).trackTiming)(name + '.typeHint', function () {
+      const typeHint = yield (_analytics || _load_analytics()).default.trackTiming(name + '.typeHint', function () {
         return provider.typeHint(editor, position);
       });
       if (!typeHint || _this._marker) {
@@ -74,7 +74,7 @@ class TypeHintManager {
       }
       const { hint, range } = typeHint;
       // We track the timing above, but we still want to know the number of popups that are shown.
-      (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)('type-hint-popup', {
+      (_analytics || _load_analytics()).default.track('type-hint-popup', {
         scope: scopeName,
         message: hint
       });

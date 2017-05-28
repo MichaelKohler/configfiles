@@ -4,6 +4,12 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _analytics;
+
+function _load_analytics() {
+  return _analytics = _interopRequireDefault(require('nuclide-commons-atom/analytics'));
+}
+
 var _DiagnosticsPane;
 
 function _load_DiagnosticsPane() {
@@ -46,12 +52,6 @@ var _Button;
 
 function _load_Button() {
   return _Button = require('nuclide-commons-ui/Button');
-}
-
-var _nuclideAnalytics;
-
-function _load_nuclideAnalytics() {
-  return _nuclideAnalytics = require('../../nuclide-analytics');
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -194,14 +194,14 @@ class DiagnosticsPanel extends _react.default.Component {
   }
 
   _onShowTracesChange(isChecked) {
-    (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)('diagnostics-panel-toggle-show-traces', {
+    (_analytics || _load_analytics()).default.track('diagnostics-panel-toggle-show-traces', {
       isChecked: isChecked.toString()
     });
     this.props.onShowTracesChange.call(null, isChecked);
   }
 
   _onFilterByActiveTextEditorChange(isChecked) {
-    (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)('diagnostics-panel-toggle-current-file', {
+    (_analytics || _load_analytics()).default.track('diagnostics-panel-toggle-current-file', {
       isChecked: isChecked.toString()
     });
     this.props.onFilterByActiveTextEditorChange.call(null, isChecked);

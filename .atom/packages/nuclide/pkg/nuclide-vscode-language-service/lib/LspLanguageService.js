@@ -65,6 +65,8 @@ function _load_vscodeJsonrpc() {
   return _vscodeJsonrpc = _interopRequireWildcard(require('vscode-jsonrpc'));
 }
 
+var _url = _interopRequireDefault(require('url'));
+
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
 
 var _UniversalDisposable;
@@ -109,6 +111,17 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // Marshals messages from Nuclide's LanguageService
 // to VS Code's Language Server Protocol
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ * @format
+ */
+
 class LspLanguageService {
   // tracks which fileversions we've sent to LSP
 
@@ -259,6 +272,7 @@ class LspLanguageService {
 
         jsonRpcConnection.listen();
 
+        // TODO: (asiandrummer, ljw) `rootPath` should be a file URI (`file://`).
         const params = {
           initializationOptions: {},
           processId: process.pid,
@@ -511,12 +525,17 @@ class LspLanguageService {
       return;
     }
 
+    const prevState = this._state;
     this._state = 'Stopped';
     if (this._lspConnection != null) {
       this._lspConnection.dispose();
     }
 
     // Should we restart or not? depends...
+    if (prevState !== 'Running') {
+      this._logger.logError("Lsp.Close - wasn't running, so won't restart.");
+      return;
+    }
     const now = Date.now();
     this._recentRestarts.push(now);
     while (this._recentRestarts[0] < now - 3 * 60 * 1000) {
@@ -642,6 +661,7 @@ class LspLanguageService {
     if (!this._derivedServerCapabilities.serverWantsOpenClose) {
       return;
     }
+    // TODO: (asiandrummer, ljw) `uri` should be a file URI (`file://`).
     const params = {
       textDocument: {
         uri: fileEvent.fileVersion.filePath,
@@ -661,6 +681,7 @@ class LspLanguageService {
     if (!this._derivedServerCapabilities.serverWantsOpenClose) {
       return;
     }
+    // TODO: (asiandrummer, ljw) `uri` should be a file URI (`file://`).
     const params = {
       textDocument: {
         uri: fileEvent.fileVersion.filePath
@@ -698,6 +719,7 @@ class LspLanguageService {
       // unreachable
     }
 
+    // TODO: (asiandrummer, ljw) `uri` should be a file URI (`file://`).
     const params = {
       textDocument: {
         uri: fileEvent.fileVersion.filePath,
@@ -718,6 +740,7 @@ class LspLanguageService {
     // we reach state 'Running'.
 
     // First some helper functions to map LSP into Nuclide data structures...
+    // TODO: (asiandrummer, ljw) `filePath` should be a file URI (`file://`).
     const convertOne = (filePath, diagnostic) => {
       return {
         // TODO: diagnostic.code
@@ -731,9 +754,10 @@ class LspLanguageService {
     };
 
     const convert = params => {
+      const filePath = this._convertLspUriToNuclideUri(params.uri);
       return {
-        filePath: params.uri,
-        messages: params.diagnostics.map(d => convertOne(params.uri, d))
+        filePath,
+        messages: params.diagnostics.map(d => convertOne(filePath, d))
       };
     };
 
@@ -1194,6 +1218,35 @@ class LspLanguageService {
     return Promise.resolve(false);
   }
 
+  // TODO: (asiandrummer) LSP implementations should honor file URI protocol.
+  // For now, check if the URI starts with the scheme, and strip it out
+  // manually.
+  // For cases where the parsed URI does not contain a correct URI protocol
+  // and/or a pathname (e.g: an empty string, or a non-file URI (nuclide:// or
+  // http:// with a webpage URL)), log an error and return the raw URI.
+  _convertLspUriToNuclideUri(uri) {
+    const urlObject = _url.default.parse(uri);
+    // LSP should only send URI with `file:` protocol or without any protocol.
+    if (urlObject.protocol !== 'file:' && urlObject.protocol) {
+      this._logger.logError(`Incorrect URI protocol ${urlObject.protocol} - using the raw URI instead.`);
+      return uri;
+    }
+
+    if (!urlObject.pathname) {
+      this._logger.logError('URI pathname does not exist - using the raw URI instead.');
+      return uri;
+    }
+
+    return urlObject.pathname;
+  }
+
+  // TODO: (asiandrummer) This function should use the converted URI from
+  // this._convertLspUriToNuclideUri function, but because the converted URI
+  // is being used to be compared with the URI from fileCache, it's a little
+  // more dangerous to switch to it than others.
+  // Since GraphQL language service is the only one with the different URI
+  // format, and it does not implement the `find references` feature yet,
+  // we can defer dealing with the URI conversion until then.
   locationToFindReference(location) {
     return {
       uri: location.uri,
@@ -1204,7 +1257,7 @@ class LspLanguageService {
 
   locationToDefinition(location) {
     return {
-      path: location.uri,
+      path: this._convertLspUriToNuclideUri(location.uri),
       position: positionToPoint(location.range.start),
       language: 'Python', // TODO
       projectRoot: this._projectRoot
@@ -1220,17 +1273,7 @@ class LspLanguageService {
   }
 }
 
-exports.LspLanguageService = LspLanguageService; /**
-                                                  * Copyright (c) 2015-present, Facebook, Inc.
-                                                  * All rights reserved.
-                                                  *
-                                                  * This source code is licensed under the license found in the LICENSE file in
-                                                  * the root directory of this source tree.
-                                                  *
-                                                  * 
-                                                  * @format
-                                                  */
-
+exports.LspLanguageService = LspLanguageService;
 class DerivedServerCapabilities {
 
   constructor(capabilities, logger) {
@@ -1268,6 +1311,7 @@ class DerivedServerCapabilities {
   }
 }
 
+// TODO: (asiandrummer, ljw) `filePath` should be a file URI (`file://`).
 function toTextDocumentIdentifier(filePath) {
   return {
     uri: filePath
@@ -1310,6 +1354,7 @@ function convertSeverity(severity) {
   }
 }
 
+// TODO: (asiandrummer, ljw) `filePath` should be a file URI (`file://`).
 function createTextDocumentPositionParams(filePath, position) {
   return {
     textDocument: toTextDocumentIdentifier(filePath),
@@ -1440,7 +1485,7 @@ function convertSearchResult(info) {
     }
   }
   return {
-    path: info.location.uri,
+    path: this._convertLspUriToNuclideUri(info.location.uri),
     line: info.location.range.start.line,
     column: info.location.range.start.character,
     name: info.name,

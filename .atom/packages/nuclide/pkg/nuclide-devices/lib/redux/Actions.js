@@ -3,6 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.SET_PROCESS_KILLER = exports.SET_PROCESSES = exports.SET_INFO_TABLES = exports.SET_HOST = exports.SET_HOSTS = exports.SET_DEVICE_TASKS = exports.SET_DEVICE = exports.SET_DEVICES = exports.SET_DEVICE_TYPE = exports.SET_DEVICE_TYPES = undefined;
 exports.setInfoTables = setInfoTables;
 exports.setProcesses = setProcesses;
 exports.setProcesKiller = setProcesKiller;
@@ -13,18 +14,24 @@ exports.setDeviceType = setDeviceType;
 exports.setDeviceTypes = setDeviceTypes;
 exports.setDevice = setDevice;
 exports.setDeviceTasks = setDeviceTasks;
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
 
-const SET_DEVICE_TYPES = exports.SET_DEVICE_TYPES = 'SET_DEVICE_TYPES';
+var _DeviceTask;
+
+function _load_DeviceTask() {
+  return _DeviceTask = require('../DeviceTask');
+}
+
+const SET_DEVICE_TYPES = exports.SET_DEVICE_TYPES = 'SET_DEVICE_TYPES'; /**
+                                                                         * Copyright (c) 2015-present, Facebook, Inc.
+                                                                         * All rights reserved.
+                                                                         *
+                                                                         * This source code is licensed under the license found in the LICENSE file in
+                                                                         * the root directory of this source tree.
+                                                                         *
+                                                                         * 
+                                                                         * @format
+                                                                         */
+
 const SET_DEVICE_TYPE = exports.SET_DEVICE_TYPE = 'SET_DEVICE_TYPE';
 const SET_DEVICES = exports.SET_DEVICES = 'SET_DEVICES';
 const SET_DEVICE = exports.SET_DEVICE = 'SET_DEVICE';

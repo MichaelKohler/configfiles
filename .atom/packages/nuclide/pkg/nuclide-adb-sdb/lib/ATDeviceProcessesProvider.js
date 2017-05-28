@@ -30,7 +30,7 @@ class ATDeviceProcessesProvider {
   }
 
   observe(host, device) {
-    return _rxjsBundlesRxMinJs.Observable.interval(3000).startWith(0).switchMap(() => _rxjsBundlesRxMinJs.Observable.fromPromise(this._rpcFactory(host).getProcesses(device)));
+    return _rxjsBundlesRxMinJs.Observable.interval(3000).startWith(0).switchMap(() => _rxjsBundlesRxMinJs.Observable.fromPromise(this._rpcFactory(host).getProcesses(device).catch(() => [])));
   }
 
   getType() {

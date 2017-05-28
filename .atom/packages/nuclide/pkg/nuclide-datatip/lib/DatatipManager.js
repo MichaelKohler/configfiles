@@ -18,7 +18,7 @@ let getTopDatatipAndProvider = (() => {
     const datatipPromises = providers.map((() => {
       var _ref2 = (0, _asyncToGenerator.default)(function* (provider) {
         const name = getProviderName(provider);
-        const timingTracker = new (_nuclideAnalytics || _load_nuclideAnalytics()).TimingTracker(name + '.datatip');
+        const timingTracker = new (_analytics || _load_analytics()).default.TimingTracker(name + '.datatip');
         try {
           const datatip = yield invoke(provider);
           if (!datatip) {
@@ -57,6 +57,12 @@ var _react = _interopRequireDefault(require('react'));
 
 var _reactDom = _interopRequireDefault(require('react-dom'));
 
+var _analytics;
+
+function _load_analytics() {
+  return _analytics = _interopRequireDefault(require('nuclide-commons-atom/analytics'));
+}
+
 var _debounce;
 
 function _load_debounce() {
@@ -67,12 +73,6 @@ var _collection;
 
 function _load_collection() {
   return _collection = require('nuclide-commons/collection');
-}
-
-var _nuclideAnalytics;
-
-function _load_nuclideAnalytics() {
-  return _nuclideAnalytics = require('../../nuclide-analytics');
 }
 
 var _nuclideLogging;
@@ -451,7 +451,7 @@ class DatatipManagerForEditor {
       }
 
       const range = datatipsAndProviders[0].datatip.range;
-      (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)('datatip-popup', {
+      (_analytics || _load_analytics()).default.track('datatip-popup', {
         scope: _this2._editor.getGrammar().scopeName,
         providerName: getProviderName(datatipsAndProviders[0].provider),
         rangeStartRow: String(range.start.row),
@@ -554,13 +554,13 @@ class DatatipManagerForEditor {
 
 var _initialiseProps = function () {
   this._handlePinClicked = (editor, datatip) => {
-    (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)('datatip-pinned-open');
+    (_analytics || _load_analytics()).default.track('datatip-pinned-open');
     const startTime = (0, (_performanceNow || _load_performanceNow()).default)();
     this._setState(DatatipState.HIDDEN);
     this._pinnedDatatips.add(new (_PinnedDatatip || _load_PinnedDatatip()).PinnedDatatip(datatip, editor,
     /* onDispose */pinnedDatatip => {
       this._pinnedDatatips.delete(pinnedDatatip);
-      (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)('datatip-pinned-close', {
+      (_analytics || _load_analytics()).default.track('datatip-pinned-close', {
         duration: (0, (_performanceNow || _load_performanceNow()).default)() - startTime
       });
     },

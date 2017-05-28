@@ -38,7 +38,7 @@ class Bridge {
     this._handleIpcMessage = this._handleIpcMessage.bind(this);
     this._debuggerModel = debuggerModel;
     this._suppressBreakpointSync = false;
-    this._commandDipatcher = new (_CommandDispatcher || _load_CommandDispatcher()).default();
+    this._commandDispatcher = new (_CommandDispatcher || _load_CommandDispatcher()).default();
     this._disposables = new (_UniversalDisposable || _load_UniversalDisposable()).default(debuggerModel.getBreakpointStore().onUserChange(this._handleUserBreakpointChange.bind(this)));
   }
   // Contains disposable items should be disposed by
@@ -59,51 +59,55 @@ class Bridge {
   }
 
   continue() {
-    this._commandDipatcher.send('Continue');
+    this._commandDispatcher.send('Continue');
   }
 
   stepOver() {
-    this._commandDipatcher.send('StepOver');
+    this._commandDispatcher.send('StepOver');
   }
 
   stepInto() {
-    this._commandDipatcher.send('StepInto');
+    this._commandDispatcher.send('StepInto');
   }
 
   stepOut() {
-    this._commandDipatcher.send('StepOut');
+    this._commandDispatcher.send('StepOut');
   }
 
   runToLocation(filePath, line) {
-    this._commandDipatcher.send('RunToLocation', filePath, line);
+    this._commandDispatcher.send('RunToLocation', filePath, line);
   }
 
   triggerAction(actionId) {
-    this._commandDipatcher.send('triggerDebuggerAction', actionId);
+    this._commandDispatcher.send('triggerDebuggerAction', actionId);
   }
 
   setSelectedCallFrameIndex(callFrameIndex) {
-    this._commandDipatcher.send('setSelectedCallFrameIndex', callFrameIndex);
+    this._commandDispatcher.send('setSelectedCallFrameIndex', callFrameIndex);
   }
 
   setPauseOnException(pauseOnExceptionEnabled) {
-    this._commandDipatcher.send('setPauseOnException', pauseOnExceptionEnabled);
+    this._commandDispatcher.send('setPauseOnException', pauseOnExceptionEnabled);
   }
 
   setPauseOnCaughtException(pauseOnCaughtExceptionEnabled) {
-    this._commandDipatcher.send('setPauseOnCaughtException', pauseOnCaughtExceptionEnabled);
+    this._commandDispatcher.send('setPauseOnCaughtException', pauseOnCaughtExceptionEnabled);
   }
 
   setSingleThreadStepping(singleThreadStepping) {
-    this._commandDipatcher.send('setSingleThreadStepping', singleThreadStepping);
+    this._commandDispatcher.send('setSingleThreadStepping', singleThreadStepping);
   }
 
   selectThread(threadId) {
-    this._commandDipatcher.send('selectThread', threadId);
+    this._commandDispatcher.send('selectThread', threadId);
+    const threadNo = parseInt(threadId, 10);
+    if (!isNaN(threadNo)) {
+      this._debuggerModel.getActions().updateSelectedThread(threadNo);
+    }
   }
 
   sendEvaluationCommand(command, evalId, ...args) {
-    this._commandDipatcher.send(command, evalId, ...args);
+    this._commandDispatcher.send(command, evalId, ...args);
   }
 
   _handleExpressionEvaluationResponse(response) {
@@ -187,7 +191,7 @@ class Bridge {
   }
 
   _updateDebuggerSettings() {
-    this._commandDipatcher.send('UpdateSettings', this._debuggerModel.getStore().getSettings().getSerializedData());
+    this._commandDispatcher.send('UpdateSettings', this._debuggerModel.getStore().getSettings().getSerializedData());
   }
 
   _syncDebuggerState() {
@@ -267,7 +271,7 @@ class Bridge {
 
   _handleUserBreakpointChange(params) {
     const { action, breakpoint } = params;
-    this._commandDipatcher.send(action, {
+    this._commandDispatcher.send(action, {
       sourceURL: (_nuclideUri || _load_nuclideUri()).default.nuclideUriToUri(breakpoint.path),
       lineNumber: breakpoint.line,
       condition: breakpoint.condition,
@@ -299,7 +303,7 @@ class Bridge {
           enabled: breakpoint.enabled
         });
       });
-      this._commandDipatcher.send('SyncBreakpoints', results);
+      this._commandDispatcher.send('SyncBreakpoints', results);
     }
   }
 
@@ -335,7 +339,7 @@ class Bridge {
   // Exposed for tests
   _setWebviewElement(webview) {
     this._webview = webview;
-    this._commandDipatcher.setupChromeChannel(webview);
+    this._commandDispatcher.setupChromeChannel(webview);
 
     if (!(this._cleanupDisposables == null)) {
       throw new Error('Invariant violation: "this._cleanupDisposables == null"');
@@ -349,7 +353,7 @@ class Bridge {
   }
 
   setupNuclideChannel(debuggerInstance) {
-    return this._commandDipatcher.setupNuclideChannel(debuggerInstance);
+    return this._commandDispatcher.setupNuclideChannel(debuggerInstance);
   }
 
   openDevTools() {

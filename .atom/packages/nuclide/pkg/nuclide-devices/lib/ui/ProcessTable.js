@@ -5,6 +5,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ProcessTable = undefined;
 
+var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
+
 var _react = _interopRequireDefault(require('react'));
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
@@ -31,6 +33,24 @@ var _Icon;
 
 function _load_Icon() {
   return _Icon = require('nuclide-commons-ui/Icon');
+}
+
+var _nuclideRemoteConnection;
+
+function _load_nuclideRemoteConnection() {
+  return _nuclideRemoteConnection = require('../../../nuclide-remote-connection');
+}
+
+var _consumeFirstProvider;
+
+function _load_consumeFirstProvider() {
+  return _consumeFirstProvider = _interopRequireDefault(require('../../../commons-atom/consumeFirstProvider'));
+}
+
+var _JavaDebuggerApi;
+
+function _load_JavaDebuggerApi() {
+  return _JavaDebuggerApi = require('../JavaDebuggerApi');
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -84,7 +104,7 @@ class ProcessTable extends _react.default.Component {
       return processes;
     }
     // compare numerically pid, cpu and mem
-    const compare = ['cpuUsage', 'memUsage', 'pid'].includes(sortedColumnName) ? (a, b, isAsc) => {
+    const compare = ['cpuUsage', 'memUsage', 'pid', 'debug'].includes(sortedColumnName) ? (a, b, isAsc) => {
       const cmp = (a || Number.NEGATIVE_INFINITY) - (b || Number.NEGATIVE_INFINITY);
       return isAsc ? cmp : -cmp;
     } : (a, b, isAsc) => {
@@ -109,7 +129,8 @@ class ProcessTable extends _react.default.Component {
         user: item.user,
         name: item.name,
         cpuUsage: this._formatCpuUsage(item.cpuUsage),
-        memUsage: this._formatMemUsage(item.memUsage)
+        memUsage: this._formatMemUsage(item.memUsage),
+        debug: this._getDebugButton(item)
       }
     }));
     const columns = [{
@@ -119,11 +140,11 @@ class ProcessTable extends _react.default.Component {
     }, {
       key: 'name',
       title: 'Name',
-      width: 0.38
+      width: 0.31
     }, {
       key: 'user',
       title: 'User',
-      width: 0.15
+      width: 0.13
     }, {
       key: 'cpuUsage',
       title: 'CPU',
@@ -132,6 +153,10 @@ class ProcessTable extends _react.default.Component {
       key: 'memUsage',
       title: 'Mem',
       width: 0.15
+    }, {
+      key: 'debug',
+      title: 'Debug',
+      width: 0.08
     }];
     const emptyComponent = () => _react.default.createElement(
       'div',
@@ -166,6 +191,45 @@ class ProcessTable extends _react.default.Component {
     this.setState({
       filterText: text
     });
+  }
+
+  _getDebugButton(item) {
+    if (item.isJava) {
+      return _react.default.createElement((_Icon || _load_Icon()).Icon, {
+        className: 'nuclide-device-panel-debug-button',
+        icon: 'nuclicon-debugger',
+        title: 'Attach Java debugger',
+        onClick: () => this._debugJavaProcess(item.pid)
+      });
+    }
+
+    return null;
+  }
+
+  _debugJavaProcess(pid) {
+    var _this = this;
+
+    return (0, _asyncToGenerator.default)(function* () {
+      const service = (0, (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).getServiceByNuclideUri)('JavaDebuggerService', _this.props.host);
+      if (service == null) {
+        throw new Error('Java debugger service is not available.');
+      }
+
+      const debuggerService = yield (0, (_consumeFirstProvider || _load_consumeFirstProvider()).default)('nuclide-debugger.remote');
+      const deviceName = _this.props.device != null ? _this.props.device.name : '';
+      const javaDebugger = (0, (_JavaDebuggerApi || _load_JavaDebuggerApi()).getJavaDebuggerApi)();
+      if (javaDebugger != null) {
+        const debugInfo = javaDebugger.createAndroidDebugInfo({
+          targetUri: _this.props.host,
+          packageName: '',
+          device: deviceName,
+          pid
+        });
+        debuggerService.startDebugging(debugInfo);
+      } else {
+        atom.notifications.addWarning('The Java debugger service is not available.');
+      }
+    })();
   }
 
   _getKillButton(packageName) {

@@ -34,16 +34,16 @@ var _atom = require('atom');
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
 
+var _analytics;
+
+function _load_analytics() {
+  return _analytics = _interopRequireDefault(require('nuclide-commons-atom/analytics'));
+}
+
 var _ActiveEditorRegistry;
 
 function _load_ActiveEditorRegistry() {
   return _ActiveEditorRegistry = _interopRequireDefault(require('nuclide-commons-atom/ActiveEditorRegistry'));
-}
-
-var _nuclideAnalytics;
-
-function _load_nuclideAnalytics() {
-  return _nuclideAnalytics = require('../../nuclide-analytics');
 }
 
 var _UniversalDisposable;
@@ -92,7 +92,7 @@ class Activation {
 
     this._disposables.add(atom.commands.add('atom-workspace', 'nuclide-type-coverage:toggle-inline-display', () => this._toggleEvents.next()));
 
-    this._disposables.add(this._toggleEvents.subscribe(() => (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)('nuclide-type-coverage:toggle')));
+    this._disposables.add(this._toggleEvents.subscribe(() => (_analytics || _load_analytics()).default.track('nuclide-type-coverage:toggle')));
   }
 
   consumeCoverageProvider(provider) {

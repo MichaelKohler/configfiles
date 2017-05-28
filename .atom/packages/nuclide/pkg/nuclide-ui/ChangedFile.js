@@ -48,22 +48,33 @@ function _load_PathWithFileIcon() {
   return _PathWithFileIcon = _interopRequireDefault(require('./PathWithFileIcon'));
 }
 
+var _Checkbox;
+
+function _load_Checkbox() {
+  return _Checkbox = require('nuclide-commons-ui/Checkbox');
+}
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
+const ANALYTICS_SOURCE_KEY = 'inline'; /**
+                                        * Copyright (c) 2015-present, Facebook, Inc.
+                                        * All rights reserved.
+                                        *
+                                        * This source code is licensed under the license found in the LICENSE file in
+                                        * the root directory of this source tree.
+                                        *
+                                        * 
+                                        * @format
+                                        */
 
-const ANALYTICS_SOURCE_KEY = 'inline';
 const LF = '\u000A';
 class ChangedFile extends _react.default.Component {
+
+  constructor(props) {
+    super(props);
+
+    this._onCheckboxChange = this._onCheckboxChange.bind(this);
+  }
 
   _getFileClassname() {
     const { commandPrefix, fileStatus, isHgPath, isSelected } = this.props;
@@ -131,8 +142,18 @@ class ChangedFile extends _react.default.Component {
     , this.props.onOpenFileInDiffView.bind(this, filePath, ANALYTICS_SOURCE_KEY));
   }
 
+  _onCheckboxChange(isChecked) {
+    this.props.onFileChecked(this.props.filePath);
+  }
+
   render() {
-    const { enableInlineActions, isHgPath, filePath, fileStatus } = this.props;
+    const {
+      enableInlineActions,
+      isChecked,
+      isHgPath,
+      filePath,
+      fileStatus
+    } = this.props;
     const baseName = (_nuclideUri || _load_nuclideUri()).default.basename(filePath);
     let actions;
     if (enableInlineActions && isHgPath) {
@@ -162,6 +183,11 @@ class ChangedFile extends _react.default.Component {
     }
     const statusName = (_nuclideVcsBase || _load_nuclideVcsBase()).FileChangeStatusToLabel[fileStatus];
     const projectRelativePath = (0, (_projects || _load_projects()).getAtomProjectRelativePath)(filePath) || filePath;
+    const checkbox = isChecked != null ? _react.default.createElement((_Checkbox || _load_Checkbox()).Checkbox, {
+      className: 'nuclide-changed-file-checkbox',
+      checked: isChecked,
+      onChange: this._onCheckboxChange
+    }) : null;
     return _react.default.createElement(
       'li',
       {
@@ -170,6 +196,7 @@ class ChangedFile extends _react.default.Component {
         'data-root': this.props.rootPath,
         className: this._getFileClassname(),
         key: filePath },
+      checkbox,
       _react.default.createElement(
         'span',
         {

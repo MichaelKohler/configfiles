@@ -13,6 +13,12 @@ function _load_Button() {
   return _Button = require('nuclide-commons-ui/Button');
 }
 
+var _ConfirmRefactorComponent;
+
+function _load_ConfirmRefactorComponent() {
+  return _ConfirmRefactorComponent = require('./ConfirmRefactorComponent');
+}
+
 var _FreeformRefactorComponent;
 
 function _load_FreeformRefactorComponent() {
@@ -23,6 +29,12 @@ var _PickRefactorComponent;
 
 function _load_PickRefactorComponent() {
   return _PickRefactorComponent = require('./PickRefactorComponent');
+}
+
+var _ProgressComponent;
+
+function _load_ProgressComponent() {
+  return _ProgressComponent = require('./ProgressComponent');
 }
 
 var _RenameComponent;
@@ -111,8 +123,13 @@ class MainRefactorComponent extends _react.default.Component {
           null,
           'Executing refactoring...'
         );
+      case 'confirm':
+        return _react.default.createElement((_ConfirmRefactorComponent || _load_ConfirmRefactorComponent()).ConfirmRefactorComponent, { phase: phase, store: this.props.store });
+      case 'progress':
+        return _react.default.createElement((_ProgressComponent || _load_ProgressComponent()).ProgressComponent, { phase: phase });
       default:
-        throw new Error(`Unknown phase ${phase.type}`);
+        phase;
+        return _react.default.createElement('div', null);
     }
   }
 }

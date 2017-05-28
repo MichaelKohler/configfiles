@@ -45,10 +45,10 @@ function _load_textEditor() {
   return _textEditor = require('nuclide-commons-atom/text-editor');
 }
 
-var _nuclideAnalytics;
+var _analytics;
 
-function _load_nuclideAnalytics() {
-  return _nuclideAnalytics = require('../../nuclide-analytics');
+function _load_analytics() {
+  return _analytics = _interopRequireDefault(require('nuclide-commons-atom/analytics'));
 }
 
 var _featureConfig;
@@ -214,7 +214,7 @@ class DefinitionPreviewView extends _react.default.Component {
   }
 
   _openCurrentDefinitionInMainEditor() {
-    (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)('nuclide-definition-preview:openInMainEditor');
+    (_analytics || _load_analytics()).default.track('nuclide-definition-preview:openInMainEditor');
     const def = this.props.definition;
     if (def != null) {
       (0, (_goToLocation || _load_goToLocation()).goToLocation)(def.path, def.position.row, def.position.column, true);

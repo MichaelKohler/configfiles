@@ -94,6 +94,11 @@ class HyperclickPreviewManager {
 
       if (definitions.length === 1) {
         const definition = definitions.pop();
+        // Some providers (e.g. Flow) return negative positions.
+        if (definition.position.row < 0) {
+          return null;
+        }
+
         const { getDefinitionPreview } = (0, (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).getDefinitionPreviewServiceByNuclideUri)(definition.path);
 
         const definitionPreview = yield (0, (_nuclideAnalytics || _load_nuclideAnalytics()).trackTiming)('hyperclickPreview.getDefinitionPreview', function () {

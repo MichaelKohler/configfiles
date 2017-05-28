@@ -8,14 +8,14 @@ let tryCreateView = (() => {
       if (data == null) {
         showWarning('Symbol references are not available for this project.');
       } else if (data.type === 'error') {
-        (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)('find-references:error', { message: data.message });
+        (_analytics || _load_analytics()).default.track('find-references:error', { message: data.message });
         showWarning(data.message);
       } else if (!data.references.length) {
-        (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)('find-references:success', { resultCount: '0' });
+        (_analytics || _load_analytics()).default.track('find-references:success', { resultCount: '0' });
         showWarning('No references found.');
       } else {
         const { baseUri, referencedSymbolName, references } = data;
-        (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)('find-references:success', {
+        (_analytics || _load_analytics()).default.track('find-references:success', {
           baseUri,
           referencedSymbolName,
           resultCount: references.length.toString()
@@ -70,10 +70,10 @@ function _load_UniversalDisposable() {
   return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
-var _nuclideAnalytics;
+var _analytics;
 
-function _load_nuclideAnalytics() {
-  return _nuclideAnalytics = require('../../nuclide-analytics');
+function _load_analytics() {
+  return _analytics = _interopRequireDefault(require('nuclide-commons-atom/analytics'));
 }
 
 var _FindReferencesElement;
@@ -265,7 +265,7 @@ class Activation {
         return null;
       }
       const point = event != null ? (0, (_mouseToPosition || _load_mouseToPosition()).bufferPositionForMouseEvent)(event, editor) : editor.getCursorBufferPosition();
-      (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)('find-references:activate', {
+      (_analytics || _load_analytics()).default.track('find-references:activate', {
         path,
         row: point.row.toString(),
         column: point.column.toString()

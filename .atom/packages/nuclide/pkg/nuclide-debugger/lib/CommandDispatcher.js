@@ -52,6 +52,10 @@ class CommandDispatcher {
 
     return (0, _asyncToGenerator.default)(function* () {
       _this._useNewChannel = yield (0, (_passesGK || _load_passesGK()).default)('nuclide_new_debugger_protocol_channel', 10 * 1000);
+      if (!_this._useNewChannel) {
+        // Do not bother enable the new channel if not enabled.
+        return;
+      }
       return _this._bridgeAdapter.start(debuggerInstance);
     })();
   }

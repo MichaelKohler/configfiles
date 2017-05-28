@@ -9,7 +9,7 @@ var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
 
 let getDefinitionPreview = exports.getDefinitionPreview = (() => {
   var _ref = (0, _asyncToGenerator.default)(function* (definition) {
-    const contents = (yield (_fsPromise || _load_fsPromise()).default.readFile(definition.path)).toString();
+    const contents = yield (_fsPromise || _load_fsPromise()).default.readFile(definition.path, 'utf8');
     const lines = contents.split('\n');
 
     const start = definition.position.row;

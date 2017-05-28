@@ -71,7 +71,7 @@ class DevicesPanelState {
       if (state.deviceType === null) {
         return _rxjsBundlesRxMinJs.Observable.empty();
       }
-      for (const fetcher of (0, (_providers || _load_providers()).getDeviceListProviders)()) {
+      for (const fetcher of (0, (_providers || _load_providers()).getProviders)().deviceList) {
         if (fetcher.getType() === state.deviceType) {
           return fetcher.observe(state.host).do(devices => this._store.dispatch((_Actions || _load_Actions()).setDevices(devices)));
         }
@@ -82,7 +82,7 @@ class DevicesPanelState {
       if (state.device === null) {
         return _rxjsBundlesRxMinJs.Observable.empty();
       }
-      const providers = Array.from((0, (_providers || _load_providers()).getDeviceProcessesProviders)()).filter(provider => provider.getType() === state.deviceType);
+      const providers = Array.from((0, (_providers || _load_providers()).getProviders)().deviceProcesses).filter(provider => provider.getType() === state.deviceType);
       if (providers[0] != null) {
         return providers[0].observe(state.host, state.device.name);
       }
@@ -99,7 +99,7 @@ class DevicesPanelState {
   }
 
   getPreferredWidth() {
-    return 300;
+    return 400;
   }
 
   getURI() {

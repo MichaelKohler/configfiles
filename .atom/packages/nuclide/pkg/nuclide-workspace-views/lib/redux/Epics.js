@@ -25,10 +25,10 @@ function _load_event() {
   return _event = require('nuclide-commons/event');
 }
 
-var _nuclideAnalytics;
+var _analytics;
 
-function _load_nuclideAnalytics() {
-  return _nuclideAnalytics = require('../../../nuclide-analytics');
+function _load_analytics() {
+  return _analytics = _interopRequireDefault(require('nuclide-commons-atom/analytics'));
 }
 
 var _Actions;
@@ -45,9 +45,9 @@ function _load_getNewLocation() {
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -134,7 +134,7 @@ function trackEpic(actions, store) {
     }
 
     return action.payload.event;
-  }).do((_nuclideAnalytics || _load_nuclideAnalytics()).trackEvent).ignoreElements();
+  }).do((_analytics || _load_analytics()).default.trackEvent).ignoreElements();
 }
 
 function openEpic(actions, store) {

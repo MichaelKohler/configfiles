@@ -19,7 +19,9 @@ let getFilesFromRepo = (() => {
     });
 
     const fileLists = yield (0, (_promise || _load_promise()).asyncLimit)(subRoots, 20, function (subRoot) {
-      return getFilesFromGit((_nuclideUri || _load_nuclideUri()).default.join(localDirectory, subRoot)).then(function (files) {
+      return getFilesFromGit((_nuclideUri || _load_nuclideUri()).default.join(localDirectory, subRoot)).catch(function () {
+        return [];
+      }).then(function (files) {
         return files.map(function (file) {
           return (_nuclideUri || _load_nuclideUri()).default.join(subRoot, file);
         });

@@ -32,57 +32,22 @@ let getRefactorings = (() => {
   };
 })();
 
-let executeRefactoring = (() => {
-  var _ref2 = (0, _asyncToGenerator.default)(function* (action) {
-    const { refactoring, provider } = action.payload;
-    let response;
-    try {
-      response = yield provider.refactor(refactoring);
-    } catch (e) {
-      return (_refactorActions || _load_refactorActions()).error('execute', e);
-    }
-    if (response == null) {
-      // TODO use an error action here
-      return (_refactorActions || _load_refactorActions()).close();
-    }
-    const editor = atom.workspace.getActiveTextEditor();
-    // TODO handle it if the editor has gone away
-
-    if (!(editor != null)) {
-      throw new Error('Invariant violation: "editor != null"');
-    }
-
-    const path = editor.getPath();
-    // TODO handle editors with no path
-
-    if (!(path != null)) {
-      throw new Error('Invariant violation: "path != null"');
-    }
-    // TODO also apply edits to other files
-
-
-    const fileEdits = response.edits.get(path);
-
-    if (!(fileEdits != null)) {
-      throw new Error('Invariant violation: "fileEdits != null"');
-    }
-    // TODO check the return value to see if the edits were applied correctly. if not, display an
-    // appropriate message.
-
-
-    (0, (_nuclideTextedit || _load_nuclideTextedit()).applyTextEdits)(path, ...fileEdits);
-    (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)('nuclide-refactorizer:success');
-    return (_refactorActions || _load_refactorActions()).close();
-  });
-
-  return function executeRefactoring(_x2) {
-    return _ref2.apply(this, arguments);
-  };
-})();
-
 exports.getEpics = getEpics;
+exports.applyRefactoring = applyRefactoring;
+
+var _projects;
+
+function _load_projects() {
+  return _projects = require('nuclide-commons-atom/projects');
+}
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
+
+var _textEditor;
+
+function _load_textEditor() {
+  return _textEditor = require('nuclide-commons-atom/text-editor');
+}
 
 var _nuclideAnalytics;
 
@@ -124,7 +89,17 @@ function getEpics(providers) {
         throw new Error('Invariant violation: "action.type === \'execute\'"');
       }
 
-      return _rxjsBundlesRxMinJs.Observable.fromPromise(executeRefactoring(action)).takeUntil(actions);
+      return executeRefactoring(action).concat(
+      // Default handler if we don't get a result.
+      _rxjsBundlesRxMinJs.Observable.of((_refactorActions || _load_refactorActions()).error('execute', Error('Could not refactor.')))).takeUntil(actions.filter(x => x.type !== 'progress'));
+    });
+  }, function applyRefactoringEpic(actions) {
+    return actions.ofType('apply').switchMap(action => {
+      if (!(action.type === 'apply')) {
+        throw new Error('Invariant violation: "action.type === \'apply\'"');
+      }
+
+      return applyRefactoring(action).takeUntil(actions.ofType('close'));
     });
   }, function handleErrors(actions) {
     return actions.ofType('error').map(action => {
@@ -136,7 +111,7 @@ function getEpics(providers) {
       const sourceName = source === 'got-refactorings' ? 'getting refactors' : 'executing refactor';
       (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error(`Error ${sourceName}:`, error);
       atom.notifications.addError(`Error ${sourceName}`, {
-        detail: error.stack,
+        description: error.message,
         dismissable: true
       });
       return (_refactorActions || _load_refactorActions()).close();
@@ -152,3 +127,71 @@ function getEpics(providers) {
    * 
    * @format
    */
+
+function executeRefactoring(action) {
+  const { refactoring, provider } = action.payload;
+  return provider.refactor(refactoring).map(response => {
+    switch (response.type) {
+      case 'progress':
+        return (_refactorActions || _load_refactorActions()).progress(response.message, response.value, response.max);
+      case 'edit':
+      case 'external-edit':
+        if (response.edits.size <= 1) {
+          return (_refactorActions || _load_refactorActions()).apply(response);
+        }
+        return (_refactorActions || _load_refactorActions()).confirm(response);
+      default:
+        response;
+        throw Error();
+    }
+  }).catch(e => _rxjsBundlesRxMinJs.Observable.of((_refactorActions || _load_refactorActions()).error('execute', e)));
+}
+
+const FILE_IO_CONCURRENCY = 4;
+
+function applyRefactoring(action) {
+  return _rxjsBundlesRxMinJs.Observable.defer(() => {
+    const { response } = action.payload;
+    let editStream = _rxjsBundlesRxMinJs.Observable.empty();
+    if (response.type === 'edit') {
+      // Regular edits are applied directly to open buffers.
+      for (const [path, edits] of response.edits) {
+        const editor = (0, (_textEditor || _load_textEditor()).existingEditorForUri)(path);
+        if (editor != null) {
+          (0, (_nuclideTextedit || _load_nuclideTextedit()).applyTextEditsToBuffer)(editor.getBuffer(), edits);
+        } else {
+          return _rxjsBundlesRxMinJs.Observable.of((_refactorActions || _load_refactorActions()).error('execute', Error(`Expected file ${path} to be open.`)));
+        }
+      }
+    } else {
+      // External edits are applied directly to disk.
+      editStream = _rxjsBundlesRxMinJs.Observable.from(response.edits).mergeMap((() => {
+        var _ref2 = (0, _asyncToGenerator.default)(function* ([path, edits]) {
+          const file = (0, (_projects || _load_projects()).getFileForPath)(path);
+          if (file == null) {
+            throw new Error(`Could not read file ${path}`);
+          }
+          let data = yield file.read();
+          edits.sort(function (a, b) {
+            return a.startOffset - b.startOffset;
+          });
+          edits.reverse().forEach(function (edit) {
+            if (edit.oldText != null) {
+              const oldText = data.substring(edit.startOffset, edit.endOffset);
+              if (oldText !== edit.oldText) {
+                throw new Error(`Cannot apply refactor: file contents of ${path} have changed!`);
+              }
+            }
+            data = data.slice(0, edit.startOffset) + edit.newText + data.slice(edit.endOffset);
+          });
+          yield file.write(data);
+        });
+
+        return function (_x2) {
+          return _ref2.apply(this, arguments);
+        };
+      })(), FILE_IO_CONCURRENCY).scan((done, _) => done + 1, 0).startWith(0).map(done => (_refactorActions || _load_refactorActions()).progress('Applying edits...', done, response.edits.size));
+    }
+    return _rxjsBundlesRxMinJs.Observable.concat(editStream, _rxjsBundlesRxMinJs.Observable.of((_refactorActions || _load_refactorActions()).close()).do(() => (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)('nuclide-refactorizer:success')));
+  });
+}

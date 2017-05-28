@@ -19,6 +19,12 @@ function _load_DiagnosticsPanel() {
   return _DiagnosticsPanel = _interopRequireDefault(require('./DiagnosticsPanel'));
 }
 
+var _analytics;
+
+function _load_analytics() {
+  return _analytics = _interopRequireDefault(require('nuclide-commons-atom/analytics'));
+}
+
 var _observePaneItemVisibility;
 
 function _load_observePaneItemVisibility() {
@@ -47,12 +53,6 @@ var _observable;
 
 function _load_observable() {
   return _observable = require('nuclide-commons/observable');
-}
-
-var _nuclideAnalytics;
-
-function _load_nuclideAnalytics() {
-  return _nuclideAnalytics = require('../../nuclide-analytics');
 }
 
 var _bindObservableAsProps;
@@ -86,7 +86,7 @@ class DiagnosticsPanelModel {
     this._visibility = new _rxjsBundlesRxMinJs.BehaviorSubject(true);
 
     this._visibilitySubscription = this._visibility.debounceTime(1000).distinctUntilChanged().filter(Boolean).subscribe(() => {
-      (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)('diagnostics-show-table');
+      (_analytics || _load_analytics()).default.track('diagnostics-show-table');
     });
 
     // A stream that contains the props, but is "muted" when the panel's not visible.

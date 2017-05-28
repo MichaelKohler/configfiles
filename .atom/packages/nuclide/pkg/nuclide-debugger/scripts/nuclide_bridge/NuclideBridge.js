@@ -700,10 +700,7 @@ class NuclideBridge {
   }
 
   _handleThreadsUpdated(event) {
-    // Debugger.ThreadsUpdate happens before Debugger.paused
-    // so the first Debugger.ThreadsUpdate has this._debuggerPausedCount
-    // of zero.
-    if (this._debuggerPausedCount < 1) {
+    if (this._debuggerPausedCount <= 1) {
       return;
     }
     ipcRenderer.sendToHost('notification', 'ThreadsUpdate', event.data);

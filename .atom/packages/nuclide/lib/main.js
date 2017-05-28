@@ -334,7 +334,7 @@ function activate() {
     const firstWindowId = remote.BrowserWindow.getAllWindows()[0].id;
     const currentWindowId = remote.getCurrentWindow().id;
     if (firstWindowId === currentWindowId) {
-      (0, (_atomPackageDeps || _load_atomPackageDeps()).install)('nuclide');
+      (0, (_atomPackageDeps || _load_atomPackageDeps()).install)('nuclide', /* promptUser */false);
     }
   }
 }

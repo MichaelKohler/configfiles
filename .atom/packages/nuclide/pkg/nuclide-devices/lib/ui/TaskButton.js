@@ -5,12 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.TaskButton = undefined;
 
-var _UniversalDisposable;
-
-function _load_UniversalDisposable() {
-  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
-}
-
 var _Button;
 
 function _load_Button() {
@@ -34,50 +28,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 class TaskButton extends _react.default.Component {
 
-  constructor(props) {
-    super(props);
-    this._disposables = new (_UniversalDisposable || _load_UniversalDisposable()).default();
-    this.state = { isRunning: this.props.task.task.isRunning() };
-    this._startTask = this._startTask.bind(this);
-    this._cancelTask = this._cancelTask.bind(this);
-    this._subscribeToTask();
-  }
-
-  _subscribeToTask() {
-    const task = this.props.task;
-    this._disposables.add(task.task.onDidComplete(() => {
-      this.setState({ isRunning: false });
-      atom.notifications.addSuccess(`Device task '${task.name}' succeeded.`);
-    }));
-    this._disposables.add(task.task.onDidError(() => {
-      this.setState({ isRunning: false });
-      atom.notifications.addError(`Device task '${task.name}' failed.`);
-    }));
-  }
-
   _getLabel() {
-    const name = this.props.task.name;
-    if (!this.state.isRunning) {
-      return name;
+    if (!this.props.isRunning) {
+      return this.props.name;
     }
+    const progress = this.props.progress != null ? `${this.props.progress.toFixed(2)}%` : 'running';
     return _react.default.createElement(
       'i',
       null,
-      'Running \'',
-      name,
-      '\'... Click to cancel'
+      this.props.name,
+      ' (',
+      progress,
+      '). Click to cancel'
     );
-  }
-
-  _startTask() {
-    this.props.task.task.start();
-    this.setState({ isRunning: true });
-  }
-
-  _cancelTask() {
-    this.props.task.task.cancel();
-    this.setState({ isRunning: false });
-    atom.notifications.addInfo(`Device task '${this.props.task.name}' was cancelled.`);
   }
 
   render() {
@@ -85,8 +48,7 @@ class TaskButton extends _react.default.Component {
       (_Button || _load_Button()).Button,
       {
         size: (_Button || _load_Button()).ButtonSizes.SMALL,
-        onClick: this.state.isRunning ? this._cancelTask : this._startTask,
-        key: this.props.task.name },
+        onClick: this.props.isRunning ? this.props.cancel : this.props.start },
       this._getLabel()
     );
   }

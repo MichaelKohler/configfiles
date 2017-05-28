@@ -34,10 +34,12 @@ class InfoTable extends _react.default.Component {
     }));
     const columns = [{
       key: 'property',
-      title: 'Property'
+      title: 'Property',
+      width: 0.4
     }, {
       key: 'value',
-      title: 'Value'
+      title: 'Value',
+      width: 0.6
     }];
     const emptyComponent = () => _react.default.createElement(
       'div',

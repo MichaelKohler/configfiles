@@ -631,6 +631,15 @@ class DebuggerActions {
     });
   }
 
+  updateSelectedThread(id) {
+    this._dispatcher.dispatch({
+      actionType: (_DebuggerDispatcher || _load_DebuggerDispatcher()).ActionTypes.UPDATE_SELECTED_THREAD,
+      data: {
+        id
+      }
+    });
+  }
+
   notifyThreadSwitch(sourceURL, lineNumber, message) {
     this._dispatcher.dispatch({
       actionType: (_DebuggerDispatcher || _load_DebuggerDispatcher()).ActionTypes.NOTIFY_THREAD_SWITCH,

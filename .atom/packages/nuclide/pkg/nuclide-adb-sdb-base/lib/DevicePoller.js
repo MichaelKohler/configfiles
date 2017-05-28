@@ -33,7 +33,7 @@ class DevicePoller {
     if (observable != null) {
       return observable;
     }
-    observable = _rxjsBundlesRxMinJs.Observable.interval(3000).startWith(0).switchMap(() => _rxjsBundlesRxMinJs.Observable.fromPromise(this.fetch(host))).publishReplay(1).refCount();
+    observable = _rxjsBundlesRxMinJs.Observable.interval(3000).startWith(0).switchMap(() => _rxjsBundlesRxMinJs.Observable.fromPromise(this.fetch(host).catch(() => []))).publishReplay(1).refCount();
     this._observables.set(host, observable);
     return observable;
   }

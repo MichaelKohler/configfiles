@@ -97,6 +97,10 @@ class ThreadStore {
         this._updateStopThread(payload.data.id);
         this._emitter.emit('change');
         break;
+      case (_DebuggerDispatcher || _load_DebuggerDispatcher()).ActionTypes.UPDATE_SELECTED_THREAD:
+        this._updateSelectedThread(payload.data.id);
+        this._emitter.emit('change');
+        break;
       case (_DebuggerDispatcher || _load_DebuggerDispatcher()).ActionTypes.NOTIFY_THREAD_SWITCH:
         this._notifyThreadSwitch(payload.data.sourceURL, payload.data.lineNumber, payload.data.message);
         break;
@@ -137,6 +141,10 @@ class ThreadStore {
 
   _updateStopThread(id) {
     this._stopThreadId = Number(id);
+    this._selectedThreadId = Number(id);
+  }
+
+  _updateSelectedThread(id) {
     this._selectedThreadId = Number(id);
   }
 

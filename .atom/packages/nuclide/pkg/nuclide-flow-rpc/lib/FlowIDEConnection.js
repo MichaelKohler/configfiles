@@ -49,18 +49,16 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 // TODO put these in flow-typed when they are fleshed out better
 
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
-
-const SUBSCRIBE_METHOD_NAME = 'subscribeToDiagnostics';
+const SUBSCRIBE_METHOD_NAME = 'subscribeToDiagnostics'; /**
+                                                         * Copyright (c) 2015-present, Facebook, Inc.
+                                                         * All rights reserved.
+                                                         *
+                                                         * This source code is licensed under the license found in the LICENSE file in
+                                                         * the root directory of this source tree.
+                                                         *
+                                                         * 
+                                                         * @format
+                                                         */
 
 const NOTIFICATION_METHOD_NAME = 'diagnosticsNotification';
 
@@ -156,6 +154,10 @@ class FlowIDEConnection {
   // will never emit any items unless observeDiagnostics() is called.
   observeRecheckBookends() {
     return this._recheckBookends;
+  }
+
+  getAutocompleteSuggestions(filePath, line, column, contents) {
+    return this._connection.sendRequest('autocomplete', filePath, line, column, contents);
   }
 }
 exports.FlowIDEConnection = FlowIDEConnection;

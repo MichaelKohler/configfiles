@@ -37,12 +37,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function taskFromObservable(observable) {
   const events = observable.share().publish();
   let subscription;
-  let isRunning = false;
 
   const task = {
     start() {
       if (subscription == null) {
-        isRunning = true;
         subscription = events.connect();
       }
     },
@@ -92,17 +90,8 @@ function taskFromObservable(observable) {
 
         return event.status;
       }).subscribe({ next: callback, error: () => {} }));
-    },
-    isRunning() {
-      return isRunning;
     }
   };
-  task.onDidError(() => {
-    isRunning = false;
-  });
-  task.onDidComplete(() => {
-    isRunning = false;
-  });
   return task;
 }
 

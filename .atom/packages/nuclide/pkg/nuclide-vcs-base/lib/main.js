@@ -415,7 +415,9 @@ function filterMultiRootFileChanges(unfilteredFileChanges) {
   // file exists under.
   for (const [root, fileChanges] of unfilteredFileChanges) {
     const filteredFiles = (0, (_collection || _load_collection()).mapFilter)(fileChanges, filePath => filePath.startsWith(root));
-    filteredFileChanges.set(root, filteredFiles);
+    if (filteredFiles.size !== 0) {
+      filteredFileChanges.set(root, filteredFiles);
+    }
   }
 
   return filteredFileChanges;

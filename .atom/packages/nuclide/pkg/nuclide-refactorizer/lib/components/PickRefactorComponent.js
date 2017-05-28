@@ -84,7 +84,7 @@ class PickRefactorComponent extends _react.default.Component {
           _react.default.createElement(
             (_Button || _load_Button()).Button,
             {
-              className: 'nuclide-refactorizer-pick-freeform',
+              className: 'nuclide-refactorizer-button',
               onClick: () => {
                 this._pickRefactor(refactoring);
               },
