@@ -76,7 +76,7 @@ function consumeStatusBar(statusBar, controller) {
 function NavStackStatusBarTile(props) {
   return _react.default.createElement(
     (_ButtonGroup || _load_ButtonGroup()).ButtonGroup,
-    null,
+    { size: 'EXTRA_SMALL' },
     _react.default.createElement((_Button || _load_Button()).Button, {
       icon: 'chevron-left',
       onClick: props.onBack,

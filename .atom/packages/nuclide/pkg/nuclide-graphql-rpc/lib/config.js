@@ -5,10 +5,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.logger = undefined;
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 const GRAPHQL_LOGGER_CATEGORY = 'nuclide-graphql'; /**
@@ -22,4 +22,4 @@ const GRAPHQL_LOGGER_CATEGORY = 'nuclide-graphql'; /**
                                                     * @format
                                                     */
 
-const logger = exports.logger = (0, (_nuclideLogging || _load_nuclideLogging()).getCategoryLogger)(GRAPHQL_LOGGER_CATEGORY);
+const logger = exports.logger = (0, (_log4js || _load_log4js()).getLogger)(GRAPHQL_LOGGER_CATEGORY);

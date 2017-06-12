@@ -110,7 +110,7 @@ class DebuggerHandler extends (_Handler || _load_Handler()).default {
   }
 
   onSessionEnd(callback) {
-    (_utils2 || _load_utils2()).default.log('onSessionEnd');
+    (_utils2 || _load_utils2()).default.debug('onSessionEnd');
     this._emitter.on(SESSION_END_EVENT, callback);
   }
 
@@ -277,7 +277,7 @@ class DebuggerHandler extends (_Handler || _load_Handler()).default {
         _this6._temporaryBreakpointpointId = null;
       }
 
-      if (!scriptId || columnNumber !== 0) {
+      if (!scriptId || columnNumber != null && columnNumber !== 0) {
         _this6.replyWithError(id, 'Invalid arguments to Debugger.continueToLocation: ' + JSON.stringify(params));
         return;
       }
@@ -354,7 +354,7 @@ class DebuggerHandler extends (_Handler || _load_Handler()).default {
     var _this10 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      (_utils2 || _load_utils2()).default.log('Converting frame: ' + JSON.stringify(frame));
+      (_utils2 || _load_utils2()).default.debug('Converting frame: ' + JSON.stringify(frame));
       const file = _this10._files.registerFile((0, (_frame || _load_frame()).fileUrlOfFrame)(frame));
       const location = (0, (_frame || _load_frame()).locationOfFrame)(frame);
       const hasSource = yield file.hasSource();
@@ -379,7 +379,7 @@ class DebuggerHandler extends (_Handler || _load_Handler()).default {
   }
 
   _sendContinuationCommand(command) {
-    (_utils2 || _load_utils2()).default.log('Sending continuation command: ' + command);
+    (_utils2 || _load_utils2()).default.debug('Sending continuation command: ' + command);
     this._connectionMultiplexer.sendContinuationCommand(command);
   }
 
@@ -401,7 +401,7 @@ class DebuggerHandler extends (_Handler || _load_Handler()).default {
     var _this11 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      (_utils2 || _load_utils2()).default.log('Sending status: ' + status);
+      (_utils2 || _load_utils2()).default.debug('Sending status: ' + status);
       switch (status) {
         case (_ConnectionMultiplexer || _load_ConnectionMultiplexer()).ConnectionMultiplexerStatus.AllConnectionsPaused:
         case (_ConnectionMultiplexer || _load_ConnectionMultiplexer()).ConnectionMultiplexerStatus.SingleConnectionPaused:
@@ -415,7 +415,9 @@ class DebuggerHandler extends (_Handler || _load_Handler()).default {
           _this11._endSession();
           break;
         default:
-          (_utils2 || _load_utils2()).default.logErrorAndThrow('Unexpected status: ' + status);
+          const message = 'Unexpected status: ' + status;
+          (_utils2 || _load_utils2()).default.error(message);
+          throw new Error(message);
       }
     })();
   }
@@ -478,7 +480,9 @@ class DebuggerHandler extends (_Handler || _load_Handler()).default {
           });
           break;
         default:
-          (_utils2 || _load_utils2()).default.logErrorAndThrow(`Unexpected notification: ${notifyName}`);
+          const message = `Unexpected notification: ${notifyName}`;
+          (_utils2 || _load_utils2()).default.error(message);
+          throw new Error(message);
       }
     })();
   }
@@ -533,7 +537,7 @@ class DebuggerHandler extends (_Handler || _load_Handler()).default {
   }
 
   _endSession() {
-    (_utils2 || _load_utils2()).default.log('DebuggerHandler: Ending session');
+    (_utils2 || _load_utils2()).default.debug('DebuggerHandler: Ending session');
     this._subscriptions.dispose();
     this._emitter.emit(SESSION_END_EVENT);
   }

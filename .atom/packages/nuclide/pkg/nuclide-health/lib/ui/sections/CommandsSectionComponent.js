@@ -7,7 +7,7 @@ Object.defineProperty(exports, "__esModule", {
 var _process;
 
 function _load_process() {
-  return _process = require('../../../../commons-node/process');
+  return _process = require('nuclide-commons/process');
 }
 
 var _react = _interopRequireDefault(require('react'));

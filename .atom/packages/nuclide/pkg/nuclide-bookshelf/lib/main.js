@@ -44,10 +44,10 @@ function _load_nuclideVcsBase() {
   return _nuclideVcsBase = require('../../nuclide-vcs-base');
 }
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 var _featureConfig;
@@ -79,7 +79,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function createStateStream(actions, initialState) {
   const states = new _rxjsBundlesRxMinJs.BehaviorSubject(initialState);
   actions.scan((_accumulateState || _load_accumulateState()).accumulateState, initialState).catch(error => {
-    (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().fatal('bookshelf middleware got broken', error);
+    (0, (_log4js || _load_log4js()).getLogger)('nuclide-bookshelf').fatal('bookshelf middleware got broken', error);
     atom.notifications.addError('Nuclide bookshelf broke, please report a bug to help us fix it!');
     return _rxjsBundlesRxMinJs.Observable.empty();
   }).subscribe(states);
@@ -102,7 +102,7 @@ class Activation {
     try {
       initialState = (0, (_utils || _load_utils()).deserializeBookShelfState)(state);
     } catch (error) {
-      (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error('failed to deserialize nuclide-bookshelf state', state, error);
+      (0, (_log4js || _load_log4js()).getLogger)('nuclide-bookshelf').error('failed to deserialize nuclide-bookshelf state', state, error);
       initialState = (0, (_utils || _load_utils()).getEmptBookShelfState)();
     }
 
@@ -163,7 +163,7 @@ class Activation {
     try {
       return (0, (_utils || _load_utils()).serializeBookShelfState)(this._states.getValue());
     } catch (error) {
-      (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error('failed to serialize nuclide-bookshelf state', error);
+      (0, (_log4js || _load_log4js()).getLogger)('nuclide-bookshelf').error('failed to serialize nuclide-bookshelf state', error);
       return null;
     }
   }

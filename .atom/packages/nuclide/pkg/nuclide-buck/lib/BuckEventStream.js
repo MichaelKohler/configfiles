@@ -16,10 +16,10 @@ function _load_stripAnsi() {
   return _stripAnsi = _interopRequireDefault(require('strip-ansi'));
 }
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 var _DiagnosticsParser;
@@ -31,7 +31,7 @@ function _load_DiagnosticsParser() {
 var _process;
 
 function _load_process() {
-  return _process = require('../../commons-node/process');
+  return _process = require('nuclide-commons/process');
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -81,14 +81,8 @@ function getEventsFromSocket(socketStream) {
       case 'ConsoleEvent':
         const match = message.message.match(BUILD_OUTPUT_REGEX);
         if (match != null && match.length === 4) {
-          return _rxjsBundlesRxMinJs.Observable.of({
-            type: 'build-output',
-            output: {
-              target: match[1],
-              successType: match[2],
-              path: match[3]
-            }
-          });
+          // The result is also printed to stdout and converted into build-output there.
+          return _rxjsBundlesRxMinJs.Observable.empty();
         } else {
           return log(message.message, convertJavaLevel(message.level.name));
         }
@@ -107,7 +101,7 @@ function getEventsFromSocket(socketStream) {
     }
     return _rxjsBundlesRxMinJs.Observable.empty();
   }).catch(err => {
-    (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error('Got Buck websocket error', err);
+    (0, (_log4js || _load_log4js()).getLogger)('nuclide-buck').error('Got Buck websocket error', err);
     // Return to indeterminate progress.
     return _rxjsBundlesRxMinJs.Observable.of({
       type: 'progress',

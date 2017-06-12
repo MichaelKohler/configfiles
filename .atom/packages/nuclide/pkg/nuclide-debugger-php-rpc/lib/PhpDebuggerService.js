@@ -125,7 +125,7 @@ class PhpDebuggerService {
     var _this = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      (_utils || _load_utils()).default.logInfo('Connecting config: ' + JSON.stringify(config));
+      (_utils || _load_utils()).default.info('Connecting config: ' + JSON.stringify(config));
 
       yield _this._warnIfHphpdAttached();
       if (!(yield (0, (_passesGK || _load_passesGK()).default)(GK_PAUSE_ONE_PAUSE_ALL))) {
@@ -134,7 +134,7 @@ class PhpDebuggerService {
 
       (0, (_config || _load_config()).setConfig)(config);
       yield (0, (_ConnectionUtils || _load_ConnectionUtils()).setRootDirectoryUri)(config.targetUri);
-      (_utils || _load_utils()).default.setLogLevel(config.logLevel);
+      (_utils || _load_utils()).default.setLevel(config.logLevel);
       _this._setState(CONNECTING);
 
       const translator = new (_MessageTranslator || _load_MessageTranslator()).MessageTranslator(_this._clientCallback);
@@ -154,7 +154,7 @@ class PhpDebuggerService {
     var _this2 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      (_utils || _load_utils()).default.logInfo('Recieved command: ' + message);
+      (_utils || _load_utils()).default.info('Recieved command: ' + message);
       if (_this2._translator) {
         yield _this2._translator.handleCommand(message);
       }
@@ -180,7 +180,7 @@ class PhpDebuggerService {
   }
 
   _setState(newState) {
-    (_utils || _load_utils()).default.log('state change from ' + this._state + ' to ' + newState);
+    (_utils || _load_utils()).default.debug('state change from ' + this._state + ' to ' + newState);
     // TODO: Consider logging socket info: remote ip, etc.
     this._state = newState;
 
@@ -190,7 +190,7 @@ class PhpDebuggerService {
   }
 
   dispose() {
-    (_utils || _load_utils()).default.logInfo('Proxy: Ending session');
+    (_utils || _load_utils()).default.info('Proxy: Ending session');
     (0, (_config || _load_config()).clearConfig)();
     this._disposables.dispose();
     return Promise.resolve();

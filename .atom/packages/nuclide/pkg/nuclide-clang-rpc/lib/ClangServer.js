@@ -33,7 +33,7 @@ let getLibClangFromFlags = (() => {
 var _fsPromise;
 
 function _load_fsPromise() {
-  return _fsPromise = _interopRequireDefault(require('../../commons-node/fsPromise'));
+  return _fsPromise = _interopRequireDefault(require('nuclide-commons/fsPromise'));
 }
 
 var _nuclideUri;
@@ -59,7 +59,7 @@ var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
 var _process2;
 
 function _load_process() {
-  return _process2 = require('../../commons-node/process');
+  return _process2 = require('nuclide-commons/process');
 }
 
 var _nuclideRpc;

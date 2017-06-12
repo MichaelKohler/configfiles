@@ -39,7 +39,7 @@ function _load_promise() {
 var _performanceNow;
 
 function _load_performanceNow() {
-  return _performanceNow = _interopRequireDefault(require('../../commons-node/performanceNow'));
+  return _performanceNow = _interopRequireDefault(require('nuclide-commons/performanceNow'));
 }
 
 var _track;

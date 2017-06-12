@@ -19,10 +19,10 @@ function _load_promise() {
   return _promise = require('nuclide-commons/promise');
 }
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
@@ -89,7 +89,7 @@ class FlowIDEConnectionWatcher {
     var _this = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().info('Attempting to start IDE connection...');
+      (0, (_log4js || _load_log4js()).getLogger)('nuclide-flow-rpc').info('Attempting to start IDE connection...');
       let proc = null;
       const endTimeMS = _this._getTimeMS() + IDE_CONNECTION_MAX_WAIT_MS;
       while (true) {
@@ -115,18 +115,18 @@ class FlowIDEConnectionWatcher {
         if (proc != null || attemptEndTime > endTimeMS) {
           break;
         } else {
-          (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().info('Failed to start Flow IDE connection... retrying');
+          (0, (_log4js || _load_log4js()).getLogger)('nuclide-flow-rpc').info('Failed to start Flow IDE connection... retrying');
           const attemptWallTime = attemptEndTime - attemptStartTime;
           const additionalWaitTime = IDE_CONNECTION_MIN_INTERVAL_MS - attemptWallTime;
           if (additionalWaitTime > 0) {
-            (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().info(`Waiting an additional ${additionalWaitTime} ms before retrying`);
+            (0, (_log4js || _load_log4js()).getLogger)('nuclide-flow-rpc').info(`Waiting an additional ${additionalWaitTime} ms before retrying`);
             // eslint-disable-next-line no-await-in-loop
             yield _this._sleep(additionalWaitTime);
           }
         }
       }
       if (proc == null) {
-        (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error('Failed to start Flow IDE connection too many times... giving up');
+        (0, (_log4js || _load_log4js()).getLogger)('nuclide-flow-rpc').error('Failed to start Flow IDE connection too many times... giving up');
         return;
       }
       const connectionStartTime = _this._getTimeMS();
@@ -138,7 +138,7 @@ class FlowIDEConnectionWatcher {
         if (connectionAliveTime < IDE_CONNECTION_HEALTHY_THRESHOLD_MS) {
           _this._consecutiveUnhealthyConnections++;
           if (_this._consecutiveUnhealthyConnections >= MAX_UNHEALTHY_CONNECTIONS) {
-            (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error('Too many consecutive unhealthy Flow IDE connections... giving up');
+            (0, (_log4js || _load_log4js()).getLogger)('nuclide-flow-rpc').error('Too many consecutive unhealthy Flow IDE connections... giving up');
             return;
           }
         } else {

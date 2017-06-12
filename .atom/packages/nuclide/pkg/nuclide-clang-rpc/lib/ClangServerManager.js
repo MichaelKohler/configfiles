@@ -42,10 +42,10 @@ function _load_promise() {
   return _promise = require('nuclide-commons/promise');
 }
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 var _ClangFlagsManager;
@@ -135,7 +135,7 @@ class ClangServerManager {
 
     return (0, _asyncToGenerator.default)(function* () {
       const flagsData = yield _this._flagsManager.getFlagsForSrc(src, compilationDBFile).catch(function (e) {
-        (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error(`Error getting flags for ${src}:`, e);
+        (0, (_log4js || _load_log4js()).getLogger)('nuclide-clang-rpc').error(`Error getting flags for ${src}:`, e);
         return null;
       });
       if (flagsData != null && flagsData.flags != null) {

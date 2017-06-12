@@ -41,16 +41,38 @@ function _load_DevicePanel() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ * @format
+ */
+
 class RootPanel extends _react.default.Component {
 
   constructor(props) {
     super(props);
+    this._devicesSubscription = null;
 
     if (!(props.hosts.length > 0)) {
       throw new Error('Invariant violation: "props.hosts.length > 0"');
     }
 
     this._goToRootPanel = this._goToRootPanel.bind(this);
+  }
+
+  componentDidMount() {
+    this._devicesSubscription = this.props.startFetchingDevices();
+  }
+
+  componentWillUnmount() {
+    if (this._devicesSubscription != null) {
+      this._devicesSubscription.unsubscribe();
+    }
   }
 
   _createDeviceTable() {
@@ -60,8 +82,7 @@ class RootPanel extends _react.default.Component {
     return _react.default.createElement((_DeviceTable || _load_DeviceTable()).DeviceTable, {
       devices: this.props.devices,
       device: this.props.device,
-      setDevice: this.props.setDevice,
-      startFetchingDevices: this.props.startFetchingDevices
+      setDevice: this.props.setDevice
     });
   }
 
@@ -77,12 +98,11 @@ class RootPanel extends _react.default.Component {
         _react.default.createElement((_DevicePanel || _load_DevicePanel()).DevicePanel, {
           infoTables: this.props.infoTables,
           processes: this.props.processes,
-          killProcess: this.props.killProcess,
+          processTasks: this.props.processTasks,
           deviceTasks: this.props.deviceTasks,
           goToRootPanel: this._goToRootPanel,
           startFetchingProcesses: this.props.startFetchingProcesses,
-          host: this.props.host,
-          device: this.props.device
+          isDeviceConnected: this.props.isDeviceConnected
         })
       );
     }
@@ -121,13 +141,4 @@ class RootPanel extends _react.default.Component {
     );
   }
 }
-exports.RootPanel = RootPanel; /**
-                                * Copyright (c) 2015-present, Facebook, Inc.
-                                * All rights reserved.
-                                *
-                                * This source code is licensed under the license found in the LICENSE file in
-                                * the root directory of this source tree.
-                                *
-                                * 
-                                * @format
-                                */
+exports.RootPanel = RootPanel;

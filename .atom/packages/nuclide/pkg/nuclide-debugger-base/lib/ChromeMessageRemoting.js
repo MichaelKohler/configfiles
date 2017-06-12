@@ -73,7 +73,7 @@ function translateUriFromServer(hostname, uri) {
       throw new Error('Invariant violation: "components.pathname"');
     }
 
-    const result = (_nuclideUri || _load_nuclideUri()).default.createRemoteUri(hostname, decodeURI(components.pathname));
+    const result = (_nuclideUri || _load_nuclideUri()).default.createRemoteUri(hostname, decodeURI(components.pathname + (components.hash || '')));
     return result;
   } else {
     return uri;

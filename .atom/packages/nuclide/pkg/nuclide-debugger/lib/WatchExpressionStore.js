@@ -33,10 +33,10 @@ function _load_promise() {
   return _promise = require('nuclide-commons/promise');
 }
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 var _normalizeRemoteObjectValue;
@@ -268,7 +268,7 @@ class WatchExpressionStore {
       try {
         result = yield deferred.promise;
       } catch (e) {
-        (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().warn(`${command}: Error getting result.`, e);
+        (0, (_log4js || _load_log4js()).getLogger)('nuclide-debugger').warn(`${command}: Error getting result.`, e);
         if (e.description) {
           errorMsg = e.description;
         }

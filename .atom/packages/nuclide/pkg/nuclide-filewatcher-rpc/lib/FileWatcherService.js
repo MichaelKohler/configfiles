@@ -16,7 +16,7 @@ let getRealPath = (() => {
       throw new Error(`Can't watch a non-existing entity: ${entityPath}`);
     }
     if (stat.isFile() !== isFile) {
-      (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().warn(`FileWatcherService: expected ${entityPath} to be a ${isFile ? 'file' : 'directory'}`);
+      (0, (_log4js || _load_log4js()).getLogger)('nuclide-filewatcher-rpc').warn(`FileWatcherService: expected ${entityPath} to be a ${isFile ? 'file' : 'directory'}`);
     }
     return (_fsPromise || _load_fsPromise()).default.realpath(entityPath);
   });
@@ -57,13 +57,13 @@ var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
 var _fsPromise;
 
 function _load_fsPromise() {
-  return _fsPromise = _interopRequireDefault(require('../../commons-node/fsPromise'));
+  return _fsPromise = _interopRequireDefault(require('nuclide-commons/fsPromise'));
 }
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 var _nuclideWatchmanHelpers;

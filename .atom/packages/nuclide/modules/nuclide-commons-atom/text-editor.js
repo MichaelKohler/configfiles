@@ -15,6 +15,7 @@ exports.enforceReadOnly = enforceReadOnly;
 exports.enforceSoftWrap = enforceSoftWrap;
 exports.observeTextEditors = observeTextEditors;
 exports.isValidTextEditor = isValidTextEditor;
+exports.centerScrollToBufferLine = centerScrollToBufferLine;
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
 
@@ -191,4 +192,20 @@ function isValidTextEditor(item) {
     return !(_nuclideUri || _load_nuclideUri()).default.isBrokenDeserializedUri(item.getPath());
   }
   return false;
+}
+
+function centerScrollToBufferLine(textEditorElement, bufferLineNumber) {
+  const textEditor = textEditorElement.getModel();
+  const pixelPositionTop = textEditorElement.pixelPositionForBufferPosition([bufferLineNumber, 0]).top;
+  // Manually calculate the scroll location, instead of using
+  // `textEditor.scrollToBufferPosition([lineNumber, 0], {center: true})`
+  // because that API to wouldn't center the line if it was in the visible screen range.
+  const scrollTop = pixelPositionTop + textEditor.getLineHeightInPixels() / 2 - textEditorElement.clientHeight / 2;
+  textEditorElement.setScrollTop(Math.max(scrollTop, 1));
+
+  textEditorElement.focus();
+
+  textEditor.setCursorBufferPosition([bufferLineNumber, 0], {
+    autoscroll: false
+  });
 }

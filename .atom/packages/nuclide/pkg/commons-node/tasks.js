@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.taskFromObservable = taskFromObservable;
 exports.observableFromTask = observableFromTask;
 exports.createMessage = createMessage;
+exports.createResult = createResult;
 exports.createStatus = createStatus;
 exports.createStep = createStep;
 
@@ -34,6 +35,21 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // FIXME: This should really be an interface, but we're currently transpiling with Babel 5, which
 //   doesn't support that.
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ * @format
+ */
+
+// It's really convenient to model processes with Observables but Atom use a more OO [Task
+// interface](https://atom.io/docs/api/latest/Task). These are utilities for converting between the
+// two.
+
 function taskFromObservable(observable) {
   const events = observable.share().publish();
   let subscription;
@@ -98,21 +114,6 @@ function taskFromObservable(observable) {
 /**
  * Convert a task to an observable of events.
  */
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
-
-// It's really convenient to model processes with Observables but Atom use a more OO [Task
-// interface](https://atom.io/docs/api/latest/Task). These are utilities for converting between the
-// two.
-
 function observableFromTask(task) {
   return _rxjsBundlesRxMinJs.Observable.create(observer => {
     let finished = false;
@@ -152,6 +153,13 @@ function createMessage(text, level) {
   return _rxjsBundlesRxMinJs.Observable.of({
     type: 'message',
     message: { text, level }
+  });
+}
+
+function createResult(result) {
+  return _rxjsBundlesRxMinJs.Observable.of({
+    type: 'result',
+    result
   });
 }
 

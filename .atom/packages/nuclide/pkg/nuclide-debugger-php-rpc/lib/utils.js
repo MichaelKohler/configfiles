@@ -5,10 +5,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.makeExpressionHphpdCompatible = makeExpressionHphpdCompatible;
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 const DEBUGGER_LOGGER_CATEGORY = 'nuclide-debugger-php'; /**
@@ -22,7 +22,7 @@ const DEBUGGER_LOGGER_CATEGORY = 'nuclide-debugger-php'; /**
                                                           * @format
                                                           */
 
-exports.default = (0, (_nuclideLogging || _load_nuclideLogging()).getCategoryLogger)(DEBUGGER_LOGGER_CATEGORY);
+exports.default = (0, (_log4js || _load_log4js()).getLogger)(DEBUGGER_LOGGER_CATEGORY);
 function makeExpressionHphpdCompatible(params) {
   // Hphpd requires that '=' is prefixed to expressions, but xdebug doesn't require this, so
   // we remove leading '=' if necessary.

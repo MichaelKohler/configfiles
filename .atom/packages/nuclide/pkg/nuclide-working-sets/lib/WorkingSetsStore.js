@@ -25,10 +25,10 @@ function _load_nuclideAnalytics() {
   return _nuclideAnalytics = require('../../nuclide-analytics');
 }
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 var _nuclideUri;
@@ -256,7 +256,7 @@ class WorkingSetsStore {
       // Apparently sometimes Atom supplies an invalid directory, or a directory with an
       // invalid paths. See https://github.com/facebook/nuclide/issues/416
       if (dir == null) {
-        const logger = (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)();
+        const logger = (0, (_log4js || _load_log4js()).getLogger)('nuclide-working-sets');
 
         logger.warn('Received a null directory from Atom');
         return false;
@@ -265,7 +265,7 @@ class WorkingSetsStore {
         (_nuclideUri || _load_nuclideUri()).default.parse(dir.getPath());
         return true;
       } catch (e) {
-        const logger = (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)();
+        const logger = (0, (_log4js || _load_log4js()).getLogger)('nuclide-working-sets');
 
         logger.warn('Failed to parse path supplied by Atom', dir.getPath());
         return false;

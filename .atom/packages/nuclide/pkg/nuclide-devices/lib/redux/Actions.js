@@ -3,10 +3,10 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.SET_PROCESS_KILLER = exports.SET_PROCESSES = exports.SET_INFO_TABLES = exports.SET_HOST = exports.SET_HOSTS = exports.SET_DEVICE_TASKS = exports.SET_DEVICE = exports.SET_DEVICES = exports.SET_DEVICE_TYPE = exports.SET_DEVICE_TYPES = undefined;
+exports.SET_PROCESS_TASKS = exports.SET_PROCESSES = exports.SET_INFO_TABLES = exports.SET_HOST = exports.SET_HOSTS = exports.SET_DEVICE_TASKS = exports.SET_DEVICE = exports.SET_DEVICES = exports.SET_DEVICE_TYPE = exports.SET_DEVICE_TYPES = undefined;
 exports.setInfoTables = setInfoTables;
 exports.setProcesses = setProcesses;
-exports.setProcesKiller = setProcesKiller;
+exports.setProcessTasks = setProcessTasks;
 exports.setDevices = setDevices;
 exports.setHosts = setHosts;
 exports.setHost = setHost;
@@ -21,17 +21,18 @@ function _load_DeviceTask() {
   return _DeviceTask = require('../DeviceTask');
 }
 
-const SET_DEVICE_TYPES = exports.SET_DEVICE_TYPES = 'SET_DEVICE_TYPES'; /**
-                                                                         * Copyright (c) 2015-present, Facebook, Inc.
-                                                                         * All rights reserved.
-                                                                         *
-                                                                         * This source code is licensed under the license found in the LICENSE file in
-                                                                         * the root directory of this source tree.
-                                                                         *
-                                                                         * 
-                                                                         * @format
-                                                                         */
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ * @format
+ */
 
+const SET_DEVICE_TYPES = exports.SET_DEVICE_TYPES = 'SET_DEVICE_TYPES';
 const SET_DEVICE_TYPE = exports.SET_DEVICE_TYPE = 'SET_DEVICE_TYPE';
 const SET_DEVICES = exports.SET_DEVICES = 'SET_DEVICES';
 const SET_DEVICE = exports.SET_DEVICE = 'SET_DEVICE';
@@ -40,7 +41,7 @@ const SET_HOSTS = exports.SET_HOSTS = 'SET_HOSTS';
 const SET_HOST = exports.SET_HOST = 'SET_HOST';
 const SET_INFO_TABLES = exports.SET_INFO_TABLES = 'SET_INFO_TABLES';
 const SET_PROCESSES = exports.SET_PROCESSES = 'SET_PROCESSES';
-const SET_PROCESS_KILLER = exports.SET_PROCESS_KILLER = 'SET_PROCESS_KILLER';
+const SET_PROCESS_TASKS = exports.SET_PROCESS_TASKS = 'SET_PROCESS_TASKS';
 
 function setInfoTables(infoTables) {
   return {
@@ -56,10 +57,10 @@ function setProcesses(processes) {
   };
 }
 
-function setProcesKiller(processKiller) {
+function setProcessTasks(processTasks) {
   return {
-    type: SET_PROCESS_KILLER,
-    payload: { processKiller }
+    type: SET_PROCESS_TASKS,
+    payload: { processTasks }
   };
 }
 

@@ -15,7 +15,7 @@ function _load_nuclideUri() {
 var _process;
 
 function _load_process() {
-  return _process = require('../../commons-node/process');
+  return _process = require('nuclide-commons/process');
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

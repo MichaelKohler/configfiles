@@ -43,24 +43,36 @@ let getInfoTables = (() => {
   };
 })();
 
-let getProcessKiller = (() => {
+let getProcessTasks = (() => {
   var _ref3 = (0, _asyncToGenerator.default)(function* (state) {
     const device = state.device;
     if (device == null) {
-      return null;
+      return [];
     }
-    const providers = Array.from((0, (_providers || _load_providers()).getProviders)().deviceProcesses).filter(function (provider) {
+    return Promise.all(Array.from((0, (_providers || _load_providers()).getProviders)().processTask).filter(function (provider) {
       return provider.getType() === state.deviceType;
-    });
-    if (providers[0] != null) {
-      return function (p) {
-        return providers[0].killProcess(state.host, device.name, p);
+    }).map((() => {
+      var _ref4 = (0, _asyncToGenerator.default)(function* (provider) {
+        const supportedSet = yield provider.getSupportedPIDs(state.host, device.name, state.processes);
+        return {
+          type: provider.getTaskType(),
+          run: function (proc) {
+            return provider.run(state.host, device.name, proc);
+          },
+          isSupported: function (proc) {
+            return supportedSet.has(proc.pid);
+          },
+          name: provider.getName()
+        };
+      });
+
+      return function (_x4) {
+        return _ref4.apply(this, arguments);
       };
-    }
-    return null;
+    })()));
   });
 
-  return function getProcessKiller(_x3) {
+  return function getProcessTasks(_x3) {
     return _ref3.apply(this, arguments);
   };
 })();
@@ -70,7 +82,7 @@ let getProcessKiller = (() => {
 
 
 let getDeviceTasks = (() => {
-  var _ref4 = (0, _asyncToGenerator.default)(function* (state) {
+  var _ref5 = (0, _asyncToGenerator.default)(function* (state) {
     const device = state.device;
     if (device == null) {
       return [];
@@ -78,7 +90,7 @@ let getDeviceTasks = (() => {
     const actions = yield Promise.all(Array.from((0, (_providers || _load_providers()).getProviders)().deviceTask).filter(function (provider) {
       return provider.getType() === state.deviceType;
     }).map((() => {
-      var _ref5 = (0, _asyncToGenerator.default)(function* (provider) {
+      var _ref6 = (0, _asyncToGenerator.default)(function* (provider) {
         try {
           if (!(yield provider.isSupported(state.host))) {
             return null;
@@ -93,8 +105,8 @@ let getDeviceTasks = (() => {
         }
       });
 
-      return function (_x5) {
-        return _ref5.apply(this, arguments);
+      return function (_x6) {
+        return _ref6.apply(this, arguments);
       };
     })()));
     return (0, (_collection || _load_collection()).arrayCompact)(actions).sort(function (a, b) {
@@ -102,12 +114,13 @@ let getDeviceTasks = (() => {
     });
   });
 
-  return function getDeviceTasks(_x4) {
-    return _ref4.apply(this, arguments);
+  return function getDeviceTasks(_x5) {
+    return _ref5.apply(this, arguments);
   };
 })();
 
 exports.setDeviceEpic = setDeviceEpic;
+exports.setProcessesEpic = setProcessesEpic;
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
 
@@ -163,7 +176,18 @@ function setDeviceEpic(actions, store) {
     }
 
     const state = store.getState();
-    return _rxjsBundlesRxMinJs.Observable.merge(_rxjsBundlesRxMinJs.Observable.fromPromise(getInfoTables(state)).switchMap(infoTables => _rxjsBundlesRxMinJs.Observable.of((_Actions || _load_Actions()).setInfoTables(infoTables))), _rxjsBundlesRxMinJs.Observable.fromPromise(getProcessKiller(state)).switchMap(processKiller => _rxjsBundlesRxMinJs.Observable.of((_Actions || _load_Actions()).setProcesKiller(processKiller))), _rxjsBundlesRxMinJs.Observable.fromPromise(getDeviceTasks(state)).switchMap(deviceTasks => _rxjsBundlesRxMinJs.Observable.of((_Actions || _load_Actions()).setDeviceTasks(deviceTasks))));
+    return _rxjsBundlesRxMinJs.Observable.merge(_rxjsBundlesRxMinJs.Observable.fromPromise(getInfoTables(state)).switchMap(infoTables => _rxjsBundlesRxMinJs.Observable.of((_Actions || _load_Actions()).setInfoTables(infoTables))), _rxjsBundlesRxMinJs.Observable.fromPromise(getProcessTasks(state)).switchMap(processTasks => _rxjsBundlesRxMinJs.Observable.of((_Actions || _load_Actions()).setProcessTasks(processTasks))), _rxjsBundlesRxMinJs.Observable.fromPromise(getDeviceTasks(state)).switchMap(deviceTasks => _rxjsBundlesRxMinJs.Observable.of((_Actions || _load_Actions()).setDeviceTasks(deviceTasks))));
+  });
+}
+
+function setProcessesEpic(actions, store) {
+  return actions.ofType((_Actions || _load_Actions()).SET_PROCESSES).switchMap(action => {
+    if (!(action.type === (_Actions || _load_Actions()).SET_PROCESSES)) {
+      throw new Error('Invariant violation: "action.type === Actions.SET_PROCESSES"');
+    }
+
+    const state = store.getState();
+    return _rxjsBundlesRxMinJs.Observable.fromPromise(getProcessTasks(state)).switchMap(processTasks => _rxjsBundlesRxMinJs.Observable.of((_Actions || _load_Actions()).setProcessTasks(processTasks)));
   });
 }
 

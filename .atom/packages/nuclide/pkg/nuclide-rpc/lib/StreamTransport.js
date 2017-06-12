@@ -14,7 +14,7 @@ function _load_observable() {
 var _stream;
 
 function _load_stream() {
-  return _stream = require('../../commons-node/stream');
+  return _stream = require('nuclide-commons/stream');
 }
 
 class StreamTransport {

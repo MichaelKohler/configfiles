@@ -12,7 +12,7 @@ var _os = _interopRequireDefault(require('os'));
 var _process;
 
 function _load_process() {
-  return _process = require('./process');
+  return _process = require('nuclide-commons/process');
 }
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');

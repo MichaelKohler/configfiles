@@ -87,7 +87,7 @@ let getInteractiveCommitEditorConfig = exports.getInteractiveCommitEditorConfig 
   var _ref3 = (0, _asyncToGenerator.default)(function* () {
     const connectionDetails = yield (0, (_nuclideRemoteAtomRpc || _load_nuclideRemoteAtomRpc()).getConnectionDetails)();
     if (connectionDetails == null) {
-      (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error('CommandServer not initialized!');
+      (0, (_log4js || _load_log4js()).getLogger)('nuclide-hg-rpc').error('CommandServer not initialized!');
       return null;
     }
     // Atom RPC needs to agree with the Atom process / nuclide server on the address and port.
@@ -113,19 +113,19 @@ var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
 var _process;
 
 function _load_process() {
-  return _process = require('../../commons-node/process');
+  return _process = require('nuclide-commons/process');
 }
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 var _fsPromise;
 
 function _load_fsPromise() {
-  return _fsPromise = _interopRequireDefault(require('../../commons-node/fsPromise'));
+  return _fsPromise = _interopRequireDefault(require('nuclide-commons/fsPromise'));
 }
 
 var _nuclideRemoteAtomRpc;
@@ -186,7 +186,7 @@ function hgRunCommand(args_, options_) {
 }
 
 function logAndThrowHgError(args, options, stdout, stderr) {
-  (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error(`Error executing hg command: ${JSON.stringify(args)}\n` + `stderr: ${stderr}\nstdout: ${stdout}\n` + `options: ${JSON.stringify(options)}`);
+  (0, (_log4js || _load_log4js()).getLogger)('nuclide-hg-rpc').error(`Error executing hg command: ${JSON.stringify(args)}\n` + `stderr: ${stderr}\nstdout: ${stdout}\n` + `options: ${JSON.stringify(options)}`);
   if (stderr.length > 0 && stdout.length > 0) {
     throw new Error(`hg error\nstderr: ${stderr}\nstdout: ${stdout}`);
   } else {

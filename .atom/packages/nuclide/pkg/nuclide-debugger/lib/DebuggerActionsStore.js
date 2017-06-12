@@ -35,10 +35,12 @@ class DebuggerActionsStore {
       case (_DebuggerDispatcher || _load_DebuggerDispatcher()).ActionTypes.SET_PROCESS_SOCKET:
         const { data } = payload;
         if (data == null) {
-          this._bridge.cleanup();
+          this._bridge.leaveDebugMode();
         } else {
+          this._bridge.enterDebugMode();
           const url = `${(_nuclideUri || _load_nuclideUri()).default.join(__dirname, '../scripts/inspector.html')}?${data}`;
-          this._bridge.renderChromeWebview(url);
+          this._bridge.setupChromeChannel(url);
+          this._bridge.enableEventsListening();
         }
         break;
       case (_DebuggerDispatcher || _load_DebuggerDispatcher()).ActionTypes.TRIGGER_DEBUGGER_ACTION:

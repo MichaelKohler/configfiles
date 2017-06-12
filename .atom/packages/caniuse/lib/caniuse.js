@@ -1,14 +1,22 @@
-"use babel"
+'use babel'
+
+import { CompositeDisposable } from 'atom'
 
 export default {
   caniuseView: null,
 
-  activate(/* state */) {
-    atom.commands.add('atom-workspace', {
+  config: require('./config'),
+
+  activate (/* state */) {
+    this.disposables = new CompositeDisposable()
+
+    this.disposables.add(atom.commands.add('atom-workspace', {
       'can-i-use:show': () => require('./commands/show')(this),
       'can-i-use:update': () => require('./commands/update')(this)
-    })
+    }))
   },
 
-  config: require('./config')
+  deactivate () {
+    this.disposables.dispose()
+  }
 }

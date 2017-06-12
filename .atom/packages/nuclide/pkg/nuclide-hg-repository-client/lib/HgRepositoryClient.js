@@ -47,10 +47,10 @@ function _load_textBuffer() {
   return _textBuffer = require('../../commons-atom/text-buffer');
 }
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 var _UniversalDisposable;
@@ -209,7 +209,7 @@ class HgRepositoryClient {
     const bookmarksUpdates = _rxjsBundlesRxMinJs.Observable.merge(activeBookmarkChanges, allBookmarkChanges).startWith(null).debounceTime(BOOKMARKS_DEBOUNCE_DELAY).switchMap(() => _rxjsBundlesRxMinJs.Observable.defer(() => {
       return this._service.fetchBookmarks().refCount().timeout(FETCH_BOOKMARKS_TIMEOUT);
     }).retry(2).catch(error => {
-      (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error('failed to fetch bookmarks info:', error);
+      (0, (_log4js || _load_log4js()).getLogger)('nuclide-hg-repository-client').error('failed to fetch bookmarks info:', error);
       return _rxjsBundlesRxMinJs.Observable.empty();
     }));
 
@@ -225,7 +225,7 @@ class HgRepositoryClient {
     // startWith(null) no matter which order they subscribe.
 
     const statusChanges = (0, (_observable || _load_observable()).cacheWhileSubscribed)(triggers.switchMap(() => fetchStatuses().refCount().catch(error => {
-      (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error('HgService cannot fetch statuses', error);
+      (0, (_log4js || _load_log4js()).getLogger)('nuclide-hg-repository-client').error('HgService cannot fetch statuses', error);
       return _rxjsBundlesRxMinJs.Observable.empty();
     })).map(uriToStatusIds => (0, (_collection || _load_collection()).mapTransform)(uriToStatusIds, (v, k) => (_hgConstants || _load_hgConstants()).StatusCodeIdToNumber[v])));
 

@@ -193,10 +193,12 @@ class DataCache {
     var _this4 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      (_utils || _load_utils()).default.log(`DataCache.getProperties call on ID: ${remoteId}`);
+      (_utils || _load_utils()).default.debug(`DataCache.getProperties call on ID: ${remoteId}`);
       const id = JSON.parse(remoteId);
       if (id.enableCount !== _this4._enableCount) {
-        (_utils || _load_utils()).default.logErrorAndThrow(`Got request for stale RemoteObjectId ${remoteId}`);
+        const message = `Got request for stale RemoteObjectId ${remoteId}`;
+        (_utils || _load_utils()).default.error(message);
+        throw new Error(message);
       }
 
       // context and single paged ids require getting children from the debuggee and converting
@@ -266,7 +268,7 @@ function contextNameToScopeType(name) {
       return 'global';
     // TODO: Verify this ...
     default:
-      (_utils || _load_utils()).default.log(`Unexpected context name: ${name}`);
+      (_utils || _load_utils()).default.debug(`Unexpected context name: ${name}`);
       return 'closure';
   }
 }

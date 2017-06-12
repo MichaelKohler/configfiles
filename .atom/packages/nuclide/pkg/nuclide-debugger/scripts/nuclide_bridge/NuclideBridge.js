@@ -58,7 +58,6 @@ if (!(ipcRenderer != null)) {
 }
 
 const NUCLIDE_DEBUGGER_CONSOLE_OBJECT_GROUP = 'console';
-const DebuggerSettingsChangedEvent = 'debugger-settings-updated';
 
 class NuclideBridge {
 
@@ -68,7 +67,6 @@ class NuclideBridge {
     this._emitter = new (_Emitter || _load_Emitter()).default();
     this._debuggerPausedCount = 0;
     this._suppressBreakpointNotification = false;
-    this._settings = {};
     this._callframeId = -1;
 
     ipcRenderer.on('command', this._handleIpcCommand.bind(this));
@@ -97,7 +95,6 @@ class NuclideBridge {
 
     (_WebInspector || _load_WebInspector()).default.breakpointManager.addEventListener((_WebInspector || _load_WebInspector()).default.BreakpointManager.Events.BreakpointRemoved, this._handleBreakpointRemoved, this);
 
-    this._handleSettingsUpdated = this._handleSettingsUpdated.bind(this);
     this._customizeWebInspector();
     window.runOnWindowLoad(this._handleWindowLoad.bind(this));
   }
@@ -151,9 +148,6 @@ class NuclideBridge {
 
   _handleIpcCommand(event, command, ...args) {
     switch (command) {
-      case 'UpdateSettings':
-        this._handleSettingsUpdated(args[0]);
-        break;
       case 'SyncBreakpoints':
         this._allBreakpoints = args[0];
         this._syncBreakpoints();
@@ -169,6 +163,9 @@ class NuclideBridge {
         break;
       case 'Continue':
         this._continue();
+        break;
+      case 'Pause':
+        this._pause();
         break;
       case 'StepOver':
         this._stepOver();
@@ -209,19 +206,6 @@ class NuclideBridge {
       case 'setSelectedCallFrameIndex':
         this._handleSetSelectedCallFrameIndex(args[0]);
     }
-  }
-
-  getSettings() {
-    return this._settings;
-  }
-
-  _handleSettingsUpdated(settingsData) {
-    this._settings = JSON.parse(settingsData);
-    this._emitter.emit(DebuggerSettingsChangedEvent, null);
-  }
-
-  onDebuggerSettingsChanged(callback) {
-    return this._emitter.on(DebuggerSettingsChangedEvent, callback);
   }
 
   _handleCallFrameSelected(event) {
@@ -631,6 +615,14 @@ class NuclideBridge {
     if (target) {
       (0, (_AnalyticsHelper || _load_AnalyticsHelper()).beginTimerTracking)('nuclide-debugger-atom:continue');
       target.debuggerModel.resume();
+    }
+  }
+
+  _pause() {
+    const target = (_WebInspector || _load_WebInspector()).default.targetManager.mainTarget();
+    if (target) {
+      (0, (_AnalyticsHelper || _load_AnalyticsHelper()).beginTimerTracking)('nuclide-debugger-atom:pause');
+      target.debuggerModel.pause();
     }
   }
 

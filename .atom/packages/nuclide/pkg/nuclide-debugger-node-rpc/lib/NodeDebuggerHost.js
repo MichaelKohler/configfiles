@@ -33,22 +33,9 @@ function _load_utils() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const { log } = (_utils || _load_utils()).default;
-
 /**
  * Responsible for bootstrap and host node inspector backend.
  */
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
-
 class NodeDebuggerHost {
 
   constructor() {
@@ -67,7 +54,7 @@ class NodeDebuggerHost {
     const debugPort = 5858;
     const wsPort = this._generateRandomInteger(2000, 65535);
     this._nodeSocketServer.start(wsPort).then(websocket => {
-      log(`Websocket server created for port: ${wsPort}`);
+      (_utils || _load_utils()).default.debug(`Websocket server created for port: ${wsPort}`);
       // TODO: do we need to add webSocket into CompositeDisposable?
       const config = {
         debugPort,
@@ -91,4 +78,13 @@ class NodeDebuggerHost {
     this._subscriptions.dispose();
   }
 }
-exports.NodeDebuggerHost = NodeDebuggerHost;
+exports.NodeDebuggerHost = NodeDebuggerHost; /**
+                                              * Copyright (c) 2015-present, Facebook, Inc.
+                                              * All rights reserved.
+                                              *
+                                              * This source code is licensed under the license found in the LICENSE file in
+                                              * the root directory of this source tree.
+                                              *
+                                              * 
+                                              * @format
+                                              */

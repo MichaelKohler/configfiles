@@ -2,12 +2,10 @@
 
 var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
 
-var _atom = require('atom');
+var _UniversalDisposable;
 
-var _nuclideBusySignal;
-
-function _load_nuclideBusySignal() {
-  return _nuclideBusySignal = require('../../nuclide-busy-signal');
+function _load_UniversalDisposable() {
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
 var _createPackage;
@@ -34,10 +32,10 @@ function _load_nuclideRpc() {
   return _nuclideRpc = require('../../nuclide-rpc');
 }
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 var _FuzzyFileNameProvider;
@@ -54,23 +52,27 @@ function _load_utils() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// eslint-disable-next-line nuclide-internal/no-cross-atom-imports
-const logger = (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)(); /**
-                                                                              * Copyright (c) 2015-present, Facebook, Inc.
-                                                                              * All rights reserved.
-                                                                              *
-                                                                              * This source code is licensed under the license found in the LICENSE file in
-                                                                              * the root directory of this source tree.
-                                                                              *
-                                                                              * 
-                                                                              * @format
-                                                                              */
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ * @format
+ */
+
+const logger = (0, (_log4js || _load_log4js()).getLogger)('nuclide-fuzzy-filename-provider');
 
 class Activation {
 
   constructor() {
-    this._busySignalProvider = new (_nuclideBusySignal || _load_nuclideBusySignal()).BusySignalProviderBase();
-    this._subscriptions = new _atom.CompositeDisposable();
+    this._subscriptions = new (_UniversalDisposable || _load_UniversalDisposable()).default(() => {
+      if (this._busySignalService != null) {
+        this._busySignalService.dispose();
+      }
+    });
     this._subscriptionsByRoot = new Map();
 
     this._readySearch = this._readySearch.bind(this);
@@ -84,7 +86,7 @@ class Activation {
     // Add new project roots.
     for (const projectPath of projectPaths) {
       if (!this._subscriptionsByRoot.has(projectPath)) {
-        const disposables = new _atom.CompositeDisposable(
+        const disposables = new (_UniversalDisposable || _load_UniversalDisposable()).default(
         // Wait a bit before starting the initial search, since it's a heavy op.
         (0, (_scheduleIdleCallback || _load_scheduleIdleCallback()).default)(() => {
           this._initialSearch(projectPath).catch(err => {
@@ -125,7 +127,7 @@ class Activation {
         throw new Error('Invariant violation: "disposables != null"');
       }
 
-      const busySignalDisposable = _this._busySignalProvider.displayMessage(`File search: indexing ${projectPath}`);
+      const busySignalDisposable = _this._busySignalService == null ? new (_UniversalDisposable || _load_UniversalDisposable()).default() : _this._busySignalService.reportBusy(`File search: indexing ${projectPath}`);
       disposables.add(busySignalDisposable);
 
       // It doesn't matter what the search term is. Empirically, doing an initial
@@ -161,8 +163,11 @@ class Activation {
     return (_FuzzyFileNameProvider || _load_FuzzyFileNameProvider()).default;
   }
 
-  provideBusySignal() {
-    return this._busySignalProvider;
+  consumeBusySignal(service) {
+    this._busySignalService = service;
+    return new (_UniversalDisposable || _load_UniversalDisposable()).default(() => {
+      this._busySignalService = null;
+    });
   }
 
   dispose() {

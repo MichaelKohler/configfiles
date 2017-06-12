@@ -14,7 +14,7 @@ let readFileContents = (() => {
         return yield file.read();
       }
     } catch (e) {
-      (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error(`find-references: could not load file ${uri}`, e);
+      (0, (_log4js || _load_log4js()).getLogger)('nuclide-find-references').error(`find-references: could not load file ${uri}`, e);
     }
     return null;
   });
@@ -36,10 +36,10 @@ function _load_collection() {
   return _collection = require('nuclide-commons/collection');
 }
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

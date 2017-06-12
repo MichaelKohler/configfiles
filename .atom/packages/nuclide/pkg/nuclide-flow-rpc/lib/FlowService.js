@@ -43,10 +43,10 @@ function _load_nuclideOpenFilesRpc() {
   return _nuclideOpenFilesRpc = require('../../nuclide-open-files-rpc');
 }
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 var _FlowSingleProjectLanguageService;
@@ -94,7 +94,7 @@ function dispose() {
 
 class FlowLanguageService extends (_nuclideLanguageServiceRpc || _load_nuclideLanguageServiceRpc()).MultiProjectLanguageService {
   constructor(fileCache, host, config) {
-    const logger = (0, (_nuclideLogging || _load_nuclideLogging()).getCategoryLogger)('Flow');
+    const logger = (0, (_log4js || _load_log4js()).getLogger)('Flow');
     super();
     this.initialize(logger, fileCache, host, '.flowconfig', ['.js', '.jsx'], projectDir => {
       const execInfoContainer = getState().getExecInfoContainer();

@@ -20,10 +20,10 @@ function _load_reduxObservable() {
   return _reduxObservable = require('../../commons-node/redux-observable');
 }
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 var _refactorReducers;
@@ -53,7 +53,7 @@ const errors = new _rxjsBundlesRxMinJs.Subject(); /**
                                                    */
 
 function handleError(error) {
-  (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error('Uncaught exception in refactoring:', error);
+  (0, (_log4js || _load_log4js()).getLogger)('nuclide-refactorizer').error('Uncaught exception in refactoring:', error);
   errors.next(error);
 }
 

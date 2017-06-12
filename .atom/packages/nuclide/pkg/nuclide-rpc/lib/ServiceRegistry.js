@@ -17,10 +17,10 @@ function _load_TypeRegistry() {
   return _TypeRegistry = require('./TypeRegistry');
 }
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 var _config;
@@ -29,16 +29,16 @@ function _load_config() {
   return _config = require('./config');
 }
 
-const logger = (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)(); /**
-                                                                              * Copyright (c) 2015-present, Facebook, Inc.
-                                                                              * All rights reserved.
-                                                                              *
-                                                                              * This source code is licensed under the license found in the LICENSE file in
-                                                                              * the root directory of this source tree.
-                                                                              *
-                                                                              * 
-                                                                              * @format
-                                                                              */
+const logger = (0, (_log4js || _load_log4js()).getLogger)('nuclide-rpc'); /**
+                                                                           * Copyright (c) 2015-present, Facebook, Inc.
+                                                                           * All rights reserved.
+                                                                           *
+                                                                           * This source code is licensed under the license found in the LICENSE file in
+                                                                           * the root directory of this source tree.
+                                                                           *
+                                                                           * 
+                                                                           * @format
+                                                                           */
 
 class ServiceRegistry {
 

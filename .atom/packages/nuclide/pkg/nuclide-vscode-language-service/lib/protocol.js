@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -32,6 +32,25 @@ const DiagnosticSeverity = exports.DiagnosticSeverity = {
 };
 
 // General
+
+const ErrorCodes = exports.ErrorCodes = {
+  ParseError: -32700,
+  InvalidRequest: -32600,
+  MethodNotFound: -32601,
+  InvalidParams: -32602,
+  InternalError: -32603,
+  serverErrorStart: -32099,
+  serverErrorEnd: -32000,
+  ServerNotInitialized: -32002,
+  UnknownErrorCode: -32001,
+  RequestCancelled: -32800
+};
+
+//  Workspace specific client capabilities.
+
+
+//  Text document specific client capabilities.
+
 
 // Defines how the host (editor) should sync document changes to the language server.
 const TextDocumentSyncKind = exports.TextDocumentSyncKind = {

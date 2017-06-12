@@ -5,13 +5,19 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.DedupedBusySignalProviderBase = undefined;
 
-var _atom = require('atom');
+var _UniversalDisposable;
+
+function _load_UniversalDisposable() {
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
+}
 
 var _BusySignalProviderBase;
 
 function _load_BusySignalProviderBase() {
   return _BusySignalProviderBase = require('./BusySignalProviderBase');
 }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -35,7 +41,7 @@ class DedupedBusySignalProviderBase extends (_BusySignalProviderBase || _load_Bu
 
   displayMessage(message, options) {
     this._incrementCount(message, options);
-    return new _atom.Disposable(() => {
+    return new (_UniversalDisposable || _load_UniversalDisposable()).default(() => {
       this._decrementCount(message, options);
     });
   }

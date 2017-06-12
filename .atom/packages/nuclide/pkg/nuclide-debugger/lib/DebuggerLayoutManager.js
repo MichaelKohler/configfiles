@@ -128,6 +128,27 @@ class DebuggerLayoutManager {
     return atom.workspace.getLeftDock != null && atom.workspace.getBottomDock != null && atom.workspace.getCenter != null && atom.workspace.getRightDock != null;
   }
 
+  _overridePaneInitialHeight(dockPane, newFlexScale, desiredHeight) {
+    if (newFlexScale === 1) {
+      // newFlexScale === 1 when the pane is added the first time.
+      // $FlowFixMe
+      dockPane.element.style['flex-grow'] = '0';
+      // $FlowFixMe
+      dockPane.element.style['flex-basis'] = 'auto';
+      // $FlowFixMe
+      dockPane.element.style['overflow-y'] = 'scroll';
+      // $FlowFixMe
+      dockPane.element.style['min-height'] = String(desiredHeight) + 'px';
+    } else {
+      // Otherwise, the user must have resized the pane. Remove the override styles
+      // and let it behave normally, the user is in control of the layout now.
+      // $FlowFixMe
+      dockPane.element.style['min-height'] = '0px';
+      // $FlowFixMe
+      dockPane.element.style['flex-basis'] = '';
+    }
+  }
+
   _initializeDebuggerPanes() {
     const debuggerUriBase = 'atom://nuclide/debugger-';
 
@@ -139,7 +160,21 @@ class DebuggerLayoutManager {
       isLifetimeView: true,
       title: () => 'Debugger',
       isEnabled: () => true,
-      createView: () => _react.default.createElement((_DebuggerControlsView || _load_DebuggerControlsView()).DebuggerControlsView, { model: this._model })
+      createView: () => _react.default.createElement((_DebuggerControlsView || _load_DebuggerControlsView()).DebuggerControlsView, { model: this._model }),
+      onPaneResize: (dockPane, newFlexScale) => {
+        // If the debugger is stopped, let the controls pane keep its default
+        // layout to make room for the buttons and additional content. Otherwise,
+        // override the layout to shrink the pane and remove extra vertical whitespace.
+        const debuggerMode = this._model.getStore().getDebuggerMode();
+        if (debuggerMode !== (_DebuggerStore || _load_DebuggerStore()).DebuggerMode.STOPPED) {
+          this._overridePaneInitialHeight(dockPane, newFlexScale, 130);
+        }
+
+        // If newFlexScale !== 1, that means the user must have resized this pane.
+        // Return true to unhook this callback and let the pane resize per Atom's
+        // default behavior. The user is now responsible for the pane's height.
+        return newFlexScale !== 1;
+      }
     }, {
       uri: debuggerUriBase + 'callstack',
       isLifetimeView: false,
@@ -168,8 +203,7 @@ class DebuggerLayoutManager {
       createView: () => _react.default.createElement((_WatchView || _load_WatchView()).WatchView, {
         model: this._model,
         watchExpressionListStore: this._model.getWatchExpressionListStore()
-      }),
-      debuggerModeFilter: mode => mode !== (_DebuggerStore || _load_DebuggerStore()).DebuggerMode.STOPPED
+      })
     }, {
       uri: debuggerUriBase + 'threads',
       isLifetimeView: false,
@@ -269,7 +303,7 @@ class DebuggerLayoutManager {
     return panes.length === 0 || panes.length === 1 && panes[0].getItems().length === 0;
   }
 
-  _appendItemToDock(dock, item, debuggerItemsPerDock) {
+  _appendItemToDock(paneConfig, dock, item, debuggerItemsPerDock) {
     const panes = dock.getPanes();
 
     if (!(panes.length >= 1)) {
@@ -326,6 +360,22 @@ class DebuggerLayoutManager {
 
     if (dock.isVisible != null && dock.show != null && !dock.isVisible()) {
       dock.show();
+    }
+
+    // If the debugger pane config has a custom layout callback, hook it up now.
+    if (paneConfig.onPaneResize != null) {
+      const disposables = new (_UniversalDisposable || _load_UniversalDisposable()).default();
+      disposables.add(dockPane.onWillDestroy(() => disposables.dispose()));
+      disposables.add(dockPane.onDidChangeFlexScale(newFlexScale => {
+        if (!(paneConfig.onPaneResize != null)) {
+          throw new Error('Invariant violation: "paneConfig.onPaneResize != null"');
+        }
+
+        if (paneConfig.onPaneResize(dockPane, newFlexScale)) {
+          // The callback has requested to be unregistered.
+          disposables.dispose();
+        }
+      }));
     }
   }
 
@@ -470,7 +520,7 @@ class DebuggerLayoutManager {
       }
 
       if (debuggerPane.debuggerModeFilter == null || debuggerPane.debuggerModeFilter(mode)) {
-        this._appendItemToDock(targetDock.dock, new (_DebuggerPaneViewModel || _load_DebuggerPaneViewModel()).DebuggerPaneViewModel(debuggerPane, this._model, debuggerPane.isLifetimeView, pane => this._paneDestroyed(pane)), addedItemsByDock);
+        this._appendItemToDock(debuggerPane, targetDock.dock, new (_DebuggerPaneViewModel || _load_DebuggerPaneViewModel()).DebuggerPaneViewModel(debuggerPane, this._model, debuggerPane.isLifetimeView, pane => this._paneDestroyed(pane)), addedItemsByDock);
       }
     });
   }

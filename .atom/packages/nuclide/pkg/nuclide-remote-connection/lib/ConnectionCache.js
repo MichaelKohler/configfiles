@@ -26,7 +26,7 @@ function _load_nuclideUri() {
 var _cache;
 
 function _load_cache() {
-  return _cache = require('../../commons-node/cache');
+  return _cache = require('nuclide-commons/cache');
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

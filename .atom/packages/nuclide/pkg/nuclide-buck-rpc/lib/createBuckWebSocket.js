@@ -7,10 +7,10 @@ exports.default = createBuckWebSocket;
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 var _ws;
@@ -48,7 +48,7 @@ function createBuckWebSocket(httpPort) {
       try {
         message = JSON.parse(data);
       } catch (err) {
-        (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error('Error parsing Buck websocket message', err);
+        (0, (_log4js || _load_log4js()).getLogger)('nuclide-buck-rpc').error('Error parsing Buck websocket message', err);
         return;
       }
 

@@ -108,7 +108,7 @@ class DbgpSocket {
     this._calls = new Map();
     this._emitter = new _events.default();
     this._isClosed = false;
-    this._messageHandler = (0, (_DbgpMessageHandler || _load_DbgpMessageHandler()).getDbgpMessageHandlerInstance)();
+    this._messageHandler = new (_DbgpMessageHandler || _load_DbgpMessageHandler()).DbgpMessageHandler();
     this._pendingEvalTransactionIds = new Set();
     this._lastContinuationCommandTransactionId = null;
 
@@ -128,7 +128,7 @@ class DbgpSocket {
   _onError(error) {
     // Not sure if hhvm is alive or not
     // do not set _isClosed flag so that detach will be sent before dispose().
-    (_utils || _load_utils()).default.logError('socket error ' + error.code);
+    (_utils || _load_utils()).default.error('socket error ' + error.code);
     this._emitStatus(ConnectionStatus.Error, error.code);
   }
 
@@ -140,7 +140,7 @@ class DbgpSocket {
 
   _onData(data) {
     const message = data.toString();
-    (_utils || _load_utils()).default.log('Recieved data: ' + message);
+    (_utils || _load_utils()).default.debug('Recieved data: ' + message);
     let responses = [];
     try {
       responses = this._messageHandler.parseMessages(message);
@@ -159,7 +159,7 @@ class DbgpSocket {
       } else if (notify != null) {
         this._handleNotification(notify);
       } else {
-        (_utils || _load_utils()).default.logError('Unexpected socket message: ' + message);
+        (_utils || _load_utils()).default.error('Unexpected socket message: ' + message);
       }
     });
   }
@@ -170,7 +170,7 @@ class DbgpSocket {
     const transactionId = Number(transaction_id);
     const call = this._calls.get(transactionId);
     if (!call) {
-      (_utils || _load_utils()).default.logError('Missing call for response: ' + message);
+      (_utils || _load_utils()).default.error('Missing call for response: ' + message);
       return;
     }
     // We handle evaluation commands specially since they can trigger breakpoints.
@@ -243,7 +243,7 @@ class DbgpSocket {
     const outputType = stream.$.type;
     // The body of the `stream` XML can be omitted, e.g. `echo null`, so we defend against this.
     const outputText = stream._ != null ? (0, (_helpers || _load_helpers()).base64Decode)(stream._) : '';
-    (_utils || _load_utils()).default.log(`${outputType} message received: ${outputText}`);
+    (_utils || _load_utils()).default.debug(`${outputType} message received: ${outputText}`);
     const status = outputType === 'stdout' ? ConnectionStatus.Stdout : ConnectionStatus.Stderr;
     // TODO: t13439903 -- add a way to fetch the rest of the data.
     const truncatedOutputText = outputText.slice(0, STREAM_MESSAGE_MAX_SIZE);
@@ -255,26 +255,26 @@ class DbgpSocket {
     if (notifyName === 'breakpoint_resolved') {
       const breakpoint = notify.breakpoint[0].$;
       if (breakpoint == null) {
-        (_utils || _load_utils()).default.logError(`Fail to get breakpoint from 'breakpoint_resolved' notify: ${JSON.stringify(notify)}`);
+        (_utils || _load_utils()).default.error(`Fail to get breakpoint from 'breakpoint_resolved' notify: ${JSON.stringify(notify)}`);
         return;
       }
       this._emitNotification(BREAKPOINT_RESOLVED_NOTIFICATION, breakpoint);
     } else {
-      (_utils || _load_utils()).default.logError(`Unknown notify: ${JSON.stringify(notify)}`);
+      (_utils || _load_utils()).default.error(`Unknown notify: ${JSON.stringify(notify)}`);
     }
   }
 
   _completeRequest(message, response, call, command, transactionId) {
     this._calls.delete(transactionId);
     if (call.command !== command) {
-      (_utils || _load_utils()).default.logError('Bad command in response. Found ' + command + '. expected ' + call.command);
+      (_utils || _load_utils()).default.error('Bad command in response. Found ' + command + '. expected ' + call.command);
       return;
     }
     try {
-      (_utils || _load_utils()).default.log('Completing call: ' + message);
+      (_utils || _load_utils()).default.debug('Completing call: ' + message);
       call.complete(response);
     } catch (e) {
-      (_utils || _load_utils()).default.logError('Exception: ' + e.toString() + ' handling call: ' + message);
+      (_utils || _load_utils()).default.error('Exception: ' + e.toString() + ' handling call: ' + message);
     }
   }
 
@@ -349,7 +349,7 @@ class DbgpSocket {
           wasThrown: false
         };
       } else {
-        (_utils || _load_utils()).default.log(`Received non-error evaluateOnCallFrame response with no properties: ${expression}`);
+        (_utils || _load_utils()).default.debug(`Received non-error evaluateOnCallFrame response with no properties: ${expression}`);
         return {
           result: DEFAULT_DBGP_PROPERTY,
           wasThrown: false
@@ -449,7 +449,7 @@ class DbgpSocket {
           wasThrown: false
         };
       } else {
-        (_utils || _load_utils()).default.log(`Received non-error runtimeEvaluate response with no properties: ${expr}`);
+        (_utils || _load_utils()).default.debug(`Received non-error runtimeEvaluate response with no properties: ${expr}`);
       }
       return {
         result: DEFAULT_DBGP_PROPERTY,
@@ -564,20 +564,20 @@ class DbgpSocket {
   _sendMessage(message) {
     const socket = this._socket;
     if (socket != null) {
-      (_utils || _load_utils()).default.log('Sending message: ' + message);
+      (_utils || _load_utils()).default.debug('Sending message: ' + message);
       socket.write(message + '\x00');
     } else {
-      (_utils || _load_utils()).default.logError('Attempt to send message after dispose: ' + message);
+      (_utils || _load_utils()).default.error('Attempt to send message after dispose: ' + message);
     }
   }
 
   _emitStatus(status, ...args) {
-    (_utils || _load_utils()).default.log('Emitting status: ' + status);
+    (_utils || _load_utils()).default.debug('Emitting status: ' + status);
     this._emitter.emit(DBGP_SOCKET_STATUS_EVENT, status, ...args);
   }
 
   _emitNotification(notifyName, notify) {
-    (_utils || _load_utils()).default.log(`Emitting notification: ${notifyName}`);
+    (_utils || _load_utils()).default.debug(`Emitting notification: ${notifyName}`);
     this._emitter.emit(DBGP_SOCKET_NOTIFICATION_EVENT, notifyName, notify);
   }
 

@@ -67,7 +67,7 @@ let main = (() => {
 var _fsPromise;
 
 function _load_fsPromise() {
-  return _fsPromise = _interopRequireDefault(require('../../commons-node/fsPromise'));
+  return _fsPromise = _interopRequireDefault(require('nuclide-commons/fsPromise'));
 }
 
 var _nuclideLogging;
@@ -100,22 +100,26 @@ function _load_yargs() {
   return _yargs = _interopRequireDefault(require('yargs'));
 }
 
+var _log4js;
+
+function _load_log4js() {
+  return _log4js = require('log4js');
+}
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
+const DEFAULT_PORT = 9090; /**
+                            * Copyright (c) 2015-present, Facebook, Inc.
+                            * All rights reserved.
+                            *
+                            * This source code is licensed under the license found in the LICENSE file in
+                            * the root directory of this source tree.
+                            *
+                            * 
+                            * @format
+                            */
 
-const DEFAULT_PORT = 9090;
-
-const logger = (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)();
+const logger = (0, (_log4js || _load_log4js()).getLogger)('nuclide-server');
 
 process.stderr.on('error', error => {
   throw new Error('Can not write to stderr! :' + error);

@@ -5,7 +5,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ProcessTable = undefined;
 
-var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
+var _ProcessTaskButton;
+
+function _load_ProcessTaskButton() {
+  return _ProcessTaskButton = require('./ProcessTaskButton');
+}
 
 var _react = _interopRequireDefault(require('react'));
 
@@ -23,37 +27,18 @@ function _load_AtomInput() {
   return _AtomInput = require('nuclide-commons-ui/AtomInput');
 }
 
-var _addTooltip;
-
-function _load_addTooltip() {
-  return _addTooltip = _interopRequireDefault(require('nuclide-commons-ui/addTooltip'));
-}
-
-var _Icon;
-
-function _load_Icon() {
-  return _Icon = require('nuclide-commons-ui/Icon');
-}
-
-var _nuclideRemoteConnection;
-
-function _load_nuclideRemoteConnection() {
-  return _nuclideRemoteConnection = require('../../../nuclide-remote-connection');
-}
-
-var _consumeFirstProvider;
-
-function _load_consumeFirstProvider() {
-  return _consumeFirstProvider = _interopRequireDefault(require('../../../commons-atom/consumeFirstProvider'));
-}
-
-var _JavaDebuggerApi;
-
-function _load_JavaDebuggerApi() {
-  return _JavaDebuggerApi = require('../JavaDebuggerApi');
-}
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ * @format
+ */
 
 class ProcessTable extends _react.default.Component {
 
@@ -103,7 +88,7 @@ class ProcessTable extends _react.default.Component {
     if (sortedColumnName == null) {
       return processes;
     }
-    // compare numerically pid, cpu and mem
+    // compare numerically the following fields
     const compare = ['cpuUsage', 'memUsage', 'pid', 'debug'].includes(sortedColumnName) ? (a, b, isAsc) => {
       const cmp = (a || Number.NEGATIVE_INFINITY) - (b || Number.NEGATIVE_INFINITY);
       return isAsc ? cmp : -cmp;
@@ -120,17 +105,29 @@ class ProcessTable extends _react.default.Component {
     const rows = this._sortProcesses(this.props.processes.filter(item => filterRegex.test(item.user) || filterRegex.test(`${item.pid}`) || filterRegex.test(item.name)), this.state.sortedColumn, this.state.sortDescending).map(item => ({
       data: {
         pid: _react.default.createElement(
-          'span',
+          'div',
           null,
-          this._getKillButton(item.name),
-          ' ',
+          _react.default.createElement((_ProcessTaskButton || _load_ProcessTaskButton()).ProcessTaskButton, {
+            icon: 'x',
+            proc: item,
+            taskType: 'KILL',
+            nameIfManyTasks: 'Kill process',
+            tasks: this.props.processTasks
+          }),
           item.pid
         ),
         user: item.user,
         name: item.name,
         cpuUsage: this._formatCpuUsage(item.cpuUsage),
         memUsage: this._formatMemUsage(item.memUsage),
-        debug: this._getDebugButton(item)
+        debug: _react.default.createElement((_ProcessTaskButton || _load_ProcessTaskButton()).ProcessTaskButton, {
+          icon: 'nuclicon-debugger',
+          className: 'nuclide-device-panel-debug-button',
+          proc: item,
+          taskType: 'DEBUG',
+          nameIfManyTasks: 'Debug process',
+          tasks: this.props.processTasks
+        })
       }
     }));
     const columns = [{
@@ -182,7 +179,8 @@ class ProcessTable extends _react.default.Component {
         sortable: true,
         onSort: this._handleSort,
         sortedColumn: this.state.sortedColumn,
-        sortDescending: this.state.sortDescending
+        sortDescending: this.state.sortDescending,
+        className: 'nuclide-device-panel-process-table'
       })
     );
   }
@@ -192,72 +190,5 @@ class ProcessTable extends _react.default.Component {
       filterText: text
     });
   }
-
-  _getDebugButton(item) {
-    if (item.isJava) {
-      return _react.default.createElement((_Icon || _load_Icon()).Icon, {
-        className: 'nuclide-device-panel-debug-button',
-        icon: 'nuclicon-debugger',
-        title: 'Attach Java debugger',
-        onClick: () => this._debugJavaProcess(item.pid)
-      });
-    }
-
-    return null;
-  }
-
-  _debugJavaProcess(pid) {
-    var _this = this;
-
-    return (0, _asyncToGenerator.default)(function* () {
-      const service = (0, (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).getServiceByNuclideUri)('JavaDebuggerService', _this.props.host);
-      if (service == null) {
-        throw new Error('Java debugger service is not available.');
-      }
-
-      const debuggerService = yield (0, (_consumeFirstProvider || _load_consumeFirstProvider()).default)('nuclide-debugger.remote');
-      const deviceName = _this.props.device != null ? _this.props.device.name : '';
-      const javaDebugger = (0, (_JavaDebuggerApi || _load_JavaDebuggerApi()).getJavaDebuggerApi)();
-      if (javaDebugger != null) {
-        const debugInfo = javaDebugger.createAndroidDebugInfo({
-          targetUri: _this.props.host,
-          packageName: '',
-          device: deviceName,
-          pid
-        });
-        debuggerService.startDebugging(debugInfo);
-      } else {
-        atom.notifications.addWarning('The Java debugger service is not available.');
-      }
-    })();
-  }
-
-  _getKillButton(packageName) {
-    const killProcess = this.props.killProcess;
-    if (killProcess == null) {
-      return null;
-    }
-    return _react.default.createElement(
-      'span',
-      {
-        className: 'nuclide-device-panel-link-with-icon',
-        onClick: () => killProcess(packageName),
-        ref: (0, (_addTooltip || _load_addTooltip()).default)({
-          title: 'Kill process',
-          delay: 300,
-          placement: 'left'
-        }) },
-      _react.default.createElement((_Icon || _load_Icon()).Icon, { icon: 'x' })
-    );
-  }
 }
-exports.ProcessTable = ProcessTable; /**
-                                      * Copyright (c) 2015-present, Facebook, Inc.
-                                      * All rights reserved.
-                                      *
-                                      * This source code is licensed under the license found in the LICENSE file in
-                                      * the root directory of this source tree.
-                                      *
-                                      * 
-                                      * @format
-                                      */
+exports.ProcessTable = ProcessTable;

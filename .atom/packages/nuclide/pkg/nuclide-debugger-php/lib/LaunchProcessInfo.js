@@ -45,16 +45,16 @@ function _load_utils2() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const { logInfo } = (_utils || _load_utils()).default; /**
-                                                        * Copyright (c) 2015-present, Facebook, Inc.
-                                                        * All rights reserved.
-                                                        *
-                                                        * This source code is licensed under the license found in the LICENSE file in
-                                                        * the root directory of this source tree.
-                                                        *
-                                                        * 
-                                                        * @format
-                                                        */
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ * @format
+ */
 
 class LaunchProcessInfo extends (_nuclideDebuggerBase || _load_nuclideDebuggerBase()).DebuggerProcessInfo {
 
@@ -78,10 +78,10 @@ class LaunchProcessInfo extends (_nuclideDebuggerBase || _load_nuclideDebuggerBa
       sessionConfig.endDebugWhenNoRequests = true;
       sessionConfig.launchScriptPath = _this._launchTarget;
 
-      logInfo(`Connection session config: ${JSON.stringify(sessionConfig)}`);
+      (_utils || _load_utils()).default.info(`Connection session config: ${JSON.stringify(sessionConfig)}`);
 
       const result = yield rpcService.debug(sessionConfig);
-      logInfo(`Launch process result: ${result}`);
+      (_utils || _load_utils()).default.info(`Launch process result: ${result}`);
       return new (_PhpDebuggerInstance || _load_PhpDebuggerInstance()).PhpDebuggerInstance(_this, rpcService);
     })();
   }

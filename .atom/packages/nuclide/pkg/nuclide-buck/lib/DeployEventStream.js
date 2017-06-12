@@ -164,10 +164,10 @@ function _load_LaunchProcessInfo() {
   return _LaunchProcessInfo = require('../../nuclide-debugger-native/lib/LaunchProcessInfo');
 }
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 var _nuclideUri;
@@ -218,7 +218,7 @@ buckService, buckRoot, buildTarget, runArguments) {
       message: `Launched debugger with ${path}`,
       level: 'info'
     })).catch(err => {
-      (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error(`Failed to launch debugger for ${buildTarget}`, err);
+      (0, (_log4js || _load_log4js()).getLogger)('nuclide-buck').error(`Failed to launch debugger for ${buildTarget}`, err);
       return _rxjsBundlesRxMinJs.Observable.of({
         type: 'log',
         message: `Failed to launch debugger: ${err.message}`,

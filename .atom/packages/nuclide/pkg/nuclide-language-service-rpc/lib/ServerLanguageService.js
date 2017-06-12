@@ -167,7 +167,7 @@ class ServerLanguageService {
     })();
   }
 
-  getEvaluationExpression(fileVersion, position) {
+  formatAtPosition(fileVersion, position, triggerCharacter) {
     var _this10 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
@@ -176,7 +176,20 @@ class ServerLanguageService {
       if (buffer == null) {
         return null;
       }
-      return _this10._service.getEvaluationExpression(filePath, buffer, position);
+      return _this10._service.formatAtPosition(filePath, buffer, position, triggerCharacter);
+    })();
+  }
+
+  getEvaluationExpression(fileVersion, position) {
+    var _this11 = this;
+
+    return (0, _asyncToGenerator.default)(function* () {
+      const filePath = fileVersion.filePath;
+      const buffer = yield (0, (_nuclideOpenFilesRpc || _load_nuclideOpenFilesRpc()).getBufferAtVersion)(fileVersion);
+      if (buffer == null) {
+        return null;
+      }
+      return _this11._service.getEvaluationExpression(filePath, buffer, position);
     })();
   }
 
@@ -196,10 +209,10 @@ class ServerLanguageService {
   }
 
   isFileInProject(fileUri) {
-    var _this11 = this;
+    var _this12 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      return _this11._service.isFileInProject(fileUri);
+      return _this12._service.isFileInProject(fileUri);
     })();
   }
 
@@ -227,18 +240,18 @@ function ensureInvalidations(logger, diagnostics) {
   const trackedDiagnostics = diagnostics.do(diagnostic => {
     const filePath = diagnostic.filePath;
     if (diagnostic.messages.length === 0) {
-      logger.log(`Removing ${filePath} from files with errors`);
+      logger.debug(`Removing ${filePath} from files with errors`);
       filesWithErrors.delete(filePath);
     } else {
-      logger.log(`Adding ${filePath} to files with errors`);
+      logger.debug(`Adding ${filePath} to files with errors`);
       filesWithErrors.add(filePath);
     }
   });
 
   const fileInvalidations = _rxjsBundlesRxMinJs.Observable.defer(() => {
-    logger.log('Clearing errors after stream closed');
+    logger.debug('Clearing errors after stream closed');
     return _rxjsBundlesRxMinJs.Observable.from(Array.from(filesWithErrors).map(file => {
-      logger.log(`Clearing errors for ${file} after connection closed`);
+      logger.debug(`Clearing errors for ${file} after connection closed`);
       return {
         filePath: file,
         messages: []

@@ -8,7 +8,7 @@ exports.DatatipManager = undefined;
 var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
 
 let getTopDatatipAndProvider = (() => {
-  var _ref = (0, _asyncToGenerator.default)(function* (providers, editor, position, invoke) {
+  var _ref3 = (0, _asyncToGenerator.default)(function* (providers, editor, position, invoke) {
     const { scopeName } = editor.getGrammar();
     const filteredDatatipProviders = filterProvidersByScopeName(providers, scopeName);
     if (filteredDatatipProviders.length === 0) {
@@ -16,7 +16,7 @@ let getTopDatatipAndProvider = (() => {
     }
 
     const datatipPromises = providers.map((() => {
-      var _ref2 = (0, _asyncToGenerator.default)(function* (provider) {
+      var _ref4 = (0, _asyncToGenerator.default)(function* (provider) {
         const name = getProviderName(provider);
         const timingTracker = new (_analytics || _load_analytics()).default.TimingTracker(name + '.datatip');
         try {
@@ -39,7 +39,7 @@ let getTopDatatipAndProvider = (() => {
       });
 
       return function (_x5) {
-        return _ref2.apply(this, arguments);
+        return _ref4.apply(this, arguments);
       };
     })());
 
@@ -49,13 +49,25 @@ let getTopDatatipAndProvider = (() => {
   });
 
   return function getTopDatatipAndProvider(_x, _x2, _x3, _x4) {
-    return _ref.apply(this, arguments);
+    return _ref3.apply(this, arguments);
   };
 })();
+
+var _immutable;
+
+function _load_immutable() {
+  return _immutable = _interopRequireDefault(require('immutable'));
+}
 
 var _react = _interopRequireDefault(require('react'));
 
 var _reactDom = _interopRequireDefault(require('react-dom'));
+
+var _UniversalDisposable;
+
+function _load_UniversalDisposable() {
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
+}
 
 var _analytics;
 
@@ -69,16 +81,30 @@ function _load_debounce() {
   return _debounce = _interopRequireDefault(require('nuclide-commons/debounce'));
 }
 
+var _featureConfig;
+
+function _load_featureConfig() {
+  return _featureConfig = _interopRequireDefault(require('nuclide-commons-atom/feature-config'));
+}
+
+var _idx;
+
+function _load_idx() {
+  return _idx = _interopRequireDefault(require('idx'));
+}
+
+var _performanceNow;
+
+function _load_performanceNow() {
+  return _performanceNow = _interopRequireDefault(require('nuclide-commons/performanceNow'));
+}
+
+var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
+
 var _collection;
 
 function _load_collection() {
   return _collection = require('nuclide-commons/collection');
-}
-
-var _nuclideLogging;
-
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
 }
 
 var _promise;
@@ -87,18 +113,16 @@ function _load_promise() {
   return _promise = require('nuclide-commons/promise');
 }
 
-var _UniversalDisposable;
+var _log4js;
 
-function _load_UniversalDisposable() {
-  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
-var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
+var _textEditor;
 
-var _immutable;
-
-function _load_immutable() {
-  return _immutable = _interopRequireDefault(require('immutable'));
+function _load_textEditor() {
+  return _textEditor = require('nuclide-commons-atom/text-editor');
 }
 
 var _getModifierKeys;
@@ -119,38 +143,22 @@ function _load_PinnedDatatip() {
   return _PinnedDatatip = require('./PinnedDatatip');
 }
 
-var _featureConfig;
-
-function _load_featureConfig() {
-  return _featureConfig = _interopRequireDefault(require('nuclide-commons-atom/feature-config'));
-}
-
-var _textEditor;
-
-function _load_textEditor() {
-  return _textEditor = require('nuclide-commons-atom/text-editor');
-}
-
-var _performanceNow;
-
-function _load_performanceNow() {
-  return _performanceNow = _interopRequireDefault(require('../../commons-node/performanceNow'));
-}
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const logger = (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)(); /**
-                                                                              * Copyright (c) 2015-present, Facebook, Inc.
-                                                                              * All rights reserved.
-                                                                              *
-                                                                              * This source code is licensed under the license found in the LICENSE file in
-                                                                              * the root directory of this source tree.
-                                                                              *
-                                                                              * 
-                                                                              * @format
-                                                                              */
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ * @format
+ */
 
 /* global performance */
+
+const logger = (0, (_log4js || _load_log4js()).getLogger)('nuclide-datatip');
 
 const CUMULATIVE_WHEELX_THRESHOLD = 20;
 const DEFAULT_DATATIP_DEBOUNCE_DELAY = 1000;
@@ -272,6 +280,7 @@ class DatatipManagerForEditor {
     this._interactedWith = false;
     this._cumulativeWheelX = 0;
     this._lastHiddenTime = 0;
+    this._lastFetchedFromCursorPosition = false;
     this._shouldDropNextMouseMoveAfterFocus = false;
 
     this._subscriptions.add((_featureConfig || _load_featureConfig()).default.observe('nuclide-datatip.datatipDebounceDelay', () => this._setStartFetchingDebounce()), (_featureConfig || _load_featureConfig()).default.observe('nuclide-datatip.datatipInteractedWithDebounceDelay', () => this._setHideIfOutsideDebounce()), _rxjsBundlesRxMinJs.Observable.fromEvent(this._editorView, 'focus').subscribe(e => {
@@ -284,6 +293,7 @@ class DatatipManagerForEditor {
         this._setState(DatatipState.HIDDEN);
       }
     }), _rxjsBundlesRxMinJs.Observable.fromEvent(this._editorView, 'mousemove').subscribe(e => {
+      this._lastFetchedFromCursorPosition = false;
       if (this._shouldDropNextMouseMoveAfterFocus) {
         this._shouldDropNextMouseMoveAfterFocus = false;
         return;
@@ -313,7 +323,9 @@ class DatatipManagerForEditor {
       const modifierKey = (0, (_getModifierKeys || _load_getModifierKeys()).getModifierKeyFromKeyboardEvent)(e);
       if (modifierKey) {
         this._heldKeys = this._heldKeys.add(modifierKey);
-        this._startFetching(() => getBufferPosition(this._editor, this._editorView, this._lastMoveEvent));
+        if (this._datatipState !== DatatipState.HIDDEN) {
+          this._fetchInResponseToKeyPress();
+        }
       } else {
         this._hideOrCancel();
       }
@@ -321,7 +333,9 @@ class DatatipManagerForEditor {
       const modifierKey = (0, (_getModifierKeys || _load_getModifierKeys()).getModifierKeyFromKeyboardEvent)(e);
       if (modifierKey) {
         this._heldKeys = this._heldKeys.delete(modifierKey);
-        this._startFetching(() => getBufferPosition(this._editor, this._editorView, this._lastMoveEvent));
+        if (this._datatipState !== DatatipState.HIDDEN) {
+          this._fetchInResponseToKeyPress();
+        }
       }
     }), _rxjsBundlesRxMinJs.Observable.fromEvent(this._datatipElement, 'wheel').subscribe(e => {
       this._cumulativeWheelX += Math.abs(e.deltaX);
@@ -345,6 +359,14 @@ class DatatipManagerForEditor {
         this._setState(DatatipState.HIDDEN);
       }
     }), atom.commands.add('atom-text-editor', 'nuclide-datatip:toggle', this._toggleDatatip));
+  }
+
+  _fetchInResponseToKeyPress() {
+    if (this._lastFetchedFromCursorPosition) {
+      this._startFetching(() => this._editor.getCursorBufferPosition());
+    } else {
+      this._startFetching(() => getBufferPosition(this._editor, this._editorView, this._lastMoveEvent));
+    }
   }
 
   _setStartFetchingDebounce() {
@@ -569,7 +591,9 @@ var _initialiseProps = function () {
     }));
   };
 
-  this._toggleDatatip = () => {
+  this._toggleDatatip = e => {
+    var _ref, _ref2;
+
     if (atom.workspace.getActiveTextEditor() !== this._editor) {
       return;
     }
@@ -577,15 +601,23 @@ var _initialiseProps = function () {
     // Note that we don't need to hide the tooltip, we already hide it on
     // keydown, which is going to be triggered before the key binding which is
     // evaluated on keyup.
+    const maybeEventType = (_ref = e) != null ? (_ref2 = _ref.originalEvent) != null ? _ref2.type : _ref2 : _ref;
 
-    if (this._datatipState === DatatipState.HIDDEN &&
     // Unfortunately, when you do keydown of the shortcut, it's going to
     // hide it, we need to make sure that when we do keyup, it doesn't show
     // it up right away. We assume that a keypress is done within 100ms
     // and don't show it again if it was hidden so soon.
-    performance.now() - this._lastHiddenTime > 100) {
+    const forceShow = maybeEventType === 'keydown' && performance.now() - this._lastHiddenTime > 100;
+    const forceHide = maybeEventType === 'keyup';
+    const forceToggle = maybeEventType !== 'keydown' && maybeEventType !== 'keyup';
+
+    if (
+    // if we have event information, prefer that for determining show/hide
+    forceShow || forceToggle && this._datatipState === DatatipState.HIDDEN) {
+      this._lastFetchedFromCursorPosition = true;
       this._startFetching(() => this._editor.getCursorScreenPosition());
-      return;
+    } else if (forceHide || forceToggle) {
+      this._hideOrCancel();
     }
   };
 };

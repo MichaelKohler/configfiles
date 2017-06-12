@@ -33,6 +33,7 @@
 /* eslint-disable */
 
 var DebuggerDomainDispatcher = require('./DebuggerDomainDispatcher');
+var RuntimeDomainDispatcher = require('./RuntimeDomainDispatcher');
 
 /**
  * @constructor
@@ -209,9 +210,12 @@ InspectorBackendClass.prototype = {
               var debuggerAgent = connection.agent('Debugger');
               var debuggerDispatcher = new DebuggerDomainDispatcher(debuggerAgent);
               connection.registerDispatcher('Debugger', debuggerDispatcher);
+              var runtimeAgent = connection.agent('Runtime');
+              var runtimeDispatcher = new RuntimeDomainDispatcher(runtimeAgent);
+              connection.registerDispatcher('Runtime', runtimeDispatcher);
 
               InspectorBackend._initialized = false;
-              resolve(debuggerDispatcher);
+              resolve({debuggerDispatcher, runtimeDispatcher});
           });
         });
         return parseProtocolPromise;
@@ -303,7 +307,7 @@ InspectorBackendClass._generateCommands = function(schema) {
         for (var j = 0; j < commands.length; ++j) {
             var command = commands[j];
             var parameters = command["parameters"];
-            var paramsText = [];
+            var params = [];
             for (var k = 0; parameters && k < parameters.length; ++k) {
                 var parameter = parameters[k];
 
@@ -318,18 +322,21 @@ InspectorBackendClass._generateCommands = function(schema) {
                         type = rawTypes[domain.domain + "." + ref];
                 }
 
-                var text = `name: ${parameter.name}, type: ${type}, optional: ${parameter.optional}`;
-                paramsText.push(text);
+                params.push({
+                  name: parameter.name,
+                  type: type,
+                  optional: parameter.optional
+                });
             }
 
             var returnsText = [];
             var returns = command["returns"] || [];
             for (var k = 0; k < returns.length; ++k) {
                 var parameter = returns[k];
-                returnsText.push("\"" + parameter.name + "\"");
+                returnsText.push(parameter.name);
             }
-            var hasErrorData = String(Boolean(command.error));
-            InspectorBackend.registerCommand(domain.domain + "." + command.name, paramsText, returnsText, hasErrorData);
+            var hasErrorData = command.error;
+            InspectorBackend.registerCommand(domain.domain + "." + command.name, params, returnsText, hasErrorData);
         }
 
         for (var j = 0; domain.events && j < domain.events.length; ++j) {
@@ -628,116 +635,6 @@ InspectorBackendClass.Connection.prototype = {
  * @constructor
  * @extends {InspectorBackendClass.Connection}
  */
-InspectorBackendClass.MainConnection = function()
-{
-    InspectorBackendClass.Connection.call(this);
-    InspectorFrontendHost.events.addEventListener(InspectorFrontendHostAPI.Events.DispatchMessage, this._dispatchMessage, this);
-    InspectorFrontendHost.events.addEventListener(InspectorFrontendHostAPI.Events.DispatchMessageChunk, this._dispatchMessageChunk, this);
-}
-
-InspectorBackendClass.MainConnection.prototype = {
-    /**
-     * @override
-     * @param {!Object} messageObject
-     */
-    sendMessage: function(messageObject)
-    {
-        var message = JSON.stringify(messageObject);
-        InspectorFrontendHost.sendMessageToBackend(message);
-    },
-
-    /**
-     * @param {!WebInspector.Event} event
-     */
-    _dispatchMessage: function(event)
-    {
-        this.dispatch(/** @type {string} */ (event.data));
-    },
-
-    /**
-     * @param {!WebInspector.Event} event
-     */
-    _dispatchMessageChunk: function(event)
-    {
-        var messageChunk = /** @type {string} */ (event.data["messageChunk"]);
-        var messageSize = /** @type {number} */ (event.data["messageSize"]);
-        if (messageSize) {
-            this._messageBuffer = "";
-            this._messageSize = messageSize;
-        }
-        this._messageBuffer += messageChunk;
-        if (this._messageBuffer.length === this._messageSize) {
-            this.dispatch(this._messageBuffer);
-            this._messageBuffer = "";
-            this._messageSize = 0;
-        }
-    },
-
-    __proto__: InspectorBackendClass.Connection.prototype
-}
-
-/**
- * @constructor
- * @extends {InspectorBackendClass.Connection}
- * @param {string} url
- * @param {function(!InspectorBackendClass.Connection)} onConnectionReady
- */
-InspectorBackendClass.WebSocketConnection = function(url, onConnectionReady)
-{
-    InspectorBackendClass.Connection.call(this);
-    this._socket = new WebSocket(url);
-    this._socket.onmessage = this._onMessage.bind(this);
-    this._socket.onerror = this._onError.bind(this);
-    this._socket.onopen = onConnectionReady.bind(null, this);
-    this._socket.onclose = this.connectionClosed.bind(this, "websocket_closed");
-}
-
-/**
- * @param {string} url
- * @param {function(!InspectorBackendClass.Connection)} onConnectionReady
- */
-InspectorBackendClass.WebSocketConnection.Create = function(url, onConnectionReady)
-{
-    new InspectorBackendClass.WebSocketConnection(url, onConnectionReady);
-}
-
-InspectorBackendClass.WebSocketConnection.prototype = {
-
-    /**
-     * @param {!MessageEvent} message
-     */
-    _onMessage: function(message)
-    {
-        var data = /** @type {string} */ (message.data);
-        this.dispatch(data);
-    },
-
-    /**
-     * @param {!Event} error
-     */
-    _onError: function(error)
-    {
-        console.error(error);
-    },
-
-    /**
-     * @override
-     * @param {!Object} messageObject
-     */
-    sendMessage: function(messageObject)
-    {
-        var message = JSON.stringify(messageObject);
-        this._socket.send(message);
-    },
-
-    __proto__: InspectorBackendClass.Connection.prototype
-}
-
-
-/**
- * @constructor
- * @extends {InspectorBackendClass.Connection}
- */
 InspectorBackendClass.StubConnection = function(transport)
 {
     InspectorBackendClass.Connection.call(this);
@@ -906,7 +803,7 @@ InspectorBackendClass.AgentPrototype.prototype = {
             console.error(message)
             errorMessage = message;
         }
-        var callback = (args.length && typeof args.peekLast() === "function") ? args.pop() : null;
+        var callback = (args.length && args.length > 0 && typeof args[args.length-1] === "function") ? args.pop() : null;
         var params = this._prepareParameters(method, signature, args, !callback, onError);
         if (errorMessage)
             return;
@@ -979,8 +876,7 @@ InspectorBackendClass.AgentPrototype.prototype = {
     dispatchResponse: function(messageObject, methodName, callback)
     {
         if (messageObject.error && messageObject.error.code !== InspectorBackendClass._DevToolsErrorCode && !InspectorBackendClass.Options.suppressRequestErrors && !this._suppressErrorLogging) {
-            var id = InspectorFrontendHost.isUnderTest() ? "##" : messageObject.id;
-            console.error("Request with id = " + id + " failed. " + JSON.stringify(messageObject.error));
+            console.error("Request with id = " + messageObject.id + " failed. " + JSON.stringify(messageObject.error));
         }
 
         if (this._promisified) {
@@ -994,12 +890,7 @@ InspectorBackendClass.AgentPrototype.prototype = {
         if (this._hasErrorData[methodName])
             argumentsArray[1] = messageObject.error ? messageObject.error.data : null;
 
-        if (messageObject.result) {
-            var paramNames = this._replyArgs[methodName] || [];
-            for (var i = 0; i < paramNames.length; ++i)
-                argumentsArray.push(messageObject.result[paramNames[i]]);
-        }
-
+        argumentsArray.push(messageObject.result);
         callback.apply(null, argumentsArray);
     },
 
@@ -1056,18 +947,11 @@ InspectorBackendClass.DispatcherPrototype.prototype = {
             return;
         }
 
-        var params = [];
-        if (messageObject.params) {
-            var paramNames = this._eventArgs[messageObject.method];
-            for (var i = 0; i < paramNames.length; ++i)
-                params.push(messageObject.params[paramNames[i]]);
-        }
-
         var processingStartTime;
         if (InspectorBackendClass.Options.dumpInspectorTimeStats)
             processingStartTime = Date.now();
 
-        this._dispatcher[functionName].apply(this._dispatcher, params);
+        this._dispatcher[functionName].apply(this._dispatcher, [messageObject.params]);
 
         if (InspectorBackendClass.Options.dumpInspectorTimeStats)
             console.log("time-stats: " + messageObject.method + " = " + (Date.now() - processingStartTime));

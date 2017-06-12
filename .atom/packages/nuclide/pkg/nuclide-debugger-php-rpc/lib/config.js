@@ -43,7 +43,7 @@ function getConfig() {
 
 function setConfig(newConfig) {
   config = Object.assign({}, newConfig);
-  (_utils || _load_utils()).default.log(`Config was set to ${JSON.stringify(config)}`);
+  (_utils || _load_utils()).default.debug(`Config was set to ${JSON.stringify(config)}`);
 }
 
 function clearConfig() {

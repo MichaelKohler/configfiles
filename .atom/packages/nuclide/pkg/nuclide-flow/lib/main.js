@@ -45,7 +45,8 @@ let connectionToFlowService = (() => {
     const host = yield (0, (_nuclideLanguageService || _load_nuclideLanguageService()).getHostServices)();
     const config = {
       functionSnippetShouldIncludeArguments: Boolean((_featureConfig || _load_featureConfig()).default.get('nuclide-flow.functionSnippetShouldIncludeArguments')),
-      stopFlowOnExit: Boolean((_featureConfig || _load_featureConfig()).default.get('nuclide-flow.stopFlowOnExit'))
+      stopFlowOnExit: Boolean((_featureConfig || _load_featureConfig()).default.get('nuclide-flow.stopFlowOnExit')),
+      lazyServer: Boolean((_featureConfig || _load_featureConfig()).default.get('nuclide-flow.lazyServer'))
     };
     const languageService = yield flowService.initialize(fileNotifier, host, config);
 
@@ -88,7 +89,7 @@ let getLanguageServiceConfig = (() => {
         analyticsEventName: 'flow.codehighlight'
       } : undefined,
       outline: {
-        version: '0.0.0',
+        version: '0.1.0',
         priority: 1,
         analyticsEventName: 'flow.outline'
       },
@@ -151,13 +152,13 @@ let shouldUsePushDiagnostics = (() => {
   var _ref5 = (0, _asyncToGenerator.default)(function* () {
     const settingEnabled = Boolean((_featureConfig || _load_featureConfig()).default.get('nuclide-flow.enablePushDiagnostics'));
 
-    (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().info('Checking the Flow persistent connection gk...');
+    (0, (_log4js || _load_log4js()).getLogger)('nuclide-flow').info('Checking the Flow persistent connection gk...');
 
     // Wait 15 seconds for the gk check
     const doesPassGK = yield (0, (_passesGK || _load_passesGK()).default)('nuclide_flow_persistent_connection', 15 * 1000);
-    (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().info(`Got Flow persistent connection gk: ${String(doesPassGK)}`);
+    (0, (_log4js || _load_log4js()).getLogger)('nuclide-flow').info(`Got Flow persistent connection gk: ${String(doesPassGK)}`);
     const result = settingEnabled || doesPassGK;
-    (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().info(`Enabling Flow persistent connection: ${String(result)}`);
+    (0, (_log4js || _load_log4js()).getLogger)('nuclide-flow').info(`Enabling Flow persistent connection: ${String(result)}`);
     return result;
   });
 
@@ -167,7 +168,7 @@ let shouldUsePushDiagnostics = (() => {
 })();
 
 exports.serverStatusUpdatesToBusyMessages = serverStatusUpdatesToBusyMessages;
-exports.provideBusySignal = provideBusySignal;
+exports.consumeBusySignal = consumeBusySignal;
 exports.deactivate = deactivate;
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
@@ -202,10 +203,10 @@ function _load_nuclideLanguageService() {
   return _nuclideLanguageService = require('../../nuclide-language-service');
 }
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 var _nuclideFlowCommon;
@@ -267,48 +268,45 @@ function getConnectionCache() {
   return connectionCache;
 }
 
-function serverStatusUpdatesToBusyMessages(statusUpdates) {
-  let nextMessageId = 0;
-  const getMessageId = () => {
-    const id = nextMessageId;
-    nextMessageId++;
-    return id;
-  };
+function serverStatusUpdatesToBusyMessages(statusUpdates, busySignal) {
   return statusUpdates.groupBy(({ pathToRoot }) => pathToRoot).mergeMap(messagesForRoot => {
-    return messagesForRoot.scan(({ lastBusyMessage }, nextStatus) => {
-      const messages = [];
-      // Invalidate the previous busy message, if there is one
-      if (lastBusyMessage != null) {
-        messages.push({ status: 'done', id: lastBusyMessage.id });
-      }
-      let currentBusyMessage = null;
+    return messagesForRoot
+    // Append a null sentinel to ensure that completion clears the busy signal.
+    .concat(_rxjsBundlesRxMinJs.Observable.of(null)).switchMap(nextStatus => {
       // I would use constants here but the constant is in the flow-rpc package which we can't
       // load directly from this package. Casting to the appropriate type is just as safe.
-      if (nextStatus.status === 'init' || nextStatus.status === 'busy') {
+      if (nextStatus != null && (nextStatus.status === 'init' || nextStatus.status === 'busy')) {
         const readablePath = (_nuclideUri || _load_nuclideUri()).default.nuclideUriToDisplayString(nextStatus.pathToRoot);
         const readableStatus = nextStatus.status === 'init' ? 'initializing' : 'busy';
-        currentBusyMessage = {
-          status: 'busy',
-          id: getMessageId(),
-          message: `Flow server is ${readableStatus} (${readablePath})`
-        };
-        messages.push(currentBusyMessage);
+        // Use an observable to encapsulate clearing the message.
+        // The switchMap above will ensure that messages get cleared.
+        return _rxjsBundlesRxMinJs.Observable.create(observer => {
+          const disposable = busySignal.reportBusy(`Flow server is ${readableStatus} (${readablePath})`);
+          return () => disposable.dispose();
+        });
       }
-      return { lastBusyMessage: currentBusyMessage, messages };
-    }, { lastBusyMessage: null, messages: [] }).concatMap(({ messages }) => _rxjsBundlesRxMinJs.Observable.from(messages));
-  });
+      return _rxjsBundlesRxMinJs.Observable.empty();
+    });
+  }).subscribe();
 }
 
-function provideBusySignal() {
+function consumeBusySignal(service) {
   const serverStatusUpdates = getConnectionCache().observeValues()
   // mergeAll loses type info
   .mergeMap(x => x).mergeMap(ls => {
     return ls.getServerStatusUpdates().refCount();
   });
 
-  return {
-    messages: serverStatusUpdatesToBusyMessages(serverStatusUpdates)
-  };
+  if (disposables != null) {
+    disposables.add(service);
+  }
+  const subscription = serverStatusUpdatesToBusyMessages(serverStatusUpdates, service);
+  return new (_UniversalDisposable || _load_UniversalDisposable()).default(() => {
+    if (disposables != null) {
+      disposables.remove(service);
+    }
+    subscription.unsubscribe();
+  });
 }
 
 function deactivate() {

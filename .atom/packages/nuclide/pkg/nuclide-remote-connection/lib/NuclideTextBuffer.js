@@ -6,10 +6,10 @@ Object.defineProperty(exports, "__esModule", {
 
 var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 var _atom = require('atom');
@@ -151,7 +151,7 @@ class NuclideTextBuffer extends _atom.TextBuffer {
       } catch (e) {
         // Timeouts occur quite frequently when the network is unstable.
         // Demote these to 'error' level.
-        const logger = (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)();
+        const logger = (0, (_log4js || _load_log4js()).getLogger)('nuclide-remote-connection');
         const logFunction = e instanceof (_nuclideRpc || _load_nuclideRpc()).RpcTimeoutError ? logger.error : logger.fatal;
         logFunction('Failed to save remote file.', e);
         let message = e.message;

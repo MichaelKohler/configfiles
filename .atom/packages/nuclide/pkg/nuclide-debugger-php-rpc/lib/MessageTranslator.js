@@ -75,7 +75,7 @@ class MessageTranslator {
   }
 
   onSessionEnd(callback) {
-    (_utils || _load_utils()).default.log('onSessionEnd');
+    (_utils || _load_utils()).default.debug('onSessionEnd');
     this._debuggerHandler.onSessionEnd(callback);
   }
 
@@ -83,7 +83,7 @@ class MessageTranslator {
     var _this = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      (_utils || _load_utils()).default.log('handleCommand: ' + command);
+      (_utils || _load_utils()).default.debug('handleCommand: ' + command);
       const { id, method, params } = JSON.parse(command);
 
       if (!method || typeof method !== 'string') {
@@ -111,14 +111,14 @@ class MessageTranslator {
 
         yield handler.handleMethod(id, methodName, params);
       } catch (e) {
-        (_utils || _load_utils()).default.logError(`Exception handling command ${id}: ${e} ${e.stack}`);
+        (_utils || _load_utils()).default.error(`Exception handling command ${id}: ${e} ${e.stack}`);
         _this._replyWithError(id, `Error handling command: ${e}\n ${e.stack}`);
       }
     })();
   }
 
   _replyWithError(id, error) {
-    (_utils || _load_utils()).default.log(error);
+    (_utils || _load_utils()).default.debug(error);
     this._clientCallback.replyWithError(id, error);
   }
 

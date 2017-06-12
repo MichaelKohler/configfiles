@@ -81,23 +81,28 @@ function _load_DiagnosticsProvider() {
   return _DiagnosticsProvider = require('./DiagnosticsProvider');
 }
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
-}
-
-var _nuclideBusySignal;
-
-function _load_nuclideBusySignal() {
-  return _nuclideBusySignal = require('../../nuclide-busy-signal');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ * @format
+ */
+
 class AtomLanguageService {
 
-  constructor(languageServiceFactory, config, onDidInsertSuggestion, logger = (0, (_nuclideLogging || _load_nuclideLogging()).getCategoryLogger)('nuclide-language-service')) {
+  constructor(languageServiceFactory, config, onDidInsertSuggestion, logger = (0, (_log4js || _load_log4js()).getLogger)('nuclide-language-service')) {
     this._config = config;
     this._onDidInsertSuggestion = onDidInsertSuggestion;
     this._logger = logger;
@@ -112,8 +117,25 @@ class AtomLanguageService {
   }
 
   activate() {
-    const busySignalProvider = new (_nuclideBusySignal || _load_nuclideBusySignal()).DedupedBusySignalProviderBase();
-    this._subscriptions.add(atom.packages.serviceHub.provide('nuclide-busy-signal', '0.1.0', busySignalProvider));
+    let busySignalService = null;
+    const busySignalProvider = {
+      reportBusyWhile(message, f) {
+        if (busySignalService != null) {
+          return busySignalService.reportBusyWhile(message, f);
+        } else {
+          return f();
+        }
+      }
+    };
+
+    this._subscriptions.add(atom.packages.serviceHub.consume('atom-ide-busy-signal', '0.2.0', service => {
+      this._subscriptions.add(service);
+      busySignalService = service;
+      return new (_UniversalDisposable || _load_UniversalDisposable()).default(() => {
+        this._subscriptions.remove(service);
+        busySignalService = null;
+      });
+    }));
 
     const highlightConfig = this._config.highlight;
     if (highlightConfig != null) {
@@ -201,14 +223,3 @@ class AtomLanguageService {
   }
 }
 exports.AtomLanguageService = AtomLanguageService;
-// eslint-disable-next-line nuclide-internal/no-cross-atom-imports
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */

@@ -1,12 +1,12 @@
 'use strict';
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
-const logger = (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)();
+const logger = (0, (_log4js || _load_log4js()).getLogger)('nuclide-fuzzy-native');
 
 // Use the pre-built, native module if available.
 // If not, use the fallback JS implementation.

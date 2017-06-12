@@ -45,7 +45,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  */
 
 function activate(state) {
-  (_utils || _load_utils()).default.setLogLevel((0, (_utils2 || _load_utils2()).getConfig)().clientLogLevel);
+  (_utils || _load_utils()).default.setLevel((0, (_utils2 || _load_utils2()).getConfig)().clientLogLevel);
 }
 
 function consumeOutputService(api) {

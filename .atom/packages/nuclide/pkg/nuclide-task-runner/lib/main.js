@@ -94,8 +94,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // TODO: use a more general versioning mechanism.
 // Perhaps Atom should provide packages with some way of doing this.
-const SERIALIZED_VERSION = 2;
-// These match task types with shortcuts defined in nuclide-task-runner.json
 /**
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -107,6 +105,8 @@ const SERIALIZED_VERSION = 2;
  * @format
  */
 
+const SERIALIZED_VERSION = 2;
+// These match task types with shortcuts defined in nuclide-task-runner.json
 const COMMON_TASK_TYPES = ['build', 'run', 'test', 'debug'];
 
 function getVisible(event) {

@@ -12,10 +12,10 @@ function _load_nuclideAnalytics() {
   return _nuclideAnalytics = require('../../nuclide-analytics');
 }
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 var _libclang;
@@ -32,7 +32,7 @@ class CodeFormatHelpers {
       try {
         return yield (_libclang || _load_libclang()).default.formatCode(editor, range);
       } catch (e) {
-        (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error('Could not run clang-format:', e);
+        (0, (_log4js || _load_log4js()).getLogger)('nuclide-clang').error('Could not run clang-format:', e);
         throw new Error('Could not run clang-format.<br>Ensure it is installed and in your $PATH.');
       }
     }));

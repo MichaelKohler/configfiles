@@ -27,10 +27,10 @@ let getHostServices = exports.getHostServices = (() => {
 // Following type implements the HostServicesForLanguage interface
 
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
@@ -54,7 +54,7 @@ let rootAggregatorPromise; /**
                             * @format
                             */
 
-const logger = (0, (_nuclideLogging || _load_nuclideLogging()).getCategoryLogger)('HostServices');
+const logger = (0, (_log4js || _load_log4js()).getLogger)('HostServices');
 
 null;
 

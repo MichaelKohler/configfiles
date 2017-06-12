@@ -22,13 +22,13 @@ function _load_RpcConnection() {
 var _process;
 
 function _load_process() {
-  return _process = require('../../commons-node/process');
+  return _process = require('nuclide-commons/process');
 }
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
@@ -46,7 +46,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @format
  */
 
-const logger = (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)();
+const logger = (0, (_log4js || _load_log4js()).getLogger)('nuclide-rpc');
 
 /**
  * A generic process wrapper around a stdio-based child process, providing a simple

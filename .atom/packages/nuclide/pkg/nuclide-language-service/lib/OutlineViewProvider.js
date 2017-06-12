@@ -38,7 +38,7 @@ class OutlineViewProvider {
   }
 
   static register(name, selector, config, connectionToLanguageService) {
-    return atom.packages.serviceHub.provide('nuclide-outline-view', config.version, new OutlineViewProvider(name, selector, config.priority, config.analyticsEventName, connectionToLanguageService));
+    return atom.packages.serviceHub.provide('atom-ide-outline-view', config.version, new OutlineViewProvider(name, selector, config.priority, config.analyticsEventName, connectionToLanguageService));
   }
 
   getOutline(editor) {

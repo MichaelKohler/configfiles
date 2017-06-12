@@ -26,7 +26,7 @@ let fetchCommonAncestorOfHeadAndRevision = exports.fetchCommonAncestorOfHeadAndR
       const { stdout: ancestorRevisionNumber } = yield (0, (_hgUtils || _load_hgUtils()).hgAsyncExecute)(args, options);
       return ancestorRevisionNumber;
     } catch (e) {
-      (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().warn('Failed to get hg common ancestor: ', e.stderr, e.command);
+      (0, (_log4js || _load_log4js()).getLogger)('nuclide-hg-rpc').warn('Failed to get hg common ancestor: ', e.stderr, e.command);
       throw new Error('Could not fetch common ancestor of head and revision: ' + revision);
     }
   });
@@ -66,10 +66,10 @@ function _load_hgConstants() {
   return _hgConstants = require('./hg-constants');
 }
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
@@ -175,7 +175,7 @@ function expressionForCommonAncestor(revision) {
     cwd: workingDirectory
   };
   return (0, (_hgUtils || _load_hgUtils()).hgRunCommand)(revisionLogArgs, hgOptions).map(stdout => parseRevisionInfoOutput(stdout)).catch(e => {
-    (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().warn('Failed to get revision info for revisions' + ` ${revisionExpression}: ${e.stderr || e}, ${e.command}`);
+    (0, (_log4js || _load_log4js()).getLogger)('nuclide-hg-rpc').warn('Failed to get revision info for revisions' + ` ${revisionExpression}: ${e.stderr || e}, ${e.command}`);
     throw new Error(`Could not fetch revision info for revisions: ${revisionExpression}`);
   });
 }

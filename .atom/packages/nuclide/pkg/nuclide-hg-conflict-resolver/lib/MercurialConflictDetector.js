@@ -13,10 +13,10 @@ function _load_MercurialConflictContext() {
 
 var _atom = require('atom');
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 var _nuclideAnalytics;
@@ -83,7 +83,7 @@ class MercurialConflictDetector {
   _conflictStateChanged(repository) {
     const conflictsApi = this._conflictsApi;
     if (conflictsApi == null || conflictsApi.showForContext == null) {
-      (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().info('No compatible "merge-conflicts" API found.');
+      (0, (_log4js || _load_log4js()).getLogger)('nuclide-hg-conflict-resolver').info('No compatible "merge-conflicts" API found.');
       return;
     }
     if (repository.isInConflict()) {
@@ -101,7 +101,7 @@ class MercurialConflictDetector {
         this._mercurialConflictContext.clearConflictState();
         conflictsApi.hideForContext(this._mercurialConflictContext);
         atom.notifications.addInfo('Conflicts resolved outside of Nuclide');
-        (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().info('Conflicts resolved outside of Nuclide');
+        (0, (_log4js || _load_log4js()).getLogger)('nuclide-hg-conflict-resolver').info('Conflicts resolved outside of Nuclide');
       } else {
         (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)('hg-conflict-detctor.resolved-in-nuclide');
       }

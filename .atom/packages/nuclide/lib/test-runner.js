@@ -68,7 +68,7 @@ exports.default = (() => {
     if (pkg == null) {
       throw new Error(`Couldn't find a parent "package.json" for ${params.testPaths[0]}`);
     }
-    const nuclideConfig = pkg.nuclide && pkg.nuclide.config;
+    const nuclideConfig = pkg.atomConfig || pkg.nuclide && pkg.nuclide.config;
 
     const statusCode = yield params.legacyTestRunner({
       logFile: params.logFile,

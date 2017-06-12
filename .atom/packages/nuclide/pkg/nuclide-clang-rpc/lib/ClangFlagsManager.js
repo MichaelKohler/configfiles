@@ -29,19 +29,25 @@ function _load_nuclideAnalytics() {
 var _fsPromise;
 
 function _load_fsPromise() {
-  return _fsPromise = _interopRequireDefault(require('../../commons-node/fsPromise'));
+  return _fsPromise = _interopRequireDefault(require('nuclide-commons/fsPromise'));
 }
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 var _nuclideBuckRpc;
 
 function _load_nuclideBuckRpc() {
   return _nuclideBuckRpc = _interopRequireWildcard(require('../../nuclide-buck-rpc'));
+}
+
+var _clangFlagsParser;
+
+function _load_clangFlagsParser() {
+  return _clangFlagsParser = require('./clang-flags-parser');
 }
 
 var _utils;
@@ -54,18 +60,16 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
-
-const logger = (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)();
+const logger = (0, (_log4js || _load_log4js()).getLogger)('nuclide-clang-rpc'); /**
+                                                                                 * Copyright (c) 2015-present, Facebook, Inc.
+                                                                                 * All rights reserved.
+                                                                                 *
+                                                                                 * This source code is licensed under the license found in the LICENSE file in
+                                                                                 * the root directory of this source tree.
+                                                                                 *
+                                                                                 * 
+                                                                                 * @format
+                                                                                 */
 
 const BUCK_TIMEOUT = 10 * 60 * 1000;
 
@@ -78,11 +82,7 @@ const PROJECT_CLANG_FLAGS_FILE = '.nuclide_clang_config.json';
  */
 const DEFAULT_HEADERS_TARGET = '__default_headers__';
 
-const CLANG_FLAGS_THAT_TAKE_PATHS = new Set(['-F', '-I', '-include', '-include-pch', '-iquote', '-isysroot', '-isystem']);
-
 const TARGET_KIND_REGEX = ['apple_binary', 'apple_library', 'apple_test', 'cxx_binary', 'cxx_library', 'cxx_test'].join('|');
-
-const SINGLE_LETTER_CLANG_FLAGS_THAT_TAKE_PATHS = new Set(Array.from(CLANG_FLAGS_THAT_TAKE_PATHS).filter(item => item.length === 2));
 
 const INCLUDE_SEARCH_TIMEOUT = 15000;
 
@@ -567,21 +567,12 @@ class ClangFlagsManager {
     args = args.filter(arg => normalizedSourceFile !== arg && normalizedSourceFile !== (_nuclideUri || _load_nuclideUri()).default.resolve(basePath, arg));
 
     // Resolve relative path arguments against the Buck project root.
-    args.forEach((arg, argIndex) => {
-      if (CLANG_FLAGS_THAT_TAKE_PATHS.has(arg)) {
-        const nextIndex = argIndex + 1;
-        let filePath = overrideIncludePath(args[nextIndex]);
-        if (!(_nuclideUri || _load_nuclideUri()).default.isAbsolute(filePath)) {
-          filePath = (_nuclideUri || _load_nuclideUri()).default.join(basePath, filePath);
-        }
-        args[nextIndex] = filePath;
-      } else if (SINGLE_LETTER_CLANG_FLAGS_THAT_TAKE_PATHS.has(arg.substring(0, 2))) {
-        let filePath = overrideIncludePath(arg.substring(2));
-        if (!(_nuclideUri || _load_nuclideUri()).default.isAbsolute(filePath)) {
-          filePath = (_nuclideUri || _load_nuclideUri()).default.join(basePath, filePath);
-        }
-        args[argIndex] = arg.substring(0, 2) + filePath;
+    args = (0, (_clangFlagsParser || _load_clangFlagsParser()).mapPathsInFlags)(args, path_ => {
+      let path = overrideIncludePath(path_);
+      if (!(_nuclideUri || _load_nuclideUri()).default.isAbsolute(path)) {
+        path = (_nuclideUri || _load_nuclideUri()).default.join(basePath, path);
       }
+      return path;
     });
 
     // If an output file is specified, remove that argument.

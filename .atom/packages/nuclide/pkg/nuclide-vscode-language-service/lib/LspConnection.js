@@ -176,6 +176,10 @@ class LspConnection {
     this._jsonRpcConnection.onNotification({ method: 'textDocument/publishDiagnostics' }, callback);
   }
 
+  onTelemetryNotification(callback) {
+    this._jsonRpcConnection.onNotification({ method: 'telemetry/event' }, callback);
+  }
+
   onLogMessageNotification(callback) {
     this._jsonRpcConnection.onNotification({ method: 'window/logMessage' }, callback);
   }

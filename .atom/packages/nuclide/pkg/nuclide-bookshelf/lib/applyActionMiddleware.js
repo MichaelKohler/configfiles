@@ -23,10 +23,10 @@ function _load_event() {
   return _event = require('nuclide-commons/event');
 }
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 var _goToLocation;
@@ -132,7 +132,7 @@ function restorePaneItemState(action, getState) {
       textEditor.destroy();
     }
   }).catch(error => {
-    (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error('bookshelf failed to close some editors', error);
+    (0, (_log4js || _load_log4js()).getLogger)('nuclide-bookshelf').error('bookshelf failed to close some editors', error);
     return _rxjsBundlesRxMinJs.Observable.empty();
   }).ignoreElements(),
   // Note: the reloading step can be omitted if the file watchers are proven to be robust.
@@ -147,12 +147,12 @@ function restorePaneItemState(action, getState) {
       return _rxjsBundlesRxMinJs.Observable.fromPromise(textEditor.getBuffer().load());
     }
   }).catch(error => {
-    (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error('bookshelf failed to reload some editors', error);
+    (0, (_log4js || _load_log4js()).getLogger)('nuclide-bookshelf').error('bookshelf failed to reload some editors', error);
     return _rxjsBundlesRxMinJs.Observable.empty();
   }).ignoreElements(), _rxjsBundlesRxMinJs.Observable.from(urisToOpen).flatMap(fileUri => {
     return _rxjsBundlesRxMinJs.Observable.fromPromise((0, (_goToLocation || _load_goToLocation()).goToLocation)(fileUri));
   }).catch(error => {
-    (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error('bookshelf failed to open some editors', error);
+    (0, (_log4js || _load_log4js()).getLogger)('nuclide-bookshelf').error('bookshelf failed to open some editors', error);
     return _rxjsBundlesRxMinJs.Observable.empty();
   }).ignoreElements(), _rxjsBundlesRxMinJs.Observable.of({
     payload: {

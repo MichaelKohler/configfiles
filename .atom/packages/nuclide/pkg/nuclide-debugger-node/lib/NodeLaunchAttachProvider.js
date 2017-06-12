@@ -39,17 +39,6 @@ function _load_LaunchAttachActions() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
-
 class NodeLaunchAttachProvider extends (_nuclideDebuggerBase || _load_nuclideDebuggerBase()).DebuggerLaunchAttachProvider {
 
   constructor(debuggingTypeName, targetUri) {
@@ -59,21 +48,37 @@ class NodeLaunchAttachProvider extends (_nuclideDebuggerBase || _load_nuclideDeb
     this._store = new (_LaunchAttachStore || _load_LaunchAttachStore()).LaunchAttachStore(this._dispatcher);
   }
 
-  getActions() {
-    return Promise.resolve(['Attach']);
-  }
+  getCallbacksForAction(action) {
+    return {
+      /**
+       * Whether this provider is enabled or not.
+       */
+      isEnabled: () => {
+        return Promise.resolve(action === 'attach');
+      },
 
-  getComponent(action, parentEventEmitter) {
-    if (action === 'Attach') {
-      this._actions.updateAttachTargetList();
-      return _react.default.createElement((_AttachUIComponent || _load_AttachUIComponent()).AttachUIComponent, {
-        store: this._store,
-        actions: this._actions,
-        parentEmitter: parentEventEmitter
-      });
-    } else {
-      return null;
-    }
+      /**
+       * Returns a list of supported debugger types + environments for the specified action.
+       */
+      getDebuggerTypeNames: super.getCallbacksForAction(action).getDebuggerTypeNames,
+
+      /**
+       * Returns the UI component for configuring the specified debugger type and action.
+       */
+      getComponent: (debuggerTypeName, configIsValidChanged) => {
+        if (action === 'attach') {
+          this._actions.updateAttachTargetList();
+          return _react.default.createElement((_AttachUIComponent || _load_AttachUIComponent()).AttachUIComponent, {
+            targetUri: this._targetUri,
+            store: this._store,
+            actions: this._actions,
+            configIsValidChanged: configIsValidChanged
+          });
+        } else {
+          return null;
+        }
+      }
+    };
   }
 
   dispose() {
@@ -81,4 +86,13 @@ class NodeLaunchAttachProvider extends (_nuclideDebuggerBase || _load_nuclideDeb
     this._actions.dispose();
   }
 }
-exports.NodeLaunchAttachProvider = NodeLaunchAttachProvider;
+exports.NodeLaunchAttachProvider = NodeLaunchAttachProvider; /**
+                                                              * Copyright (c) 2015-present, Facebook, Inc.
+                                                              * All rights reserved.
+                                                              *
+                                                              * This source code is licensed under the license found in the LICENSE file in
+                                                              * the root directory of this source tree.
+                                                              *
+                                                              * 
+                                                              * @format
+                                                              */

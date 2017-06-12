@@ -7,31 +7,30 @@ exports.DiagnosticsProviderBase = undefined;
 
 var _atom = require('atom');
 
-var _TextEventDispatcher;
+var _textEvent;
 
-function _load_TextEventDispatcher() {
-  return _TextEventDispatcher = require('../../nuclide-diagnostics-common/lib/TextEventDispatcher');
+function _load_textEvent() {
+  return _textEvent = require('nuclide-commons-atom/text-event');
 }
 
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
+const UPDATE_EVENT = 'update'; /**
+                                * Copyright (c) 2015-present, Facebook, Inc.
+                                * All rights reserved.
+                                *
+                                * This source code is licensed under the license found in the LICENSE file in
+                                * the root directory of this source tree.
+                                *
+                                * 
+                                * @format
+                                */
 
-const UPDATE_EVENT = 'update';
 const INVALIDATE_EVENT = 'invalidate';
 
 let _textEventDispatcherInstance = null;
 
 function getTextEventDispatcher() {
   if (_textEventDispatcherInstance == null) {
-    _textEventDispatcherInstance = new (_TextEventDispatcher || _load_TextEventDispatcher()).TextEventDispatcher();
+    _textEventDispatcherInstance = new (_textEvent || _load_textEvent()).TextEventDispatcher();
   }
   return _textEventDispatcherInstance;
 }

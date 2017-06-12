@@ -36,8 +36,8 @@ let retryCreateHackProcess = (() => {
       try {
         hackProcess = yield createHackProcess(fileCache, hackRoot);
       } catch (e) {
-        (_hackConfig || _load_hackConfig()).logger.logError(`Couldn't create HackProcess: ${e.message}`);
-        (_hackConfig || _load_hackConfig()).logger.logError(`Waiting ${waitTimeMs}ms before retrying...`);
+        (_hackConfig || _load_hackConfig()).logger.error(`Couldn't create HackProcess: ${e.message}`);
+        (_hackConfig || _load_hackConfig()).logger.error(`Waiting ${waitTimeMs}ms before retrying...`);
 
         yield new Promise(function (resolve) {
           return setTimeout(resolve, waitTimeMs);
@@ -49,7 +49,7 @@ let retryCreateHackProcess = (() => {
         // If the HackProcess is no longer needed, or we would be waiting
         // longer than a few seconds, just give up.
         if (!hackProcessNeeded || waitTimeMs > 4000) {
-          (_hackConfig || _load_hackConfig()).logger.logError(`Giving up on creating HackProcess: ${e.message}`);
+          (_hackConfig || _load_hackConfig()).logger.error(`Giving up on creating HackProcess: ${e.message}`);
           // Remove the (soon-to-be) rejected promise from our processes cache so
           // that the next time someone attempts to get this connection, we'll try
           // to create it.
@@ -76,8 +76,8 @@ let createHackProcess = (() => {
       throw new Error("Couldn't find Hack command");
     }
 
-    (_hackConfig || _load_hackConfig()).logger.logInfo(`Creating new hack connection for ${configDir}: ${command}`);
-    (_hackConfig || _load_hackConfig()).logger.logInfo(`Current PATH: ${(0, (_string || _load_string()).maybeToString)(process.env.PATH)}`);
+    (_hackConfig || _load_hackConfig()).logger.info(`Creating new hack connection for ${configDir}: ${command}`);
+    (_hackConfig || _load_hackConfig()).logger.info(`Current PATH: ${(0, (_string || _load_string()).maybeToString)(process.env.PATH)}`);
     try {
       yield (0, (_process || _load_process()).runCommand)(command, ['start', configDir], {
         isExitError: function ({ exitCode }) {
@@ -101,17 +101,17 @@ let createHackProcess = (() => {
         processes.get(fileCache).delete(configDir);
       }
       if (message != null && message.exitCode === HACK_IDE_NEW_CLIENT_CONNECTED_EXIT_CODE) {
-        (_hackConfig || _load_hackConfig()).logger.logInfo('Not reconnecting Hack process--another client connected');
+        (_hackConfig || _load_hackConfig()).logger.info('Not reconnecting Hack process--another client connected');
         return;
       }
       // If the process exited too quickly (possibly due to a crash), don't get
       // stuck in a loop creating and crashing it.
       const processUptimeMs = Date.now() - startTime;
       if (processUptimeMs < 1000) {
-        (_hackConfig || _load_hackConfig()).logger.logError('Hack process exited in <1s; not reconnecting');
+        (_hackConfig || _load_hackConfig()).logger.error('Hack process exited in <1s; not reconnecting');
         return;
       }
-      (_hackConfig || _load_hackConfig()).logger.logInfo(`Reconnecting with new HackProcess for ${configDir}`);
+      (_hackConfig || _load_hackConfig()).logger.info(`Reconnecting with new HackProcess for ${configDir}`);
       processes.get(fileCache).get(configDir);
     });
 
@@ -136,7 +136,7 @@ function _load_nuclideUri() {
 var _process;
 
 function _load_process() {
-  return _process = require('../../commons-node/process');
+  return _process = require('nuclide-commons/process');
 }
 
 var _string;
@@ -172,7 +172,7 @@ function _load_nuclideOpenFilesRpc() {
 var _cache;
 
 function _load_cache() {
-  return _cache = require('../../commons-node/cache');
+  return _cache = require('nuclide-commons/cache');
 }
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
@@ -205,7 +205,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 const HACK_SERVER_ALREADY_EXISTS_EXIT_CODE = 77;
 const HACK_IDE_NEW_CLIENT_CONNECTED_EXIT_CODE = 207;
-const MAX_HACK_AUTOCOMPLETE_ITEMS = 100;
+
+// This isn't truly correct, but this will be deprecated with the LSP anyway.
+const MAX_HACK_AUTOCOMPLETE_ITEMS = 50;
 
 let serviceRegistry = null;
 
@@ -217,7 +219,7 @@ function getServiceRegistry() {
 }
 
 function logMessage(direction, message) {
-  (_hackConfig || _load_hackConfig()).logger.logTrace(`Hack Connection message ${direction}: '${message}'`);
+  (_hackConfig || _load_hackConfig()).logger.trace(`Hack Connection message ${direction}: '${message}'`);
 }
 
 class HackProcess {
@@ -291,7 +293,7 @@ class HackProcess {
 
     return (0, _asyncToGenerator.default)(function* () {
       const filePath = fileVersion.filePath;
-      (_hackConfig || _load_hackConfig()).logger.log(`Attempting Hack Autocomplete: ${filePath}, ${position.toString()}`);
+      (_hackConfig || _load_hackConfig()).logger.debug(`Attempting Hack Autocomplete: ${filePath}, ${position.toString()}`);
       const buffer = yield _this2.getBufferAtVersion(fileVersion);
       if (buffer == null) {
         return { isIncomplete: false, items: [] };
@@ -308,13 +310,13 @@ class HackProcess {
       const column = position.column + 1;
       const service = _this2.getConnectionService();
 
-      (_hackConfig || _load_hackConfig()).logger.log('Got Hack Service');
+      (_hackConfig || _load_hackConfig()).logger.debug('Got Hack Service');
       // TODO: Include version number to ensure agreement on file version.
       const unfilteredItems = yield (yield service).getCompletions(filePath, { line, column });
       if (unfilteredItems == null) {
         return null;
       }
-      const isIncomplete = unfilteredItems.length === MAX_HACK_AUTOCOMPLETE_ITEMS;
+      const isIncomplete = unfilteredItems.length >= MAX_HACK_AUTOCOMPLETE_ITEMS;
 
       const items = (0, (_Completions || _load_Completions()).convertCompletions)(contents, offset, replacementPrefix, unfilteredItems);
 
@@ -328,12 +330,12 @@ class HackProcess {
     return (0, _asyncToGenerator.default)(function* () {
       // Attempt to send disconnect message before shutting down connection
       try {
-        (_hackConfig || _load_hackConfig()).logger.log('Attempting to disconnect cleanly from HackProcess');
+        (_hackConfig || _load_hackConfig()).logger.debug('Attempting to disconnect cleanly from HackProcess');
         (yield _this3.getConnectionService()).disconnect();
       } catch (e) {
         // Failing to send the shutdown is not fatal...
         // ... continue with shutdown.
-        (_hackConfig || _load_hackConfig()).logger.logError('Hack Process died before disconnect() could be sent.');
+        (_hackConfig || _load_hackConfig()).logger.error('Hack Process died before disconnect() could be sent.');
       }
     })();
   }
@@ -358,21 +360,21 @@ processes.observeKeys().subscribe(fileCache => {
   fileCache.observeFileEvents().ignoreElements().subscribe(undefined, // next
   undefined, // error
   () => {
-    (_hackConfig || _load_hackConfig()).logger.logInfo('fileCache shutting down.');
+    (_hackConfig || _load_hackConfig()).logger.info('fileCache shutting down.');
     closeProcesses(fileCache);
   });
 });
 
 function ensureProcesses(fileCache, configPaths) {
-  (_hackConfig || _load_hackConfig()).logger.logInfo(`Hack ensureProcesses. ${Array.from(configPaths).join(', ')}`);
+  (_hackConfig || _load_hackConfig()).logger.info(`Hack ensureProcesses. ${Array.from(configPaths).join(', ')}`);
   processes.get(fileCache).setKeys(configPaths);
 }
 
 // Closes all HackProcesses for the given fileCache.
 function closeProcesses(fileCache) {
-  (_hackConfig || _load_hackConfig()).logger.logInfo('Hack closeProcesses');
+  (_hackConfig || _load_hackConfig()).logger.info('Hack closeProcesses');
   if (processes.has(fileCache)) {
-    (_hackConfig || _load_hackConfig()).logger.logInfo(`Shutting down HackProcesses ${Array.from(processes.get(fileCache).keys()).join(',')}`);
+    (_hackConfig || _load_hackConfig()).logger.info(`Shutting down HackProcesses ${Array.from(processes.get(fileCache).keys()).join(',')}`);
     processes.delete(fileCache);
   }
 }
@@ -389,13 +391,13 @@ function editToHackEdit(editEvent) {
 }
 
 function observeConnections(fileCache) {
-  (_hackConfig || _load_hackConfig()).logger.logInfo('observing connections');
+  (_hackConfig || _load_hackConfig()).logger.info('observing connections');
   return processes.get(fileCache).observeValues().switchMap(process => process).filter(process => process != null).switchMap(process => {
     if (!(process != null)) {
       throw new Error('Invariant violation: "process != null"');
     }
 
-    (_hackConfig || _load_hackConfig()).logger.logInfo(`Observing process ${process._hhconfigPath}`);
+    (_hackConfig || _load_hackConfig()).logger.info(`Observing process ${process._hhconfigPath}`);
     return process.getConnectionService();
   });
 }

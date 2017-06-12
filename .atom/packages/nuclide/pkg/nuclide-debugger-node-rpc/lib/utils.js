@@ -4,10 +4,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 const DEBUGGER_LOGGER_CATEGORY = 'nuclide-debugger-node-rpc'; /**
@@ -21,4 +21,4 @@ const DEBUGGER_LOGGER_CATEGORY = 'nuclide-debugger-node-rpc'; /**
                                                                * @format
                                                                */
 
-exports.default = (0, (_nuclideLogging || _load_nuclideLogging()).getCategoryLogger)(DEBUGGER_LOGGER_CATEGORY);
+exports.default = (0, (_log4js || _load_log4js()).getLogger)(DEBUGGER_LOGGER_CATEGORY);

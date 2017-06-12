@@ -29,7 +29,7 @@ let getHackRoot = (() => {
 let setRootDirectoryUri = exports.setRootDirectoryUri = (() => {
   var _ref2 = (0, _asyncToGenerator.default)(function* (directoryUri) {
     const hackRootDirectory = yield getHackRoot(directoryUri);
-    (_utils || _load_utils()).default.log(`setRootDirectoryUri: from ${directoryUri} to ${(0, (_string || _load_string()).maybeToString)(hackRootDirectory)}`);
+    (_utils || _load_utils()).default.debug(`setRootDirectoryUri: from ${directoryUri} to ${(0, (_string || _load_string()).maybeToString)(hackRootDirectory)}`);
     // TODO: make xdebug_includes.php path configurable from hhconfig.
     const hackDummyRequestFilePath = (_nuclideUri || _load_nuclideUri()).default.join(hackRootDirectory ? hackRootDirectory : '', '/scripts/xdebug_includes.php');
 
@@ -70,7 +70,7 @@ function _load_helpers() {
 var _fsPromise;
 
 function _load_fsPromise() {
-  return _fsPromise = _interopRequireDefault(require('../../commons-node/fsPromise'));
+  return _fsPromise = _interopRequireDefault(require('nuclide-commons/fsPromise'));
 }
 
 var _string;
@@ -97,7 +97,7 @@ function isDummyConnection(message) {
 }
 
 function failConnection(socket, errorMessage) {
-  (_utils || _load_utils()).default.log(errorMessage);
+  (_utils || _load_utils()).default.error(errorMessage);
   socket.end();
   socket.destroy();
 }
@@ -105,19 +105,19 @@ function failConnection(socket, errorMessage) {
 function isCorrectConnection(isAttachConnection, message) {
   const { pid, idekeyRegex, attachScriptRegex, launchScriptPath } = (0, (_config || _load_config()).getConfig)();
   if (!message || !message.init || !message.init.$) {
-    (_utils || _load_utils()).default.logError('Incorrect init');
+    (_utils || _load_utils()).default.error('Incorrect init');
     return false;
   }
 
   const init = message.init;
   if (!init.engine || !init.engine || !init.engine[0] || init.engine[0]._.toLowerCase() !== 'xdebug') {
-    (_utils || _load_utils()).default.logError('Incorrect engine');
+    (_utils || _load_utils()).default.error('Incorrect engine');
     return false;
   }
 
   const attributes = init.$;
   if (attributes.xmlns !== 'urn:debugger_protocol_v1' || attributes['xmlns:xdebug'] !== 'http://xdebug.org/dbgp/xdebug' || attributes.language !== 'PHP') {
-    (_utils || _load_utils()).default.logError('Incorrect attributes');
+    (_utils || _load_utils()).default.error('Incorrect attributes');
     return false;
   }
 

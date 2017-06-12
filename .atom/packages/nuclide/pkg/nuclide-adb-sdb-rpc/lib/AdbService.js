@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.dumpsysPackage = exports.getJavaProcesses = exports.activityExists = exports.launchActivity = exports.forwardJdwpPortToPid = exports.getPidFromPackageName = exports.startServer = exports.getDeviceList = exports.killProcess = exports.getProcesses = exports.getDeviceInfo = exports.registerAdbPath = undefined;
+exports.dumpsysPackage = exports.getJavaProcesses = exports.activityExists = exports.launchActivity = exports.forwardJdwpPortToPid = exports.getPidFromPackageName = exports.startServer = exports.getDeviceList = exports.stopPackage = exports.getProcesses = exports.getDeviceInfo = exports.registerAdbPath = undefined;
 
 var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
 
@@ -58,12 +58,12 @@ let getProcesses = exports.getProcesses = (() => {
   };
 })();
 
-let killProcess = exports.killProcess = (() => {
+let stopPackage = exports.stopPackage = (() => {
   var _ref5 = (0, _asyncToGenerator.default)(function* (device, packageName) {
-    return (yield getAdb()).killProcess(device, packageName);
+    return (yield getAdb()).stopPackage(device, packageName);
   });
 
-  return function killProcess(_x5, _x6) {
+  return function stopPackage(_x5, _x6) {
     return _ref5.apply(this, arguments);
   };
 })();

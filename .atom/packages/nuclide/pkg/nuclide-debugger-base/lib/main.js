@@ -42,16 +42,41 @@ Object.defineProperty(exports, 'DebuggerLaunchAttachProvider', {
     return _interopRequireDefault(_DebuggerLaunchAttachProvider || _load_DebuggerLaunchAttachProvider()).default;
   }
 });
-Object.defineProperty(exports, 'DebuggerLaunchAttachEventTypes', {
-  enumerable: true,
-  get: function () {
-    return (_DebuggerLaunchAttachProvider || _load_DebuggerLaunchAttachProvider()).DebuggerLaunchAttachEventTypes;
-  }
-});
 Object.defineProperty(exports, 'DebuggerInstance', {
   enumerable: true,
   get: function () {
     return (_DebuggerInstance || _load_DebuggerInstance()).DebuggerInstance;
+  }
+});
+
+var _DebuggerConfigSerializer;
+
+function _load_DebuggerConfigSerializer() {
+  return _DebuggerConfigSerializer = require('./DebuggerConfigSerializer');
+}
+
+Object.defineProperty(exports, 'serializeDebuggerConfig', {
+  enumerable: true,
+  get: function () {
+    return (_DebuggerConfigSerializer || _load_DebuggerConfigSerializer()).serializeDebuggerConfig;
+  }
+});
+Object.defineProperty(exports, 'deserializeDebuggerConfig', {
+  enumerable: true,
+  get: function () {
+    return (_DebuggerConfigSerializer || _load_DebuggerConfigSerializer()).deserializeDebuggerConfig;
+  }
+});
+Object.defineProperty(exports, 'getLastUsedDebugger', {
+  enumerable: true,
+  get: function () {
+    return (_DebuggerConfigSerializer || _load_DebuggerConfigSerializer()).getLastUsedDebugger;
+  }
+});
+Object.defineProperty(exports, 'setLastUsedDebugger', {
+  enumerable: true,
+  get: function () {
+    return (_DebuggerConfigSerializer || _load_DebuggerConfigSerializer()).setLastUsedDebugger;
   }
 });
 
@@ -97,6 +122,19 @@ Object.defineProperty(exports, 'getDefaultEvaluationExpression', {
   enumerable: true,
   get: function () {
     return (_evaluationExpression || _load_evaluationExpression()).getDefaultEvaluationExpression;
+  }
+});
+
+var _types;
+
+function _load_types() {
+  return _types = require('./types');
+}
+
+Object.defineProperty(exports, 'DebuggerConfigAction', {
+  enumerable: true,
+  get: function () {
+    return (_types || _load_types()).DebuggerConfigAction;
   }
 });
 

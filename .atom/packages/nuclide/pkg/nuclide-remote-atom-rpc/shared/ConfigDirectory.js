@@ -143,7 +143,7 @@ function _load_collection() {
 var _fsPromise;
 
 function _load_fsPromise() {
-  return _fsPromise = _interopRequireDefault(require('../../commons-node/fsPromise'));
+  return _fsPromise = _interopRequireDefault(require('nuclide-commons/fsPromise'));
 }
 
 var _nuclideUri;
@@ -152,10 +152,10 @@ function _load_nuclideUri() {
   return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 var _promise;
@@ -168,16 +168,16 @@ var _os = _interopRequireDefault(require('os'));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const logger = (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)(); /**
-                                                                              * Copyright (c) 2015-present, Facebook, Inc.
-                                                                              * All rights reserved.
-                                                                              *
-                                                                              * This source code is licensed under the license found in the LICENSE file in
-                                                                              * the root directory of this source tree.
-                                                                              *
-                                                                              * 
-                                                                              * @format
-                                                                              */
+const logger = (0, (_log4js || _load_log4js()).getLogger)('nuclide-remote-atom-rpc'); /**
+                                                                                       * Copyright (c) 2015-present, Facebook, Inc.
+                                                                                       * All rights reserved.
+                                                                                       *
+                                                                                       * This source code is licensed under the license found in the LICENSE file in
+                                                                                       * the root directory of this source tree.
+                                                                                       *
+                                                                                       * 
+                                                                                       * @format
+                                                                                       */
 
 const RPC_PROTOCOL = exports.RPC_PROTOCOL = 'atom_rpc_protocol';
 

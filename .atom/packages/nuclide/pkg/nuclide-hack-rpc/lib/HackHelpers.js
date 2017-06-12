@@ -36,7 +36,7 @@ let callHHClient = exports.callHHClient = (() => {
 
         let execResult = null;
 
-        (_hackConfig || _load_hackConfig()).logger.log(`Calling Hack: ${hackCommand} with ${allArgs.toString()}`);
+        (_hackConfig || _load_hackConfig()).logger.debug(`Calling Hack: ${hackCommand} with ${allArgs.toString()}`);
         execResult = yield (0, (_nuclideAnalytics || _load_nuclideAnalytics()).trackTiming)(trackingIdOfHackArgs(args), function () {
           // TODO: Can't we do a better job with error handling here?
           try {
@@ -61,7 +61,7 @@ let callHHClient = exports.callHHClient = (() => {
         const output = errorStream ? stderr : stdout;
         // keeping this at "Trace" log level, since output for --color contains
         // entire file contents, which fills the logs too quickly
-        (_hackConfig || _load_hackConfig()).logger.logTrace(`Hack output for ${allArgs.toString()}: ${output}`);
+        (_hackConfig || _load_hackConfig()).logger.trace(`Hack output for ${allArgs.toString()}: ${output}`);
         try {
           const result = JSON.parse(output);
 
@@ -76,7 +76,7 @@ let callHHClient = exports.callHHClient = (() => {
         } catch (err) {
           const errorMessage = `hh_client error, args: [${args.join(',')}]
 stdout: ${stdout}, stderr: ${stderr}`;
-          (_hackConfig || _load_hackConfig()).logger.logError(errorMessage);
+          (_hackConfig || _load_hackConfig()).logger.error(errorMessage);
           throw new Error(errorMessage);
         }
       }));
@@ -96,7 +96,7 @@ exports.atomPointFromHack = atomPointFromHack;
 var _process;
 
 function _load_process() {
-  return _process = require('../../commons-node/process');
+  return _process = require('nuclide-commons/process');
 }
 
 var _promiseExecutors;

@@ -75,10 +75,10 @@ function _load_hgConstants() {
   return _hgConstants = require('../../nuclide-hg-rpc/lib/hg-constants');
 }
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 var _nuclideWorkingSetsCommon;
@@ -163,7 +163,7 @@ class FileTreeStore {
     this._dispatcher = (_FileTreeDispatcher || _load_FileTreeDispatcher()).default.getInstance();
     this._emitter = new _atom.Emitter();
     this._dispatcher.register(this._onDispatch.bind(this));
-    this._logger = (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)();
+    this._logger = (0, (_log4js || _load_log4js()).getLogger)('nuclide-file-tree');
     this._fileChanges = new (_immutable || _load_immutable()).default.Map();
 
     this._usePrefixNav = false;

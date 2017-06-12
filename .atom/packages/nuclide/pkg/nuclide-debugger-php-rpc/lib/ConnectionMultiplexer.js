@@ -283,7 +283,7 @@ class ConnectionMultiplexer {
         const xdebugBreakpoint = notify;
         const breakpointId = this._breakpointStore.getBreakpointIdFromConnection(connection, xdebugBreakpoint);
         if (breakpointId == null) {
-          (_utils || _load_utils()).default.logError(`Cannot find xdebug breakpoint ${JSON.stringify(xdebugBreakpoint)} in connection.`);
+          (_utils || _load_utils()).default.error(`Cannot find xdebug breakpoint ${JSON.stringify(xdebugBreakpoint)} in connection.`);
           break;
         }
         this._breakpointStore.updateBreakpoint(breakpointId, xdebugBreakpoint);
@@ -291,7 +291,7 @@ class ConnectionMultiplexer {
         this._emitNotification((_DbgpSocket || _load_DbgpSocket()).BREAKPOINT_RESOLVED_NOTIFICATION, breakpoint);
         break;
       default:
-        (_utils || _load_utils()).default.logError(`Unknown notify: ${notifyName}`);
+        (_utils || _load_utils()).default.error(`Unknown notify: ${notifyName}`);
         break;
     }
   }
@@ -301,7 +301,7 @@ class ConnectionMultiplexer {
   }
 
   _connectionOnStatus(connection, status, ...args) {
-    (_utils || _load_utils()).default.log(`Mux got status: ${status} on connection ${connection.getId()}`);
+    (_utils || _load_utils()).default.debug(`Mux got status: ${status} on connection ${connection.getId()}`);
 
     this._debuggerStartupDisposable.dispose();
 
@@ -397,7 +397,7 @@ class ConnectionMultiplexer {
     }
 
     if (this._status === ConnectionMultiplexerStatus.SingleConnectionPaused || this._status === ConnectionMultiplexerStatus.AllConnectionsPaused) {
-      (_utils || _load_utils()).default.log('Mux already in break status');
+      (_utils || _load_utils()).default.debug('Mux already in break status');
       return;
     }
 
@@ -427,7 +427,7 @@ class ConnectionMultiplexer {
   }
 
   _enableConnection(connection) {
-    (_utils || _load_utils()).default.log('Mux enabling connection');
+    (_utils || _load_utils()).default.debug('Mux enabling connection');
     this._enabledConnection = connection;
     this._handlePotentialRequestSwitch(connection);
     this._lastEnabledConnection = connection;
@@ -485,7 +485,7 @@ class ConnectionMultiplexer {
       type: 'error',
       message: error
     });
-    (_utils || _load_utils()).default.logError(`PHP debugger attach error: ${error}`);
+    (_utils || _load_utils()).default.error(`PHP debugger attach error: ${error}`);
     this._emitStatus(ConnectionMultiplexerStatus.End);
   }
 
@@ -501,7 +501,7 @@ class ConnectionMultiplexer {
     var _this3 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      (_utils || _load_utils()).default.log(`runtimeEvaluate() on dummy connection for: ${expression}`);
+      (_utils || _load_utils()).default.debug(`runtimeEvaluate() on dummy connection for: ${expression}`);
       if (_this3._dummyConnection != null) {
         // Global runtime evaluation on dummy connection does not care about
         // which frame it is being evaluated on so choose top frame here.
@@ -620,7 +620,7 @@ class ConnectionMultiplexer {
     const exists = this._breakpointStore.breakpointExists(stopLocation.filename, stopLocation.lineNumber);
 
     if (!exists) {
-      (_utils || _load_utils()).default.log('Connection hit stale breakpoint. Resuming...');
+      (_utils || _load_utils()).default.debug('Connection hit stale breakpoint. Resuming...');
     }
 
     return exists;
@@ -693,7 +693,7 @@ class ConnectionMultiplexer {
   }
 
   _disableConnection() {
-    (_utils || _load_utils()).default.log('Mux disabling connection');
+    (_utils || _load_utils()).default.debug('Mux disabling connection');
     this._enabledConnection = null;
     this._setStatus(ConnectionMultiplexerStatus.Running);
   }
@@ -759,7 +759,7 @@ class ConnectionMultiplexer {
     return (0, _asyncToGenerator.default)(function* () {
       const stdoutRequestSucceeded = yield connection.sendStdoutRequest();
       if (!stdoutRequestSucceeded) {
-        (_utils || _load_utils()).default.logError('HHVM returned failure for a stdout request');
+        (_utils || _load_utils()).default.error('HHVM returned failure for a stdout request');
         _this8._clientCallback.sendUserMessage('outputWindow', {
           level: 'error',
           text: 'HHVM failed to redirect stdout, so no output will be sent to the output window.'
@@ -776,17 +776,17 @@ class ConnectionMultiplexer {
       // returning hierarchical data.
       let setFeatureSucceeded = yield connection.setFeature('max_depth', '5');
       if (!setFeatureSucceeded) {
-        (_utils || _load_utils()).default.logError('HHVM returned failure for setting feature max_depth');
+        (_utils || _load_utils()).default.error('HHVM returned failure for setting feature max_depth');
       }
       // show_hidden allows the client to request data from private class members.
       setFeatureSucceeded = yield connection.setFeature('show_hidden', '1');
       if (!setFeatureSucceeded) {
-        (_utils || _load_utils()).default.logError('HHVM returned failure for setting feature show_hidden');
+        (_utils || _load_utils()).default.error('HHVM returned failure for setting feature show_hidden');
       }
       // Turn on notifications.
       setFeatureSucceeded = yield connection.setFeature('notify_ok', '1');
       if (!setFeatureSucceeded) {
-        (_utils || _load_utils()).default.logError('HHVM returned failure for setting feature notify_ok');
+        (_utils || _load_utils()).default.error('HHVM returned failure for setting feature notify_ok');
       }
     })();
   }

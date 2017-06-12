@@ -9,10 +9,10 @@ var _atom = require('atom');
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 /**
@@ -45,7 +45,7 @@ class PlatformService {
   getPlatformGroups(buckRoot, ruleType, buildTarget) {
     return this._providersChanged.startWith(undefined).switchMap(() => {
       const observables = this._registeredProviders.map(provider => provider(buckRoot, ruleType, buildTarget).catch(error => {
-        (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error(`Getting buck platform groups from ${provider.name} failed:`, error);
+        (0, (_log4js || _load_log4js()).getLogger)('nuclide-buck').error(`Getting buck platform groups from ${provider.name} failed:`, error);
         return _rxjsBundlesRxMinJs.Observable.of(null);
       }));
       return _rxjsBundlesRxMinJs.Observable.from(observables)

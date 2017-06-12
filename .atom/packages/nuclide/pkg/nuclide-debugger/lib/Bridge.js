@@ -22,12 +22,16 @@ function _load_DebuggerStore() {
   return _DebuggerStore = require('./DebuggerStore');
 }
 
-var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
-
 var _CommandDispatcher;
 
 function _load_CommandDispatcher() {
   return _CommandDispatcher = _interopRequireDefault(require('./CommandDispatcher'));
+}
+
+var _ChromeActionRegistryActions;
+
+function _load_ChromeActionRegistryActions() {
+  return _ChromeActionRegistryActions = _interopRequireDefault(require('./ChromeActionRegistryActions'));
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -41,45 +45,77 @@ class Bridge {
     this._commandDispatcher = new (_CommandDispatcher || _load_CommandDispatcher()).default();
     this._disposables = new (_UniversalDisposable || _load_UniversalDisposable()).default(debuggerModel.getBreakpointStore().onUserChange(this._handleUserBreakpointChange.bind(this)));
   }
-  // Contains disposable items should be disposed by
-  // cleanup() method.
+  // Contains disposable items that are only available during
+  // debug mode.
 
 
   dispose() {
-    this.cleanup();
+    this.leaveDebugMode();
     this._disposables.dispose();
   }
 
-  // Clean up any state changed after constructor.
-  cleanup() {
-    if (this._cleanupDisposables != null) {
-      this._cleanupDisposables.dispose();
-      this._cleanupDisposables = null;
+  enterDebugMode() {
+    if (this._debugModeDisposables == null) {
+      this._debugModeDisposables = new (_UniversalDisposable || _load_UniversalDisposable()).default();
+    }
+  }
+
+  // Clean up any debug mode states.
+  leaveDebugMode() {
+    if (this._debugModeDisposables != null) {
+      this._debugModeDisposables.dispose();
+      this._debugModeDisposables = null;
     }
   }
 
   continue() {
+    this._clearInterface();
     this._commandDispatcher.send('Continue');
   }
 
+  pause() {
+    this._commandDispatcher.send('Pause');
+  }
+
   stepOver() {
+    this._clearInterface();
     this._commandDispatcher.send('StepOver');
   }
 
   stepInto() {
+    this._clearInterface();
     this._commandDispatcher.send('StepInto');
   }
 
   stepOut() {
+    this._clearInterface();
     this._commandDispatcher.send('StepOut');
   }
 
   runToLocation(filePath, line) {
+    this._clearInterface();
     this._commandDispatcher.send('RunToLocation', filePath, line);
   }
 
   triggerAction(actionId) {
-    this._commandDispatcher.send('triggerDebuggerAction', actionId);
+    this._clearInterface();
+    switch (actionId) {
+      case (_ChromeActionRegistryActions || _load_ChromeActionRegistryActions()).default.RUN:
+        this.continue();
+        break;
+      case (_ChromeActionRegistryActions || _load_ChromeActionRegistryActions()).default.PAUSE:
+        this.pause();
+        break;
+      case (_ChromeActionRegistryActions || _load_ChromeActionRegistryActions()).default.STEP_INTO:
+        this.stepInto();
+        break;
+      case (_ChromeActionRegistryActions || _load_ChromeActionRegistryActions()).default.STEP_OVER:
+        this.stepOver();
+        break;
+      case (_ChromeActionRegistryActions || _load_ChromeActionRegistryActions()).default.STEP_OUT:
+        this.stepOut();
+        break;
+    }
   }
 
   setSelectedCallFrameIndex(callFrameIndex) {
@@ -126,10 +162,7 @@ class Bridge {
     this._debuggerModel.getActions().updateScopes(scopeSections);
   }
 
-  _handleIpcMessage(stdEvent) {
-    // addEventListener expects its callback to take an Event. I'm not sure how to reconcile it with
-    // the type that is expected here.
-    const event = stdEvent;
+  _handleIpcMessage(event) {
     switch (event.channel) {
       case 'notification':
         switch (event.args[0]) {
@@ -137,7 +170,6 @@ class Bridge {
             if (atom.config.get('nuclide.nuclide-debugger.openDevToolsOnDebuggerStart')) {
               this.openDevTools();
             }
-            this._updateDebuggerSettings();
             this._sendAllBreakpoints();
             this._syncDebuggerState();
             break;
@@ -146,9 +178,6 @@ class Bridge {
             break;
           case 'OpenSourceLocation':
             this._openSourceLocation(event.args[1]);
-            break;
-          case 'ClearInterface':
-            this._handleClearInterface();
             break;
           case 'DebuggerResumed':
             this._handleDebuggerResumed();
@@ -219,8 +248,9 @@ class Bridge {
     this._debuggerModel.getStore().loaderBreakpointResumed();
   }
 
-  _handleClearInterface() {
-    this._debuggerModel.getActions().clearInterface();
+  _clearInterface() {
+    // Prevent dispatcher re-entrance error.
+    process.nextTick(() => this._debuggerModel.getActions().clearInterface());
   }
 
   _setSelectedCallFrameLine(options) {
@@ -307,49 +337,30 @@ class Bridge {
     }
   }
 
-  renderChromeWebview(url) {
-    if (this._webview == null) {
-      // Cast from HTMLElement down to WebviewElement without instanceof
-      // checking, as WebviewElement constructor is not exposed.
-      const webview = document.createElement('webview');
-      webview.src = url;
-      webview.nodeintegration = true;
-      webview.disablewebsecurity = true;
-      webview.classList.add('native-key-bindings'); // required to pass through certain key events
-      webview.classList.add('nuclide-debugger-webview');
+  enableEventsListening() {
+    const subscriptions = this._debugModeDisposables;
 
-      // The webview is actually only used for its state; it's really more of a model that just has
-      // to live in the DOM. We render it into the body to keep it separate from our view, which may
-      // be detached. If the webview were a child, it would cause the webview to reload when
-      // reattached, and we'd lose our state.
-
-      if (!(document.body != null)) {
-        throw new Error('Invariant violation: "document.body != null"');
-      }
-
-      document.body.appendChild(webview);
-
-      this._setWebviewElement(webview);
-    } else if (url !== this._webviewUrl) {
-      this._webview.src = url;
+    if (!(subscriptions != null)) {
+      throw new Error('Invariant violation: "subscriptions != null"');
     }
-    this._webviewUrl = url;
+
+    subscriptions.add(this._commandDispatcher.getEventObservable().subscribe(this._handleIpcMessage));
+    this._signalNewChannelReadyIfNeeded();
+    subscriptions.add(() => this._commandDispatcher.cleanupSessionState());
   }
 
-  // Exposed for tests
-  _setWebviewElement(webview) {
-    this._webview = webview;
-    this._commandDispatcher.setupChromeChannel(webview);
-
-    if (!(this._cleanupDisposables == null)) {
-      throw new Error('Invariant violation: "this._cleanupDisposables == null"');
+  // This will be unnecessary after we remove 'ready' event.
+  _signalNewChannelReadyIfNeeded() {
+    if (this._commandDispatcher.isNewChannel()) {
+      this._handleIpcMessage({
+        channel: 'notification',
+        args: ['ready']
+      });
     }
+  }
 
-    this._cleanupDisposables = new (_UniversalDisposable || _load_UniversalDisposable()).default(_rxjsBundlesRxMinJs.Observable.fromEvent(webview, 'ipc-message').subscribe(this._handleIpcMessage), () => {
-      webview.remove();
-      this._webview = null;
-      this._webviewUrl = null;
-    });
+  setupChromeChannel(url) {
+    this._commandDispatcher.setupChromeChannel(url);
   }
 
   setupNuclideChannel(debuggerInstance) {
@@ -357,10 +368,7 @@ class Bridge {
   }
 
   openDevTools() {
-    if (this._webview == null) {
-      return;
-    }
-    this._webview.openDevTools();
+    this._commandDispatcher.openDevTools();
   }
 }
 exports.default = Bridge; /**

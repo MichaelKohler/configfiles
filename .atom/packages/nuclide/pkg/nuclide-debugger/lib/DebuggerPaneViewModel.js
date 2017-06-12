@@ -49,10 +49,6 @@ class DebuggerPaneViewModel {
     }
   }
 
-  getIconName() {
-    return 'nuclicon-debugger';
-  }
-
   getTitle() {
     return this._config.title();
   }

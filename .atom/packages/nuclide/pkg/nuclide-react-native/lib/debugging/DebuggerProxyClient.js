@@ -17,10 +17,10 @@ function _load_UniversalDisposable() {
   return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 var _executeRequests;
@@ -111,7 +111,7 @@ class DebuggerProxyClient {
         atom.notifications.addError(message, meta);
         return _rxjsBundlesRxMinJs.Observable.empty();
       }
-      (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error(err);
+      (0, (_log4js || _load_log4js()).getLogger)('nuclide-react-native').error(err);
       return _rxjsBundlesRxMinJs.Observable.empty();
     }).finally(() => {
       this.disconnect();
@@ -140,7 +140,7 @@ class DebuggerProxyClient {
       }
 
       return response.message;
-    }).subscribe((0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error);
+    }).subscribe((0, (_log4js || _load_log4js()).getLogger)('nuclide-react-native').error);
   }
 
   connect() {

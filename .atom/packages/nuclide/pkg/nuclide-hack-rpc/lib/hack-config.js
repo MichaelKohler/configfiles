@@ -44,19 +44,19 @@ exports.getHackCommand = getHackCommand;
 var _ConfigCache;
 
 function _load_ConfigCache() {
-  return _ConfigCache = require('../../commons-node/ConfigCache');
+  return _ConfigCache = require('nuclide-commons/ConfigCache');
 }
 
 var _process;
 
 function _load_process() {
-  return _process = require('../../commons-node/process');
+  return _process = require('nuclide-commons/process');
 }
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -72,7 +72,7 @@ const HACK_LOGGER_CATEGORY = 'nuclide-hack'; /**
                                               * @format
                                               */
 
-const logger = exports.logger = (0, (_nuclideLogging || _load_nuclideLogging()).getCategoryLogger)(HACK_LOGGER_CATEGORY);
+const logger = exports.logger = (0, (_log4js || _load_log4js()).getLogger)(HACK_LOGGER_CATEGORY);
 
 const HACK_CONFIG_FILE_NAME = '.hhconfig';
 const PATH_TO_HH_CLIENT = 'hh_client';
@@ -102,7 +102,7 @@ function findHackConfigDir(localFile) {
   if (newHackCommand === '') {
     hackCommand = DEFAULT_HACK_COMMAND;
   } else {
-    logger.log(`Using custom hh_client: ${newHackCommand}`);
+    logger.debug(`Using custom hh_client: ${newHackCommand}`);
     hackCommand = Promise.resolve(newHackCommand);
   }
 }

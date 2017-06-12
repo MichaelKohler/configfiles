@@ -42,6 +42,7 @@ let connectionToHackService = (() => {
 
 let createLanguageService = (() => {
   var _ref3 = (0, _asyncToGenerator.default)(function* () {
+    const usingLsp = yield getUseLspConnection();
     const atomConfig = {
       name: 'Hack',
       grammars: (_nuclideHackCommon || _load_nuclideHackCommon()).HACK_GRAMMARS,
@@ -51,7 +52,7 @@ let createLanguageService = (() => {
         analyticsEventName: 'hack.codehighlight'
       },
       outline: {
-        version: '0.0.0',
+        version: '0.1.0',
         priority: 1,
         analyticsEventName: 'hack.outline'
       },
@@ -76,7 +77,8 @@ let createLanguageService = (() => {
         version: '0.0.0',
         priority: 1,
         analyticsEventName: 'hack.formatCode',
-        formatEntireFile: false
+        canFormatRanges: true,
+        canFormatAtPosition: usingLsp
       },
       findReferences: {
         version: '0.0.0',

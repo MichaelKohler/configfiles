@@ -29,5 +29,5 @@ function uriToPath(uri) {
   if (components.protocol !== 'file:' && components.protocol != null) {
     throw new Error(`unexpected file protocol. Got: ${components.protocol}`);
   }
-  return components.pathname || '';
+  return (components.pathname || '') + (components.hash || '');
 }

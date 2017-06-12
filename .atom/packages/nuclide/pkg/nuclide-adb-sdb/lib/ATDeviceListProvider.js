@@ -38,9 +38,9 @@ class ATDeviceListProvider {
 
   observe(host) {
     if (this._type === 'android') {
-      return (0, (_DevicePoller || _load_DevicePoller()).observeAndroidDevices)(host);
+      return (0, (_DevicePoller || _load_DevicePoller()).observeAndroidDevicesX)(host);
     } else {
-      return (0, (_DevicePoller || _load_DevicePoller()).observeTizenDevices)(host);
+      return (0, (_DevicePoller || _load_DevicePoller()).observeTizenDevicesX)(host);
     }
   }
 }

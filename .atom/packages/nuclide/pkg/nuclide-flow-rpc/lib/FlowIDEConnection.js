@@ -37,10 +37,10 @@ function _load_nuclideAnalytics() {
   return _nuclideAnalytics = require('../../nuclide-analytics');
 }
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -78,7 +78,7 @@ class FlowIDEConnection {
     this._disposables = new (_UniversalDisposable || _load_UniversalDisposable()).default();
     this._ideProcess = process;
     this._ideProcess.stderr.pipe((0, (_through || _load_through()).default)(msg => {
-      (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().info('Flow IDE process stderr: ', msg.toString());
+      (0, (_log4js || _load_log4js()).getLogger)('nuclide-flow-rpc').info('Flow IDE process stderr: ', msg.toString());
     }));
     this._connection = (_vscodeJsonrpc || _load_vscodeJsonrpc()).createMessageConnection(new (_vscodeJsonrpc || _load_vscodeJsonrpc()).StreamMessageReader(this._ideProcess.stdout), new (_vscodeJsonrpc || _load_vscodeJsonrpc()).StreamMessageWriter(this._ideProcess.stdin));
     this._connection.listen();
@@ -132,14 +132,10 @@ class FlowIDEConnection {
   observeDiagnostics() {
     const subscribe = () => {
       this._connection.sendNotification(SUBSCRIBE_METHOD_NAME);
-      // This is a temporary hack used to simplify the temporary vscode-jsonrpc implementation in
-      // Flow: D4659335
-      // TODO remove this hack sometime after Flow v0.44 is released (D4798007)
-      this._ideProcess.stdin.write('\r\n');
     };
 
     const retrySubscription = _rxjsBundlesRxMinJs.Observable.interval(SUBSCRIBE_RETRY_INTERVAL).take(SUBSCRIBE_RETRIES).takeUntil(this._diagnostics).subscribe(() => {
-      (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error('Did not receive diagnostics after subscribe request -- retrying...');
+      (0, (_log4js || _load_log4js()).getLogger)('nuclide-flow-rpc').error('Did not receive diagnostics after subscribe request -- retrying...');
       (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)('nuclide-flow.missing-push-diagnostics');
       subscribe();
     });

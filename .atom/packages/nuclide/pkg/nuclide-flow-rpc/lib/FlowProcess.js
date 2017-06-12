@@ -29,10 +29,10 @@ var _os = _interopRequireDefault(require('os'));
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 var _nuclideAnalytics;
@@ -44,7 +44,7 @@ function _load_nuclideAnalytics() {
 var _process;
 
 function _load_process() {
-  return _process = require('../../commons-node/process');
+  return _process = require('nuclide-commons/process');
 }
 
 var _promise;
@@ -56,7 +56,7 @@ function _load_promise() {
 var _nice;
 
 function _load_nice() {
-  return _nice = require('../../commons-node/nice');
+  return _nice = require('nuclide-commons/nice');
 }
 
 var _UniversalDisposable;
@@ -69,6 +69,12 @@ var _FlowHelpers;
 
 function _load_FlowHelpers() {
   return _FlowHelpers = require('./FlowHelpers');
+}
+
+var _config;
+
+function _load_config() {
+  return _config = require('./config');
 }
 
 var _FlowConstants;
@@ -91,16 +97,16 @@ function _load_FlowIDEConnectionWatcher() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const logger = (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)(); /**
-                                                                              * Copyright (c) 2015-present, Facebook, Inc.
-                                                                              * All rights reserved.
-                                                                              *
-                                                                              * This source code is licensed under the license found in the LICENSE file in
-                                                                              * the root directory of this source tree.
-                                                                              *
-                                                                              * 
-                                                                              * @format
-                                                                              */
+const logger = (0, (_log4js || _load_log4js()).getLogger)('nuclide-flow-rpc'); /**
+                                                                                * Copyright (c) 2015-present, Facebook, Inc.
+                                                                                * All rights reserved.
+                                                                                *
+                                                                                * This source code is licensed under the license found in the LICENSE file in
+                                                                                * the root directory of this source tree.
+                                                                                *
+                                                                                * 
+                                                                                * @format
+                                                                                */
 
 // Names modeled after https://github.com/facebook/flow/blob/master/src/common/flowExitStatus.ml
 const FLOW_RETURN_CODES = exports.FLOW_RETURN_CODES = {
@@ -348,12 +354,16 @@ class FlowProcess {
         _this2._setServerStatus((_FlowConstants || _load_FlowConstants()).ServerStatus.NOT_INSTALLED);
         return;
       }
+      const lazy = [];
+      if ((0, (_config || _load_config()).getConfig)('lazyServer')) {
+        lazy.push('--lazy');
+      }
       // `flow server` will start a server in the foreground. runCommand/runCommandDetailed
       // will not resolve the promise until the process exits, which in this
       // case is never. We need to use spawn directly to get access to the
       // ChildProcess object.
       // eslint-disable-next-line no-await-in-loop
-      const serverProcess = yield (0, (_nice || _load_nice()).niceSafeSpawn)(flowExecInfo.pathToFlow, ['server', '--from', 'nuclide', '--max-workers', _this2._getMaxWorkers().toString(), _this2._root], flowExecInfo.execOptions);
+      const serverProcess = yield (0, (_nice || _load_nice()).niceSafeSpawn)(flowExecInfo.pathToFlow, ['server', ...lazy, '--from', 'nuclide', '--max-workers', _this2._getMaxWorkers().toString(), _this2._root], flowExecInfo.execOptions);
       const logIt = function (data) {
         const pid = serverProcess.pid;
         logger.debug(`flow server (${pid}): ${data}`);

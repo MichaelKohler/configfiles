@@ -114,7 +114,7 @@ let getCommandFromBuck = (() => {
     }
 
     // TODO(matthewwithanm): Move this to BuckUtils?
-    const filePath = (_nuclideUri || _load_nuclideUri()).default.join(projectRoot, '.buckConfig');
+    const filePath = (_nuclideUri || _load_nuclideUri()).default.join(projectRoot, '.buckconfig');
     const content = yield (_fsPromise || _load_fsPromise()).default.readFile(filePath, 'utf8');
     const parsed = (_ini || _load_ini()).default.parse(`scope = global\n${content}`);
     const section = parsed['react-native'];
@@ -153,7 +153,7 @@ let getCommandForCli = (() => {
 var _fsPromise;
 
 function _load_fsPromise() {
-  return _fsPromise = _interopRequireDefault(require('../../commons-node/fsPromise'));
+  return _fsPromise = _interopRequireDefault(require('nuclide-commons/fsPromise'));
 }
 
 var _featureConfig;

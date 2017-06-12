@@ -7,7 +7,7 @@ Object.defineProperty(exports, "__esModule", {
 var _Hasher;
 
 function _load_Hasher() {
-  return _Hasher = _interopRequireDefault(require('../../../commons-node/Hasher'));
+  return _Hasher = _interopRequireDefault(require('nuclide-commons/Hasher'));
 }
 
 var _react = _interopRequireDefault(require('react'));

@@ -71,19 +71,19 @@ function _load_nuclideUri() {
 var _which;
 
 function _load_which() {
-  return _which = _interopRequireDefault(require('../../commons-node/which'));
+  return _which = _interopRequireDefault(require('nuclide-commons/which'));
 }
 
 var _process;
 
 function _load_process() {
-  return _process = require('../../commons-node/process');
+  return _process = require('nuclide-commons/process');
 }
 
 var _ConfigCache;
 
 function _load_ConfigCache() {
-  return _ConfigCache = require('../../commons-node/ConfigCache');
+  return _ConfigCache = require('nuclide-commons/ConfigCache');
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

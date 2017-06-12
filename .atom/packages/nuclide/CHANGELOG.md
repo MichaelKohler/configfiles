@@ -1,8 +1,38 @@
 # Nuclide Changelog
 
+## v0.232.0
+
+### Hotfix Release
+
+* Fixed format-on-save throwing exceptions when saving while closing files.
+
+## v0.231.0
+
+### General
+
+* The "Full description" checkbox in Diagnostics is now hidden when traces are unavailable.
+
+### Debugger
+
+* Enable/Disable breakpoint in breakpoint window will not navigate to source location anymore.
+
+## v0.230.0
+
+### General
+
+* Added a system toast notification if remote connection 2FA prompt comes up while Nuclide does not have focus.
+* Fixed missing Hack autocomplete results for classnames.
+
+### Debugger
+
+* Fixed php debugger "sometimes can't start successfully" bug.
+* Removed “gear” icon that was taking up vertical space above the debugger controls
+* New separated "Launch" and "Attach" debugger dialogs with simplified configuration options, will now remember your debugger settings
+* [Atom 1.17+ Only] Added support for tearing out the various debugger panes into their own Atom tabs, moving them around the workspace and to other docks, remembering their preferred locations, and hiding individual panes.
+
 ## v0.229.0
 
-### GENERAL
+### General
 
 * Fixed Nuclide reporting "arc build" succeeding even if it failed
 * Fixed issue where Nuclide would offer a Terminal for unsupported paths on Windows and then generate an error

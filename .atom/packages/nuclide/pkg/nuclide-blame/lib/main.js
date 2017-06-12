@@ -19,10 +19,10 @@ function _load_BlameGutter() {
   return _BlameGutter = _interopRequireDefault(require('./BlameGutter'));
 }
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 var _goToLocation;
@@ -140,7 +140,7 @@ class Activation {
       } else {
         atom.notifications.addInfo('Could not open blame: no blame information currently available for this file.');
 
-        (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().info('nuclide-blame: Could not open blame: no blame provider currently available for this ' + `file: ${String(editor.getPath())}`);
+        (0, (_log4js || _load_log4js()).getLogger)('nuclide-blame').info('nuclide-blame: Could not open blame: no blame provider currently available for this ' + `file: ${String(editor.getPath())}`);
       }
     }
   }

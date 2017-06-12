@@ -19,13 +19,34 @@ function _load_projects() {
   return _projects = require('nuclide-commons-atom/projects');
 }
 
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ * @format
+ */
+
 class Activation {
 
   constructor(rawState) {
     const state = rawState || {};
     const { initialCwdPath } = state;
     this._cwdApi = new (_CwdApi || _load_CwdApi()).CwdApi(initialCwdPath);
-    this._disposables = new _atom.CompositeDisposable(this._cwdApi, atom.commands.add('atom-workspace', 'nuclide-current-working-root:set-from-active-file', this._setFromActiveFile.bind(this)));
+    this._currentWorkingRootDirectory = this._cwdApi.getCwd();
+    this._disposables = new _atom.CompositeDisposable(this._cwdApi, atom.commands.add('atom-workspace', 'nuclide-current-working-root:set-from-active-file', this._setFromActiveFile.bind(this)), atom.commands.add('atom-workspace', 'nuclide-current-working-root:switch-to-previous', this._switchToLastWorkingRoot.bind(this)), this._cwdApi.observeCwd(newCwd => {
+      if (this._currentWorkingRootDirectory != null) {
+        const oldCwd = this._currentWorkingRootDirectory.getPath();
+        if (newCwd === oldCwd) {
+          return;
+        }
+        this._lastWorkingRootPath = oldCwd;
+      }
+      this._currentWorkingRootDirectory = newCwd;
+    }));
   }
 
   dispose() {
@@ -41,6 +62,12 @@ class Activation {
     return {
       initialCwdPath: cwd == null ? null : cwd.getPath()
     };
+  }
+
+  _switchToLastWorkingRoot() {
+    if (this._lastWorkingRootPath != null) {
+      this._cwdApi.setCwd(this._lastWorkingRootPath);
+    }
   }
 
   _setFromActiveFile() {
@@ -65,13 +92,4 @@ class Activation {
     this._cwdApi.setCwd(projectRoot);
   }
 }
-exports.Activation = Activation; /**
-                                  * Copyright (c) 2015-present, Facebook, Inc.
-                                  * All rights reserved.
-                                  *
-                                  * This source code is licensed under the license found in the LICENSE file in
-                                  * the root directory of this source tree.
-                                  *
-                                  * 
-                                  * @format
-                                  */
+exports.Activation = Activation;

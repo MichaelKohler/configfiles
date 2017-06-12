@@ -9,10 +9,10 @@ var _atom = require('atom');
 
 var _react = _interopRequireDefault(require('react'));
 
-var _Button;
+var _TruncatedButton;
 
-function _load_Button() {
-  return _Button = require('nuclide-commons-ui/Button');
+function _load_TruncatedButton() {
+  return _TruncatedButton = _interopRequireDefault(require('nuclide-commons-ui/TruncatedButton'));
 }
 
 var _DebuggerSteppingComponent;
@@ -85,13 +85,17 @@ class DebuggerControlsView extends _react.default.PureComponent {
         ),
         _react.default.createElement(
           'div',
-          { className: 'nuclide-debugger-state-notice' },
-          _react.default.createElement(
-            (_Button || _load_Button()).Button,
-            {
-              onClick: () => atom.commands.dispatch(atom.views.getView(atom.workspace), 'nuclide-debugger:toggle') },
-            'Start debugging'
-          )
+          { className: 'padded' },
+          _react.default.createElement((_TruncatedButton || _load_TruncatedButton()).default, {
+            onClick: () => atom.commands.dispatch(atom.views.getView(atom.workspace), 'nuclide-debugger:show-attach-dialog'),
+            icon: 'nuclicon-debugger',
+            label: 'Attach debugger...'
+          }),
+          _react.default.createElement((_TruncatedButton || _load_TruncatedButton()).default, {
+            onClick: () => atom.commands.dispatch(atom.views.getView(atom.workspace), 'nuclide-debugger:show-launch-dialog'),
+            icon: 'nuclicon-debugger',
+            label: 'Launch debugger...'
+          })
         )
       )
     );

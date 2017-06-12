@@ -471,7 +471,7 @@ exports.getWebSocketStream = getWebSocketStream;
 var _process;
 
 function _load_process() {
-  return _process = require('../../commons-node/process');
+  return _process = require('nuclide-commons/process');
 }
 
 var _promiseExecutors;
@@ -483,7 +483,7 @@ function _load_promiseExecutors() {
 var _fsPromise;
 
 function _load_fsPromise() {
-  return _fsPromise = _interopRequireDefault(require('../../commons-node/fsPromise'));
+  return _fsPromise = _interopRequireDefault(require('nuclide-commons/fsPromise'));
 }
 
 var _nuclideUri;
@@ -500,16 +500,16 @@ function _load_createBuckWebSocket() {
   return _createBuckWebSocket = _interopRequireDefault(require('./createBuckWebSocket'));
 }
 
-var _nuclideLogging;
-
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
-}
-
 var _ini;
 
 function _load_ini() {
   return _ini = _interopRequireDefault(require('ini'));
+}
+
+var _log4js;
+
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 var _shellQuote;
@@ -535,7 +535,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @format
  */
 
-const logger = (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)();
+const logger = (0, (_log4js || _load_log4js()).getLogger)('nuclide-buck-rpc');
 
 // Tag these Buck calls as coming from Nuclide for analytics purposes.
 const CLIENT_ID_ARGS = ['--config', 'client.id=nuclide'];

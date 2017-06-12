@@ -217,7 +217,7 @@ class BreakpointStore {
         return _this6._removeBreakpointFromConnections(breakpointId);
       } else {
         // This can happen if users switch between 'none' and 'uncaught' states.
-        (_utils || _load_utils()).default.log('No exception breakpoint to remove.');
+        (_utils || _load_utils()).default.debug('No exception breakpoint to remove.');
         return Promise.resolve();
       }
     })();

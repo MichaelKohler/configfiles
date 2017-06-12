@@ -431,7 +431,8 @@ function expandHomeDir(uri) {
   // on Windows, so asking for any case is expected to work.
   const { HOME, UserProfile } = process.env;
 
-  const homePath = _os.default.platform() === 'win32' ? UserProfile : HOME;
+  const isWindows = !isRemote(uri) && _os.default.platform() === 'win32';
+  const homePath = isWindows ? UserProfile : HOME;
 
   if (!(homePath != null)) {
     throw new Error('Invariant violation: "homePath != null"');
@@ -442,7 +443,7 @@ function expandHomeDir(uri) {
   }
 
   // Uris like ~abc should not be expanded
-  if (!uri.startsWith('~/')) {
+  if (!uri.startsWith('~/') && (!isWindows || !uri.startsWith('~\\'))) {
     return uri;
   }
 

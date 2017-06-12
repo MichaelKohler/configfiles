@@ -115,6 +115,7 @@ class BreakpointListComponent extends _react.default.Component {
           indeterminate: !resolved,
           disabled: !resolved,
           onChange: this._handleBreakpointEnabledChange.bind(this, breakpoint),
+          onClick: event => event.stopPropagation(),
           title: title,
           className: (0, (_classnames || _load_classnames()).default)(resolved ? '' : 'nuclide-debugger-breakpoint-unresolved')
         }),

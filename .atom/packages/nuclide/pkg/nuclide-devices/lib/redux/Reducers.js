@@ -11,7 +11,24 @@ function _load_Actions() {
   return _Actions = _interopRequireWildcard(require('./Actions'));
 }
 
+var _nuclideExpected;
+
+function _load_nuclideExpected() {
+  return _nuclideExpected = require('../../../nuclide-expected');
+}
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ * @format
+ */
 
 function app(state, action) {
   switch (action.type) {
@@ -20,10 +37,12 @@ function app(state, action) {
       return Object.assign({}, state, {
         deviceType: null,
         device: null,
-        devices: [],
+        devices: (_nuclideExpected || _load_nuclideExpected()).Expect.value([]),
         infoTables: new Map(),
         processes: [],
         actions: [],
+        processTasks: [],
+        isDeviceConnected: false,
         host
       });
 
@@ -32,10 +51,12 @@ function app(state, action) {
       return Object.assign({}, state, {
         deviceType,
         device: null,
-        devices: [],
+        devices: (_nuclideExpected || _load_nuclideExpected()).Expect.value([]),
         infoTables: new Map(),
         processes: [],
-        actions: []
+        actions: [],
+        processTasks: [],
+        isDeviceConnected: false
       });
 
     case (_Actions || _load_Actions()).SET_DEVICE_TYPES:
@@ -47,13 +68,15 @@ function app(state, action) {
     case (_Actions || _load_Actions()).SET_DEVICE:
       const { device } = action.payload;
       return Object.assign({}, state, {
-        device
+        device,
+        isDeviceConnected: isDeviceConnected(device, state.devices)
       });
 
     case (_Actions || _load_Actions()).SET_DEVICES:
       const { devices } = action.payload;
       return Object.assign({}, state, {
-        devices
+        devices,
+        isDeviceConnected: isDeviceConnected(state.device, devices)
       });
 
     case (_Actions || _load_Actions()).SET_INFO_TABLES:
@@ -68,10 +91,10 @@ function app(state, action) {
         processes
       });
 
-    case (_Actions || _load_Actions()).SET_PROCESS_KILLER:
-      const { processKiller } = action.payload;
+    case (_Actions || _load_Actions()).SET_PROCESS_TASKS:
+      const { processTasks } = action.payload;
       return Object.assign({}, state, {
-        processKiller
+        processTasks
       });
 
     case (_Actions || _load_Actions()).SET_HOSTS:
@@ -89,13 +112,16 @@ function app(state, action) {
     default:
       return state;
   }
-} /**
-   * Copyright (c) 2015-present, Facebook, Inc.
-   * All rights reserved.
-   *
-   * This source code is licensed under the license found in the LICENSE file in
-   * the root directory of this source tree.
-   *
-   * 
-   * @format
-   */
+}
+
+function isDeviceConnected(device, deviceList) {
+  if (device == null || deviceList.isError) {
+    return false;
+  }
+  for (const _device of deviceList.value) {
+    if (device.name === _device.name) {
+      return true;
+    }
+  }
+  return false;
+}

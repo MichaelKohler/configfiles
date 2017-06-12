@@ -12,7 +12,7 @@ exports.registerDiagnostics = registerDiagnostics;
 var _cache;
 
 function _load_cache() {
-  return _cache = require('../../commons-node/cache');
+  return _cache = require('nuclide-commons/cache');
 }
 
 var _nuclideRemoteConnection;
@@ -79,16 +79,16 @@ function _load_nuclideLanguageServiceRpc() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const diagnosticService = 'nuclide-diagnostics-provider'; /**
-                                                           * Copyright (c) 2015-present, Facebook, Inc.
-                                                           * All rights reserved.
-                                                           *
-                                                           * This source code is licensed under the license found in the LICENSE file in
-                                                           * the root directory of this source tree.
-                                                           *
-                                                           * 
-                                                           * @format
-                                                           */
+const diagnosticService = 'atom-ide-diagnostics'; /**
+                                                   * Copyright (c) 2015-present, Facebook, Inc.
+                                                   * All rights reserved.
+                                                   *
+                                                   * This source code is licensed under the license found in the LICENSE file in
+                                                   * the root directory of this source tree.
+                                                   *
+                                                   * 
+                                                   * @format
+                                                   */
 
 function registerDiagnostics(name, grammars, config, logger, connectionToLanguageService, busySignalProvider) {
   const result = new (_UniversalDisposable || _load_UniversalDisposable()).default();
@@ -137,7 +137,7 @@ class FileDiagnosticsProvider {
 
 
   _runDiagnostics(textEditor) {
-    this._busySignalProvider.reportBusy(`${this.name}: Waiting for diagnostics`, () => this._runDiagnosticsImpl(textEditor));
+    this._busySignalProvider.reportBusyWhile(`${this.name}: Waiting for diagnostics`, () => this._runDiagnosticsImpl(textEditor));
   }
 
   _runDiagnosticsImpl(textEditor) {
@@ -284,14 +284,14 @@ class ObservableDiagnosticProvider {
     this._connectionToLanguageService = connectionToLanguageService;
     this.updates = this._connectionToLanguageService.observeEntries().mergeMap(([connection, languageService]) => {
       const connectionName = (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).ServerConnection.toDebugString(connection);
-      this._logger.log(`Starting observing diagnostics ${connectionName}, ${this._analyticsEventName}`);
+      this._logger.debug(`Starting observing diagnostics ${connectionName}, ${this._analyticsEventName}`);
       return _rxjsBundlesRxMinJs.Observable.fromPromise(languageService).catch(error => {
-        this._logger.logError(`Error: languageService, ${this._analyticsEventName} ${error}`);
+        this._logger.error(`Error: languageService, ${this._analyticsEventName} ${error}`);
         return _rxjsBundlesRxMinJs.Observable.empty();
       }).mergeMap(language => {
-        this._logger.log(`Observing diagnostics ${connectionName}, ${this._analyticsEventName}`);
+        this._logger.debug(`Observing diagnostics ${connectionName}, ${this._analyticsEventName}`);
         return (0, (_nuclideLanguageServiceRpc || _load_nuclideLanguageServiceRpc()).ensureInvalidations)(this._logger, language.observeDiagnostics().refCount().catch(error => {
-          this._logger.logError(`Error: observeDiagnostics, ${this._analyticsEventName} ${error}`);
+          this._logger.error(`Error: observeDiagnostics, ${this._analyticsEventName} ${error}`);
           return _rxjsBundlesRxMinJs.Observable.empty();
         }));
       }).map(update => {
@@ -299,10 +299,10 @@ class ObservableDiagnosticProvider {
         (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)(this._analyticsEventName);
         const fileCache = this._connectionToFiles.get(connection);
         if (messages.length === 0) {
-          this._logger.log(`Observing diagnostics: removing ${filePath}, ${this._analyticsEventName}`);
+          this._logger.debug(`Observing diagnostics: removing ${filePath}, ${this._analyticsEventName}`);
           fileCache.delete(filePath);
         } else {
-          this._logger.log(`Observing diagnostics: adding ${filePath}, ${this._analyticsEventName}`);
+          this._logger.debug(`Observing diagnostics: adding ${filePath}, ${this._analyticsEventName}`);
           fileCache.add(filePath);
         }
         return {
@@ -310,12 +310,12 @@ class ObservableDiagnosticProvider {
         };
       });
     }).catch(error => {
-      this._logger.logError(`Error: observeEntries, ${this._analyticsEventName} ${error}`);
+      this._logger.error(`Error: observeEntries, ${this._analyticsEventName} ${error}`);
       throw error;
     });
 
     this.invalidations = (0, (_event || _load_event()).observableFromSubscribeFunction)((_nuclideRemoteConnection || _load_nuclideRemoteConnection()).ServerConnection.onDidCloseServerConnection).map(connection => {
-      this._logger.log(`Diagnostics closing ${connection.getRemoteHostname()}, ${this._analyticsEventName}`);
+      this._logger.debug(`Diagnostics closing ${connection.getRemoteHostname()}, ${this._analyticsEventName}`);
       const files = Array.from(this._connectionToFiles.get(connection));
       this._connectionToFiles.delete(connection);
       return {
@@ -323,7 +323,7 @@ class ObservableDiagnosticProvider {
         filePaths: files
       };
     }).catch(error => {
-      this._logger.logError(`Error: invalidations, ${this._analyticsEventName} ${error}`);
+      this._logger.error(`Error: invalidations, ${this._analyticsEventName} ${error}`);
       throw error;
     });
   }

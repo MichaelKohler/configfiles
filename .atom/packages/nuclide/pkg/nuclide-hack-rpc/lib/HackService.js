@@ -13,7 +13,7 @@ let initializeLsp = exports.initializeLsp = (() => {
       throw new Error('Invariant violation: "fileNotifier instanceof FileCache"');
     }
 
-    (_hackConfig || _load_hackConfig()).logger.setLogLevel(logLevel);
+    (_hackConfig || _load_hackConfig()).logger.setLevel(logLevel);
     const cmd = command === '' ? yield (0, (_hackConfig || _load_hackConfig()).getHackCommand)() : command;
     return (0, (_nuclideVscodeLanguageService || _load_nuclideVscodeLanguageService()).createMultiLspLanguageService)((_hackConfig || _load_hackConfig()).logger, fileNotifier, host, 'Hack', cmd, args, projectFileName, fileExtensions);
   });
@@ -35,7 +35,7 @@ let initializeLsp = exports.initializeLsp = (() => {
 let initialize = exports.initialize = (() => {
   var _ref2 = (0, _asyncToGenerator.default)(function* (hackCommand, logLevel, fileNotifier) {
     (0, (_hackConfig || _load_hackConfig()).setHackCommand)(hackCommand);
-    (_hackConfig || _load_hackConfig()).logger.setLogLevel(logLevel);
+    (_hackConfig || _load_hackConfig()).logger.setLevel(logLevel);
     yield (0, (_hackConfig || _load_hackConfig()).getHackCommand)();
     return new HackLanguageServiceImpl(fileNotifier);
   });
@@ -203,7 +203,7 @@ class HackLanguageServiceImpl extends (_nuclideLanguageServiceRpc || _load_nucli
   }
 
   dispose() {
-    (_hackConfig || _load_hackConfig()).logger.logInfo('Disposing HackLanguageServiceImpl');
+    (_hackConfig || _load_hackConfig()).logger.info('Disposing HackLanguageServiceImpl');
 
     this._resources.dispose();
     super.dispose();
@@ -227,11 +227,11 @@ class HackSingleFileLanguageService {
   }
 
   observeDiagnostics() {
-    (_hackConfig || _load_hackConfig()).logger.log('observeDiagnostics');
+    (_hackConfig || _load_hackConfig()).logger.debug('observeDiagnostics');
     return (0, (_HackProcess || _load_HackProcess()).observeConnections)(this._fileCache).mergeMap(connection => {
-      (_hackConfig || _load_hackConfig()).logger.log('notifyDiagnostics');
+      (_hackConfig || _load_hackConfig()).logger.debug('notifyDiagnostics');
       return (0, (_nuclideLanguageServiceRpc || _load_nuclideLanguageServiceRpc()).ensureInvalidations)((_hackConfig || _load_hackConfig()).logger, connection.notifyDiagnostics().refCount().catch(error => {
-        (_hackConfig || _load_hackConfig()).logger.logError(`Error: notifyDiagnostics ${error}`);
+        (_hackConfig || _load_hackConfig()).logger.error(`Error: notifyDiagnostics ${error}`);
         return _rxjsBundlesRxMinJs.Observable.empty();
       }).filter(hackDiagnostics => {
         // This is passed over RPC as NuclideUri, which is not allowed
@@ -240,14 +240,14 @@ class HackSingleFileLanguageService {
         // TODO: figure out a better way to display those errors
         return hackDiagnostics.filename !== '';
       }).map(hackDiagnostics => {
-        (_hackConfig || _load_hackConfig()).logger.log(`Got hack error in ${hackDiagnostics.filename}`);
+        (_hackConfig || _load_hackConfig()).logger.debug(`Got hack error in ${hackDiagnostics.filename}`);
         return {
           filePath: hackDiagnostics.filename,
           messages: hackDiagnostics.errors.map(diagnostic => (0, (_Diagnostics || _load_Diagnostics()).hackMessageToDiagnosticMessage)(diagnostic.message))
         };
       }));
     }).catch(error => {
-      (_hackConfig || _load_hackConfig()).logger.logError(`Error: observeDiagnostics ${error}`);
+      (_hackConfig || _load_hackConfig()).logger.error(`Error: observeDiagnostics ${error}`);
       throw error;
     });
   }
@@ -429,6 +429,10 @@ class HackSingleFileLanguageService {
   }
 
   formatEntireFile(filePath, buffer, range) {
+    throw new Error('Not implemented');
+  }
+
+  formatAtPosition(filePath, buffer, position, triggerCharacter) {
     throw new Error('Not implemented');
   }
 

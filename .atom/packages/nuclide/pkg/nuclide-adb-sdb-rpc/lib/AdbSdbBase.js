@@ -7,16 +7,10 @@ exports.AdbSdbBase = undefined;
 
 var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
 
-var _collection;
-
-function _load_collection() {
-  return _collection = require('nuclide-commons/collection');
-}
-
 var _process;
 
 function _load_process() {
-  return _process = require('../../commons-node/process');
+  return _process = require('nuclide-commons/process');
 }
 
 var _os = _interopRequireDefault(require('os'));
@@ -24,17 +18,6 @@ var _os = _interopRequireDefault(require('os'));
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
 
 class AdbSdbBase {
 
@@ -96,24 +79,24 @@ class AdbSdbBase {
         });
       }).toPromise();
 
-      const deviceTable = yield Promise.all(devices.map((() => {
+      return Promise.all(devices.map((() => {
         var _ref = (0, _asyncToGenerator.default)(function* (name) {
-          try {
-            const architecture = yield _this2.getDeviceArchitecture(name);
-            const apiVersion = yield _this2.getAPIVersion(name);
-            const model = yield _this2.getDeviceModel(name);
-            return { name, architecture, apiVersion, model };
-          } catch (error) {
-            return null;
-          }
+          const architecture = yield _this2.getDeviceArchitecture(name).catch(function () {
+            return '';
+          });
+          const apiVersion = yield _this2.getAPIVersion(name).catch(function () {
+            return '';
+          });
+          const model = yield _this2.getDeviceModel(name).catch(function () {
+            return '';
+          });
+          return { name, architecture, apiVersion, model };
         });
 
         return function (_x) {
           return _ref.apply(this, arguments);
         };
       })()));
-
-      return (0, (_collection || _load_collection()).arrayCompact)(deviceTable);
     })();
   }
 
@@ -126,15 +109,15 @@ class AdbSdbBase {
   }
 
   getDeviceArchitecture(device) {
-    throw new Error('not implemented');
+    return Promise.resolve('');
   }
 
   getDeviceModel(device) {
-    throw new Error('not implemented');
+    return Promise.resolve('');
   }
 
   getAPIVersion(device) {
-    throw new Error('not implemented');
+    return Promise.resolve('');
   }
 
   installPackage(device, packagePath) {
@@ -160,4 +143,13 @@ class AdbSdbBase {
     })();
   }
 }
-exports.AdbSdbBase = AdbSdbBase;
+exports.AdbSdbBase = AdbSdbBase; /**
+                                  * Copyright (c) 2015-present, Facebook, Inc.
+                                  * All rights reserved.
+                                  *
+                                  * This source code is licensed under the license found in the LICENSE file in
+                                  * the root directory of this source tree.
+                                  *
+                                  * 
+                                  * @format
+                                  */

@@ -59,7 +59,16 @@ let getAttachTargetInfoList = exports.getAttachTargetInfoList = (() => {
   return function getAttachTargetInfoList() {
     return _ref.apply(this, arguments);
   };
-})();
+})(); /**
+       * Copyright (c) 2015-present, Facebook, Inc.
+       * All rights reserved.
+       *
+       * This source code is licensed under the license found in the LICENSE file in
+       * the root directory of this source tree.
+       *
+       * 
+       * @format
+       */
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
 
@@ -78,7 +87,7 @@ function _load_eventKit() {
 var _process;
 
 function _load_process() {
-  return _process = require('../../commons-node/process');
+  return _process = require('nuclide-commons/process');
 }
 
 var _utils;
@@ -101,17 +110,6 @@ function _load_NodeDebuggerHost() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const { logInfo } = (_utils || _load_utils()).default; /**
-                                                        * Copyright (c) 2015-present, Facebook, Inc.
-                                                        * All rights reserved.
-                                                        *
-                                                        * This source code is licensed under the license found in the LICENSE file in
-                                                        * the root directory of this source tree.
-                                                        *
-                                                        * 
-                                                        * @format
-                                                        */
-
 class NodeDebuggerService {
 
   constructor() {
@@ -131,10 +129,10 @@ class NodeDebuggerService {
     return (0, _asyncToGenerator.default)(function* () {
       const nodeWebSocket = _this._webSocketClientToNode;
       if (nodeWebSocket != null) {
-        logInfo(`forward client message to node debugger: ${message}`);
+        (_utils || _load_utils()).default.info(`forward client message to node debugger: ${message}`);
         nodeWebSocket.send(message);
       } else {
-        logInfo(`Nuclide sent message to node debugger after socket closed: ${message}`);
+        (_utils || _load_utils()).default.info(`Nuclide sent message to node debugger after socket closed: ${message}`);
       }
     })();
   }
@@ -157,7 +155,7 @@ class NodeDebuggerService {
     var _this3 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      logInfo(`Connecting debugger host with address: ${serverAddress}`);
+      (_utils || _load_utils()).default.info(`Connecting debugger host with address: ${serverAddress}`);
       const ws = new (_ws || _load_ws()).default(serverAddress);
       _this3._subscriptions.add(new (_eventKit || _load_eventKit()).Disposable(function () {
         return ws.close();
@@ -175,7 +173,7 @@ class NodeDebuggerService {
   }
 
   _handleNodeDebuggerMessage(message) {
-    logInfo(`Node debugger message: ${message}`);
+    (_utils || _load_utils()).default.info(`Node debugger message: ${message}`);
     this._clientCallback.sendChromeMessage(message);
   }
 

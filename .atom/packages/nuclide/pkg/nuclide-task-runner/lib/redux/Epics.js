@@ -38,10 +38,10 @@ function _load_UniversalDisposable() {
   return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 var _Actions;
@@ -483,7 +483,7 @@ function createTaskObservable(taskMeta, getState) {
       taskFailedNotification = null;
     });
     const taskMetaForLogging = Object.assign({}, taskMeta, { taskRunner: undefined });
-    (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().debug('Error running task:', taskMetaForLogging, error);
+    (0, (_log4js || _load_log4js()).getLogger)('nuclide-task-runner').debug('Error running task:', taskMetaForLogging, error);
     return _rxjsBundlesRxMinJs.Observable.of({
       type: (_Actions || _load_Actions()).TASK_ERRORED,
       payload: {

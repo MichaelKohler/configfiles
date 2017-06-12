@@ -10,7 +10,7 @@ exports.activate = activate;
 exports.createAutocompleteProvider = createAutocompleteProvider;
 exports.createTypeHintProvider = createTypeHintProvider;
 exports.provideDefinitions = provideDefinitions;
-exports.provideBusySignal = provideBusySignal;
+exports.consumeBusySignal = consumeBusySignal;
 exports.provideCodeFormat = provideCodeFormat;
 exports.provideLinter = provideLinter;
 exports.provideOutlineView = provideOutlineView;
@@ -19,13 +19,13 @@ exports.provideRelatedFiles = provideRelatedFiles;
 exports.consumeCompilationDatabase = consumeCompilationDatabase;
 exports.deactivate = deactivate;
 
-var _atom = require('atom');
+var _UniversalDisposable;
 
-var _nuclideBusySignal;
-
-function _load_nuclideBusySignal() {
-  return _nuclideBusySignal = require('../../nuclide-busy-signal');
+function _load_UniversalDisposable() {
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
+
+var _atom = require('atom');
 
 var _AutocompleteHelpers;
 
@@ -83,18 +83,18 @@ function _load_libclang() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// eslint-disable-next-line nuclide-internal/no-cross-atom-imports
-let busySignalProvider = null; /**
-                                * Copyright (c) 2015-present, Facebook, Inc.
-                                * All rights reserved.
-                                *
-                                * This source code is licensed under the license found in the LICENSE file in
-                                * the root directory of this source tree.
-                                *
-                                * 
-                                * @format
-                                */
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ * @format
+ */
 
+let busySignalService = null;
 let subscriptions = null;
 
 function activate() {
@@ -113,8 +113,6 @@ function activate() {
     }
     yield (0, (_libclang || _load_libclang()).reset)(editor);
   })));
-
-  busySignalProvider = new (_nuclideBusySignal || _load_nuclideBusySignal()).BusySignalProviderBase();
 }
 
 /** Provider for autocomplete service. */
@@ -154,12 +152,17 @@ function provideDefinitions() {
   };
 }
 
-function provideBusySignal() {
-  if (!busySignalProvider) {
-    throw new Error('Invariant violation: "busySignalProvider"');
+function consumeBusySignal(service) {
+  if (subscriptions != null) {
+    subscriptions.add(service);
   }
-
-  return busySignalProvider;
+  busySignalService = service;
+  return new (_UniversalDisposable || _load_UniversalDisposable()).default(() => {
+    if (subscriptions != null) {
+      subscriptions.remove(service);
+    }
+    busySignalService = null;
+  });
 }
 
 function provideCodeFormat() {
@@ -180,8 +183,8 @@ function provideLinter() {
     name: 'Clang',
     lint(editor) {
       const getResult = () => (_ClangLinter || _load_ClangLinter()).default.lint(editor);
-      if (busySignalProvider) {
-        return busySignalProvider.reportBusy(`Clang: compiling \`${editor.getTitle()}\``, getResult);
+      if (busySignalService != null) {
+        return busySignalService.reportBusyWhile(`Clang: compiling \`${editor.getTitle()}\``, getResult);
       }
       return getResult();
     }

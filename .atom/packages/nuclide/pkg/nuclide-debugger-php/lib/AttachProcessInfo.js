@@ -45,16 +45,16 @@ function _load_utils2() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const { logInfo } = (_utils || _load_utils()).default; /**
-                                                        * Copyright (c) 2015-present, Facebook, Inc.
-                                                        * All rights reserved.
-                                                        *
-                                                        * This source code is licensed under the license found in the LICENSE file in
-                                                        * the root directory of this source tree.
-                                                        *
-                                                        * 
-                                                        * @format
-                                                        */
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ * @format
+ */
 
 class AttachProcessInfo extends (_nuclideDebuggerBase || _load_nuclideDebuggerBase()).DebuggerProcessInfo {
   constructor(targetUri) {
@@ -80,14 +80,14 @@ class AttachProcessInfo extends (_nuclideDebuggerBase || _load_nuclideDebuggerBa
     var _this = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      logInfo('Connecting to: ' + _this.getTargetUri());
+      (_utils || _load_utils()).default.info('Connecting to: ' + _this.getTargetUri());
       yield _this.preAttachActions();
 
       const rpcService = _this._getRpcService();
       const sessionConfig = (0, (_utils2 || _load_utils2()).getSessionConfig)((_nuclideUri || _load_nuclideUri()).default.getPath(_this.getTargetUri()), false);
-      logInfo(`Connection session config: ${JSON.stringify(sessionConfig)}`);
+      (_utils || _load_utils()).default.info(`Connection session config: ${JSON.stringify(sessionConfig)}`);
       const result = yield rpcService.debug(sessionConfig);
-      logInfo(`Launch process result: ${result}`);
+      (_utils || _load_utils()).default.info(`Launch process result: ${result}`);
 
       return new (_PhpDebuggerInstance || _load_PhpDebuggerInstance()).PhpDebuggerInstance(_this, rpcService);
     })();

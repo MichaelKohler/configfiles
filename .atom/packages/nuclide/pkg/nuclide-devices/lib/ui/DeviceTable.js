@@ -13,8 +13,6 @@ function _load_Table() {
   return _Table = require('nuclide-commons-ui/Table');
 }
 
-var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
@@ -32,40 +30,28 @@ class DeviceTable extends _react.default.Component {
 
   constructor(props) {
     super(props);
-    this._devicesSubscription = null;
-    this.state = { selectedDeviceIndex: null };
     this._handleDeviceTableSelection = this._handleDeviceTableSelection.bind(this);
-    this._emptyComponent = () => _react.default.createElement(
-      'div',
-      { className: 'padded' },
-      'No devices connected'
-    );
-  }
-
-  componentDidMount() {
-    this._devicesSubscription = this.props.startFetchingDevices();
-  }
-
-  componentWillUnmount() {
-    if (this._devicesSubscription != null) {
-      this._devicesSubscription.unsubscribe();
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const nextDevice = nextProps.device;
-    let selectedDeviceIndex = null;
-    if (nextDevice != null) {
-      selectedDeviceIndex = nextProps.devices.findIndex(device => device.name === nextDevice.name);
-    }
-    if (selectedDeviceIndex !== this.state.selectedDeviceIndex) {
-      this.setState({ selectedDeviceIndex });
-    }
+    this._emptyComponent = () => {
+      if (this.props.devices.isError) {
+        return _react.default.createElement(
+          'div',
+          { className: 'padded nuclide-device-panel-device-list-error' },
+          this.props.devices.error.message
+        );
+      }
+      return _react.default.createElement(
+        'div',
+        { className: 'padded' },
+        'No devices connected'
+      );
+    };
   }
 
   render() {
-    const rows = this.props.devices.map(device => ({
-      data: { name: device.displayName }
+    const devices = this.props.devices.getOrDefault([]);
+
+    const rows = devices.map(_device => ({
+      data: { name: _device.displayName }
     }));
     const columns = [{
       key: 'name',
@@ -80,14 +66,15 @@ class DeviceTable extends _react.default.Component {
       maxBodyHeight: '99999px',
       emptyComponent: this._emptyComponent,
       selectable: true,
-      selectedIndex: this.state.selectedDeviceIndex,
       onSelect: this._handleDeviceTableSelection,
       rows: rows
     });
   }
 
   _handleDeviceTableSelection(item, selectedDeviceIndex) {
-    this.setState({ selectedDeviceIndex }, this.props.setDevice(this.props.devices[selectedDeviceIndex]));
+    if (!this.props.devices.isError) {
+      this.props.setDevice(this.props.devices.value[selectedDeviceIndex]);
+    }
   }
 }
 exports.DeviceTable = DeviceTable;

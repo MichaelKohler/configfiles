@@ -14,7 +14,7 @@ function _load_simpleTextBuffer() {
 var _tokenizedText;
 
 function _load_tokenizedText() {
-  return _tokenizedText = require('../../commons-node/tokenizedText');
+  return _tokenizedText = require('nuclide-commons/tokenized-text');
 }
 
 function itemToOutlineTree(mode, item) {

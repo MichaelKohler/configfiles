@@ -5,7 +5,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.BusySignalProviderBase = undefined;
 
-var _atom = require('atom');
+var _UniversalDisposable;
+
+function _load_UniversalDisposable() {
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
+}
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
 
@@ -14,6 +18,8 @@ var _promise;
 function _load_promise() {
   return _promise = require('nuclide-commons/promise');
 }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -51,7 +57,7 @@ class BusySignalProviderBase {
         displayedDisposable = null;
       }
     };
-    return new _atom.CompositeDisposable(atom.workspace.observeActivePaneItem(item => {
+    return new (_UniversalDisposable || _load_UniversalDisposable()).default(atom.workspace.observeActivePaneItem(item => {
       if (item != null && typeof item.getPath === 'function' && item.getPath() === options.onlyForFile) {
         if (displayedDisposable == null) {
           displayedDisposable = this._displayMessage(message);
@@ -61,13 +67,13 @@ class BusySignalProviderBase {
       }
     }),
     // We can't add displayedDisposable directly because its value may change.
-    new _atom.Disposable(disposeDisplayed));
+    disposeDisplayed);
   }
 
   _displayMessage(message) {
     const { busy, done } = this._nextMessagePair(message);
     this._messages.next(busy);
-    return new _atom.Disposable(() => {
+    return new (_UniversalDisposable || _load_UniversalDisposable()).default(() => {
       this._messages.next(done);
     });
   }

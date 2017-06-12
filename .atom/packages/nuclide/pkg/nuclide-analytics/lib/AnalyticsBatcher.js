@@ -8,7 +8,7 @@ exports.AnalyticsBatcher = undefined;
 var _BatchProcessedQueue;
 
 function _load_BatchProcessedQueue() {
-  return _BatchProcessedQueue = _interopRequireDefault(require('../../commons-node/BatchProcessedQueue'));
+  return _BatchProcessedQueue = _interopRequireDefault(require('nuclide-commons/BatchProcessedQueue'));
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

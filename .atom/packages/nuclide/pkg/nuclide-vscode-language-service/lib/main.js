@@ -28,17 +28,6 @@ function _load_nuclideLanguageServiceRpc() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
-
 function createMultiLspLanguageService(logger, fileCache, host, consoleSource, command, args, projectFileName, fileExtensions) {
   const result = new (_nuclideLanguageServiceRpc || _load_nuclideLanguageServiceRpc()).MultiProjectLanguageService();
 
@@ -80,4 +69,13 @@ function createMultiLspLanguageService(logger, fileCache, host, consoleSource, c
 
   result.initialize(logger, fileCache, host, projectFileName, fileExtensions, languageServiceFactory);
   return result;
-}
+} /**
+   * Copyright (c) 2015-present, Facebook, Inc.
+   * All rights reserved.
+   *
+   * This source code is licensed under the license found in the LICENSE file in
+   * the root directory of this source tree.
+   *
+   * 
+   * @format
+   */

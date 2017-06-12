@@ -63,7 +63,7 @@ function _load_string() {
 var _process;
 
 function _load_process() {
-  return _process = require('../../commons-node/process');
+  return _process = require('nuclide-commons/process');
 }
 
 var _helpers;
@@ -152,7 +152,7 @@ function launchPhpScriptWithXDebugEnabled(scriptPath, sendToOutputWindowAndResol
   const scriptArgs = (0, (_string || _load_string()).shellParse)(scriptPath);
   const args = [...runtimeArgs, ...scriptArgs];
   const proc = _child_process.default.spawn(phpRuntimePath, args);
-  (_utils || _load_utils()).default.log((_dedent || _load_dedent()).default`
+  (_utils || _load_utils()).default.debug((_dedent || _load_dedent()).default`
     child_process(${proc.pid}) spawned with xdebug enabled.
     $ ${phpRuntimePath} ${args.join(' ')}
   `);
@@ -161,7 +161,7 @@ function launchPhpScriptWithXDebugEnabled(scriptPath, sendToOutputWindowAndResol
     // stdout should hopefully be set to line-buffering, in which case the
     const block = chunk.toString();
     const output = `child_process(${proc.pid}) stdout: ${block}`;
-    (_utils || _load_utils()).default.log(output);
+    (_utils || _load_utils()).default.debug(output);
     if (sendToOutputWindowAndResolve != null) {
       sendToOutputWindowAndResolve(block, 'text');
     }
@@ -169,19 +169,19 @@ function launchPhpScriptWithXDebugEnabled(scriptPath, sendToOutputWindowAndResol
   proc.stderr.on('data', chunk => {
     const block = chunk.toString().trim();
     const output = `child_process(${proc.pid}) stderr: ${block}`;
-    (_utils || _load_utils()).default.log(output);
+    (_utils || _load_utils()).default.debug(output);
     if (sendToOutputWindowAndResolve != null) {
       sendToOutputWindowAndResolve(block, 'error');
     }
   });
   proc.on('error', err => {
-    (_utils || _load_utils()).default.log(`child_process(${proc.pid}) error: ${err}`);
+    (_utils || _load_utils()).default.debug(`child_process(${proc.pid}) error: ${err}`);
     if (sendToOutputWindowAndResolve != null) {
       sendToOutputWindowAndResolve(`The process running script: ${scriptPath} encountered an error: ${err}`, 'error');
     }
   });
   proc.on('exit', code => {
-    (_utils || _load_utils()).default.log(`child_process(${proc.pid}) exit: ${code}`);
+    (_utils || _load_utils()).default.debug(`child_process(${proc.pid}) exit: ${code}`);
     if (code != null && sendToOutputWindowAndResolve != null) {
       sendToOutputWindowAndResolve(`Script: ${scriptPath} exited with code: ${code}`, code === 0 ? 'info' : 'error');
     }

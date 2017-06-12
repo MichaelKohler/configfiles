@@ -18,7 +18,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "FlowService.js",
-          line: 104
+          line: 107
         },
         kind: "named",
         name: "FileNotifier"
@@ -29,7 +29,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "FlowService.js",
-          line: 105
+          line: 108
         },
         kind: "named",
         name: "HostServices"
@@ -40,7 +40,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "FlowService.js",
-          line: 106
+          line: 109
         },
         kind: "named",
         name: "FlowSettings"
@@ -52,7 +52,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "FlowService.js",
-          line: 107
+          line: 110
         },
         kind: "named",
         name: "FlowLanguageServiceType"
@@ -68,7 +68,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 185
+            line: 188
           },
           kind: "named",
           name: "FileVersion"
@@ -79,7 +79,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 184
+            line: 187
           },
           name: "FlowLanguageServiceType"
         }).then(id => {
@@ -90,14 +90,14 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 185
+            line: 188
           },
           kind: "nullable",
           type: {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 185
+              line: 188
             },
             kind: "named",
             name: "DiagnosticProviderUpdate"
@@ -113,7 +113,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 184
+            line: 187
           },
           name: "FlowLanguageServiceType"
         }).then(id => {
@@ -124,7 +124,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 187
+            line: 190
           },
           kind: "named",
           name: "FileDiagnosticUpdate"
@@ -139,7 +139,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 190
+            line: 193
           },
           kind: "named",
           name: "FileVersion"
@@ -150,7 +150,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 191
+            line: 194
           },
           kind: "named",
           name: "atom$Point"
@@ -161,7 +161,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 192
+            line: 195
           },
           kind: "boolean"
         }
@@ -171,7 +171,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 193
+            line: 196
           },
           kind: "string"
         }
@@ -181,7 +181,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 184
+            line: 187
           },
           name: "FlowLanguageServiceType"
         }).then(id => {
@@ -192,14 +192,14 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 194
+            line: 197
           },
           kind: "nullable",
           type: {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 194
+              line: 197
             },
             kind: "named",
             name: "AutocompleteResult"
@@ -215,7 +215,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 197
+            line: 200
           },
           kind: "named",
           name: "FileVersion"
@@ -226,7 +226,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 198
+            line: 201
           },
           kind: "named",
           name: "atom$Point"
@@ -237,7 +237,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 184
+            line: 187
           },
           name: "FlowLanguageServiceType"
         }).then(id => {
@@ -248,14 +248,14 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 199
+            line: 202
           },
           kind: "nullable",
           type: {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 199
+              line: 202
             },
             kind: "named",
             name: "DefinitionQueryResult"
@@ -271,7 +271,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 201
+            line: 204
           },
           kind: "named",
           name: "NuclideUri"
@@ -282,7 +282,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 201
+            line: 204
           },
           kind: "string"
         }
@@ -292,7 +292,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 184
+            line: 187
           },
           name: "FlowLanguageServiceType"
         }).then(id => {
@@ -303,14 +303,14 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 201
+            line: 204
           },
           kind: "nullable",
           type: {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 201
+              line: 204
             },
             kind: "named",
             name: "Definition"
@@ -326,7 +326,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 204
+            line: 207
           },
           kind: "named",
           name: "FileVersion"
@@ -337,7 +337,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 205
+            line: 208
           },
           kind: "named",
           name: "atom$Point"
@@ -348,7 +348,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 184
+            line: 187
           },
           name: "FlowLanguageServiceType"
         }).then(id => {
@@ -359,14 +359,14 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 206
+            line: 209
           },
           kind: "nullable",
           type: {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 206
+              line: 209
             },
             kind: "named",
             name: "FindReferencesReturn"
@@ -382,7 +382,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 208
+            line: 211
           },
           kind: "named",
           name: "NuclideUri"
@@ -393,7 +393,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 184
+            line: 187
           },
           name: "FlowLanguageServiceType"
         }).then(id => {
@@ -404,14 +404,14 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 208
+            line: 211
           },
           kind: "nullable",
           type: {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 208
+              line: 211
             },
             kind: "named",
             name: "CoverageResult"
@@ -427,7 +427,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 210
+            line: 213
           },
           kind: "named",
           name: "FileVersion"
@@ -438,7 +438,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 184
+            line: 187
           },
           name: "FlowLanguageServiceType"
         }).then(id => {
@@ -449,14 +449,14 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 210
+            line: 213
           },
           kind: "nullable",
           type: {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 210
+              line: 213
             },
             kind: "named",
             name: "Outline"
@@ -466,62 +466,6 @@ module.exports = _client => {
     }
 
     typeHint(arg0, arg1) {
-      return _client.marshalArguments(Array.from(arguments), [{
-        name: "fileVersion",
-        type: {
-          location: {
-            type: "source",
-            fileName: "FlowService.js",
-            line: 212
-          },
-          kind: "named",
-          name: "FileVersion"
-        }
-      }, {
-        name: "position",
-        type: {
-          location: {
-            type: "source",
-            fileName: "FlowService.js",
-            line: 212
-          },
-          kind: "named",
-          name: "atom$Point"
-        }
-      }]).then(args => {
-        return _client.marshal(this, {
-          kind: "named",
-          location: {
-            type: "source",
-            fileName: "FlowService.js",
-            line: 184
-          },
-          name: "FlowLanguageServiceType"
-        }).then(id => {
-          return _client.callRemoteMethod(id, "typeHint", "promise", args);
-        });
-      }).then(value => {
-        return _client.unmarshal(value, {
-          location: {
-            type: "source",
-            fileName: "FlowService.js",
-            line: 212
-          },
-          kind: "nullable",
-          type: {
-            location: {
-              type: "source",
-              fileName: "FlowService.js",
-              line: 212
-            },
-            kind: "named",
-            name: "TypeHint"
-          }
-        });
-      });
-    }
-
-    highlight(arg0, arg1) {
       return _client.marshalArguments(Array.from(arguments), [{
         name: "fileVersion",
         type: {
@@ -539,7 +483,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 216
+            line: 215
           },
           kind: "named",
           name: "atom$Point"
@@ -550,7 +494,63 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 184
+            line: 187
+          },
+          name: "FlowLanguageServiceType"
+        }).then(id => {
+          return _client.callRemoteMethod(id, "typeHint", "promise", args);
+        });
+      }).then(value => {
+        return _client.unmarshal(value, {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 215
+          },
+          kind: "nullable",
+          type: {
+            location: {
+              type: "source",
+              fileName: "FlowService.js",
+              line: 215
+            },
+            kind: "named",
+            name: "TypeHint"
+          }
+        });
+      });
+    }
+
+    highlight(arg0, arg1) {
+      return _client.marshalArguments(Array.from(arguments), [{
+        name: "fileVersion",
+        type: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 218
+          },
+          kind: "named",
+          name: "FileVersion"
+        }
+      }, {
+        name: "position",
+        type: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 219
+          },
+          kind: "named",
+          name: "atom$Point"
+        }
+      }]).then(args => {
+        return _client.marshal(this, {
+          kind: "named",
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 187
           },
           name: "FlowLanguageServiceType"
         }).then(id => {
@@ -561,21 +561,21 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 217
+            line: 220
           },
           kind: "nullable",
           type: {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 217
+              line: 220
             },
             kind: "array",
             type: {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 217
+                line: 220
               },
               kind: "named",
               name: "atom$Range"
@@ -592,7 +592,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 220
+            line: 223
           },
           kind: "named",
           name: "FileVersion"
@@ -603,7 +603,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 221
+            line: 224
           },
           kind: "named",
           name: "atom$Range"
@@ -614,7 +614,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 184
+            line: 187
           },
           name: "FlowLanguageServiceType"
         }).then(id => {
@@ -625,21 +625,21 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 222
+            line: 225
           },
           kind: "nullable",
           type: {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 222
+              line: 225
             },
             kind: "array",
             type: {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 222
+                line: 225
               },
               kind: "named",
               name: "TextEdit"
@@ -656,7 +656,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 225
+            line: 228
           },
           kind: "named",
           name: "FileVersion"
@@ -667,7 +667,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 226
+            line: 229
           },
           kind: "named",
           name: "atom$Range"
@@ -678,7 +678,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 184
+            line: 187
           },
           name: "FlowLanguageServiceType"
         }).then(id => {
@@ -689,28 +689,28 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 227
+            line: 230
           },
           kind: "nullable",
           type: {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 227
+              line: 230
             },
             kind: "object",
             fields: [{
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 228
+                line: 231
               },
               name: "newCursor",
               type: {
                 location: {
                   type: "source",
                   fileName: "FlowService.js",
-                  line: 228
+                  line: 231
                 },
                 kind: "number"
               },
@@ -719,19 +719,93 @@ module.exports = _client => {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 229
+                line: 232
               },
               name: "formatted",
               type: {
                 location: {
                   type: "source",
                   fileName: "FlowService.js",
-                  line: 229
+                  line: 232
                 },
                 kind: "string"
               },
               optional: false
             }]
+          }
+        });
+      });
+    }
+
+    formatAtPosition(arg0, arg1, arg2) {
+      return _client.marshalArguments(Array.from(arguments), [{
+        name: "fileVersion",
+        type: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 236
+          },
+          kind: "named",
+          name: "FileVersion"
+        }
+      }, {
+        name: "position",
+        type: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 237
+          },
+          kind: "named",
+          name: "atom$Point"
+        }
+      }, {
+        name: "triggerCharacter",
+        type: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 238
+          },
+          kind: "string"
+        }
+      }]).then(args => {
+        return _client.marshal(this, {
+          kind: "named",
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 187
+          },
+          name: "FlowLanguageServiceType"
+        }).then(id => {
+          return _client.callRemoteMethod(id, "formatAtPosition", "promise", args);
+        });
+      }).then(value => {
+        return _client.unmarshal(value, {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 239
+          },
+          kind: "nullable",
+          type: {
+            location: {
+              type: "source",
+              fileName: "FlowService.js",
+              line: 239
+            },
+            kind: "array",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 239
+              },
+              kind: "named",
+              name: "TextEdit"
+            }
           }
         });
       });
@@ -744,7 +818,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 233
+            line: 242
           },
           kind: "named",
           name: "FileVersion"
@@ -755,7 +829,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 234
+            line: 243
           },
           kind: "named",
           name: "atom$Point"
@@ -766,171 +840,11 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 184
+            line: 187
           },
           name: "FlowLanguageServiceType"
         }).then(id => {
           return _client.callRemoteMethod(id, "getEvaluationExpression", "promise", args);
-        });
-      }).then(value => {
-        return _client.unmarshal(value, {
-          location: {
-            type: "source",
-            fileName: "FlowService.js",
-            line: 235
-          },
-          kind: "nullable",
-          type: {
-            location: {
-              type: "source",
-              fileName: "FlowService.js",
-              line: 235
-            },
-            kind: "named",
-            name: "NuclideEvaluationExpression"
-          }
-        });
-      });
-    }
-
-    supportsSymbolSearch(arg0) {
-      return _client.marshalArguments(Array.from(arguments), [{
-        name: "directories",
-        type: {
-          location: {
-            type: "source",
-            fileName: "FlowService.js",
-            line: 237
-          },
-          kind: "array",
-          type: {
-            location: {
-              type: "source",
-              fileName: "FlowService.js",
-              line: 237
-            },
-            kind: "named",
-            name: "NuclideUri"
-          }
-        }
-      }]).then(args => {
-        return _client.marshal(this, {
-          kind: "named",
-          location: {
-            type: "source",
-            fileName: "FlowService.js",
-            line: 184
-          },
-          name: "FlowLanguageServiceType"
-        }).then(id => {
-          return _client.callRemoteMethod(id, "supportsSymbolSearch", "promise", args);
-        });
-      }).then(value => {
-        return _client.unmarshal(value, {
-          location: {
-            type: "source",
-            fileName: "FlowService.js",
-            line: 237
-          },
-          kind: "boolean"
-        });
-      });
-    }
-
-    symbolSearch(arg0, arg1) {
-      return _client.marshalArguments(Array.from(arguments), [{
-        name: "query",
-        type: {
-          location: {
-            type: "source",
-            fileName: "FlowService.js",
-            line: 240
-          },
-          kind: "string"
-        }
-      }, {
-        name: "directories",
-        type: {
-          location: {
-            type: "source",
-            fileName: "FlowService.js",
-            line: 241
-          },
-          kind: "array",
-          type: {
-            location: {
-              type: "source",
-              fileName: "FlowService.js",
-              line: 241
-            },
-            kind: "named",
-            name: "NuclideUri"
-          }
-        }
-      }]).then(args => {
-        return _client.marshal(this, {
-          kind: "named",
-          location: {
-            type: "source",
-            fileName: "FlowService.js",
-            line: 184
-          },
-          name: "FlowLanguageServiceType"
-        }).then(id => {
-          return _client.callRemoteMethod(id, "symbolSearch", "promise", args);
-        });
-      }).then(value => {
-        return _client.unmarshal(value, {
-          location: {
-            type: "source",
-            fileName: "FlowService.js",
-            line: 242
-          },
-          kind: "nullable",
-          type: {
-            location: {
-              type: "source",
-              fileName: "FlowService.js",
-              line: 242
-            },
-            kind: "array",
-            type: {
-              location: {
-                type: "source",
-                fileName: "FlowService.js",
-                line: 242
-              },
-              kind: "named",
-              name: "SymbolResult"
-            }
-          }
-        });
-      });
-    }
-
-    getProjectRoot(arg0) {
-      return _client.marshalArguments(Array.from(arguments), [{
-        name: "fileUri",
-        type: {
-          location: {
-            type: "source",
-            fileName: "FlowService.js",
-            line: 244
-          },
-          kind: "named",
-          name: "NuclideUri"
-        }
-      }]).then(args => {
-        return _client.marshal(this, {
-          kind: "named",
-          location: {
-            type: "source",
-            fileName: "FlowService.js",
-            line: 184
-          },
-          name: "FlowLanguageServiceType"
-        }).then(id => {
-          return _client.callRemoteMethod(id, "getProjectRoot", "promise", args);
         });
       }).then(value => {
         return _client.unmarshal(value, {
@@ -947,23 +861,31 @@ module.exports = _client => {
               line: 244
             },
             kind: "named",
-            name: "NuclideUri"
+            name: "NuclideEvaluationExpression"
           }
         });
       });
     }
 
-    isFileInProject(arg0) {
+    supportsSymbolSearch(arg0) {
       return _client.marshalArguments(Array.from(arguments), [{
-        name: "fileUri",
+        name: "directories",
         type: {
           location: {
             type: "source",
             fileName: "FlowService.js",
             line: 246
           },
-          kind: "named",
-          name: "NuclideUri"
+          kind: "array",
+          type: {
+            location: {
+              type: "source",
+              fileName: "FlowService.js",
+              line: 246
+            },
+            kind: "named",
+            name: "NuclideUri"
+          }
         }
       }]).then(args => {
         return _client.marshal(this, {
@@ -971,11 +893,11 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 184
+            line: 187
           },
           name: "FlowLanguageServiceType"
         }).then(id => {
-          return _client.callRemoteMethod(id, "isFileInProject", "promise", args);
+          return _client.callRemoteMethod(id, "supportsSymbolSearch", "promise", args);
         });
       }).then(value => {
         return _client.unmarshal(value, {
@@ -989,6 +911,158 @@ module.exports = _client => {
       });
     }
 
+    symbolSearch(arg0, arg1) {
+      return _client.marshalArguments(Array.from(arguments), [{
+        name: "query",
+        type: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 249
+          },
+          kind: "string"
+        }
+      }, {
+        name: "directories",
+        type: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 250
+          },
+          kind: "array",
+          type: {
+            location: {
+              type: "source",
+              fileName: "FlowService.js",
+              line: 250
+            },
+            kind: "named",
+            name: "NuclideUri"
+          }
+        }
+      }]).then(args => {
+        return _client.marshal(this, {
+          kind: "named",
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 187
+          },
+          name: "FlowLanguageServiceType"
+        }).then(id => {
+          return _client.callRemoteMethod(id, "symbolSearch", "promise", args);
+        });
+      }).then(value => {
+        return _client.unmarshal(value, {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 251
+          },
+          kind: "nullable",
+          type: {
+            location: {
+              type: "source",
+              fileName: "FlowService.js",
+              line: 251
+            },
+            kind: "array",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 251
+              },
+              kind: "named",
+              name: "SymbolResult"
+            }
+          }
+        });
+      });
+    }
+
+    getProjectRoot(arg0) {
+      return _client.marshalArguments(Array.from(arguments), [{
+        name: "fileUri",
+        type: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 253
+          },
+          kind: "named",
+          name: "NuclideUri"
+        }
+      }]).then(args => {
+        return _client.marshal(this, {
+          kind: "named",
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 187
+          },
+          name: "FlowLanguageServiceType"
+        }).then(id => {
+          return _client.callRemoteMethod(id, "getProjectRoot", "promise", args);
+        });
+      }).then(value => {
+        return _client.unmarshal(value, {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 253
+          },
+          kind: "nullable",
+          type: {
+            location: {
+              type: "source",
+              fileName: "FlowService.js",
+              line: 253
+            },
+            kind: "named",
+            name: "NuclideUri"
+          }
+        });
+      });
+    }
+
+    isFileInProject(arg0) {
+      return _client.marshalArguments(Array.from(arguments), [{
+        name: "fileUri",
+        type: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 255
+          },
+          kind: "named",
+          name: "NuclideUri"
+        }
+      }]).then(args => {
+        return _client.marshal(this, {
+          kind: "named",
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 187
+          },
+          name: "FlowLanguageServiceType"
+        }).then(id => {
+          return _client.callRemoteMethod(id, "isFileInProject", "promise", args);
+        });
+      }).then(value => {
+        return _client.unmarshal(value, {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 255
+          },
+          kind: "boolean"
+        });
+      });
+    }
+
     getServerStatusUpdates() {
       return Observable.fromPromise(_client.marshalArguments(Array.from(arguments), []).then(args => {
         return _client.marshal(this, {
@@ -996,7 +1070,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 184
+            line: 187
           },
           name: "FlowLanguageServiceType"
         }).then(id => {
@@ -1007,7 +1081,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 248
+            line: 257
           },
           kind: "named",
           name: "ServerStatusUpdate"
@@ -1022,7 +1096,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 184
+            line: 187
           },
           name: "FlowLanguageServiceType"
         }).then(id => {
@@ -1033,7 +1107,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 250
+            line: 259
           },
           kind: "void"
         });
@@ -1053,14 +1127,14 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "FlowService.js",
-          line: 256
+          line: 265
         },
         kind: "nullable",
         type: {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 256
+            line: 265
           },
           kind: "named",
           name: "NuclideUri"
@@ -1072,7 +1146,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "FlowService.js",
-          line: 257
+          line: 266
         },
         kind: "string"
       }
@@ -1083,14 +1157,14 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "FlowService.js",
-          line: 258
+          line: 267
         },
         kind: "nullable",
         type: {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 258
+            line: 267
           },
           kind: "any"
         }
@@ -1106,7 +1180,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 72
+            line: 74
           },
           kind: "named",
           name: "FileVersion"
@@ -1117,7 +1191,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 71
+            line: 73
           },
           name: "LanguageService"
         }).then(id => {
@@ -1128,14 +1202,14 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 72
+            line: 74
           },
           kind: "nullable",
           type: {
             location: {
               type: "source",
               fileName: "LanguageService.js",
-              line: 72
+              line: 74
             },
             kind: "named",
             name: "DiagnosticProviderUpdate"
@@ -1151,7 +1225,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 71
+            line: 73
           },
           name: "LanguageService"
         }).then(id => {
@@ -1162,7 +1236,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 74
+            line: 76
           },
           kind: "named",
           name: "FileDiagnosticUpdate"
@@ -1177,7 +1251,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 77
+            line: 79
           },
           kind: "named",
           name: "FileVersion"
@@ -1188,7 +1262,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 78
+            line: 80
           },
           kind: "named",
           name: "atom$Point"
@@ -1199,7 +1273,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 79
+            line: 81
           },
           kind: "boolean"
         }
@@ -1209,7 +1283,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 80
+            line: 82
           },
           kind: "string"
         }
@@ -1219,7 +1293,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 71
+            line: 73
           },
           name: "LanguageService"
         }).then(id => {
@@ -1230,14 +1304,14 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 81
+            line: 83
           },
           kind: "nullable",
           type: {
             location: {
               type: "source",
               fileName: "LanguageService.js",
-              line: 81
+              line: 83
             },
             kind: "named",
             name: "AutocompleteResult"
@@ -1253,7 +1327,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 84
+            line: 86
           },
           kind: "named",
           name: "FileVersion"
@@ -1264,7 +1338,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 85
+            line: 87
           },
           kind: "named",
           name: "atom$Point"
@@ -1275,66 +1349,11 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 71
+            line: 73
           },
           name: "LanguageService"
         }).then(id => {
           return _client.callRemoteMethod(id, "getDefinition", "promise", args);
-        });
-      }).then(value => {
-        return _client.unmarshal(value, {
-          location: {
-            type: "source",
-            fileName: "LanguageService.js",
-            line: 86
-          },
-          kind: "nullable",
-          type: {
-            location: {
-              type: "source",
-              fileName: "LanguageService.js",
-              line: 86
-            },
-            kind: "named",
-            name: "DefinitionQueryResult"
-          }
-        });
-      });
-    }
-
-    getDefinitionById(arg0, arg1) {
-      return _client.marshalArguments(Array.from(arguments), [{
-        name: "file",
-        type: {
-          location: {
-            type: "source",
-            fileName: "LanguageService.js",
-            line: 88
-          },
-          kind: "named",
-          name: "NuclideUri"
-        }
-      }, {
-        name: "id",
-        type: {
-          location: {
-            type: "source",
-            fileName: "LanguageService.js",
-            line: 88
-          },
-          kind: "string"
-        }
-      }]).then(args => {
-        return _client.marshal(this, {
-          kind: "named",
-          location: {
-            type: "source",
-            fileName: "LanguageService.js",
-            line: 71
-          },
-          name: "LanguageService"
-        }).then(id => {
-          return _client.callRemoteMethod(id, "getDefinitionById", "promise", args);
         });
       }).then(value => {
         return _client.unmarshal(value, {
@@ -1351,6 +1370,61 @@ module.exports = _client => {
               line: 88
             },
             kind: "named",
+            name: "DefinitionQueryResult"
+          }
+        });
+      });
+    }
+
+    getDefinitionById(arg0, arg1) {
+      return _client.marshalArguments(Array.from(arguments), [{
+        name: "file",
+        type: {
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 90
+          },
+          kind: "named",
+          name: "NuclideUri"
+        }
+      }, {
+        name: "id",
+        type: {
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 90
+          },
+          kind: "string"
+        }
+      }]).then(args => {
+        return _client.marshal(this, {
+          kind: "named",
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 73
+          },
+          name: "LanguageService"
+        }).then(id => {
+          return _client.callRemoteMethod(id, "getDefinitionById", "promise", args);
+        });
+      }).then(value => {
+        return _client.unmarshal(value, {
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 90
+          },
+          kind: "nullable",
+          type: {
+            location: {
+              type: "source",
+              fileName: "LanguageService.js",
+              line: 90
+            },
+            kind: "named",
             name: "Definition"
           }
         });
@@ -1364,7 +1438,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 91
+            line: 93
           },
           kind: "named",
           name: "FileVersion"
@@ -1375,7 +1449,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 92
+            line: 94
           },
           kind: "named",
           name: "atom$Point"
@@ -1386,56 +1460,11 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 71
+            line: 73
           },
           name: "LanguageService"
         }).then(id => {
           return _client.callRemoteMethod(id, "findReferences", "promise", args);
-        });
-      }).then(value => {
-        return _client.unmarshal(value, {
-          location: {
-            type: "source",
-            fileName: "LanguageService.js",
-            line: 93
-          },
-          kind: "nullable",
-          type: {
-            location: {
-              type: "source",
-              fileName: "LanguageService.js",
-              line: 93
-            },
-            kind: "named",
-            name: "FindReferencesReturn"
-          }
-        });
-      });
-    }
-
-    getCoverage(arg0) {
-      return _client.marshalArguments(Array.from(arguments), [{
-        name: "filePath",
-        type: {
-          location: {
-            type: "source",
-            fileName: "LanguageService.js",
-            line: 95
-          },
-          kind: "named",
-          name: "NuclideUri"
-        }
-      }]).then(args => {
-        return _client.marshal(this, {
-          kind: "named",
-          location: {
-            type: "source",
-            fileName: "LanguageService.js",
-            line: 71
-          },
-          name: "LanguageService"
-        }).then(id => {
-          return _client.callRemoteMethod(id, "getCoverage", "promise", args);
         });
       }).then(value => {
         return _client.unmarshal(value, {
@@ -1452,15 +1481,15 @@ module.exports = _client => {
               line: 95
             },
             kind: "named",
-            name: "CoverageResult"
+            name: "FindReferencesReturn"
           }
         });
       });
     }
 
-    getOutline(arg0) {
+    getCoverage(arg0) {
       return _client.marshalArguments(Array.from(arguments), [{
-        name: "fileVersion",
+        name: "filePath",
         type: {
           location: {
             type: "source",
@@ -1468,7 +1497,7 @@ module.exports = _client => {
             line: 97
           },
           kind: "named",
-          name: "FileVersion"
+          name: "NuclideUri"
         }
       }]).then(args => {
         return _client.marshal(this, {
@@ -1476,11 +1505,11 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 71
+            line: 73
           },
           name: "LanguageService"
         }).then(id => {
-          return _client.callRemoteMethod(id, "getOutline", "promise", args);
+          return _client.callRemoteMethod(id, "getCoverage", "promise", args);
         });
       }).then(value => {
         return _client.unmarshal(value, {
@@ -1497,13 +1526,13 @@ module.exports = _client => {
               line: 97
             },
             kind: "named",
-            name: "Outline"
+            name: "CoverageResult"
           }
         });
       });
     }
 
-    typeHint(arg0, arg1) {
+    getOutline(arg0) {
       return _client.marshalArguments(Array.from(arguments), [{
         name: "fileVersion",
         type: {
@@ -1515,28 +1544,17 @@ module.exports = _client => {
           kind: "named",
           name: "FileVersion"
         }
-      }, {
-        name: "position",
-        type: {
-          location: {
-            type: "source",
-            fileName: "LanguageService.js",
-            line: 99
-          },
-          kind: "named",
-          name: "atom$Point"
-        }
       }]).then(args => {
         return _client.marshal(this, {
           kind: "named",
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 71
+            line: 73
           },
           name: "LanguageService"
         }).then(id => {
-          return _client.callRemoteMethod(id, "typeHint", "promise", args);
+          return _client.callRemoteMethod(id, "getOutline", "promise", args);
         });
       }).then(value => {
         return _client.unmarshal(value, {
@@ -1553,6 +1571,62 @@ module.exports = _client => {
               line: 99
             },
             kind: "named",
+            name: "Outline"
+          }
+        });
+      });
+    }
+
+    typeHint(arg0, arg1) {
+      return _client.marshalArguments(Array.from(arguments), [{
+        name: "fileVersion",
+        type: {
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 101
+          },
+          kind: "named",
+          name: "FileVersion"
+        }
+      }, {
+        name: "position",
+        type: {
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 101
+          },
+          kind: "named",
+          name: "atom$Point"
+        }
+      }]).then(args => {
+        return _client.marshal(this, {
+          kind: "named",
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 73
+          },
+          name: "LanguageService"
+        }).then(id => {
+          return _client.callRemoteMethod(id, "typeHint", "promise", args);
+        });
+      }).then(value => {
+        return _client.unmarshal(value, {
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 101
+          },
+          kind: "nullable",
+          type: {
+            location: {
+              type: "source",
+              fileName: "LanguageService.js",
+              line: 101
+            },
+            kind: "named",
             name: "TypeHint"
           }
         });
@@ -1566,7 +1640,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 102
+            line: 104
           },
           kind: "named",
           name: "FileVersion"
@@ -1577,7 +1651,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 103
+            line: 105
           },
           kind: "named",
           name: "atom$Point"
@@ -1588,7 +1662,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 71
+            line: 73
           },
           name: "LanguageService"
         }).then(id => {
@@ -1599,21 +1673,21 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 104
+            line: 106
           },
           kind: "nullable",
           type: {
             location: {
               type: "source",
               fileName: "LanguageService.js",
-              line: 104
+              line: 106
             },
             kind: "array",
             type: {
               location: {
                 type: "source",
                 fileName: "LanguageService.js",
-                line: 104
+                line: 106
               },
               kind: "named",
               name: "atom$Range"
@@ -1630,7 +1704,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 107
+            line: 109
           },
           kind: "named",
           name: "FileVersion"
@@ -1641,7 +1715,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 108
+            line: 110
           },
           kind: "named",
           name: "atom$Range"
@@ -1652,7 +1726,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 71
+            line: 73
           },
           name: "LanguageService"
         }).then(id => {
@@ -1663,21 +1737,21 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 109
+            line: 111
           },
           kind: "nullable",
           type: {
             location: {
               type: "source",
               fileName: "LanguageService.js",
-              line: 109
+              line: 111
             },
             kind: "array",
             type: {
               location: {
                 type: "source",
                 fileName: "LanguageService.js",
-                line: 109
+                line: 111
               },
               kind: "named",
               name: "TextEdit"
@@ -1694,7 +1768,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 112
+            line: 114
           },
           kind: "named",
           name: "FileVersion"
@@ -1705,7 +1779,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 113
+            line: 115
           },
           kind: "named",
           name: "atom$Range"
@@ -1716,7 +1790,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 71
+            line: 73
           },
           name: "LanguageService"
         }).then(id => {
@@ -1727,28 +1801,28 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 114
+            line: 116
           },
           kind: "nullable",
           type: {
             location: {
               type: "source",
               fileName: "LanguageService.js",
-              line: 114
+              line: 116
             },
             kind: "object",
             fields: [{
               location: {
                 type: "source",
                 fileName: "LanguageService.js",
-                line: 115
+                line: 117
               },
               name: "newCursor",
               type: {
                 location: {
                   type: "source",
                   fileName: "LanguageService.js",
-                  line: 115
+                  line: 117
                 },
                 kind: "number"
               },
@@ -1757,19 +1831,93 @@ module.exports = _client => {
               location: {
                 type: "source",
                 fileName: "LanguageService.js",
-                line: 116
+                line: 118
               },
               name: "formatted",
               type: {
                 location: {
                   type: "source",
                   fileName: "LanguageService.js",
-                  line: 116
+                  line: 118
                 },
                 kind: "string"
               },
               optional: false
             }]
+          }
+        });
+      });
+    }
+
+    formatAtPosition(arg0, arg1, arg2) {
+      return _client.marshalArguments(Array.from(arguments), [{
+        name: "fileVersion",
+        type: {
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 122
+          },
+          kind: "named",
+          name: "FileVersion"
+        }
+      }, {
+        name: "position",
+        type: {
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 123
+          },
+          kind: "named",
+          name: "atom$Point"
+        }
+      }, {
+        name: "triggerCharacter",
+        type: {
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 124
+          },
+          kind: "string"
+        }
+      }]).then(args => {
+        return _client.marshal(this, {
+          kind: "named",
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 73
+          },
+          name: "LanguageService"
+        }).then(id => {
+          return _client.callRemoteMethod(id, "formatAtPosition", "promise", args);
+        });
+      }).then(value => {
+        return _client.unmarshal(value, {
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 125
+          },
+          kind: "nullable",
+          type: {
+            location: {
+              type: "source",
+              fileName: "LanguageService.js",
+              line: 125
+            },
+            kind: "array",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 125
+              },
+              kind: "named",
+              name: "TextEdit"
+            }
           }
         });
       });
@@ -1782,7 +1930,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 120
+            line: 128
           },
           kind: "named",
           name: "FileVersion"
@@ -1793,7 +1941,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 121
+            line: 129
           },
           kind: "named",
           name: "atom$Point"
@@ -1804,7 +1952,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 71
+            line: 73
           },
           name: "LanguageService"
         }).then(id => {
@@ -1815,14 +1963,14 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 122
+            line: 130
           },
           kind: "nullable",
           type: {
             location: {
               type: "source",
               fileName: "LanguageService.js",
-              line: 122
+              line: 130
             },
             kind: "named",
             name: "NuclideEvaluationExpression"
@@ -1838,14 +1986,14 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 124
+            line: 132
           },
           kind: "array",
           type: {
             location: {
               type: "source",
               fileName: "LanguageService.js",
-              line: 124
+              line: 132
             },
             kind: "named",
             name: "NuclideUri"
@@ -1857,7 +2005,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 71
+            line: 73
           },
           name: "LanguageService"
         }).then(id => {
@@ -1868,7 +2016,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 124
+            line: 132
           },
           kind: "boolean"
         });
@@ -1882,7 +2030,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 127
+            line: 135
           },
           kind: "string"
         }
@@ -1892,14 +2040,14 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 128
+            line: 136
           },
           kind: "array",
           type: {
             location: {
               type: "source",
               fileName: "LanguageService.js",
-              line: 128
+              line: 136
             },
             kind: "named",
             name: "NuclideUri"
@@ -1911,7 +2059,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 71
+            line: 73
           },
           name: "LanguageService"
         }).then(id => {
@@ -1922,21 +2070,21 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 129
+            line: 137
           },
           kind: "nullable",
           type: {
             location: {
               type: "source",
               fileName: "LanguageService.js",
-              line: 129
+              line: 137
             },
             kind: "array",
             type: {
               location: {
                 type: "source",
                 fileName: "LanguageService.js",
-                line: 129
+                line: 137
               },
               kind: "named",
               name: "SymbolResult"
@@ -1953,7 +2101,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 131
+            line: 139
           },
           kind: "named",
           name: "NuclideUri"
@@ -1964,7 +2112,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 71
+            line: 73
           },
           name: "LanguageService"
         }).then(id => {
@@ -1975,14 +2123,14 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 131
+            line: 139
           },
           kind: "nullable",
           type: {
             location: {
               type: "source",
               fileName: "LanguageService.js",
-              line: 131
+              line: 139
             },
             kind: "named",
             name: "NuclideUri"
@@ -1998,7 +2146,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 133
+            line: 141
           },
           kind: "named",
           name: "NuclideUri"
@@ -2009,7 +2157,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 71
+            line: 73
           },
           name: "LanguageService"
         }).then(id => {
@@ -2020,7 +2168,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 133
+            line: 141
           },
           kind: "boolean"
         });
@@ -2399,28 +2547,28 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "FlowService.js",
-        line: 56
+        line: 58
       },
       name: "Loc",
       definition: {
         location: {
           type: "source",
           fileName: "FlowService.js",
-          line: 56
+          line: 58
         },
         kind: "object",
         fields: [{
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 57
+            line: 59
           },
           name: "file",
           type: {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 57
+              line: 59
             },
             kind: "named",
             name: "NuclideUri"
@@ -2430,14 +2578,14 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 58
+            line: 60
           },
           name: "point",
           type: {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 58
+              line: 60
             },
             kind: "named",
             name: "atom$Point"
@@ -2451,21 +2599,21 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "FlowService.js",
-        line: 63
+        line: 65
       },
       name: "ServerStatusType",
       definition: {
         location: {
           type: "source",
           fileName: "FlowService.js",
-          line: 64
+          line: 66
         },
         kind: "union",
         types: [{
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 64
+            line: 66
           },
           kind: "string-literal",
           value: "failed"
@@ -2473,7 +2621,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 65
+            line: 67
           },
           kind: "string-literal",
           value: "unknown"
@@ -2481,7 +2629,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 66
+            line: 68
           },
           kind: "string-literal",
           value: "not running"
@@ -2489,7 +2637,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 67
+            line: 69
           },
           kind: "string-literal",
           value: "not installed"
@@ -2497,7 +2645,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 68
+            line: 70
           },
           kind: "string-literal",
           value: "busy"
@@ -2505,7 +2653,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 69
+            line: 71
           },
           kind: "string-literal",
           value: "init"
@@ -2513,7 +2661,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 70
+            line: 72
           },
           kind: "string-literal",
           value: "ready"
@@ -2525,28 +2673,28 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "FlowService.js",
-        line: 72
+        line: 74
       },
       name: "ServerStatusUpdate",
       definition: {
         location: {
           type: "source",
           fileName: "FlowService.js",
-          line: 72
+          line: 74
         },
         kind: "object",
         fields: [{
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 73
+            line: 75
           },
           name: "pathToRoot",
           type: {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 73
+              line: 75
             },
             kind: "named",
             name: "NuclideUri"
@@ -2556,14 +2704,14 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 74
+            line: 76
           },
           name: "status",
           type: {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 74
+              line: 76
             },
             kind: "named",
             name: "ServerStatusType"
@@ -2577,28 +2725,28 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "FlowService.js",
-        line: 77
+        line: 79
       },
       name: "FlowSettings",
       definition: {
         location: {
           type: "source",
           fileName: "FlowService.js",
-          line: 77
+          line: 79
         },
         kind: "object",
         fields: [{
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 78
+            line: 80
           },
           name: "functionSnippetShouldIncludeArguments",
           type: {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 78
+              line: 80
             },
             kind: "boolean"
           },
@@ -2607,14 +2755,30 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 79
+            line: 81
           },
           name: "stopFlowOnExit",
           type: {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 79
+              line: 81
+            },
+            kind: "boolean"
+          },
+          optional: false
+        }, {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 82
+          },
+          name: "lazyServer",
+          type: {
+            location: {
+              type: "source",
+              fileName: "FlowService.js",
+              line: 82
             },
             kind: "boolean"
           },
@@ -2628,13 +2792,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "FlowService.js",
-        line: 96
+        line: 99
       },
       type: {
         location: {
           type: "source",
           fileName: "FlowService.js",
-          line: 96
+          line: 99
         },
         kind: "function",
         argumentTypes: [],
@@ -2642,7 +2806,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 96
+            line: 99
           },
           kind: "void"
         }
@@ -2654,13 +2818,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "FlowService.js",
-        line: 103
+        line: 106
       },
       type: {
         location: {
           type: "source",
           fileName: "FlowService.js",
-          line: 103
+          line: 106
         },
         kind: "function",
         argumentTypes: [{
@@ -2669,7 +2833,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 104
+              line: 107
             },
             kind: "named",
             name: "FileNotifier"
@@ -2680,7 +2844,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 105
+              line: 108
             },
             kind: "named",
             name: "HostServices"
@@ -2691,7 +2855,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 106
+              line: 109
             },
             kind: "named",
             name: "FlowSettings"
@@ -2701,14 +2865,14 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 107
+            line: 110
           },
           kind: "promise",
           type: {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 107
+              line: 110
             },
             kind: "named",
             name: "FlowLanguageServiceType"
@@ -2722,7 +2886,7 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "FlowService.js",
-        line: 184
+        line: 187
       },
       constructorArgs: null,
       staticMethods: {},
@@ -2731,7 +2895,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 185
+            line: 188
           },
           kind: "function",
           argumentTypes: [{
@@ -2740,7 +2904,7 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 185
+                line: 188
               },
               kind: "named",
               name: "FileVersion"
@@ -2750,21 +2914,21 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 185
+              line: 188
             },
             kind: "promise",
             type: {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 185
+                line: 188
               },
               kind: "nullable",
               type: {
                 location: {
                   type: "source",
                   fileName: "FlowService.js",
-                  line: 185
+                  line: 188
                 },
                 kind: "named",
                 name: "DiagnosticProviderUpdate"
@@ -2776,7 +2940,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 187
+            line: 190
           },
           kind: "function",
           argumentTypes: [],
@@ -2784,14 +2948,14 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 187
+              line: 190
             },
             kind: "observable",
             type: {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 187
+                line: 190
               },
               kind: "named",
               name: "FileDiagnosticUpdate"
@@ -2802,7 +2966,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 189
+            line: 192
           },
           kind: "function",
           argumentTypes: [{
@@ -2811,7 +2975,7 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 190
+                line: 193
               },
               kind: "named",
               name: "FileVersion"
@@ -2822,7 +2986,7 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 191
+                line: 194
               },
               kind: "named",
               name: "atom$Point"
@@ -2833,7 +2997,7 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 192
+                line: 195
               },
               kind: "boolean"
             }
@@ -2843,7 +3007,7 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 193
+                line: 196
               },
               kind: "string"
             }
@@ -2852,21 +3016,21 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 194
+              line: 197
             },
             kind: "promise",
             type: {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 194
+                line: 197
               },
               kind: "nullable",
               type: {
                 location: {
                   type: "source",
                   fileName: "FlowService.js",
-                  line: 194
+                  line: 197
                 },
                 kind: "named",
                 name: "AutocompleteResult"
@@ -2878,7 +3042,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 196
+            line: 199
           },
           kind: "function",
           argumentTypes: [{
@@ -2887,7 +3051,7 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 197
+                line: 200
               },
               kind: "named",
               name: "FileVersion"
@@ -2898,7 +3062,7 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 198
+                line: 201
               },
               kind: "named",
               name: "atom$Point"
@@ -2908,21 +3072,21 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 199
+              line: 202
             },
             kind: "promise",
             type: {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 199
+                line: 202
               },
               kind: "nullable",
               type: {
                 location: {
                   type: "source",
                   fileName: "FlowService.js",
-                  line: 199
+                  line: 202
                 },
                 kind: "named",
                 name: "DefinitionQueryResult"
@@ -2934,7 +3098,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 201
+            line: 204
           },
           kind: "function",
           argumentTypes: [{
@@ -2943,7 +3107,7 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 201
+                line: 204
               },
               kind: "named",
               name: "NuclideUri"
@@ -2954,7 +3118,7 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 201
+                line: 204
               },
               kind: "string"
             }
@@ -2963,21 +3127,21 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 201
+              line: 204
             },
             kind: "promise",
             type: {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 201
+                line: 204
               },
               kind: "nullable",
               type: {
                 location: {
                   type: "source",
                   fileName: "FlowService.js",
-                  line: 201
+                  line: 204
                 },
                 kind: "named",
                 name: "Definition"
@@ -2989,7 +3153,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 203
+            line: 206
           },
           kind: "function",
           argumentTypes: [{
@@ -2998,7 +3162,7 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 204
+                line: 207
               },
               kind: "named",
               name: "FileVersion"
@@ -3009,7 +3173,7 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 205
+                line: 208
               },
               kind: "named",
               name: "atom$Point"
@@ -3019,21 +3183,21 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 206
+              line: 209
             },
             kind: "promise",
             type: {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 206
+                line: 209
               },
               kind: "nullable",
               type: {
                 location: {
                   type: "source",
                   fileName: "FlowService.js",
-                  line: 206
+                  line: 209
                 },
                 kind: "named",
                 name: "FindReferencesReturn"
@@ -3045,7 +3209,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 208
+            line: 211
           },
           kind: "function",
           argumentTypes: [{
@@ -3054,7 +3218,7 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 208
+                line: 211
               },
               kind: "named",
               name: "NuclideUri"
@@ -3064,21 +3228,21 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 208
+              line: 211
             },
             kind: "promise",
             type: {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 208
+                line: 211
               },
               kind: "nullable",
               type: {
                 location: {
                   type: "source",
                   fileName: "FlowService.js",
-                  line: 208
+                  line: 211
                 },
                 kind: "named",
                 name: "CoverageResult"
@@ -3090,7 +3254,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 210
+            line: 213
           },
           kind: "function",
           argumentTypes: [{
@@ -3099,7 +3263,7 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 210
+                line: 213
               },
               kind: "named",
               name: "FileVersion"
@@ -3109,21 +3273,21 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 210
+              line: 213
             },
             kind: "promise",
             type: {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 210
+                line: 213
               },
               kind: "nullable",
               type: {
                 location: {
                   type: "source",
                   fileName: "FlowService.js",
-                  line: 210
+                  line: 213
                 },
                 kind: "named",
                 name: "Outline"
@@ -3135,63 +3299,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 212
-          },
-          kind: "function",
-          argumentTypes: [{
-            name: "fileVersion",
-            type: {
-              location: {
-                type: "source",
-                fileName: "FlowService.js",
-                line: 212
-              },
-              kind: "named",
-              name: "FileVersion"
-            }
-          }, {
-            name: "position",
-            type: {
-              location: {
-                type: "source",
-                fileName: "FlowService.js",
-                line: 212
-              },
-              kind: "named",
-              name: "atom$Point"
-            }
-          }],
-          returnType: {
-            location: {
-              type: "source",
-              fileName: "FlowService.js",
-              line: 212
-            },
-            kind: "promise",
-            type: {
-              location: {
-                type: "source",
-                fileName: "FlowService.js",
-                line: 212
-              },
-              kind: "nullable",
-              type: {
-                location: {
-                  type: "source",
-                  fileName: "FlowService.js",
-                  line: 212
-                },
-                kind: "named",
-                name: "TypeHint"
-              }
-            }
-          }
-        },
-        highlight: {
-          location: {
-            type: "source",
-            fileName: "FlowService.js",
-            line: 214
+            line: 215
           },
           kind: "function",
           argumentTypes: [{
@@ -3211,7 +3319,7 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 216
+                line: 215
               },
               kind: "named",
               name: "atom$Point"
@@ -3221,28 +3329,84 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 217
+              line: 215
             },
             kind: "promise",
             type: {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 217
+                line: 215
               },
               kind: "nullable",
               type: {
                 location: {
                   type: "source",
                   fileName: "FlowService.js",
-                  line: 217
+                  line: 215
+                },
+                kind: "named",
+                name: "TypeHint"
+              }
+            }
+          }
+        },
+        highlight: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 217
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "fileVersion",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 218
+              },
+              kind: "named",
+              name: "FileVersion"
+            }
+          }, {
+            name: "position",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 219
+              },
+              kind: "named",
+              name: "atom$Point"
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "FlowService.js",
+              line: 220
+            },
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 220
+              },
+              kind: "nullable",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "FlowService.js",
+                  line: 220
                 },
                 kind: "array",
                 type: {
                   location: {
                     type: "source",
                     fileName: "FlowService.js",
-                    line: 217
+                    line: 220
                   },
                   kind: "named",
                   name: "atom$Range"
@@ -3255,7 +3419,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 219
+            line: 222
           },
           kind: "function",
           argumentTypes: [{
@@ -3264,7 +3428,7 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 220
+                line: 223
               },
               kind: "named",
               name: "FileVersion"
@@ -3275,7 +3439,7 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 221
+                line: 224
               },
               kind: "named",
               name: "atom$Range"
@@ -3285,28 +3449,28 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 222
+              line: 225
             },
             kind: "promise",
             type: {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 222
+                line: 225
               },
               kind: "nullable",
               type: {
                 location: {
                   type: "source",
                   fileName: "FlowService.js",
-                  line: 222
+                  line: 225
                 },
                 kind: "array",
                 type: {
                   location: {
                     type: "source",
                     fileName: "FlowService.js",
-                    line: 222
+                    line: 225
                   },
                   kind: "named",
                   name: "TextEdit"
@@ -3319,7 +3483,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 224
+            line: 227
           },
           kind: "function",
           argumentTypes: [{
@@ -3328,7 +3492,7 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 225
+                line: 228
               },
               kind: "named",
               name: "FileVersion"
@@ -3339,7 +3503,7 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 226
+                line: 229
               },
               kind: "named",
               name: "atom$Range"
@@ -3349,35 +3513,35 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 227
+              line: 230
             },
             kind: "promise",
             type: {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 227
+                line: 230
               },
               kind: "nullable",
               type: {
                 location: {
                   type: "source",
                   fileName: "FlowService.js",
-                  line: 227
+                  line: 230
                 },
                 kind: "object",
                 fields: [{
                   location: {
                     type: "source",
                     fileName: "FlowService.js",
-                    line: 228
+                    line: 231
                   },
                   name: "newCursor",
                   type: {
                     location: {
                       type: "source",
                       fileName: "FlowService.js",
-                      line: 228
+                      line: 231
                     },
                     kind: "number"
                   },
@@ -3386,14 +3550,14 @@ Object.defineProperty(module.exports, "defs", {
                   location: {
                     type: "source",
                     fileName: "FlowService.js",
-                    line: 229
+                    line: 232
                   },
                   name: "formatted",
                   type: {
                     location: {
                       type: "source",
                       fileName: "FlowService.js",
-                      line: 229
+                      line: 232
                     },
                     kind: "string"
                   },
@@ -3403,11 +3567,11 @@ Object.defineProperty(module.exports, "defs", {
             }
           }
         },
-        getEvaluationExpression: {
+        formatAtPosition: {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 232
+            line: 235
           },
           kind: "function",
           argumentTypes: [{
@@ -3416,7 +3580,7 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 233
+                line: 236
               },
               kind: "named",
               name: "FileVersion"
@@ -3427,170 +3591,84 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 234
+                line: 237
               },
               kind: "named",
               name: "atom$Point"
             }
-          }],
-          returnType: {
-            location: {
-              type: "source",
-              fileName: "FlowService.js",
-              line: 235
-            },
-            kind: "promise",
+          }, {
+            name: "triggerCharacter",
             type: {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 235
-              },
-              kind: "nullable",
-              type: {
-                location: {
-                  type: "source",
-                  fileName: "FlowService.js",
-                  line: 235
-                },
-                kind: "named",
-                name: "NuclideEvaluationExpression"
-              }
-            }
-          }
-        },
-        supportsSymbolSearch: {
-          location: {
-            type: "source",
-            fileName: "FlowService.js",
-            line: 237
-          },
-          kind: "function",
-          argumentTypes: [{
-            name: "directories",
-            type: {
-              location: {
-                type: "source",
-                fileName: "FlowService.js",
-                line: 237
-              },
-              kind: "array",
-              type: {
-                location: {
-                  type: "source",
-                  fileName: "FlowService.js",
-                  line: 237
-                },
-                kind: "named",
-                name: "NuclideUri"
-              }
-            }
-          }],
-          returnType: {
-            location: {
-              type: "source",
-              fileName: "FlowService.js",
-              line: 237
-            },
-            kind: "promise",
-            type: {
-              location: {
-                type: "source",
-                fileName: "FlowService.js",
-                line: 237
-              },
-              kind: "boolean"
-            }
-          }
-        },
-        symbolSearch: {
-          location: {
-            type: "source",
-            fileName: "FlowService.js",
-            line: 239
-          },
-          kind: "function",
-          argumentTypes: [{
-            name: "query",
-            type: {
-              location: {
-                type: "source",
-                fileName: "FlowService.js",
-                line: 240
+                line: 238
               },
               kind: "string"
             }
-          }, {
-            name: "directories",
-            type: {
-              location: {
-                type: "source",
-                fileName: "FlowService.js",
-                line: 241
-              },
-              kind: "array",
-              type: {
-                location: {
-                  type: "source",
-                  fileName: "FlowService.js",
-                  line: 241
-                },
-                kind: "named",
-                name: "NuclideUri"
-              }
-            }
           }],
           returnType: {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 242
+              line: 239
             },
             kind: "promise",
             type: {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 242
+                line: 239
               },
               kind: "nullable",
               type: {
                 location: {
                   type: "source",
                   fileName: "FlowService.js",
-                  line: 242
+                  line: 239
                 },
                 kind: "array",
                 type: {
                   location: {
                     type: "source",
                     fileName: "FlowService.js",
-                    line: 242
+                    line: 239
                   },
                   kind: "named",
-                  name: "SymbolResult"
+                  name: "TextEdit"
                 }
               }
             }
           }
         },
-        getProjectRoot: {
+        getEvaluationExpression: {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 244
+            line: 241
           },
           kind: "function",
           argumentTypes: [{
-            name: "fileUri",
+            name: "fileVersion",
             type: {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 244
+                line: 242
               },
               kind: "named",
-              name: "NuclideUri"
+              name: "FileVersion"
+            }
+          }, {
+            name: "position",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 243
+              },
+              kind: "named",
+              name: "atom$Point"
             }
           }],
           returnType: {
@@ -3614,12 +3692,12 @@ Object.defineProperty(module.exports, "defs", {
                   line: 244
                 },
                 kind: "named",
-                name: "NuclideUri"
+                name: "NuclideEvaluationExpression"
               }
             }
           }
         },
-        isFileInProject: {
+        supportsSymbolSearch: {
           location: {
             type: "source",
             fileName: "FlowService.js",
@@ -3627,15 +3705,23 @@ Object.defineProperty(module.exports, "defs", {
           },
           kind: "function",
           argumentTypes: [{
-            name: "fileUri",
+            name: "directories",
             type: {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
                 line: 246
               },
-              kind: "named",
-              name: "NuclideUri"
+              kind: "array",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "FlowService.js",
+                  line: 246
+                },
+                kind: "named",
+                name: "NuclideUri"
+              }
             }
           }],
           returnType: {
@@ -3655,11 +3741,163 @@ Object.defineProperty(module.exports, "defs", {
             }
           }
         },
-        getServerStatusUpdates: {
+        symbolSearch: {
           location: {
             type: "source",
             fileName: "FlowService.js",
             line: 248
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "query",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 249
+              },
+              kind: "string"
+            }
+          }, {
+            name: "directories",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 250
+              },
+              kind: "array",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "FlowService.js",
+                  line: 250
+                },
+                kind: "named",
+                name: "NuclideUri"
+              }
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "FlowService.js",
+              line: 251
+            },
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 251
+              },
+              kind: "nullable",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "FlowService.js",
+                  line: 251
+                },
+                kind: "array",
+                type: {
+                  location: {
+                    type: "source",
+                    fileName: "FlowService.js",
+                    line: 251
+                  },
+                  kind: "named",
+                  name: "SymbolResult"
+                }
+              }
+            }
+          }
+        },
+        getProjectRoot: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 253
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "fileUri",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 253
+              },
+              kind: "named",
+              name: "NuclideUri"
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "FlowService.js",
+              line: 253
+            },
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 253
+              },
+              kind: "nullable",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "FlowService.js",
+                  line: 253
+                },
+                kind: "named",
+                name: "NuclideUri"
+              }
+            }
+          }
+        },
+        isFileInProject: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 255
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "fileUri",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 255
+              },
+              kind: "named",
+              name: "NuclideUri"
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "FlowService.js",
+              line: 255
+            },
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "FlowService.js",
+                line: 255
+              },
+              kind: "boolean"
+            }
+          }
+        },
+        getServerStatusUpdates: {
+          location: {
+            type: "source",
+            fileName: "FlowService.js",
+            line: 257
           },
           kind: "function",
           argumentTypes: [],
@@ -3667,14 +3905,14 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 248
+              line: 257
             },
             kind: "observable",
             type: {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 248
+                line: 257
               },
               kind: "named",
               name: "ServerStatusUpdate"
@@ -3685,7 +3923,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 250
+            line: 259
           },
           kind: "function",
           argumentTypes: [],
@@ -3693,14 +3931,14 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 250
+              line: 259
             },
             kind: "promise",
             type: {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 250
+                line: 259
               },
               kind: "void"
             }
@@ -3710,7 +3948,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 252
+            line: 261
           },
           kind: "function",
           argumentTypes: [],
@@ -3718,7 +3956,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 252
+              line: 261
             },
             kind: "void"
           }
@@ -3731,13 +3969,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "FlowService.js",
-        line: 255
+        line: 264
       },
       type: {
         location: {
           type: "source",
           fileName: "FlowService.js",
-          line: 255
+          line: 264
         },
         kind: "function",
         argumentTypes: [{
@@ -3746,14 +3984,14 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 256
+              line: 265
             },
             kind: "nullable",
             type: {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 256
+                line: 265
               },
               kind: "named",
               name: "NuclideUri"
@@ -3765,7 +4003,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 257
+              line: 266
             },
             kind: "string"
           }
@@ -3774,21 +4012,21 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "FlowService.js",
-            line: 258
+            line: 267
           },
           kind: "promise",
           type: {
             location: {
               type: "source",
               fileName: "FlowService.js",
-              line: 258
+              line: 267
             },
             kind: "nullable",
             type: {
               location: {
                 type: "source",
                 fileName: "FlowService.js",
-                line: 258
+                line: 267
               },
               kind: "any"
             }
@@ -3851,28 +4089,28 @@ Object.defineProperty(module.exports, "defs", {
       kind: "alias",
       location: {
         type: "source",
-        fileName: "rpc-types.js",
+        fileName: "text-edit-rpc-types.js",
         line: 12
       },
       name: "TextEdit",
       definition: {
         location: {
           type: "source",
-          fileName: "rpc-types.js",
+          fileName: "text-edit-rpc-types.js",
           line: 12
         },
         kind: "object",
         fields: [{
           location: {
             type: "source",
-            fileName: "rpc-types.js",
+            fileName: "text-edit-rpc-types.js",
             line: 13
           },
           name: "oldRange",
           type: {
             location: {
               type: "source",
-              fileName: "rpc-types.js",
+              fileName: "text-edit-rpc-types.js",
               line: 13
             },
             kind: "named",
@@ -3882,14 +4120,14 @@ Object.defineProperty(module.exports, "defs", {
         }, {
           location: {
             type: "source",
-            fileName: "rpc-types.js",
+            fileName: "text-edit-rpc-types.js",
             line: 14
           },
           name: "newText",
           type: {
             location: {
               type: "source",
-              fileName: "rpc-types.js",
+              fileName: "text-edit-rpc-types.js",
               line: 14
             },
             kind: "string"
@@ -3898,14 +4136,14 @@ Object.defineProperty(module.exports, "defs", {
         }, {
           location: {
             type: "source",
-            fileName: "rpc-types.js",
+            fileName: "text-edit-rpc-types.js",
             line: 16
           },
           name: "oldText",
           type: {
             location: {
               type: "source",
-              fileName: "rpc-types.js",
+              fileName: "text-edit-rpc-types.js",
               line: 16
             },
             kind: "string"
@@ -4333,21 +4571,21 @@ Object.defineProperty(module.exports, "defs", {
       kind: "alias",
       location: {
         type: "source",
-        fileName: "tokenizedText-rpc-types.js",
+        fileName: "tokenized-text-rpc-types.js",
         line: 14
       },
       name: "TokenKind",
       definition: {
         location: {
           type: "source",
-          fileName: "tokenizedText-rpc-types.js",
+          fileName: "tokenized-text-rpc-types.js",
           line: 15
         },
         kind: "union",
         types: [{
           location: {
             type: "source",
-            fileName: "tokenizedText-rpc-types.js",
+            fileName: "tokenized-text-rpc-types.js",
             line: 15
           },
           kind: "string-literal",
@@ -4355,7 +4593,7 @@ Object.defineProperty(module.exports, "defs", {
         }, {
           location: {
             type: "source",
-            fileName: "tokenizedText-rpc-types.js",
+            fileName: "tokenized-text-rpc-types.js",
             line: 16
           },
           kind: "string-literal",
@@ -4363,7 +4601,7 @@ Object.defineProperty(module.exports, "defs", {
         }, {
           location: {
             type: "source",
-            fileName: "tokenizedText-rpc-types.js",
+            fileName: "tokenized-text-rpc-types.js",
             line: 17
           },
           kind: "string-literal",
@@ -4371,7 +4609,7 @@ Object.defineProperty(module.exports, "defs", {
         }, {
           location: {
             type: "source",
-            fileName: "tokenizedText-rpc-types.js",
+            fileName: "tokenized-text-rpc-types.js",
             line: 18
           },
           kind: "string-literal",
@@ -4379,7 +4617,7 @@ Object.defineProperty(module.exports, "defs", {
         }, {
           location: {
             type: "source",
-            fileName: "tokenizedText-rpc-types.js",
+            fileName: "tokenized-text-rpc-types.js",
             line: 19
           },
           kind: "string-literal",
@@ -4387,7 +4625,7 @@ Object.defineProperty(module.exports, "defs", {
         }, {
           location: {
             type: "source",
-            fileName: "tokenizedText-rpc-types.js",
+            fileName: "tokenized-text-rpc-types.js",
             line: 20
           },
           kind: "string-literal",
@@ -4395,7 +4633,7 @@ Object.defineProperty(module.exports, "defs", {
         }, {
           location: {
             type: "source",
-            fileName: "tokenizedText-rpc-types.js",
+            fileName: "tokenized-text-rpc-types.js",
             line: 21
           },
           kind: "string-literal",
@@ -4403,7 +4641,7 @@ Object.defineProperty(module.exports, "defs", {
         }, {
           location: {
             type: "source",
-            fileName: "tokenizedText-rpc-types.js",
+            fileName: "tokenized-text-rpc-types.js",
             line: 22
           },
           kind: "string-literal",
@@ -4411,7 +4649,7 @@ Object.defineProperty(module.exports, "defs", {
         }, {
           location: {
             type: "source",
-            fileName: "tokenizedText-rpc-types.js",
+            fileName: "tokenized-text-rpc-types.js",
             line: 23
           },
           kind: "string-literal",
@@ -4423,28 +4661,28 @@ Object.defineProperty(module.exports, "defs", {
       kind: "alias",
       location: {
         type: "source",
-        fileName: "tokenizedText-rpc-types.js",
+        fileName: "tokenized-text-rpc-types.js",
         line: 25
       },
       name: "TextToken",
       definition: {
         location: {
           type: "source",
-          fileName: "tokenizedText-rpc-types.js",
+          fileName: "tokenized-text-rpc-types.js",
           line: 25
         },
         kind: "object",
         fields: [{
           location: {
             type: "source",
-            fileName: "tokenizedText-rpc-types.js",
+            fileName: "tokenized-text-rpc-types.js",
             line: 26
           },
           name: "kind",
           type: {
             location: {
               type: "source",
-              fileName: "tokenizedText-rpc-types.js",
+              fileName: "tokenized-text-rpc-types.js",
               line: 26
             },
             kind: "named",
@@ -4454,14 +4692,14 @@ Object.defineProperty(module.exports, "defs", {
         }, {
           location: {
             type: "source",
-            fileName: "tokenizedText-rpc-types.js",
+            fileName: "tokenized-text-rpc-types.js",
             line: 27
           },
           name: "value",
           type: {
             location: {
               type: "source",
-              fileName: "tokenizedText-rpc-types.js",
+              fileName: "tokenized-text-rpc-types.js",
               line: 27
             },
             kind: "string"
@@ -4474,21 +4712,21 @@ Object.defineProperty(module.exports, "defs", {
       kind: "alias",
       location: {
         type: "source",
-        fileName: "tokenizedText-rpc-types.js",
+        fileName: "tokenized-text-rpc-types.js",
         line: 30
       },
       name: "TokenizedText",
       definition: {
         location: {
           type: "source",
-          fileName: "tokenizedText-rpc-types.js",
+          fileName: "tokenized-text-rpc-types.js",
           line: 30
         },
         kind: "array",
         type: {
           location: {
             type: "source",
-            fileName: "tokenizedText-rpc-types.js",
+            fileName: "tokenized-text-rpc-types.js",
             line: 30
           },
           kind: "named",
@@ -5176,55 +5414,23 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "LanguageService.js",
-        line: 35
+        line: 37
       },
       name: "Completion",
       definition: {
         location: {
           type: "source",
           fileName: "LanguageService.js",
-          line: 35
+          line: 37
         },
         kind: "object",
         fields: [{
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 36
-          },
-          name: "text",
-          type: {
-            location: {
-              type: "source",
-              fileName: "LanguageService.js",
-              line: 36
-            },
-            kind: "string"
-          },
-          optional: true
-        }, {
-          location: {
-            type: "source",
-            fileName: "LanguageService.js",
-            line: 37
-          },
-          name: "snippet",
-          type: {
-            location: {
-              type: "source",
-              fileName: "LanguageService.js",
-              line: 37
-            },
-            kind: "string"
-          },
-          optional: true
-        }, {
-          location: {
-            type: "source",
-            fileName: "LanguageService.js",
             line: 38
           },
-          name: "displayText",
+          name: "text",
           type: {
             location: {
               type: "source",
@@ -5240,7 +5446,7 @@ Object.defineProperty(module.exports, "defs", {
             fileName: "LanguageService.js",
             line: 39
           },
-          name: "replacementPrefix",
+          name: "snippet",
           type: {
             location: {
               type: "source",
@@ -5256,22 +5462,14 @@ Object.defineProperty(module.exports, "defs", {
             fileName: "LanguageService.js",
             line: 40
           },
-          name: "type",
+          name: "displayText",
           type: {
             location: {
               type: "source",
               fileName: "LanguageService.js",
               line: 40
             },
-            kind: "nullable",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 40
-              },
-              kind: "string"
-            }
+            kind: "string"
           },
           optional: true
         }, {
@@ -5280,22 +5478,14 @@ Object.defineProperty(module.exports, "defs", {
             fileName: "LanguageService.js",
             line: 41
           },
-          name: "leftLabel",
+          name: "replacementPrefix",
           type: {
             location: {
               type: "source",
               fileName: "LanguageService.js",
               line: 41
             },
-            kind: "nullable",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 41
-              },
-              kind: "string"
-            }
+            kind: "string"
           },
           optional: true
         }, {
@@ -5304,7 +5494,7 @@ Object.defineProperty(module.exports, "defs", {
             fileName: "LanguageService.js",
             line: 42
           },
-          name: "leftLabelHTML",
+          name: "type",
           type: {
             location: {
               type: "source",
@@ -5328,7 +5518,7 @@ Object.defineProperty(module.exports, "defs", {
             fileName: "LanguageService.js",
             line: 43
           },
-          name: "rightLabel",
+          name: "leftLabel",
           type: {
             location: {
               type: "source",
@@ -5352,7 +5542,7 @@ Object.defineProperty(module.exports, "defs", {
             fileName: "LanguageService.js",
             line: 44
           },
-          name: "rightLabelHTML",
+          name: "leftLabelHTML",
           type: {
             location: {
               type: "source",
@@ -5376,7 +5566,7 @@ Object.defineProperty(module.exports, "defs", {
             fileName: "LanguageService.js",
             line: 45
           },
-          name: "className",
+          name: "rightLabel",
           type: {
             location: {
               type: "source",
@@ -5400,7 +5590,7 @@ Object.defineProperty(module.exports, "defs", {
             fileName: "LanguageService.js",
             line: 46
           },
-          name: "iconHTML",
+          name: "rightLabelHTML",
           type: {
             location: {
               type: "source",
@@ -5424,7 +5614,7 @@ Object.defineProperty(module.exports, "defs", {
             fileName: "LanguageService.js",
             line: 47
           },
-          name: "description",
+          name: "className",
           type: {
             location: {
               type: "source",
@@ -5448,7 +5638,7 @@ Object.defineProperty(module.exports, "defs", {
             fileName: "LanguageService.js",
             line: 48
           },
-          name: "descriptionMoreURL",
+          name: "iconHTML",
           type: {
             location: {
               type: "source",
@@ -5472,12 +5662,60 @@ Object.defineProperty(module.exports, "defs", {
             fileName: "LanguageService.js",
             line: 49
           },
-          name: "extraData",
+          name: "description",
           type: {
             location: {
               type: "source",
               fileName: "LanguageService.js",
               line: 49
+            },
+            kind: "nullable",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 49
+              },
+              kind: "string"
+            }
+          },
+          optional: true
+        }, {
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 50
+          },
+          name: "descriptionMoreURL",
+          type: {
+            location: {
+              type: "source",
+              fileName: "LanguageService.js",
+              line: 50
+            },
+            kind: "nullable",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 50
+              },
+              kind: "string"
+            }
+          },
+          optional: true
+        }, {
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 51
+          },
+          name: "extraData",
+          type: {
+            location: {
+              type: "source",
+              fileName: "LanguageService.js",
+              line: 51
             },
             kind: "mixed"
           },
@@ -5490,28 +5728,28 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "LanguageService.js",
-        line: 56
+        line: 58
       },
       name: "AutocompleteResult",
       definition: {
         location: {
           type: "source",
           fileName: "LanguageService.js",
-          line: 56
+          line: 58
         },
         kind: "object",
         fields: [{
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 57
+            line: 59
           },
           name: "isIncomplete",
           type: {
             location: {
               type: "source",
               fileName: "LanguageService.js",
-              line: 57
+              line: 59
             },
             kind: "boolean"
           },
@@ -5520,21 +5758,21 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 58
+            line: 60
           },
           name: "items",
           type: {
             location: {
               type: "source",
               fileName: "LanguageService.js",
-              line: 58
+              line: 60
             },
             kind: "array",
             type: {
               location: {
                 type: "source",
                 fileName: "LanguageService.js",
-                line: 58
+                line: 60
               },
               kind: "named",
               name: "Completion"
@@ -5549,28 +5787,28 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "LanguageService.js",
-        line: 61
+        line: 63
       },
       name: "SymbolResult",
       definition: {
         location: {
           type: "source",
           fileName: "LanguageService.js",
-          line: 61
+          line: 63
         },
         kind: "object",
         fields: [{
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 62
+            line: 64
           },
           name: "path",
           type: {
             location: {
               type: "source",
               fileName: "LanguageService.js",
-              line: 62
+              line: 64
             },
             kind: "named",
             name: "NuclideUri"
@@ -5580,48 +5818,16 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 63
+            line: 65
           },
           name: "line",
           type: {
             location: {
               type: "source",
               fileName: "LanguageService.js",
-              line: 63
-            },
-            kind: "number"
-          },
-          optional: false
-        }, {
-          location: {
-            type: "source",
-            fileName: "LanguageService.js",
-            line: 64
-          },
-          name: "column",
-          type: {
-            location: {
-              type: "source",
-              fileName: "LanguageService.js",
-              line: 64
-            },
-            kind: "number"
-          },
-          optional: false
-        }, {
-          location: {
-            type: "source",
-            fileName: "LanguageService.js",
-            line: 65
-          },
-          name: "name",
-          type: {
-            location: {
-              type: "source",
-              fileName: "LanguageService.js",
               line: 65
             },
-            kind: "string"
+            kind: "number"
           },
           optional: false
         }, {
@@ -5630,22 +5836,14 @@ Object.defineProperty(module.exports, "defs", {
             fileName: "LanguageService.js",
             line: 66
           },
-          name: "containerName",
+          name: "column",
           type: {
             location: {
               type: "source",
               fileName: "LanguageService.js",
               line: 66
             },
-            kind: "nullable",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 66
-              },
-              kind: "string"
-            }
+            kind: "number"
           },
           optional: false
         }, {
@@ -5654,22 +5852,14 @@ Object.defineProperty(module.exports, "defs", {
             fileName: "LanguageService.js",
             line: 67
           },
-          name: "icon",
+          name: "name",
           type: {
             location: {
               type: "source",
               fileName: "LanguageService.js",
               line: 67
             },
-            kind: "nullable",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 67
-              },
-              kind: "string"
-            }
+            kind: "string"
           },
           optional: false
         }, {
@@ -5678,7 +5868,7 @@ Object.defineProperty(module.exports, "defs", {
             fileName: "LanguageService.js",
             line: 68
           },
-          name: "hoverText",
+          name: "containerName",
           type: {
             location: {
               type: "source",
@@ -5696,6 +5886,54 @@ Object.defineProperty(module.exports, "defs", {
             }
           },
           optional: false
+        }, {
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 69
+          },
+          name: "icon",
+          type: {
+            location: {
+              type: "source",
+              fileName: "LanguageService.js",
+              line: 69
+            },
+            kind: "nullable",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 69
+              },
+              kind: "string"
+            }
+          },
+          optional: false
+        }, {
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 70
+          },
+          name: "hoverText",
+          type: {
+            location: {
+              type: "source",
+              fileName: "LanguageService.js",
+              line: 70
+            },
+            kind: "nullable",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 70
+              },
+              kind: "string"
+            }
+          },
+          optional: false
         }]
       }
     },
@@ -5705,7 +5943,7 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "LanguageService.js",
-        line: 71
+        line: 73
       },
       constructorArgs: null,
       staticMethods: {},
@@ -5714,7 +5952,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 72
+            line: 74
           },
           kind: "function",
           argumentTypes: [{
@@ -5723,7 +5961,7 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "LanguageService.js",
-                line: 72
+                line: 74
               },
               kind: "named",
               name: "FileVersion"
@@ -5733,21 +5971,21 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "LanguageService.js",
-              line: 72
+              line: 74
             },
             kind: "promise",
             type: {
               location: {
                 type: "source",
                 fileName: "LanguageService.js",
-                line: 72
+                line: 74
               },
               kind: "nullable",
               type: {
                 location: {
                   type: "source",
                   fileName: "LanguageService.js",
-                  line: 72
+                  line: 74
                 },
                 kind: "named",
                 name: "DiagnosticProviderUpdate"
@@ -5759,7 +5997,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 74
+            line: 76
           },
           kind: "function",
           argumentTypes: [],
@@ -5767,14 +6005,14 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "LanguageService.js",
-              line: 74
+              line: 76
             },
             kind: "observable",
             type: {
               location: {
                 type: "source",
                 fileName: "LanguageService.js",
-                line: 74
+                line: 76
               },
               kind: "named",
               name: "FileDiagnosticUpdate"
@@ -5785,7 +6023,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 76
+            line: 78
           },
           kind: "function",
           argumentTypes: [{
@@ -5794,7 +6032,7 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "LanguageService.js",
-                line: 77
+                line: 79
               },
               kind: "named",
               name: "FileVersion"
@@ -5805,7 +6043,7 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "LanguageService.js",
-                line: 78
+                line: 80
               },
               kind: "named",
               name: "atom$Point"
@@ -5816,7 +6054,7 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "LanguageService.js",
-                line: 79
+                line: 81
               },
               kind: "boolean"
             }
@@ -5826,7 +6064,7 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "LanguageService.js",
-                line: 80
+                line: 82
               },
               kind: "string"
             }
@@ -5835,21 +6073,21 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "LanguageService.js",
-              line: 81
+              line: 83
             },
             kind: "promise",
             type: {
               location: {
                 type: "source",
                 fileName: "LanguageService.js",
-                line: 81
+                line: 83
               },
               kind: "nullable",
               type: {
                 location: {
                   type: "source",
                   fileName: "LanguageService.js",
-                  line: 81
+                  line: 83
                 },
                 kind: "named",
                 name: "AutocompleteResult"
@@ -5861,7 +6099,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 83
+            line: 85
           },
           kind: "function",
           argumentTypes: [{
@@ -5870,7 +6108,7 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "LanguageService.js",
-                line: 84
+                line: 86
               },
               kind: "named",
               name: "FileVersion"
@@ -5881,65 +6119,10 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "LanguageService.js",
-                line: 85
+                line: 87
               },
               kind: "named",
               name: "atom$Point"
-            }
-          }],
-          returnType: {
-            location: {
-              type: "source",
-              fileName: "LanguageService.js",
-              line: 86
-            },
-            kind: "promise",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 86
-              },
-              kind: "nullable",
-              type: {
-                location: {
-                  type: "source",
-                  fileName: "LanguageService.js",
-                  line: 86
-                },
-                kind: "named",
-                name: "DefinitionQueryResult"
-              }
-            }
-          }
-        },
-        getDefinitionById: {
-          location: {
-            type: "source",
-            fileName: "LanguageService.js",
-            line: 88
-          },
-          kind: "function",
-          argumentTypes: [{
-            name: "file",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 88
-              },
-              kind: "named",
-              name: "NuclideUri"
-            }
-          }, {
-            name: "id",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 88
-              },
-              kind: "string"
             }
           }],
           returnType: {
@@ -5963,6 +6146,61 @@ Object.defineProperty(module.exports, "defs", {
                   line: 88
                 },
                 kind: "named",
+                name: "DefinitionQueryResult"
+              }
+            }
+          }
+        },
+        getDefinitionById: {
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 90
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "file",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 90
+              },
+              kind: "named",
+              name: "NuclideUri"
+            }
+          }, {
+            name: "id",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 90
+              },
+              kind: "string"
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "LanguageService.js",
+              line: 90
+            },
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 90
+              },
+              kind: "nullable",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "LanguageService.js",
+                  line: 90
+                },
+                kind: "named",
                 name: "Definition"
               }
             }
@@ -5972,7 +6210,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 90
+            line: 92
           },
           kind: "function",
           argumentTypes: [{
@@ -5981,7 +6219,7 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "LanguageService.js",
-                line: 91
+                line: 93
               },
               kind: "named",
               name: "FileVersion"
@@ -5992,55 +6230,10 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "LanguageService.js",
-                line: 92
+                line: 94
               },
               kind: "named",
               name: "atom$Point"
-            }
-          }],
-          returnType: {
-            location: {
-              type: "source",
-              fileName: "LanguageService.js",
-              line: 93
-            },
-            kind: "promise",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 93
-              },
-              kind: "nullable",
-              type: {
-                location: {
-                  type: "source",
-                  fileName: "LanguageService.js",
-                  line: 93
-                },
-                kind: "named",
-                name: "FindReferencesReturn"
-              }
-            }
-          }
-        },
-        getCoverage: {
-          location: {
-            type: "source",
-            fileName: "LanguageService.js",
-            line: 95
-          },
-          kind: "function",
-          argumentTypes: [{
-            name: "filePath",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 95
-              },
-              kind: "named",
-              name: "NuclideUri"
             }
           }],
           returnType: {
@@ -6064,12 +6257,12 @@ Object.defineProperty(module.exports, "defs", {
                   line: 95
                 },
                 kind: "named",
-                name: "CoverageResult"
+                name: "FindReferencesReturn"
               }
             }
           }
         },
-        getOutline: {
+        getCoverage: {
           location: {
             type: "source",
             fileName: "LanguageService.js",
@@ -6077,7 +6270,7 @@ Object.defineProperty(module.exports, "defs", {
           },
           kind: "function",
           argumentTypes: [{
-            name: "fileVersion",
+            name: "filePath",
             type: {
               location: {
                 type: "source",
@@ -6085,7 +6278,7 @@ Object.defineProperty(module.exports, "defs", {
                 line: 97
               },
               kind: "named",
-              name: "FileVersion"
+              name: "NuclideUri"
             }
           }],
           returnType: {
@@ -6109,12 +6302,12 @@ Object.defineProperty(module.exports, "defs", {
                   line: 97
                 },
                 kind: "named",
-                name: "Outline"
+                name: "CoverageResult"
               }
             }
           }
         },
-        typeHint: {
+        getOutline: {
           location: {
             type: "source",
             fileName: "LanguageService.js",
@@ -6131,17 +6324,6 @@ Object.defineProperty(module.exports, "defs", {
               },
               kind: "named",
               name: "FileVersion"
-            }
-          }, {
-            name: "position",
-            type: {
-              location: {
-                type: "source",
-                fileName: "LanguageService.js",
-                line: 99
-              },
-              kind: "named",
-              name: "atom$Point"
             }
           }],
           returnType: {
@@ -6165,12 +6347,12 @@ Object.defineProperty(module.exports, "defs", {
                   line: 99
                 },
                 kind: "named",
-                name: "TypeHint"
+                name: "Outline"
               }
             }
           }
         },
-        highlight: {
+        typeHint: {
           location: {
             type: "source",
             fileName: "LanguageService.js",
@@ -6183,7 +6365,7 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "LanguageService.js",
-                line: 102
+                line: 101
               },
               kind: "named",
               name: "FileVersion"
@@ -6194,7 +6376,7 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "LanguageService.js",
-                line: 103
+                line: 101
               },
               kind: "named",
               name: "atom$Point"
@@ -6204,28 +6386,84 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "LanguageService.js",
-              line: 104
+              line: 101
             },
             kind: "promise",
             type: {
               location: {
                 type: "source",
                 fileName: "LanguageService.js",
-                line: 104
+                line: 101
               },
               kind: "nullable",
               type: {
                 location: {
                   type: "source",
                   fileName: "LanguageService.js",
-                  line: 104
+                  line: 101
+                },
+                kind: "named",
+                name: "TypeHint"
+              }
+            }
+          }
+        },
+        highlight: {
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 103
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "fileVersion",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 104
+              },
+              kind: "named",
+              name: "FileVersion"
+            }
+          }, {
+            name: "position",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 105
+              },
+              kind: "named",
+              name: "atom$Point"
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "LanguageService.js",
+              line: 106
+            },
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 106
+              },
+              kind: "nullable",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "LanguageService.js",
+                  line: 106
                 },
                 kind: "array",
                 type: {
                   location: {
                     type: "source",
                     fileName: "LanguageService.js",
-                    line: 104
+                    line: 106
                   },
                   kind: "named",
                   name: "atom$Range"
@@ -6238,7 +6476,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 106
+            line: 108
           },
           kind: "function",
           argumentTypes: [{
@@ -6247,7 +6485,7 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "LanguageService.js",
-                line: 107
+                line: 109
               },
               kind: "named",
               name: "FileVersion"
@@ -6258,7 +6496,7 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "LanguageService.js",
-                line: 108
+                line: 110
               },
               kind: "named",
               name: "atom$Range"
@@ -6268,28 +6506,28 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "LanguageService.js",
-              line: 109
+              line: 111
             },
             kind: "promise",
             type: {
               location: {
                 type: "source",
                 fileName: "LanguageService.js",
-                line: 109
+                line: 111
               },
               kind: "nullable",
               type: {
                 location: {
                   type: "source",
                   fileName: "LanguageService.js",
-                  line: 109
+                  line: 111
                 },
                 kind: "array",
                 type: {
                   location: {
                     type: "source",
                     fileName: "LanguageService.js",
-                    line: 109
+                    line: 111
                   },
                   kind: "named",
                   name: "TextEdit"
@@ -6302,7 +6540,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 111
+            line: 113
           },
           kind: "function",
           argumentTypes: [{
@@ -6311,7 +6549,7 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "LanguageService.js",
-                line: 112
+                line: 114
               },
               kind: "named",
               name: "FileVersion"
@@ -6322,7 +6560,7 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "LanguageService.js",
-                line: 113
+                line: 115
               },
               kind: "named",
               name: "atom$Range"
@@ -6332,35 +6570,35 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "LanguageService.js",
-              line: 114
+              line: 116
             },
             kind: "promise",
             type: {
               location: {
                 type: "source",
                 fileName: "LanguageService.js",
-                line: 114
+                line: 116
               },
               kind: "nullable",
               type: {
                 location: {
                   type: "source",
                   fileName: "LanguageService.js",
-                  line: 114
+                  line: 116
                 },
                 kind: "object",
                 fields: [{
                   location: {
                     type: "source",
                     fileName: "LanguageService.js",
-                    line: 115
+                    line: 117
                   },
                   name: "newCursor",
                   type: {
                     location: {
                       type: "source",
                       fileName: "LanguageService.js",
-                      line: 115
+                      line: 117
                     },
                     kind: "number"
                   },
@@ -6369,14 +6607,14 @@ Object.defineProperty(module.exports, "defs", {
                   location: {
                     type: "source",
                     fileName: "LanguageService.js",
-                    line: 116
+                    line: 118
                   },
                   name: "formatted",
                   type: {
                     location: {
                       type: "source",
                       fileName: "LanguageService.js",
-                      line: 116
+                      line: 118
                     },
                     kind: "string"
                   },
@@ -6386,11 +6624,11 @@ Object.defineProperty(module.exports, "defs", {
             }
           }
         },
-        getEvaluationExpression: {
+        formatAtPosition: {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 119
+            line: 121
           },
           kind: "function",
           argumentTypes: [{
@@ -6399,7 +6637,7 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "LanguageService.js",
-                line: 120
+                line: 122
               },
               kind: "named",
               name: "FileVersion"
@@ -6410,7 +6648,81 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "LanguageService.js",
-                line: 121
+                line: 123
+              },
+              kind: "named",
+              name: "atom$Point"
+            }
+          }, {
+            name: "triggerCharacter",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 124
+              },
+              kind: "string"
+            }
+          }],
+          returnType: {
+            location: {
+              type: "source",
+              fileName: "LanguageService.js",
+              line: 125
+            },
+            kind: "promise",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 125
+              },
+              kind: "nullable",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "LanguageService.js",
+                  line: 125
+                },
+                kind: "array",
+                type: {
+                  location: {
+                    type: "source",
+                    fileName: "LanguageService.js",
+                    line: 125
+                  },
+                  kind: "named",
+                  name: "TextEdit"
+                }
+              }
+            }
+          }
+        },
+        getEvaluationExpression: {
+          location: {
+            type: "source",
+            fileName: "LanguageService.js",
+            line: 127
+          },
+          kind: "function",
+          argumentTypes: [{
+            name: "fileVersion",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 128
+              },
+              kind: "named",
+              name: "FileVersion"
+            }
+          }, {
+            name: "position",
+            type: {
+              location: {
+                type: "source",
+                fileName: "LanguageService.js",
+                line: 129
               },
               kind: "named",
               name: "atom$Point"
@@ -6420,21 +6732,21 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "LanguageService.js",
-              line: 122
+              line: 130
             },
             kind: "promise",
             type: {
               location: {
                 type: "source",
                 fileName: "LanguageService.js",
-                line: 122
+                line: 130
               },
               kind: "nullable",
               type: {
                 location: {
                   type: "source",
                   fileName: "LanguageService.js",
-                  line: 122
+                  line: 130
                 },
                 kind: "named",
                 name: "NuclideEvaluationExpression"
@@ -6446,7 +6758,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 124
+            line: 132
           },
           kind: "function",
           argumentTypes: [{
@@ -6455,14 +6767,14 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "LanguageService.js",
-                line: 124
+                line: 132
               },
               kind: "array",
               type: {
                 location: {
                   type: "source",
                   fileName: "LanguageService.js",
-                  line: 124
+                  line: 132
                 },
                 kind: "named",
                 name: "NuclideUri"
@@ -6473,14 +6785,14 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "LanguageService.js",
-              line: 124
+              line: 132
             },
             kind: "promise",
             type: {
               location: {
                 type: "source",
                 fileName: "LanguageService.js",
-                line: 124
+                line: 132
               },
               kind: "boolean"
             }
@@ -6490,7 +6802,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 126
+            line: 134
           },
           kind: "function",
           argumentTypes: [{
@@ -6499,7 +6811,7 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "LanguageService.js",
-                line: 127
+                line: 135
               },
               kind: "string"
             }
@@ -6509,14 +6821,14 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "LanguageService.js",
-                line: 128
+                line: 136
               },
               kind: "array",
               type: {
                 location: {
                   type: "source",
                   fileName: "LanguageService.js",
-                  line: 128
+                  line: 136
                 },
                 kind: "named",
                 name: "NuclideUri"
@@ -6527,28 +6839,28 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "LanguageService.js",
-              line: 129
+              line: 137
             },
             kind: "promise",
             type: {
               location: {
                 type: "source",
                 fileName: "LanguageService.js",
-                line: 129
+                line: 137
               },
               kind: "nullable",
               type: {
                 location: {
                   type: "source",
                   fileName: "LanguageService.js",
-                  line: 129
+                  line: 137
                 },
                 kind: "array",
                 type: {
                   location: {
                     type: "source",
                     fileName: "LanguageService.js",
-                    line: 129
+                    line: 137
                   },
                   kind: "named",
                   name: "SymbolResult"
@@ -6561,7 +6873,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 131
+            line: 139
           },
           kind: "function",
           argumentTypes: [{
@@ -6570,7 +6882,7 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "LanguageService.js",
-                line: 131
+                line: 139
               },
               kind: "named",
               name: "NuclideUri"
@@ -6580,21 +6892,21 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "LanguageService.js",
-              line: 131
+              line: 139
             },
             kind: "promise",
             type: {
               location: {
                 type: "source",
                 fileName: "LanguageService.js",
-                line: 131
+                line: 139
               },
               kind: "nullable",
               type: {
                 location: {
                   type: "source",
                   fileName: "LanguageService.js",
-                  line: 131
+                  line: 139
                 },
                 kind: "named",
                 name: "NuclideUri"
@@ -6606,7 +6918,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 133
+            line: 141
           },
           kind: "function",
           argumentTypes: [{
@@ -6615,7 +6927,7 @@ Object.defineProperty(module.exports, "defs", {
               location: {
                 type: "source",
                 fileName: "LanguageService.js",
-                line: 133
+                line: 141
               },
               kind: "named",
               name: "NuclideUri"
@@ -6625,14 +6937,14 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "LanguageService.js",
-              line: 133
+              line: 141
             },
             kind: "promise",
             type: {
               location: {
                 type: "source",
                 fileName: "LanguageService.js",
-                line: 133
+                line: 141
               },
               kind: "boolean"
             }
@@ -6642,7 +6954,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 135
+            line: 143
           },
           kind: "function",
           argumentTypes: [],
@@ -6650,7 +6962,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "LanguageService.js",
-              line: 135
+              line: 143
             },
             kind: "void"
           }
@@ -7138,14 +7450,14 @@ Object.defineProperty(module.exports, "defs", {
           fields: [{
             location: {
               type: "source",
-              fileName: "rpc-types.js",
+              fileName: "text-edit-rpc-types.js",
               line: 13
             },
             name: "oldRange",
             type: {
               location: {
                 type: "source",
-                fileName: "rpc-types.js",
+                fileName: "text-edit-rpc-types.js",
                 line: 13
               },
               kind: "named",
@@ -7155,14 +7467,14 @@ Object.defineProperty(module.exports, "defs", {
           }, {
             location: {
               type: "source",
-              fileName: "rpc-types.js",
+              fileName: "text-edit-rpc-types.js",
               line: 14
             },
             name: "newText",
             type: {
               location: {
                 type: "source",
-                fileName: "rpc-types.js",
+                fileName: "text-edit-rpc-types.js",
                 line: 14
               },
               kind: "string"
@@ -7171,14 +7483,14 @@ Object.defineProperty(module.exports, "defs", {
           }, {
             location: {
               type: "source",
-              fileName: "rpc-types.js",
+              fileName: "text-edit-rpc-types.js",
               line: 16
             },
             name: "oldText",
             type: {
               location: {
                 type: "source",
-                fileName: "rpc-types.js",
+                fileName: "text-edit-rpc-types.js",
                 line: 16
               },
               kind: "string"

@@ -38,13 +38,13 @@ function _load_event() {
 var _fsPromise;
 
 function _load_fsPromise() {
-  return _fsPromise = _interopRequireDefault(require('../../commons-node/fsPromise'));
+  return _fsPromise = _interopRequireDefault(require('nuclide-commons/fsPromise'));
 }
 
 var _stream;
 
 function _load_stream() {
-  return _stream = require('../../commons-node/stream');
+  return _stream = require('nuclide-commons/stream');
 }
 
 var _observable;

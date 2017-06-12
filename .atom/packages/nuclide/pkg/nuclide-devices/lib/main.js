@@ -1,10 +1,5 @@
 'use strict';
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.consumeJavaDebuggerApi = consumeJavaDebuggerApi;
-
 var _createPackage;
 
 function _load_createPackage() {
@@ -17,10 +12,10 @@ function _load_UniversalDisposable() {
   return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
-var _DevicesPanelState;
+var _DevicePanelWorkspaceView;
 
-function _load_DevicesPanelState() {
-  return _DevicesPanelState = require('./DevicesPanelState');
+function _load_DevicePanelWorkspaceView() {
+  return _DevicePanelWorkspaceView = require('./DevicePanelWorkspaceView');
 }
 
 var _atom = require('atom');
@@ -49,12 +44,6 @@ function _load_createEmptyAppState() {
   return _createEmptyAppState = require('./redux/createEmptyAppState');
 }
 
-var _JavaDebuggerApi;
-
-function _load_JavaDebuggerApi() {
-  return _JavaDebuggerApi = require('./JavaDebuggerApi');
-}
-
 var _Reducers;
 
 function _load_Reducers() {
@@ -77,12 +66,6 @@ var _providers;
 
 function _load_providers() {
   return _providers = require('./providers');
-}
-
-var _nuclideUri;
-
-function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
 }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
@@ -108,7 +91,7 @@ class Activation {
     const epics = Object.keys(_Epics || _load_Epics()).map(k => (_Epics || _load_Epics())[k]).filter(epic => typeof epic === 'function');
     this._store = (0, (_redux || _load_redux()).createStore)((_Reducers || _load_Reducers()).app, (0, (_createEmptyAppState || _load_createEmptyAppState()).createEmptyAppState)(), (0, (_redux || _load_redux()).applyMiddleware)((0, (_reduxObservable || _load_reduxObservable()).createEpicMiddleware)((0, (_reduxObservable || _load_reduxObservable()).combineEpics)(...epics))));
     this._disposables = new (_UniversalDisposable || _load_UniversalDisposable()).default((_ServerConnection || _load_ServerConnection()).ServerConnection.observeRemoteConnections().subscribe(conns => {
-      const hosts = conns.map(conn => (_nuclideUri || _load_nuclideUri()).default.getHostname(conn.getUriOfRemotePath('/')));
+      const hosts = conns.map(conn => conn.getUriOfRemotePath('/'));
       this._store.dispatch((_Actions || _load_Actions()).setHosts(['local'].concat(hosts)));
     }));
   }
@@ -119,16 +102,16 @@ class Activation {
 
   consumeWorkspaceViewsService(api) {
     this._disposables.add(api.addOpener(uri => {
-      if (uri === (_DevicesPanelState || _load_DevicesPanelState()).WORKSPACE_VIEW_URI) {
-        return new (_DevicesPanelState || _load_DevicesPanelState()).DevicesPanelState(this._store);
+      if (uri === (_DevicePanelWorkspaceView || _load_DevicePanelWorkspaceView()).WORKSPACE_VIEW_URI) {
+        return new (_DevicePanelWorkspaceView || _load_DevicePanelWorkspaceView()).DevicePanelWorkspaceView(this._store);
       }
-    }), () => api.destroyWhere(item => item instanceof (_DevicesPanelState || _load_DevicesPanelState()).DevicesPanelState), atom.commands.add('atom-workspace', 'nuclide-device-panel:toggle', event => {
-      api.toggle((_DevicesPanelState || _load_DevicesPanelState()).WORKSPACE_VIEW_URI, event.detail);
+    }), () => api.destroyWhere(item => item instanceof (_DevicePanelWorkspaceView || _load_DevicePanelWorkspaceView()).DevicePanelWorkspaceView), atom.commands.add('atom-workspace', 'nuclide-device-panel:toggle', event => {
+      api.toggle((_DevicePanelWorkspaceView || _load_DevicePanelWorkspaceView()).WORKSPACE_VIEW_URI, event.detail);
     }));
   }
 
   deserializeDevicePanelState() {
-    return new (_DevicesPanelState || _load_DevicesPanelState()).DevicesPanelState(this._store);
+    return new (_DevicePanelWorkspaceView || _load_DevicePanelWorkspaceView()).DevicePanelWorkspaceView(this._store);
   }
 
   _refreshDeviceTypes() {
@@ -162,13 +145,10 @@ class Activation {
       registerListProvider: this._createProviderRegistration((0, (_providers || _load_providers()).getProviders)().deviceList, () => this._refreshDeviceTypes()),
       registerInfoProvider: this._createProviderRegistration((0, (_providers || _load_providers()).getProviders)().deviceInfo),
       registerProcessesProvider: this._createProviderRegistration((0, (_providers || _load_providers()).getProviders)().deviceProcesses),
-      registerTaskProvider: this._createProviderRegistration((0, (_providers || _load_providers()).getProviders)().deviceTask)
+      registerTaskProvider: this._createProviderRegistration((0, (_providers || _load_providers()).getProviders)().deviceTask),
+      registerProcessTaskProvider: this._createProviderRegistration((0, (_providers || _load_providers()).getProviders)().processTask)
     };
   }
-}
-
-function consumeJavaDebuggerApi(api) {
-  (0, (_JavaDebuggerApi || _load_JavaDebuggerApi()).setJavaDebuggerApi)(api);
 }
 
 (0, (_createPackage || _load_createPackage()).default)(module.exports, Activation);

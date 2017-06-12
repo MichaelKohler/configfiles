@@ -50,10 +50,10 @@ function _load_nuclideAnalytics() {
   return _nuclideAnalytics = require('../../nuclide-analytics');
 }
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 var _ChromeActionRegistryActions;
@@ -64,16 +64,16 @@ function _load_ChromeActionRegistryActions() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const logger = (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)('nuclide-debugger'); /**
-                                                                                                * Copyright (c) 2015-present, Facebook, Inc.
-                                                                                                * All rights reserved.
-                                                                                                *
-                                                                                                * This source code is licensed under the license found in the LICENSE file in
-                                                                                                * the root directory of this source tree.
-                                                                                                *
-                                                                                                * 
-                                                                                                * @format
-                                                                                                */
+const logger = (0, (_log4js || _load_log4js()).getLogger)('nuclide-debugger'); /**
+                                                                                * Copyright (c) 2015-present, Facebook, Inc.
+                                                                                * All rights reserved.
+                                                                                *
+                                                                                * This source code is licensed under the license found in the LICENSE file in
+                                                                                * the root directory of this source tree.
+                                                                                *
+                                                                                * 
+                                                                                * @format
+                                                                                */
 
 const GK_DEBUGGER_REQUEST_WINDOW = 'nuclide_debugger_php_request_window';
 const GK_DEBUGGER_REQUEST_SENDER = 'nuclide_debugger_request_sender';
@@ -416,12 +416,11 @@ class DebuggerActions {
    */
   triggerDebuggerAction(actionId) {
     switch (actionId) {
+      case (_ChromeActionRegistryActions || _load_ChromeActionRegistryActions()).default.RUN:
+        (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)((_constants || _load_constants()).AnalyticsEvents.DEBUGGER_STEP_CONTINUE);
+        break;
       case (_ChromeActionRegistryActions || _load_ChromeActionRegistryActions()).default.PAUSE:
-        if (this._store.getDebuggerMode() === (_DebuggerStore || _load_DebuggerStore()).DebuggerMode.RUNNING) {
-          (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)((_constants || _load_constants()).AnalyticsEvents.DEBUGGER_STEP_PAUSE);
-        } else {
-          (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)((_constants || _load_constants()).AnalyticsEvents.DEBUGGER_STEP_CONTINUE);
-        }
+        (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)((_constants || _load_constants()).AnalyticsEvents.DEBUGGER_STEP_PAUSE);
         break;
       case (_ChromeActionRegistryActions || _load_ChromeActionRegistryActions()).default.STEP_INTO:
         (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)((_constants || _load_constants()).AnalyticsEvents.DEBUGGER_STEP_INTO);

@@ -19,10 +19,10 @@ function _load_tasks() {
   return _tasks = require('../../commons-node/tasks');
 }
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 var _nuclideRemoteConnection;
@@ -98,7 +98,7 @@ class BuckBuildSystem {
 
     const targetString = getCommandStringForResolvedBuildTarget(buildTarget);
     return _rxjsBundlesRxMinJs.Observable.fromPromise(buckService.getHTTPServerPort(buckRoot)).catch(err => {
-      (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().warn(`Failed to get httpPort for ${(_nuclideUri || _load_nuclideUri()).default.getPath(buckRoot)}`, err);
+      (0, (_log4js || _load_log4js()).getLogger)('nuclide-buck').warn(`Failed to get httpPort for ${(_nuclideUri || _load_nuclideUri()).default.getPath(buckRoot)}`, err);
       return _rxjsBundlesRxMinJs.Observable.of(-1);
     }).switchMap(httpPort => {
       let socketEvents = null;
@@ -157,10 +157,9 @@ class BuckBuildSystem {
         return (0, (_tasks || _load_tasks()).createMessage)(event.message, event.level);
       } else if (event.type === 'build-output') {
         const { target, path, successType } = event.output;
-        return _rxjsBundlesRxMinJs.Observable.concat((0, (_tasks || _load_tasks()).createMessage)(`Target: ${target}`, 'log'), (0, (_tasks || _load_tasks()).createMessage)(`Output: ${path}`, 'log'), (0, (_tasks || _load_tasks()).createMessage)(`Success type: ${successType}`, 'log'), _rxjsBundlesRxMinJs.Observable.of({
-          type: 'result',
-          result: Object.assign({}, event.output, { path: (_nuclideUri || _load_nuclideUri()).default.join(buckRoot, path) })
-        }));
+        return _rxjsBundlesRxMinJs.Observable.concat((0, (_tasks || _load_tasks()).createMessage)(`Target: ${target}`, 'log'), (0, (_tasks || _load_tasks()).createMessage)(`Output: ${path}`, 'log'), (0, (_tasks || _load_tasks()).createMessage)(`Success type: ${successType}`, 'log'), (0, (_tasks || _load_tasks()).createResult)(Object.assign({}, event.output, {
+          path: (_nuclideUri || _load_nuclideUri()).default.join(buckRoot, path)
+        })));
       } else if (event.type === 'diagnostics') {
         // Warning: side effects below
         const { diagnostics } = event;

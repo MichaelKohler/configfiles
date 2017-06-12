@@ -47,17 +47,6 @@ function _load_TaskButton() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
-
 class DevicePanel extends _react.default.Component {
 
   _createInfoTables() {
@@ -74,10 +63,8 @@ class DevicePanel extends _react.default.Component {
       { className: 'block', key: 'process-table' },
       _react.default.createElement((_ProcessTable || _load_ProcessTable()).ProcessTable, {
         processes: this.props.processes,
-        killProcess: this.props.killProcess,
-        startFetchingProcesses: this.props.startFetchingProcesses,
-        host: this.props.host,
-        device: this.props.device
+        processTasks: this.props.processTasks,
+        startFetchingProcesses: this.props.startFetchingProcesses
       })
     );
   }
@@ -110,13 +97,36 @@ class DevicePanel extends _react.default.Component {
       { className: 'block' },
       _react.default.createElement(
         'span',
-        {
-          className: 'nuclide-device-panel-link-with-icon',
-          onClick: () => this.props.goToRootPanel() },
+        null,
+        _react.default.createElement(
+          'a',
+          {
+            className: 'nuclide-device-panel-text-with-icon',
+            onClick: () => this.props.goToRootPanel() },
+          _react.default.createElement(
+            (_Icon || _load_Icon()).Icon,
+            { icon: 'chevron-left' },
+            'Choose another device'
+          )
+        )
+      )
+    );
+  }
+  _getStatus() {
+    if (this.props.isDeviceConnected) {
+      return null;
+    }
+
+    return _react.default.createElement(
+      'div',
+      { className: 'block' },
+      _react.default.createElement(
+        'span',
+        { className: 'nuclide-device-panel-text-with-icon nuclide-device-panel-disconnected-icon' },
         _react.default.createElement(
           (_Icon || _load_Icon()).Icon,
-          { icon: 'chevron-left' },
-          'Choose another device'
+          { icon: 'primitive-dot' },
+          'Disconnected'
         )
       )
     );
@@ -127,10 +137,20 @@ class DevicePanel extends _react.default.Component {
       'div',
       null,
       this._getBackButton(),
+      this._getStatus(),
       this._getTasks(),
       this._createInfoTables(),
       this._createProcessTable()
     );
   }
 }
-exports.DevicePanel = DevicePanel;
+exports.DevicePanel = DevicePanel; /**
+                                    * Copyright (c) 2015-present, Facebook, Inc.
+                                    * All rights reserved.
+                                    *
+                                    * This source code is licensed under the license found in the LICENSE file in
+                                    * the root directory of this source tree.
+                                    *
+                                    * 
+                                    * @format
+                                    */

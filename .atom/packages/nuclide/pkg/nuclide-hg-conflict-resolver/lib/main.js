@@ -16,10 +16,8 @@ function _load_MercurialConflictDetector() {
 var _passesGK;
 
 function _load_passesGK() {
-  return _passesGK = _interopRequireDefault(require('../../commons-node/passesGK'));
+  return _passesGK = require('../../commons-node/passesGK');
 }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 let conflictDetector; /**
                        * Copyright (c) 2015-present, Facebook, Inc.
@@ -42,8 +40,8 @@ function deactivate() {
 }
 
 function consumeMergeConflictsApi(api) {
-  (0, (_passesGK || _load_passesGK()).default)('nuclide_conflict_resolver').then(enabled => {
-    if (!enabled) {
+  (0, (_passesGK || _load_passesGK()).onceGkInitialized)(() => {
+    if (!(0, (_passesGK || _load_passesGK()).isGkEnabled)('nuclide_conflict_resolver')) {
       conflictDetector = new (_MercurialConflictDetector || _load_MercurialConflictDetector()).MercurialConflictDetector();
       conflictDetector.setConflictsApi(api);
     }

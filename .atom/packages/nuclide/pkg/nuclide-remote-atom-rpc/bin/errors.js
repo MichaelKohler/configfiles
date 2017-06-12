@@ -21,7 +21,7 @@ let setupLogging = exports.setupLogging = (() => {
       config.appenders.push(serverLogAppenderConfig);
     }
 
-    (0, (_nuclideLogging || _load_nuclideLogging()).updateConfig)(config);
+    (_log4js || _load_log4js()).default.configure(config);
   });
 
   return function setupLogging() {
@@ -33,6 +33,12 @@ exports.setupErrorHandling = setupErrorHandling;
 exports.reportConnectionErrorAndExit = reportConnectionErrorAndExit;
 exports.reportErrorAndExit = reportErrorAndExit;
 
+var _log4js;
+
+function _load_log4js() {
+  return _log4js = _interopRequireDefault(require('log4js'));
+}
+
 var _nuclideLogging;
 
 function _load_nuclideLogging() {
@@ -41,16 +47,18 @@ function _load_nuclideLogging() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const logger = (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)(); /**
-                                                                              * Copyright (c) 2015-present, Facebook, Inc.
-                                                                              * All rights reserved.
-                                                                              *
-                                                                              * This source code is licensed under the license found in the LICENSE file in
-                                                                              * the root directory of this source tree.
-                                                                              *
-                                                                              * 
-                                                                              * @format
-                                                                              */
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ * @format
+ */
+
+const logger = (_log4js || _load_log4js()).default.getLogger('nuclide-remote-atom-rpc');
 
 const EXIT_CODE_SUCCESS = exports.EXIT_CODE_SUCCESS = 0;
 const EXIT_CODE_UNKNOWN_ERROR = exports.EXIT_CODE_UNKNOWN_ERROR = 1;

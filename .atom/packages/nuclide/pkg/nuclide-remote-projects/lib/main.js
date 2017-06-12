@@ -151,11 +151,12 @@ exports.createRemoteDirectoryProvider = createRemoteDirectoryProvider;
 exports.createRemoteDirectorySearcher = createRemoteDirectorySearcher;
 exports.getHomeFragments = getHomeFragments;
 exports.provideRemoteProjectsService = provideRemoteProjectsService;
+exports.consumeNotifications = consumeNotifications;
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 var _nuclideRemoteConnection;
@@ -232,13 +233,14 @@ function _load_patchAtomWorkspaceReplace() {
   return _patchAtomWorkspaceReplace = _interopRequireDefault(require('./patchAtomWorkspaceReplace'));
 }
 
+var _AtomNotifications;
+
+function _load_AtomNotifications() {
+  return _AtomNotifications = require('./AtomNotifications');
+}
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const logger = (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)();
-
-/**
- * Stores the host and cwd of a remote connection.
- */
 /**
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -249,6 +251,13 @@ const logger = (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)();
  * 
  * @format
  */
+
+const logger = (0, (_log4js || _load_log4js()).getLogger)('nuclide-remote-projects');
+
+/**
+ * Stores the host and cwd of a remote connection.
+ */
+
 
 let packageSubscriptions = null;
 let controller = null;
@@ -590,4 +599,8 @@ function provideRemoteProjectsService() {
   }
 
   return remoteProjectsService;
+}
+
+function consumeNotifications(raiseNativeNotification) {
+  (0, (_AtomNotifications || _load_AtomNotifications()).setNotificationService)(raiseNativeNotification);
 }

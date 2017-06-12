@@ -33,10 +33,10 @@ exports.setConnectionConfig = setConnectionConfig;
 
 var _crypto = _interopRequireDefault(require('crypto'));
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 var _keytarWrapper;
@@ -62,7 +62,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 const CONFIG_DIR = 'nuclide-connections';
 
-const logger = (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)();
+const logger = (0, (_log4js || _load_log4js()).getLogger)('nuclide-remote-connection');
 
 /**
  * Version of ServerConnectionConfiguration that uses string instead of Buffer for fields so it can
@@ -185,7 +185,7 @@ function decryptConfig(remoteProjectConfig) {
   // "nolint" is to suppress ArcanistPrivateKeyLinter errors
   if (!restoredClientKey.startsWith('-----BEGIN RSA PRIVATE KEY-----') // nolint
   ) {
-      (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error(`decrypted client key did not start with expected header: ${restoredClientKey}`);
+      (0, (_log4js || _load_log4js()).getLogger)('nuclide-remote-connection').error(`decrypted client key did not start with expected header: ${restoredClientKey}`);
     }
 
   if (!certificateAuthorityCertificate) {

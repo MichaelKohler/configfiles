@@ -6,6 +6,24 @@ Object.defineProperty(exports, "__esModule", {
 
 var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
 
+var _ws;
+
+function _load_ws() {
+  return _ws = _interopRequireDefault(require('ws'));
+}
+
+var _event;
+
+function _load_event() {
+  return _event = require('nuclide-commons/event');
+}
+
+var _log4js;
+
+function _load_log4js() {
+  return _log4js = require('log4js');
+}
+
 var _blocked;
 
 function _load_blocked() {
@@ -36,12 +54,6 @@ function _load_nuclideLogging() {
   return _nuclideLogging = require('../../nuclide-logging');
 }
 
-var _ws;
-
-function _load_ws() {
-  return _ws = _interopRequireDefault(require('ws'));
-}
-
 var _nuclideRpc;
 
 function _load_nuclideRpc() {
@@ -58,12 +70,6 @@ var _WebSocketTransport;
 
 function _load_WebSocketTransport() {
   return _WebSocketTransport = require('./WebSocketTransport');
-}
-
-var _event;
-
-function _load_event() {
-  return _event = require('nuclide-commons/event');
 }
 
 var _nuclideMarshalersCommon;
@@ -89,7 +95,7 @@ const connect = require('connect');
 const http = require('http');
 const https = require('https');
 
-const logger = (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)();
+const logger = (0, (_log4js || _load_log4js()).getLogger)('nuclide-server');
 
 class NuclideServer {
 

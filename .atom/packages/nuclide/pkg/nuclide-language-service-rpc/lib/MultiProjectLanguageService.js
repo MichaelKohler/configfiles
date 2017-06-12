@@ -16,7 +16,7 @@ function _load_nuclideOpenFilesRpc() {
 var _cache;
 
 function _load_cache() {
-  return _cache = require('../../commons-node/cache');
+  return _cache = require('nuclide-commons/cache');
 }
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
@@ -42,7 +42,7 @@ function _load_collection() {
 var _ConfigCache;
 
 function _load_ConfigCache() {
-  return _ConfigCache = require('../../commons-node/ConfigCache');
+  return _ConfigCache = require('nuclide-commons/ConfigCache');
 }
 
 var _;
@@ -52,17 +52,6 @@ function _load_() {
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
 
 class MultiProjectLanguageService {
   // A promise for when AtomLanguageService has called into this feature
@@ -102,7 +91,7 @@ class MultiProjectLanguageService {
     this._resources.add(fileCache.observeFileEvents().ignoreElements().subscribe(undefined, // next
     undefined, // error
     () => {
-      this._logger.logInfo('fileCache shutting down.');
+      this._logger.info('fileCache shutting down.');
       this._closeProcesses();
     }));
   }
@@ -172,18 +161,18 @@ class MultiProjectLanguageService {
   // Closes all LanguageServices not in configPaths, and starts
   // new LanguageServices for any paths in configPaths.
   _ensureProcesses(configPaths) {
-    this._logger.logInfo(`MultiProjectLanguageService ensureProcesses. ${Array.from(configPaths).join(', ')}`);
+    this._logger.info(`MultiProjectLanguageService ensureProcesses. ${Array.from(configPaths).join(', ')}`);
     this._processes.setKeys(configPaths);
   }
 
   // Closes all LanguageServices for this fileCache.
   _closeProcesses() {
-    this._logger.logInfo('Shutting down LanguageServices ' + `${Array.from(this._processes.keys()).join(',')}`);
+    this._logger.info('Shutting down LanguageServices ' + `${Array.from(this._processes.keys()).join(',')}`);
     this._processes.clear();
   }
 
   observeLanguageServices() {
-    this._logger.logInfo('observing connections');
+    this._logger.info('observing connections');
     return (0, (_observable || _load_observable()).compact)(this._processes.observeValues().switchMap(process => _rxjsBundlesRxMinJs.Observable.fromPromise(process)));
   }
 
@@ -212,9 +201,9 @@ class MultiProjectLanguageService {
     this._observeDiagnosticsPromiseResolver();
 
     return this.observeLanguageServices().mergeMap(process => {
-      this._logger.logTrace('observeDiagnostics');
+      this._logger.trace('observeDiagnostics');
       return (0, (_ || _load_()).ensureInvalidations)(this._logger, process.observeDiagnostics().refCount().catch(error => {
-        this._logger.logError(`Error: observeDiagnostics ${error}`);
+        this._logger.error(`Error: observeDiagnostics ${error}`);
         return _rxjsBundlesRxMinJs.Observable.empty();
       }));
     }).publish();
@@ -300,19 +289,27 @@ class MultiProjectLanguageService {
     })();
   }
 
-  getEvaluationExpression(fileVersion, position) {
+  formatAtPosition(fileVersion, position, triggerCharacter) {
     var _this16 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      return (yield _this16._getLanguageServiceForFile(fileVersion.filePath)).getEvaluationExpression(fileVersion, position);
+      return (yield _this16._getLanguageServiceForFile(fileVersion.filePath)).formatAtPosition(fileVersion, position, triggerCharacter);
+    })();
+  }
+
+  getEvaluationExpression(fileVersion, position) {
+    var _this17 = this;
+
+    return (0, _asyncToGenerator.default)(function* () {
+      return (yield _this17._getLanguageServiceForFile(fileVersion.filePath)).getEvaluationExpression(fileVersion, position);
     })();
   }
 
   supportsSymbolSearch(directories) {
-    var _this17 = this;
+    var _this18 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      const serviceDirectories = yield _this17._getLanguageServicesForFiles(directories);
+      const serviceDirectories = yield _this18._getLanguageServicesForFiles(directories);
       const eligibilities = yield Promise.all(serviceDirectories.map(function ([service, dirs]) {
         return service.supportsSymbolSearch(dirs);
       }));
@@ -323,13 +320,13 @@ class MultiProjectLanguageService {
   }
 
   symbolSearch(query, directories) {
-    var _this18 = this;
+    var _this19 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
       if (query.length === 0) {
         return [];
       }
-      const serviceDirectories = yield _this18._getLanguageServicesForFiles(directories);
+      const serviceDirectories = yield _this19._getLanguageServicesForFiles(directories);
       const results = yield Promise.all(serviceDirectories.map(function ([service, dirs]) {
         return service.symbolSearch(query, dirs);
       }));
@@ -338,18 +335,18 @@ class MultiProjectLanguageService {
   }
 
   getProjectRoot(filePath) {
-    var _this19 = this;
+    var _this20 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      return (yield _this19._getLanguageServiceForFile(filePath)).getProjectRoot(filePath);
+      return (yield _this20._getLanguageServiceForFile(filePath)).getProjectRoot(filePath);
     })();
   }
 
   isFileInProject(filePath) {
-    var _this20 = this;
+    var _this21 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      return (yield _this20._getLanguageServiceForFile(filePath)).isFileInProject(filePath);
+      return (yield _this21._getLanguageServiceForFile(filePath)).isFileInProject(filePath);
     })();
   }
 
@@ -359,5 +356,15 @@ class MultiProjectLanguageService {
 }
 
 exports.MultiProjectLanguageService = MultiProjectLanguageService; // Enforces that an instance of MultiProjectLanguageService satisfies the LanguageService type
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ * @format
+ */
 
 null;

@@ -171,7 +171,7 @@ function getAggregateRemoteObjectId(contextId, dbgpProperty) {
   if (pagesize !== 0) {
     pageCount = Math.trunc((numchildren + pagesize - 1) / pagesize) || 0;
   }
-  (_utils || _load_utils()).default.log(`numchildren: ${numchildren} pagesize: ${pagesize} pageCount ${pageCount}`);
+  (_utils || _load_utils()).default.debug(`numchildren: ${numchildren} pagesize: ${pagesize} pageCount ${pageCount}`);
   if (pageCount > 1) {
     const elementRange = {
       pagesize,

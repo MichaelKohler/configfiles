@@ -33,10 +33,10 @@ function _load_RemoteConnectionConfigurationManager() {
   return _RemoteConnectionConfigurationManager = require('./RemoteConnectionConfigurationManager');
 }
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -52,7 +52,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @format
  */
 
-const logger = (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)();
+const logger = (0, (_log4js || _load_log4js()).getLogger)('nuclide-remote-connection');
 
 const FILE_WATCHER_SERVICE = 'FileWatcherService';
 const FILE_SYSTEM_SERVICE = 'FileSystemService';
@@ -113,7 +113,7 @@ class RemoteConnection {
         const config = Object.assign({}, connectionConfig, { cwd, displayTitle });
         return yield RemoteConnection.findOrCreate(config);
       } catch (e) {
-        const log = e.name === 'VersionMismatchError' ? logger.warn : logger.error;
+        const log = e.name === 'VersionMismatchError' ? logger.warn.bind(logger) : logger.error.bind(logger);
         log(`Failed to reuse connectionConfiguration for ${hostOrIp}`, e);
         return null;
       }

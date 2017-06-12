@@ -222,8 +222,8 @@ class Combobox extends _react.default.Component {
     // TODO(hansonw): Move this check inside AtomInput.
     // See https://github.com/atom/atom/blob/master/src/text-editor-element.coffee#L145
     relatedTarget.tagName === 'INPUT' && relatedTarget.classList.contains('hidden-input') ||
-    // Selecting a menu item registers on the document body.
-    relatedTarget === document.body) {
+    // Selecting a menu item registers on the portal container.
+    relatedTarget === this._getOptionsElement().parentNode) {
       return;
     }
     this._handleCancel();

@@ -6,6 +6,12 @@ function _load_createPackage() {
   return _createPackage = _interopRequireDefault(require('nuclide-commons-atom/createPackage'));
 }
 
+var _workspaceViewsCompat;
+
+function _load_workspaceViewsCompat() {
+  return _workspaceViewsCompat = require('nuclide-commons-atom/workspace-views-compat');
+}
+
 var _reduxObservable;
 
 function _load_reduxObservable() {
@@ -30,10 +36,10 @@ function _load_observable() {
   return _observable = require('nuclide-commons/observable');
 }
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 var _AppSerialization;
@@ -71,6 +77,17 @@ function _load_redux() {
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ * @format
+ */
 
 class Activation {
 
@@ -170,55 +187,9 @@ class Activation {
 
 // TODO(matthewwithanm): Delete this (along with the services and package) and refactor to workspace
 // API once docks land
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
-
 class CompatActivation {
   provideWorkspaceViewsService() {
-    return {
-      registerLocation: () => new _atom.Disposable(() => {}),
-      addOpener: opener => atom.workspace.addOpener(opener),
-      destroyWhere(predicate) {
-        atom.workspace.getPanes().forEach(pane => {
-          pane.getItems().forEach(item => {
-            if (predicate(item)) {
-              pane.destroyItem(item);
-            }
-          });
-        });
-      },
-      open(uri, options) {
-        // eslint-disable-next-line nuclide-internal/atom-apis
-        atom.workspace.open(uri, options);
-      },
-      toggle(uri, options) {
-        const visible = options && options.visible;
-        if (visible === true) {
-          // eslint-disable-next-line nuclide-internal/atom-apis
-          atom.workspace.open(uri, { searchAllPanes: true });
-        } else if (visible === false) {
-          // TODO: Add `atom.workspace.hide()` and use that instead.
-          const hasItem = atom.workspace.getPaneItems().some(item => typeof item.getURI === 'function' && item.getURI() === uri);
-          if (hasItem) {
-            // TODO(matthewwithanm): Add this to the Flow defs once docks land
-            // $FlowIgnore
-            atom.workspace.toggle(uri);
-          }
-        } else {
-          // TODO(matthewwithanm): Add this to the Flow defs once docks land
-          // $FlowIgnore
-          atom.workspace.toggle(uri);
-        }
-      }
-    };
+    return (0, (_workspaceViewsCompat || _load_workspaceViewsCompat()).getDocksWorkspaceViewsService)();
   }
 }
 
@@ -228,7 +199,7 @@ function createPackageStore(rawState) {
   const rootEpic = (actions, store) => (0, (_reduxObservable || _load_reduxObservable()).combineEpics)(...epics)(actions, store)
   // Log errors and continue.
   .catch((err, stream) => {
-    (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error(err);
+    (0, (_log4js || _load_log4js()).getLogger)('nuclide-workspace-views').error(err);
     return stream;
   });
   const store = (0, (_redux || _load_redux()).createStore)((0, (_redux || _load_redux()).combineReducers)(_Reducers || _load_Reducers()), initialState, (0, (_redux || _load_redux()).applyMiddleware)((0, (_reduxObservable || _load_reduxObservable()).createEpicMiddleware)(rootEpic)));

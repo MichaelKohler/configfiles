@@ -36,24 +36,28 @@ function _load_LoadingSpinner() {
   return _LoadingSpinner = require('nuclide-commons-ui/LoadingSpinner');
 }
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _env;
 
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
+function _load_env() {
+  return _env = require('../../nuclide-node-transpiler/lib/env');
+}
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function getStateFromStore(store) {
   return {
     processSocket: store.getProcessSocket()
   };
-}
+} /**
+   * Copyright (c) 2015-present, Facebook, Inc.
+   * All rights reserved.
+   *
+   * This source code is licensed under the license found in the LICENSE file in
+   * the root directory of this source tree.
+   *
+   * 
+   * @format
+   */
 
 class DebuggerControllerView extends _react.default.Component {
 
@@ -90,7 +94,7 @@ class DebuggerControllerView extends _react.default.Component {
   }
 
   render() {
-    if (this.state.processSocket) {
+    if (this.state.processSocket && (_env || _load_env()).__DEV__) {
       return _react.default.createElement((_DebuggerInspector || _load_DebuggerInspector()).default, {
         breakpointStore: this.props.breakpointStore,
         openDevTools: this.props.openDevTools,

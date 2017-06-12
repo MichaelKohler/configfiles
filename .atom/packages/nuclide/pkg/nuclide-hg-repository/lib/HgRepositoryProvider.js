@@ -24,10 +24,10 @@ function _load_nuclideHgRepositoryClient() {
   return _nuclideHgRepositoryClient = require('../../nuclide-hg-repository-client');
 }
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 var _nuclideSourceControlHelpers;
@@ -47,7 +47,7 @@ function _load_nuclideSourceControlHelpers() {
  * @format
  */
 
-const logger = (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)();
+const logger = (0, (_log4js || _load_log4js()).getLogger)('nuclide-hg-repository');
 
 /**
  * @param directory Either a RemoteDirectory or Directory we are interested in.

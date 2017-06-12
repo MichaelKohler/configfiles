@@ -6,6 +6,12 @@ Object.defineProperty(exports, "__esModule", {
 exports.deactivate = deactivate;
 exports.consumePlatformService = consumePlatformService;
 
+var _fsPromise;
+
+function _load_fsPromise() {
+  return _fsPromise = _interopRequireDefault(require('nuclide-commons/fsPromise'));
+}
+
 var _nuclideUri;
 
 function _load_nuclideUri() {
@@ -26,18 +32,16 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
-
-let disposable = null;
+let disposable = null; /**
+                        * Copyright (c) 2015-present, Facebook, Inc.
+                        * All rights reserved.
+                        *
+                        * This source code is licensed under the license found in the LICENSE file in
+                        * the root directory of this source tree.
+                        *
+                        * 
+                        * @format
+                        */
 
 const RUNNABLE_RULE_TYPES = new Set(['apple_bundle']);
 
@@ -59,27 +63,33 @@ function provideIosDevices(buckRoot, ruleType, buildTarget) {
     return _rxjsBundlesRxMinJs.Observable.of(null);
   }
 
-  return (_nuclideIosCommon || _load_nuclideIosCommon()).getFbsimctlSimulators().map(simulators => {
-    if (!simulators.length) {
-      return null;
-    }
+  return _rxjsBundlesRxMinJs.Observable.fromPromise((_fsPromise || _load_fsPromise()).default.exists((_nuclideUri || _load_nuclideUri()).default.join(buckRoot, 'mode', 'oculus-mobile'))).switchMap(result => {
+    if (result) {
+      return _rxjsBundlesRxMinJs.Observable.of(null);
+    } else {
+      return (_nuclideIosCommon || _load_nuclideIosCommon()).getFbsimctlSimulators().map(simulators => {
+        if (!simulators.length) {
+          return null;
+        }
 
-    return {
-      name: 'iOS Simulators',
-      platforms: [{
-        name: 'iOS Simulators',
-        tasksForDevice: device => getTasks(buckRoot, ruleType),
-        runTask: (builder, taskType, target, settings, device) => _runTask(builder, taskType, ruleType, target, settings, device, buckRoot),
-        deviceGroups: [{
+        return {
           name: 'iOS Simulators',
-          devices: simulators.map(simulator => ({
-            name: `${simulator.name} (${simulator.os})`,
-            udid: simulator.udid,
-            arch: simulator.arch
-          }))
-        }]
-      }]
-    };
+          platforms: [{
+            name: 'iOS Simulators',
+            tasksForDevice: device => getTasks(buckRoot, ruleType),
+            runTask: (builder, taskType, target, settings, device) => _runTask(builder, taskType, ruleType, target, settings, device, buckRoot),
+            deviceGroups: [{
+              name: 'iOS Simulators',
+              devices: simulators.map(simulator => ({
+                name: `${simulator.name} (${simulator.os})`,
+                udid: simulator.udid,
+                arch: simulator.arch
+              }))
+            }]
+          }]
+        };
+      });
+    }
   });
 }
 

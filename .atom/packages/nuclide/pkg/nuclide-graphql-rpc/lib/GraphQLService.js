@@ -13,7 +13,7 @@ let initializeLsp = exports.initializeLsp = (() => {
       throw new Error('Invariant violation: "fileNotifier instanceof FileCache"');
     }
 
-    (_config || _load_config()).logger.setLogLevel(logLevel);
+    (_config || _load_config()).logger.setLevel(logLevel);
     return (0, (_nuclideVscodeLanguageService || _load_nuclideVscodeLanguageService()).createMultiLspLanguageService)((_config || _load_config()).logger, fileNotifier, host, 'GraphQL', command, args, projectFileName, fileExtensions);
   });
 

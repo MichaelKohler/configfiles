@@ -26,10 +26,10 @@ function _load_CreateConnectionProfileForm() {
   return _CreateConnectionProfileForm = _interopRequireDefault(require('./CreateConnectionProfileForm'));
 }
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 var _promiseExecutors;
@@ -55,7 +55,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @format
  */
 
-const logger = (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)();
+const logger = (0, (_log4js || _load_log4js()).getLogger)('nuclide-remote-projects');
 let dialogPromiseQueue = null;
 
 /**

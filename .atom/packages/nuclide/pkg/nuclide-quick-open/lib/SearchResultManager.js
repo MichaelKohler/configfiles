@@ -13,10 +13,10 @@ function _load_nuclideAnalytics() {
   return _nuclideAnalytics = require('../../nuclide-analytics');
 }
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 var _react = _interopRequireDefault(require('react'));
@@ -183,7 +183,7 @@ class SearchResultManager {
         directoryEligibleProviders.set(directory, providersForDirectory);
         for (const provider of _this._quickOpenProviderRegistry.getDirectoryProviders()) {
           eligibilities.push(provider.isEligibleForDirectory(directory).catch(function (err) {
-            (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().warn(`isEligibleForDirectory failed for directory provider ${provider.name}`, err);
+            (0, (_log4js || _load_log4js()).getLogger)('nuclide-quick-open').warn(`isEligibleForDirectory failed for directory provider ${provider.name}`, err);
             return false;
           }).then(function (isEligible) {
             if (isEligible) {
@@ -195,7 +195,7 @@ class SearchResultManager {
 
       for (const provider of _this._quickOpenProviderRegistry.getGlobalProviders()) {
         eligibilities.push(provider.isEligibleForDirectories(directories).catch(function (err) {
-          (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().warn(`isEligibleForDirectories failed for ${provider.name}`, err);
+          (0, (_log4js || _load_log4js()).getLogger)('nuclide-quick-open').warn(`isEligibleForDirectories failed for ${provider.name}`, err);
           return false;
         }).then(function (isEligible) {
           if (isEligible) {

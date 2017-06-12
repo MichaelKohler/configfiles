@@ -8,7 +8,7 @@ exports.createProcessStream = createProcessStream;
 var _process;
 
 function _load_process() {
-  return _process = require('../../commons-node/process');
+  return _process = require('nuclide-commons/process');
 }
 
 var _featureConfig;

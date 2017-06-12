@@ -32,10 +32,10 @@ function _load_nuclideBuckBase() {
   return _nuclideBuckBase = require('../../../nuclide-buck-base');
 }
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -117,7 +117,7 @@ class BuckToolbarTargetSelector extends _react.default.Component {
     this._cachedOwners = buckService == null ? Promise.resolve([]) : buckService.getOwners(buckRoot, path).then(
     // Strip off the optional leading "//" to match typical user input.
     owners => owners.map(owner => owner.startsWith('//') ? owner.substring(2) : owner)).catch(err => {
-      (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error(`Error getting Buck owners for ${path}`, err);
+      (0, (_log4js || _load_log4js()).getLogger)('nuclide-buck').error(`Error getting Buck owners for ${path}`, err);
       return [];
     });
     this._cachedOwnersPath = path;

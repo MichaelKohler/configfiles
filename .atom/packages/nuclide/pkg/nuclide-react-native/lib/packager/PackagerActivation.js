@@ -20,7 +20,7 @@ function _load_nuclideReactNativeBase() {
 var _process;
 
 function _load_process() {
-  return _process = require('../../../commons-node/process');
+  return _process = require('nuclide-commons/process');
 }
 
 var _parseMessages;
@@ -100,7 +100,6 @@ class PackagerActivation {
     }), atom.commands.add('atom-workspace', {
       'nuclide-react-native:start-packager': event => {
         const detail = event.detail != null && typeof event.detail === 'object' ? event.detail : undefined;
-        // $FlowFixMe
         this._logTailer.start(detail);
       },
       'nuclide-react-native:stop-packager': () => this._logTailer.stop(),

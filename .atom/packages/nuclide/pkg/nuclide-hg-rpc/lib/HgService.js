@@ -7,8 +7,19 @@ exports.HgService = undefined;
 
 var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
 
+let logWhenSubscriptionEstablished = (() => {
+  var _ref = (0, _asyncToGenerator.default)(function* (sub, subName) {
+    yield sub;
+    logger.debug(`Watchman subscription ${subName} established.`);
+  });
+
+  return function logWhenSubscriptionEstablished(_x, _x2) {
+    return _ref.apply(this, arguments);
+  };
+})();
+
 let getForkBaseName = (() => {
-  var _ref = (0, _asyncToGenerator.default)(function* (directoryPath) {
+  var _ref2 = (0, _asyncToGenerator.default)(function* (directoryPath) {
     const arcConfig = yield (0, (_nuclideArcanistRpc || _load_nuclideArcanistRpc()).readArcConfig)(directoryPath);
     if (arcConfig != null) {
       return arcConfig['arc.feature.start.default'] || arcConfig['arc.land.onto.default'] || DEFAULT_ARC_PROJECT_FORK_BASE;
@@ -16,8 +27,8 @@ let getForkBaseName = (() => {
     return DEFAULT_FORK_BASE_NAME;
   });
 
-  return function getForkBaseName(_x) {
-    return _ref.apply(this, arguments);
+  return function getForkBaseName(_x3) {
+    return _ref2.apply(this, arguments);
   };
 })();
 
@@ -76,7 +87,7 @@ function _load_hgUtils() {
 var _fsPromise;
 
 function _load_fsPromise() {
-  return _fsPromise = _interopRequireDefault(require('../../commons-node/fsPromise'));
+  return _fsPromise = _interopRequireDefault(require('nuclide-commons/fsPromise'));
 }
 
 var _debounce;
@@ -97,15 +108,15 @@ function _load_nuclideArcanistRpc() {
   return _nuclideArcanistRpc = require('../../nuclide-arcanist-rpc');
 }
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const logger = (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)(); /**
+const logger = (0, (_log4js || _load_log4js()).getLogger)('nuclide-hg-rpc'); /**
                                                                               * Copyright (c) 2015-present, Facebook, Inc.
                                                                               * All rights reserved.
                                                                               *
@@ -293,48 +304,48 @@ class HgService {
       primarySubscriptionExpression = primarySubscriptionExpression.concat(getPrimaryWatchmanSubscriptionRefinements());
 
       // Subscribe to changes to files unrelated to source control.
-      const primarySubscribtion = yield watchmanClient.watchDirectoryRecursive(workingDirectory, WATCHMAN_SUBSCRIPTION_NAME_PRIMARY, {
+      const primarySubscriptionPromise = watchmanClient.watchDirectoryRecursive(workingDirectory, WATCHMAN_SUBSCRIPTION_NAME_PRIMARY, {
         fields: ['name', 'exists', 'new'],
         expression: primarySubscriptionExpression,
         defer: ['hg.update'],
         empty_on_fresh_instance: true
       });
-      logger.debug(`Watchman subscription ${WATCHMAN_SUBSCRIPTION_NAME_PRIMARY} established.`);
+      logWhenSubscriptionEstablished(primarySubscriptionPromise, WATCHMAN_SUBSCRIPTION_NAME_PRIMARY);
 
       // Subscribe to changes to files unrelated to source control.
-      const conflictStateSubscribtion = yield watchmanClient.watchDirectoryRecursive(workingDirectory, WATCHMAN_SUBSCRIPTION_NAME_CONFLICTS, {
+      const conflictStateSubscriptionPromise = watchmanClient.watchDirectoryRecursive(workingDirectory, WATCHMAN_SUBSCRIPTION_NAME_CONFLICTS, {
         fields: ['name', 'exists', 'new'],
         expression: ['name', '.hg/merge', 'wholename'],
         defer: ['hg.update'],
         empty_on_fresh_instance: true
       });
-      logger.debug(`Watchman subscription ${WATCHMAN_SUBSCRIPTION_NAME_CONFLICTS} established.`);
+      logWhenSubscriptionEstablished(conflictStateSubscriptionPromise, WATCHMAN_SUBSCRIPTION_NAME_CONFLICTS);
 
       // Subscribe to changes to the active Mercurial bookmark.
-      const hgActiveBookmarkSubscription = yield watchmanClient.watchDirectoryRecursive(workingDirectory, WATCHMAN_SUBSCRIPTION_NAME_HGBOOKMARK, {
+      const hgActiveBookmarkSubscriptionPromise = watchmanClient.watchDirectoryRecursive(workingDirectory, WATCHMAN_SUBSCRIPTION_NAME_HGBOOKMARK, {
         fields: ['name', 'exists'],
         expression: ['name', '.hg/bookmarks.current', 'wholename'],
         defer: ['hg.update'],
         empty_on_fresh_instance: true
       });
-      logger.debug(`Watchman subscription ${WATCHMAN_SUBSCRIPTION_NAME_HGBOOKMARK} established.`);
+      logWhenSubscriptionEstablished(hgActiveBookmarkSubscriptionPromise, WATCHMAN_SUBSCRIPTION_NAME_HGBOOKMARK);
 
       // Subscribe to changes in Mercurial bookmarks.
-      const hgBookmarksSubscription = yield watchmanClient.watchDirectoryRecursive(workingDirectory, WATCHMAN_SUBSCRIPTION_NAME_HGBOOKMARKS, {
+      const hgBookmarksSubscriptionPromise = watchmanClient.watchDirectoryRecursive(workingDirectory, WATCHMAN_SUBSCRIPTION_NAME_HGBOOKMARKS, {
         fields: ['name', 'exists'],
         expression: ['name', '.hg/bookmarks', 'wholename'],
         defer: ['hg.update'],
         empty_on_fresh_instance: true
       });
-      logger.debug(`Watchman subscription ${WATCHMAN_SUBSCRIPTION_NAME_HGBOOKMARKS} established.`);
+      logWhenSubscriptionEstablished(hgBookmarksSubscriptionPromise, WATCHMAN_SUBSCRIPTION_NAME_HGBOOKMARKS);
 
-      const dirStateSubscribtion = yield watchmanClient.watchDirectoryRecursive(workingDirectory, WATCHMAN_HG_DIR_STATE, {
+      const dirStateSubscriptionPromise = watchmanClient.watchDirectoryRecursive(workingDirectory, WATCHMAN_HG_DIR_STATE, {
         fields: ['name'],
         expression: ['name', '.hg/dirstate', 'wholename'],
         defer: ['hg.update'],
         empty_on_fresh_instance: true
       });
-      logger.debug(`Watchman subscription ${WATCHMAN_HG_DIR_STATE} established.`);
+      logWhenSubscriptionEstablished(dirStateSubscriptionPromise, WATCHMAN_HG_DIR_STATE);
 
       // Those files' changes indicate a commit-changing action has been applied to the repository,
       // Watchman currently (v4.7) ignores `.hg/store` file updates.
@@ -347,16 +358,18 @@ class HgService {
             _this2._commitsDidChange();
           }
         });
-        (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().debug('Node watcher created for .hg/store.');
+        (0, (_log4js || _load_log4js()).getLogger)('nuclide-hg-rpc').debug('Node watcher created for .hg/store.');
       } catch (error) {
-        (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error('Error when creating node watcher for hg store', error);
+        (0, (_log4js || _load_log4js()).getLogger)('nuclide-hg-rpc').error('Error when creating node watcher for hg store', error);
       }
 
-      primarySubscribtion.on('change', _this2._filesDidChange.bind(_this2));
+      const [primarySubscription, hgActiveBookmarkSubscription, hgBookmarksSubscription, dirStateSubscription, conflictStateSubscription] = yield Promise.all([primarySubscriptionPromise, hgActiveBookmarkSubscriptionPromise, hgBookmarksSubscriptionPromise, dirStateSubscriptionPromise, conflictStateSubscriptionPromise]);
+
+      primarySubscription.on('change', _this2._filesDidChange.bind(_this2));
       hgActiveBookmarkSubscription.on('change', _this2._hgActiveBookmarkDidChange.bind(_this2));
       hgBookmarksSubscription.on('change', _this2._hgBookmarksDidChange.bind(_this2));
-      dirStateSubscribtion.on('change', _this2._emitHgRepoStateChanged.bind(_this2));
-      conflictStateSubscribtion.on('change', _this2._debouncedCheckConflictChange);
+      dirStateSubscription.on('change', _this2._emitHgRepoStateChanged.bind(_this2));
+      conflictStateSubscription.on('change', _this2._debouncedCheckConflictChange);
     })();
   }
 
@@ -487,7 +500,7 @@ class HgService {
       try {
         output = yield _this5._hgAsyncExecute(args, options);
       } catch (e) {
-        (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error(`Error when running hg diff for paths: ${filePaths.toString()} \n\tError: ${e.stderr}`);
+        (0, (_log4js || _load_log4js()).getLogger)('nuclide-hg-rpc').error(`Error when running hg diff for paths: ${filePaths.toString()} \n\tError: ${e.stderr}`);
         return null;
       }
       const pathToDiffInfo = (0, (_hgDiffOutputParser || _load_hgDiffOutputParser()).parseMultiFileHgDiffUnifiedOutput)(output.stdout);
@@ -620,7 +633,7 @@ class HgService {
         '-r', 'wdir()', // Blank out uncommitted changes
         filePath], { cwd: _this8._workingDirectory })).stdout.split('\n');
       } catch (e) {
-        (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error(`LocalHgServiceBase failed to fetch blame for file: ${filePath}. Error: ${e.stderr}`);
+        (0, (_log4js || _load_log4js()).getLogger)('nuclide-hg-rpc').error(`LocalHgServiceBase failed to fetch blame for file: ${filePath}. Error: ${e.stderr}`);
         throw e;
       }
 
@@ -632,7 +645,7 @@ class HgService {
       try {
         revisionsArray = yield (0, (_hgRevisionExpressionHelpers || _load_hgRevisionExpressionHelpers()).fetchRevisionsInfo)(uniqueRevisions.join('+'), _this8._workingDirectory, { hidden: true, shouldLimit: false }).toPromise();
       } catch (e) {
-        (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error(`LocalHgServiceBase failed to fetch blame for file: ${filePath}. Error: ${e.stderr}`);
+        (0, (_log4js || _load_log4js()).getLogger)('nuclide-hg-rpc').error(`LocalHgServiceBase failed to fetch blame for file: ${filePath}. Error: ${e.stderr}`);
         throw e;
       }
 
@@ -662,7 +675,7 @@ class HgService {
       try {
         return (yield _this9._hgAsyncExecute(args, execOptions)).stdout.trim();
       } catch (e) {
-        (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error(`Failed to fetch Hg config for key ${key}.  Error: ${e.toString()}`);
+        (0, (_log4js || _load_log4js()).getLogger)('nuclide-hg-rpc').error(`Failed to fetch Hg config for key ${key}.  Error: ${e.toString()}`);
         return null;
       }
     })();
@@ -688,7 +701,7 @@ class HgService {
         return stdout ? stdout : null;
       } catch (e) {
         // This should not happen: `hg log` does not error even if it does not recognize the template.
-        (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error(`Failed when trying to get differential revision for: ${changeSetId}`);
+        (0, (_log4js || _load_log4js()).getLogger)('nuclide-hg-rpc').error(`Failed when trying to get differential revision for: ${changeSetId}`);
         return null;
       }
     })();
@@ -817,7 +830,7 @@ class HgService {
         yield _this12._hgAsyncExecute(cmd, options);
       } catch (e) {
         const errorString = e.stderr || e.message || e.toString();
-        (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error('hg %s failed with [%s] arguments: %s', action, args.toString(), errorString);
+        (0, (_log4js || _load_log4js()).getLogger)('nuclide-hg-rpc').error('hg %s failed with [%s] arguments: %s', action, args.toString(), errorString);
         throw new Error(errorString);
       }
     })();
@@ -991,7 +1004,7 @@ class HgService {
         const { stdout } = yield _this17._hgAsyncExecute(args, execOptions);
         return stdout;
       } catch (e) {
-        (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error('Failed when trying to get template commit message');
+        (0, (_log4js || _load_log4js()).getLogger)('nuclide-hg-rpc').error('Failed when trying to get template commit message');
         return null;
       }
     })();
@@ -1011,7 +1024,7 @@ class HgService {
         return stdout || null;
       } catch (e) {
         // This should not happen: `hg log` does not error even if it does not recognize the template.
-        (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error('Failed when trying to get head commit message');
+        (0, (_log4js || _load_log4js()).getLogger)('nuclide-hg-rpc').error('Failed when trying to get head commit message');
         return null;
       }
     })();
@@ -1096,7 +1109,7 @@ class HgService {
       });
       const origBackupPath = yield _this20._getOrigBackupPath();
       const conflicts = yield Promise.all(conflictedFiles.map((() => {
-        var _ref4 = (0, _asyncToGenerator.default)(function* (conflictedFile) {
+        var _ref5 = (0, _asyncToGenerator.default)(function* (conflictedFile) {
           let status;
           // Heuristic: If the `.orig` file doesn't exist, then it's deleted by the rebasing commit.
           if (yield _this20._checkOrigFile(origBackupPath, conflictedFile.path)) {
@@ -1110,8 +1123,8 @@ class HgService {
           };
         });
 
-        return function (_x2) {
-          return _ref4.apply(this, arguments);
+        return function (_x4) {
+          return _ref5.apply(this, arguments);
         };
       })()));
       return [...conflicts, ...resolvedFiles];

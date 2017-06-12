@@ -8,7 +8,7 @@ exports.activate = activate;
 var _whenShellEnvironmentLoaded;
 
 function _load_whenShellEnvironmentLoaded() {
-  return _whenShellEnvironmentLoaded = require('../../commons-node/whenShellEnvironmentLoaded');
+  return _whenShellEnvironmentLoaded = require('nuclide-commons/whenShellEnvironmentLoaded');
 }
 
 /**

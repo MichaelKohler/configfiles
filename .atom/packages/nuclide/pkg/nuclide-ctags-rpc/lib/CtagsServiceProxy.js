@@ -170,7 +170,7 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "CtagsService.js",
-          line: 99
+          line: 102
         },
         kind: "named",
         name: "NuclideUri"
@@ -182,14 +182,14 @@ module.exports = _client => {
         location: {
           type: "source",
           fileName: "CtagsService.js",
-          line: 99
+          line: 102
         },
         kind: "nullable",
         type: {
           location: {
             type: "source",
             fileName: "CtagsService.js",
-            line: 99
+            line: 102
           },
           kind: "named",
           name: "CtagsService"
@@ -558,7 +558,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "CtagsService.js",
-            line: 94
+            line: 97
           },
           kind: "function",
           argumentTypes: [],
@@ -566,7 +566,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "CtagsService.js",
-              line: 94
+              line: 97
             },
             kind: "void"
           }
@@ -579,13 +579,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "CtagsService.js",
-        line: 99
+        line: 102
       },
       type: {
         location: {
           type: "source",
           fileName: "CtagsService.js",
-          line: 99
+          line: 102
         },
         kind: "function",
         argumentTypes: [{
@@ -594,7 +594,7 @@ Object.defineProperty(module.exports, "defs", {
             location: {
               type: "source",
               fileName: "CtagsService.js",
-              line: 99
+              line: 102
             },
             kind: "named",
             name: "NuclideUri"
@@ -604,21 +604,21 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "CtagsService.js",
-            line: 99
+            line: 102
           },
           kind: "promise",
           type: {
             location: {
               type: "source",
               fileName: "CtagsService.js",
-              line: 99
+              line: 102
             },
             kind: "nullable",
             type: {
               location: {
                 type: "source",
                 fileName: "CtagsService.js",
-                line: 99
+                line: 102
               },
               kind: "named",
               name: "CtagsService"

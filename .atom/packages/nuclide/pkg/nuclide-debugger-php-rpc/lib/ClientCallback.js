@@ -70,7 +70,7 @@ class ClientCallback {
   }
 
   sendUserMessage(type, message) {
-    (_utils || _load_utils()).default.log(`sendUserMessage(${type}): ${JSON.stringify(message)}`);
+    (_utils || _load_utils()).default.debug(`sendUserMessage(${type}): ${JSON.stringify(message)}`);
     switch (type) {
       case 'notification':
         this._notifications.next({
@@ -89,13 +89,13 @@ class ClientCallback {
         });
         break;
       default:
-        (_utils || _load_utils()).default.logError(`Unknown UserMessageType: ${type}`);
+        (_utils || _load_utils()).default.error(`Unknown UserMessageType: ${type}`);
     }
   }
 
   unknownMethod(id, domain, method, params) {
     const message = 'Unknown chrome dev tools method: ' + domain + '.' + method;
-    (_utils || _load_utils()).default.log(message);
+    (_utils || _load_utils()).default.debug(message);
     this.replyWithError(id, message);
   }
 
@@ -122,7 +122,7 @@ class ClientCallback {
   }
 
   dispose() {
-    (_utils || _load_utils()).default.log('Called ClientCallback dispose method.');
+    (_utils || _load_utils()).default.debug('Called ClientCallback dispose method.');
     this._notifications.complete();
     this._serverMessages.complete();
     this._outputWindowMessages.complete();
@@ -132,6 +132,6 @@ class ClientCallback {
 exports.ClientCallback = ClientCallback;
 function sendJsonObject(subject, value) {
   const message = JSON.stringify(value);
-  (_utils || _load_utils()).default.log(`Sending JSON: ${message}`);
+  (_utils || _load_utils()).default.debug(`Sending JSON: ${message}`);
   subject.next(message);
 }

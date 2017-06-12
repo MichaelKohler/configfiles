@@ -150,7 +150,7 @@ function getReplacementPrefix(resultPrefix, defaultPrefix) {
 
 function findHackPrefix(buffer, position) {
   // We use custom wordRegex to adopt php variables starting with $.
-  const currentRange = (0, (_range || _load_range()).wordAtPositionFromBuffer)(buffer, position, (_constants || _load_constants()).HACK_WORD_REGEX);
+  const currentRange = (0, (_range || _load_range()).wordAtPositionFromBuffer)(buffer, new (_simpleTextBuffer || _load_simpleTextBuffer()).Point(position.row, Math.max(0, position.column - 1)), (_constants || _load_constants()).HACK_WORD_REGEX);
   if (currentRange == null) {
     return '';
   }

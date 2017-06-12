@@ -26,14 +26,8 @@ let connectionToPythonService = (() => {
 
 exports.activate = activate;
 exports.provideLint = provideLint;
-exports.provideBusySignal = provideBusySignal;
+exports.consumeBusySignal = consumeBusySignal;
 exports.deactivate = deactivate;
-
-var _nuclideBusySignal;
-
-function _load_nuclideBusySignal() {
-  return _nuclideBusySignal = require('../../nuclide-busy-signal');
-}
 
 var _constants;
 
@@ -73,27 +67,24 @@ function _load_nuclideLanguageService() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// eslint-disable-next-line nuclide-internal/no-cross-atom-imports
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
+const PYTHON_SERVICE_NAME = 'PythonService'; /**
+                                              * Copyright (c) 2015-present, Facebook, Inc.
+                                              * All rights reserved.
+                                              *
+                                              * This source code is licensed under the license found in the LICENSE file in
+                                              * the root directory of this source tree.
+                                              *
+                                              * 
+                                              * @format
+                                              */
 
-const PYTHON_SERVICE_NAME = 'PythonService';
-
-let busySignalProvider = null;
+let busySignalService = null;
 
 const atomConfig = {
   name: 'Python',
   grammars: (_constants || _load_constants()).GRAMMARS,
   outline: {
-    version: '0.0.0',
+    version: '0.1.0',
     priority: 1,
     analyticsEventName: 'python.outline'
   },
@@ -101,7 +92,8 @@ const atomConfig = {
     version: '0.0.0',
     priority: 1,
     analyticsEventName: 'python.formatCode',
-    formatEntireFile: true
+    canFormatRanges: false,
+    canFormatAtPosition: false
   },
   findReferences: {
     version: '0.0.0',
@@ -128,7 +120,6 @@ const atomConfig = {
 let pythonLanguageService = null;
 
 function activate() {
-  busySignalProvider = new (_nuclideBusySignal || _load_nuclideBusySignal()).DedupedBusySignalProviderBase();
   if (pythonLanguageService == null) {
     pythonLanguageService = new (_nuclideLanguageService || _load_nuclideLanguageService()).AtomLanguageService(connectionToPythonService, atomConfig);
     pythonLanguageService.activate();
@@ -142,26 +133,29 @@ function provideLint() {
     lintOnFly: (0, (_config || _load_config()).getLintOnFly)(),
     name: 'nuclide-python',
     lint(editor) {
-      if (!busySignalProvider) {
-        throw new Error('Invariant violation: "busySignalProvider"');
+      if (busySignalService == null) {
+        return (_LintHelpers || _load_LintHelpers()).default.lint(editor);
       }
-
-      return busySignalProvider.reportBusy(`Python: Waiting for flake8 lint results for \`${editor.getTitle()}\``, () => (_LintHelpers || _load_LintHelpers()).default.lint(editor));
+      return busySignalService.reportBusyWhile(`Python: Waiting for flake8 lint results for \`${editor.getTitle()}\``, () => (_LintHelpers || _load_LintHelpers()).default.lint(editor));
     }
   };
 }
 
-function provideBusySignal() {
-  if (!busySignalProvider) {
-    throw new Error('Invariant violation: "busySignalProvider"');
-  }
-
-  return busySignalProvider;
+function consumeBusySignal(service) {
+  busySignalService = service;
+  return {
+    dispose: () => {
+      busySignalService = null;
+    }
+  };
 }
 
 function deactivate() {
   if (pythonLanguageService != null) {
     pythonLanguageService.dispose();
     pythonLanguageService = null;
+  }
+  if (busySignalService != null) {
+    busySignalService.dispose();
   }
 }

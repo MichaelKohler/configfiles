@@ -43,28 +43,28 @@ function _load_projects() {
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
 
+var _textEdit;
+
+function _load_textEdit() {
+  return _textEdit = require('nuclide-commons-atom/text-edit');
+}
+
 var _textEditor;
 
 function _load_textEditor() {
   return _textEditor = require('nuclide-commons-atom/text-editor');
 }
 
+var _log4js;
+
+function _load_log4js() {
+  return _log4js = require('log4js');
+}
+
 var _nuclideAnalytics;
 
 function _load_nuclideAnalytics() {
   return _nuclideAnalytics = require('../../nuclide-analytics');
-}
-
-var _nuclideLogging;
-
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
-}
-
-var _nuclideTextedit;
-
-function _load_nuclideTextedit() {
-  return _nuclideTextedit = require('../../nuclide-textedit');
 }
 
 var _refactorActions;
@@ -109,7 +109,7 @@ function getEpics(providers) {
 
       const { source, error } = action.payload;
       const sourceName = source === 'got-refactorings' ? 'getting refactors' : 'executing refactor';
-      (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error(`Error ${sourceName}:`, error);
+      (0, (_log4js || _load_log4js()).getLogger)('nuclide-refactorizer').error(`Error ${sourceName}:`, error);
       atom.notifications.addError(`Error ${sourceName}`, {
         description: error.message,
         dismissable: true
@@ -158,7 +158,7 @@ function applyRefactoring(action) {
       for (const [path, edits] of response.edits) {
         const editor = (0, (_textEditor || _load_textEditor()).existingEditorForUri)(path);
         if (editor != null) {
-          (0, (_nuclideTextedit || _load_nuclideTextedit()).applyTextEditsToBuffer)(editor.getBuffer(), edits);
+          (0, (_textEdit || _load_textEdit()).applyTextEditsToBuffer)(editor.getBuffer(), edits);
         } else {
           return _rxjsBundlesRxMinJs.Observable.of((_refactorActions || _load_refactorActions()).error('execute', Error(`Expected file ${path} to be open.`)));
         }

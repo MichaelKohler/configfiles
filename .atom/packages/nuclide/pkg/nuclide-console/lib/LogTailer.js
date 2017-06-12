@@ -17,10 +17,10 @@ function _load_nuclideAnalytics() {
   return _nuclideAnalytics = require('../../nuclide-analytics');
 }
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
@@ -71,7 +71,7 @@ class LogTailer {
         this._stop();
       }
     }).catch(err => {
-      (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error(`Error with ${this._name} tailer.`, err);
+      (0, (_log4js || _load_log4js()).getLogger)('nuclide-console').error(`Error with ${this._name} tailer.`, err);
       const wasStarting = this._statuses.getValue() === 'starting';
       this._stop(false);
 

@@ -48,11 +48,15 @@ class Activation {
   }
 
   consumeDevicePanelServiceApi(api) {
-    this._disposables.add(api.registerListProvider((0, (_android_providers || _load_android_providers()).createAndroidDeviceListProvider)()));
-    this._disposables.add(api.registerListProvider((0, (_tizen_providers || _load_tizen_providers()).createTizenDeviceListProvider)()));
-    this._disposables.add(api.registerInfoProvider((0, (_android_providers || _load_android_providers()).createAndroidInfoProvider)()));
-    this._disposables.add(api.registerProcessesProvider((0, (_android_providers || _load_android_providers()).createAndroidProcessesProvider)()));
-    this._disposables.add(api.registerInfoProvider((0, (_tizen_providers || _load_tizen_providers()).createTizenInfoProvider)()));
+    this._disposables.add(
+    // list
+    api.registerListProvider((0, (_android_providers || _load_android_providers()).createAndroidDeviceListProvider)()), api.registerListProvider((0, (_tizen_providers || _load_tizen_providers()).createTizenDeviceListProvider)()),
+    // info
+    api.registerInfoProvider((0, (_android_providers || _load_android_providers()).createAndroidInfoProvider)()), api.registerInfoProvider((0, (_tizen_providers || _load_tizen_providers()).createTizenInfoProvider)()),
+    // processes
+    api.registerProcessesProvider((0, (_android_providers || _load_android_providers()).createAndroidProcessesProvider)()),
+    // process tasks
+    api.registerProcessTaskProvider((0, (_android_providers || _load_android_providers()).createAndroidStopPackageProvider)()));
   }
 }
 

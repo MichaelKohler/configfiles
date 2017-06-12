@@ -12,10 +12,10 @@ function _load_collection() {
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 /**
@@ -62,7 +62,7 @@ class RevisionsCache {
     // Using `defer` will guarantee a fresh subscription / execution on retries,
     // even though `_fetchSmartlogRevisions` returns a `refCount`ed shared Observable.
     _rxjsBundlesRxMinJs.Observable.defer(() => this._fetchSmartlogRevisions()).retry(FETCH_REVISIONS_RETRY_COUNT).catch(error => {
-      (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error('RevisionsCache Error:', error);
+      (0, (_log4js || _load_log4js()).getLogger)('nuclide-hg-repository-client').error('RevisionsCache Error:', error);
       return _rxjsBundlesRxMinJs.Observable.empty();
     })).distinctUntilChanged(isEqualRevisions).do(revisions => this._revisions.next(revisions)).share();
   }

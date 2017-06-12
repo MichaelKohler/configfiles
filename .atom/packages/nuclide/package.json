@@ -2,40 +2,40 @@
   "_args": [
     [
       {
-        "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117428-34419-982yw0.qsylplow29/package.tgz",
+        "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117512-34695-10p9kyu.738rhvkj4i/package.tgz",
         "scope": null,
         "escapedName": null,
         "name": null,
-        "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117428-34419-982yw0.qsylplow29/package.tgz",
-        "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117428-34419-982yw0.qsylplow29/package.tgz",
+        "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117512-34695-10p9kyu.738rhvkj4i/package.tgz",
+        "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117512-34695-10p9kyu.738rhvkj4i/package.tgz",
         "type": "local"
       },
-      "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-117428-34419-ggdgrx.n9y5nj0pb9"
+      "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-117512-34695-jhg1xl.3lnfwxko6r"
     ]
   ],
-  "_from": "../d-117428-34419-982yw0.qsylplow29/package.tgz",
-  "_id": "nuclide@0.229.0",
+  "_from": "../d-117512-34695-10p9kyu.738rhvkj4i/package.tgz",
+  "_id": "nuclide@0.232.0",
   "_inCache": true,
   "_installable": true,
   "_location": "/nuclide",
   "_phantomChildren": {},
   "_requested": {
-    "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117428-34419-982yw0.qsylplow29/package.tgz",
+    "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117512-34695-10p9kyu.738rhvkj4i/package.tgz",
     "scope": null,
     "escapedName": null,
     "name": null,
-    "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117428-34419-982yw0.qsylplow29/package.tgz",
-    "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117428-34419-982yw0.qsylplow29/package.tgz",
+    "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117512-34695-10p9kyu.738rhvkj4i/package.tgz",
+    "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117512-34695-10p9kyu.738rhvkj4i/package.tgz",
     "type": "local"
   },
   "_requiredBy": [
     "#USER"
   ],
-  "_resolved": "file:../d-117428-34419-982yw0.qsylplow29/package.tgz",
-  "_shasum": "1b96b27db524379f129334a977c54922b6f0ddd7",
+  "_resolved": "file:../d-117512-34695-10p9kyu.738rhvkj4i/package.tgz",
+  "_shasum": "26fdd3165d17e91cbd5d9ce492ef77e216d487d8",
   "_shrinkwrap": null,
-  "_spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117428-34419-982yw0.qsylplow29/package.tgz",
-  "_where": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-117428-34419-ggdgrx.n9y5nj0pb9",
+  "_spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117512-34695-10p9kyu.738rhvkj4i/package.tgz",
+  "_where": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-117512-34695-jhg1xl.3lnfwxko6r",
   "atomTestRunner": "./lib/test-runner-entry.js",
   "bin": {
     "nuclide-start-server": "./pkg/nuclide-server/nuclide-start-server"
@@ -64,8 +64,8 @@
     "fs-plus": "2.9.3",
     "fuzzaldrin-plus": "0.4.1",
     "glob": "7.1.1",
-    "graphql": "0.9.6",
-    "graphql-language-service": "0.0.19",
+    "graphql": "0.10.1",
+    "graphql-language-service": "0.0.22",
     "heap": "0.2.6",
     "idx": "1.2.0",
     "immutable": "3.7.6",
@@ -84,7 +84,7 @@
     "nullthrows": "1.0.0",
     "plist": "2.0.1",
     "react": "15.3.1",
-    "react-devtools-core": "2.1.9",
+    "react-devtools-core": "2.3.0",
     "react-dom": "15.3.1",
     "react-virtualized": "9.1.0",
     "redux": "3.6.0",
@@ -134,7 +134,7 @@
     "eslint-plugin-prefer-object-spread": "1.1.0",
     "eslint-plugin-prettier": "2.1.0",
     "eslint-plugin-react": "6.8.0",
-    "flow-bin": "0.46.0",
+    "flow-bin": "0.47.0",
     "fs-extra": "2.0.0",
     "jasmine-node": "1.14.5",
     "mock-spawn": "0.2.6",
@@ -203,7 +203,7 @@
     "test": "npm run lint-all && npm run flow"
   },
   "urlMain": "./lib/url-main-entry.js",
-  "version": "0.229.0",
+  "version": "0.232.0",
   "_atomModuleCache": {
     "version": 1,
     "dependencies": [
@@ -314,7 +314,7 @@
       },
       {
         "name": "balanced-match",
-        "version": "0.4.2",
+        "version": "1.0.0",
         "path": "node_modules/balanced-match/index.js"
       },
       {
@@ -329,7 +329,7 @@
       },
       {
         "name": "big-integer",
-        "version": "1.6.22",
+        "version": "1.6.23",
         "path": "node_modules/big-integer/BigInteger.js"
       },
       {
@@ -349,18 +349,13 @@
       },
       {
         "name": "brace-expansion",
-        "version": "1.1.7",
+        "version": "1.1.8",
         "path": "node_modules/brace-expansion/index.js"
       },
       {
         "name": "bser",
         "version": "2.0.0",
         "path": "node_modules/bser/index.js"
-      },
-      {
-        "name": "buffer-shims",
-        "version": "1.0.0",
-        "path": "node_modules/buffer-shims/index.js"
       },
       {
         "name": "camelcase",
@@ -664,37 +659,37 @@
       },
       {
         "name": "graphql",
-        "version": "0.9.6",
+        "version": "0.10.1",
         "path": "node_modules/graphql/index.js"
       },
       {
         "name": "graphql-language-service-config",
-        "version": "0.0.12",
+        "version": "0.0.14",
         "path": "node_modules/graphql-language-service-config/dist/index.js"
       },
       {
         "name": "graphql-language-service-interface",
-        "version": "0.0.12",
+        "version": "0.0.15",
         "path": "node_modules/graphql-language-service-interface/dist/index.js"
       },
       {
         "name": "graphql-language-service-parser",
-        "version": "0.0.11",
+        "version": "0.0.13",
         "path": "node_modules/graphql-language-service-parser/dist/index.js"
       },
       {
         "name": "graphql-language-service-server",
-        "version": "0.0.18",
+        "version": "0.0.21",
         "path": "node_modules/graphql-language-service-server/dist/index.js"
       },
       {
         "name": "graphql-language-service-types",
-        "version": "0.0.17",
+        "version": "0.0.19",
         "path": "node_modules/graphql-language-service-types/dist/index.js"
       },
       {
         "name": "graphql-language-service-utils",
-        "version": "0.0.11",
+        "version": "0.0.14",
         "path": "node_modules/graphql-language-service-utils/dist/index.js"
       },
       {
@@ -821,11 +816,6 @@
         "name": "jest-editor-support",
         "version": "19.0.2",
         "path": "node_modules/jest-editor-support/build/index.js"
-      },
-      {
-        "name": "jodid25519",
-        "version": "1.0.2",
-        "path": "node_modules/jodid25519/index.js"
       },
       {
         "name": "js-tokens",
@@ -1169,7 +1159,7 @@
       },
       {
         "name": "react-devtools-core",
-        "version": "2.1.9",
+        "version": "2.3.0",
         "path": "node_modules/react-devtools-core/build/backend.js"
       },
       {
@@ -1184,7 +1174,7 @@
       },
       {
         "name": "readable-stream",
-        "version": "2.2.9",
+        "version": "2.2.11",
         "path": "node_modules/readable-stream/readable.js"
       },
       {
@@ -1309,12 +1299,12 @@
       },
       {
         "name": "ssh2-streams",
-        "version": "0.1.16",
+        "version": "0.1.19",
         "path": "node_modules/ssh2-streams/index.js"
       },
       {
         "name": "sshpk",
-        "version": "1.13.0",
+        "version": "1.13.1",
         "path": "node_modules/sshpk/lib/index.js"
       },
       {
@@ -1359,7 +1349,7 @@
       },
       {
         "name": "string_decoder",
-        "version": "1.0.1",
+        "version": "1.0.2",
         "path": "node_modules/string_decoder/lib/string_decoder.js"
       },
       {
@@ -1924,7 +1914,6 @@
         "node_modules/bplist-parser/bplistParser.js",
         "node_modules/brace-expansion/index.js",
         "node_modules/bser/index.js",
-        "node_modules/buffer-shims/index.js",
         "node_modules/camelcase/index.js",
         "node_modules/caseless/index.js",
         "node_modules/caseless/test.js",
@@ -4436,6 +4425,9 @@
         "node_modules/graphql/language/printer.js",
         "node_modules/graphql/language/source.js",
         "node_modules/graphql/language/visitor.js",
+        "node_modules/graphql/subscription/index.js",
+        "node_modules/graphql/subscription/mapAsyncIterator.js",
+        "node_modules/graphql/subscription/subscribe.js",
         "node_modules/graphql/type/definition.js",
         "node_modules/graphql/type/directives.js",
         "node_modules/graphql/type/index.js",
@@ -4479,6 +4471,7 @@
         "node_modules/graphql/validation/rules/PossibleFragmentSpreads.js",
         "node_modules/graphql/validation/rules/ProvidedNonNullArguments.js",
         "node_modules/graphql/validation/rules/ScalarLeafs.js",
+        "node_modules/graphql/validation/rules/SingleFieldSubscriptions.js",
         "node_modules/graphql/validation/rules/UniqueArgumentNames.js",
         "node_modules/graphql/validation/rules/UniqueDirectivesPerLocation.js",
         "node_modules/graphql/validation/rules/UniqueFragmentNames.js",
@@ -4490,7 +4483,6 @@
         "node_modules/graphql/validation/specifiedRules.js",
         "node_modules/graphql/validation/validate.js",
         "node_modules/graphql-language-service/bin/graphql.js",
-        "node_modules/graphql-language-service/bin/test.js",
         "node_modules/graphql-language-service/dist/cli.js",
         "node_modules/graphql-language-service/dist/client.js",
         "node_modules/graphql-language-service-config/dist/GraphQLConfig.js",
@@ -4604,12 +4596,6 @@
         "node_modules/jest-editor-support/build/parsers/BabylonParser.js",
         "node_modules/jest-editor-support/build/parsers/ParserNodes.js",
         "node_modules/jest-editor-support/build/types.js",
-        "node_modules/jodid25519/index.js",
-        "node_modules/jodid25519/lib/core.js",
-        "node_modules/jodid25519/lib/curve255.js",
-        "node_modules/jodid25519/lib/dh.js",
-        "node_modules/jodid25519/lib/eddsa.js",
-        "node_modules/jodid25519/lib/utils.js",
         "node_modules/js-tokens/index.js",
         "node_modules/js-yaml/bin/js-yaml.js",
         "node_modules/js-yaml/dist/js-yaml.js",
@@ -7637,12 +7623,12 @@
         "node_modules/bcrypt-pbkdf/package.json",
         "node_modules/big-integer/bower.json",
         "node_modules/big-integer/package.json",
+        "node_modules/big-integer/tsconfig.json",
         "node_modules/boolbase/package.json",
         "node_modules/boom/package.json",
         "node_modules/bplist-parser/package.json",
         "node_modules/brace-expansion/package.json",
         "node_modules/bser/package.json",
-        "node_modules/buffer-shims/package.json",
         "node_modules/camelcase/package.json",
         "node_modules/caseless/package.json",
         "node_modules/chalk/package.json",
@@ -7721,7 +7707,6 @@
         "node_modules/glob/package.json",
         "node_modules/graceful-readlink/package.json",
         "node_modules/graphql/package.json",
-        "node_modules/graphql-language-service/dist/package.json",
         "node_modules/graphql-language-service/package.json",
         "node_modules/graphql-language-service/versions.json",
         "node_modules/graphql-language-service-config/package.json",
@@ -7783,8 +7768,6 @@
         "node_modules/isstream/package.json",
         "node_modules/iterall/package.json",
         "node_modules/jest-editor-support/package.json",
-        "node_modules/jodid25519/jsdoc.json",
-        "node_modules/jodid25519/package.json",
         "node_modules/js-tokens/package.json",
         "node_modules/js-yaml/package.json",
         "node_modules/jsbn/package.json",
@@ -8051,15 +8034,31 @@
         "paths": [
           "lib",
           "lib/internal",
+          "modules/atom-ide-ui",
+          "modules/atom-ide-ui/pkg/atom-ide-code-format/keymaps",
+          "modules/atom-ide-ui/pkg/atom-ide-code-format/lib",
+          "modules/atom-ide-ui/pkg/atom-ide-code-format/menus",
+          "modules/atom-ide-ui/pkg/atom-ide-code-format",
+          "modules/atom-ide-ui/pkg/atom-ide-diagnostics/lib",
+          "modules/atom-ide-ui/pkg/atom-ide-diagnostics",
+          "modules/atom-ide-ui/pkg/atom-ide-diagnostics-ui/keymaps",
+          "modules/atom-ide-ui/pkg/atom-ide-diagnostics-ui/lib",
+          "modules/atom-ide-ui/pkg/atom-ide-diagnostics-ui/menus",
+          "modules/atom-ide-ui/pkg/atom-ide-diagnostics-ui",
+          "modules/atom-ide-ui/pkg/atom-ide-outline-view/keymaps",
+          "modules/atom-ide-ui/pkg/atom-ide-outline-view/lib",
+          "modules/atom-ide-ui/pkg/atom-ide-outline-view/menus",
+          "modules/atom-ide-ui/pkg/atom-ide-outline-view",
+          "modules/atom-ide-ui/pkg/hyperclick/keymaps",
+          "modules/atom-ide-ui/pkg/hyperclick/lib",
+          "modules/atom-ide-ui/pkg/hyperclick",
+          "modules/atom-ide-ui/scripts",
           "modules/nuclide-commons",
           "modules/nuclide-commons-atom",
           "modules/nuclide-commons-ui",
           "",
           "pkg/commons-atom",
           "pkg/commons-node",
-          "pkg/hyperclick/keymaps",
-          "pkg/hyperclick/lib",
-          "pkg/hyperclick",
           "pkg/hyperclick-preview-datatip/lib",
           "pkg/hyperclick-preview-datatip",
           "pkg/nuclide-adb-logcat/lib",
@@ -8115,10 +8114,6 @@
           "pkg/nuclide-clipboard-path/lib",
           "pkg/nuclide-clipboard-path/menus",
           "pkg/nuclide-clipboard-path",
-          "pkg/nuclide-code-format/keymaps",
-          "pkg/nuclide-code-format/lib",
-          "pkg/nuclide-code-format/menus",
-          "pkg/nuclide-code-format",
           "pkg/nuclide-code-highlight/lib",
           "pkg/nuclide-code-highlight",
           "pkg/nuclide-console/keymaps",
@@ -8192,9 +8187,6 @@
           "pkg/nuclide-debugger-php-rpc/lib",
           "pkg/nuclide-debugger-php-rpc",
           "pkg/nuclide-debugger-php-rpc/scripts",
-          "pkg/nuclide-debugger-python-rpc/debugger",
-          "pkg/nuclide-debugger-python-rpc",
-          "pkg/nuclide-debugger-python-rpc/pdb",
           "pkg/nuclide-deep-link/lib",
           "pkg/nuclide-deep-link",
           "pkg/nuclide-definition-hyperclick/lib",
@@ -8212,21 +8204,13 @@
           "pkg/nuclide-devices/lib/ui",
           "pkg/nuclide-devices/menus",
           "pkg/nuclide-devices",
-          "pkg/nuclide-diagnostics-common/lib",
-          "pkg/nuclide-diagnostics-common",
-          "pkg/nuclide-diagnostics-datatip-provider/lib",
-          "pkg/nuclide-diagnostics-datatip-provider",
           "pkg/nuclide-diagnostics-extras/lib",
           "pkg/nuclide-diagnostics-extras",
-          "pkg/nuclide-diagnostics-store/lib",
-          "pkg/nuclide-diagnostics-store",
-          "pkg/nuclide-diagnostics-ui/keymaps",
-          "pkg/nuclide-diagnostics-ui/lib",
-          "pkg/nuclide-diagnostics-ui/menus",
-          "pkg/nuclide-diagnostics-ui",
           "pkg/nuclide-distraction-free-mode/lib",
           "pkg/nuclide-distraction-free-mode/menus",
           "pkg/nuclide-distraction-free-mode",
+          "pkg/nuclide-expected/lib",
+          "pkg/nuclide-expected",
           "pkg/nuclide-file-tree/components",
           "pkg/nuclide-file-tree/keymaps",
           "pkg/nuclide-file-tree/lib",
@@ -8350,10 +8334,6 @@
           "pkg/nuclide-open-files",
           "pkg/nuclide-open-files-rpc/lib",
           "pkg/nuclide-open-files-rpc",
-          "pkg/nuclide-outline-view/keymaps",
-          "pkg/nuclide-outline-view/lib",
-          "pkg/nuclide-outline-view/menus",
-          "pkg/nuclide-outline-view",
           "pkg/nuclide-outline-view-extras/lib",
           "pkg/nuclide-outline-view-extras",
           "pkg/nuclide-paste-base/lib",
@@ -8422,6 +8402,11 @@
           "pkg/nuclide-settings",
           "pkg/nuclide-source-control-helpers/lib",
           "pkg/nuclide-source-control-helpers",
+          "pkg/nuclide-ssh-tunnel/lib",
+          "pkg/nuclide-ssh-tunnel/lib/redux",
+          "pkg/nuclide-ssh-tunnel/lib/ui",
+          "pkg/nuclide-ssh-tunnel/menus",
+          "pkg/nuclide-ssh-tunnel",
           "pkg/nuclide-swift/lib",
           "pkg/nuclide-swift/lib/sourcekitten",
           "pkg/nuclide-swift/lib/taskrunner",
@@ -8442,8 +8427,6 @@
           "pkg/nuclide-test-runner/lib/ui",
           "pkg/nuclide-test-runner/menus",
           "pkg/nuclide-test-runner",
-          "pkg/nuclide-textedit/lib",
-          "pkg/nuclide-textedit",
           "pkg/nuclide-type-coverage/keymaps",
           "pkg/nuclide-type-coverage/lib",
           "pkg/nuclide-type-coverage/menus",
@@ -8502,8 +8485,8 @@
           "fs-plus": "2.9.3",
           "fuzzaldrin-plus": "0.4.1",
           "glob": "7.1.1",
-          "graphql": "0.9.6",
-          "graphql-language-service": "0.0.19",
+          "graphql": "0.10.1",
+          "graphql-language-service": "0.0.22",
           "heap": "0.2.6",
           "idx": "1.2.0",
           "immutable": "3.7.6",
@@ -8522,7 +8505,7 @@
           "nullthrows": "1.0.0",
           "plist": "2.0.1",
           "react": "15.3.1",
-          "react-devtools-core": "2.1.9",
+          "react-devtools-core": "2.3.0",
           "react-dom": "15.3.1",
           "react-virtualized": "9.1.0",
           "redux": "3.6.0",
@@ -8663,7 +8646,7 @@
           "node_modules/brace-expansion"
         ],
         "dependencies": {
-          "balanced-match": "^0.4.1",
+          "balanced-match": "^1.0.0",
           "concat-map": "0.0.1"
         }
       },
@@ -8946,13 +8929,14 @@
           "node_modules/graphql",
           "node_modules/graphql/jsutils",
           "node_modules/graphql/language",
+          "node_modules/graphql/subscription",
           "node_modules/graphql/type",
           "node_modules/graphql/utilities",
           "node_modules/graphql/validation",
           "node_modules/graphql/validation/rules"
         ],
         "dependencies": {
-          "iterall": "^1.0.0"
+          "iterall": "^1.1.0"
         }
       },
       {
@@ -8964,13 +8948,13 @@
         "dependencies": {
           "babel-polyfill": "6.16.0",
           "fb-watchman": "^2.0.0",
-          "graphql": "^0.9.6",
-          "graphql-language-service-config": "0.0.12",
-          "graphql-language-service-interface": "0.0.12",
-          "graphql-language-service-parser": "0.0.11",
-          "graphql-language-service-server": "0.0.18",
-          "graphql-language-service-types": "0.0.17",
-          "graphql-language-service-utils": "0.0.11",
+          "graphql": "^0.10.1",
+          "graphql-language-service-config": "0.0.14",
+          "graphql-language-service-interface": "0.0.15",
+          "graphql-language-service-parser": "0.0.13",
+          "graphql-language-service-server": "0.0.21",
+          "graphql-language-service-types": "0.0.19",
+          "graphql-language-service-utils": "0.0.14",
           "nullthrows": "^1.0.0",
           "vscode-jsonrpc": "^3.2.0",
           "vscode-languageserver": "^3.2.0",
@@ -8984,7 +8968,7 @@
           "node_modules/graphql-language-service-config"
         ],
         "dependencies": {
-          "graphql-language-service-types": "0.0.17"
+          "graphql-language-service-types": "0.0.19"
         }
       },
       {
@@ -8993,11 +8977,11 @@
           "node_modules/graphql-language-service-interface"
         ],
         "dependencies": {
-          "graphql": "^0.9.6",
-          "graphql-language-service-config": "0.0.12",
-          "graphql-language-service-parser": "0.0.11",
-          "graphql-language-service-types": "0.0.17",
-          "graphql-language-service-utils": "0.0.11"
+          "graphql": "^0.10.1",
+          "graphql-language-service-config": "0.0.14",
+          "graphql-language-service-parser": "0.0.13",
+          "graphql-language-service-types": "0.0.19",
+          "graphql-language-service-utils": "0.0.14"
         }
       },
       {
@@ -9006,7 +8990,7 @@
           "node_modules/graphql-language-service-parser"
         ],
         "dependencies": {
-          "graphql-language-service-types": "0.0.17"
+          "graphql-language-service-types": "0.0.19"
         }
       },
       {
@@ -9017,11 +9001,11 @@
         ],
         "dependencies": {
           "fb-watchman": "^2.0.0",
-          "graphql": "^0.9.6",
-          "graphql-language-service-config": "0.0.12",
-          "graphql-language-service-interface": "0.0.12",
-          "graphql-language-service-types": "0.0.17",
-          "graphql-language-service-utils": "0.0.11",
+          "graphql": "^0.10.1",
+          "graphql-language-service-config": "0.0.14",
+          "graphql-language-service-interface": "0.0.15",
+          "graphql-language-service-types": "0.0.19",
+          "graphql-language-service-utils": "0.0.14",
           "nullthrows": "^1.0.0",
           "vscode-jsonrpc": "^3.2.0",
           "vscode-languageserver": "^3.2.0"
@@ -9033,7 +9017,7 @@
           "node_modules/graphql-language-service-types"
         ],
         "dependencies": {
-          "graphql": "^0.9.6"
+          "graphql": "^0.10.1"
         }
       },
       {
@@ -9042,8 +9026,8 @@
           "node_modules/graphql-language-service-utils"
         ],
         "dependencies": {
-          "graphql": "^0.9.6",
-          "graphql-language-service-types": "0.0.17"
+          "graphql": "^0.10.1",
+          "graphql-language-service-types": "0.0.19"
         }
       },
       {
@@ -9156,15 +9140,6 @@
         ],
         "dependencies": {
           "babylon": "^6.13.0"
-        }
-      },
-      {
-        "paths": [
-          "node_modules/jodid25519",
-          "node_modules/jodid25519/lib"
-        ],
-        "dependencies": {
-          "jsbn": "~0.1.0"
         }
       },
       {
@@ -9459,11 +9434,11 @@
           "node_modules/readable-stream/lib/internal/streams"
         ],
         "dependencies": {
-          "buffer-shims": "~1.0.0",
           "core-util-is": "~1.0.0",
           "inherits": "~2.0.1",
           "isarray": "~1.0.0",
           "process-nextick-args": "~1.0.6",
+          "safe-buffer": "~5.0.1",
           "string_decoder": "~1.0.0",
           "util-deprecate": "~1.0.1"
         }
@@ -9666,7 +9641,6 @@
           "dashdash": "^1.12.0",
           "ecc-jsbn": "~0.1.1",
           "getpass": "^0.1.1",
-          "jodid25519": "^1.0.0",
           "jsbn": "~0.1.0",
           "tweetnacl": "~0.14.0"
         }
@@ -9702,7 +9676,7 @@
           "node_modules/string_decoder"
         ],
         "dependencies": {
-          "safe-buffer": "^5.0.1"
+          "safe-buffer": "~5.0.1"
         }
       },
       {

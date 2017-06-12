@@ -172,9 +172,17 @@ class AtomTextEditor extends _react.default.Component {
     if (component == null) {
       return;
     }
-    const { presenter } = component;
-    presenter.startBlinkingCursors = doNothing;
-    presenter.stopBlinkingCursors(false);
+    if (component.startCursorBlinking) {
+      component.startCursorBlinking = doNothing;
+      component.stopCursorBlinking();
+    } else {
+      const { presenter } = component;
+      if (presenter == null) {
+        return;
+      }
+      presenter.startBlinkingCursors = doNothing;
+      presenter.stopBlinkingCursors(false);
+    }
   }
 
   _updateDisabledState(isDisabled) {

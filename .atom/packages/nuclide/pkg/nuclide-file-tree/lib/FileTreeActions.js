@@ -54,10 +54,10 @@ function _load_nuclideHgRpc() {
   return _nuclideHgRpc = require('../../nuclide-hg-rpc');
 }
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 var _nuclideUri;
@@ -633,7 +633,7 @@ class FileTreeActions {
         } else if (internalGitRepo.isStatusDeleted(gitStatusNumber)) {
           statusCode = StatusCodeNumber.REMOVED;
         } else {
-          (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().warn(`Unrecognized git status number ${gitStatusNumber}`);
+          (0, (_log4js || _load_log4js()).getLogger)('nuclide-file-tree').warn(`Unrecognized git status number ${gitStatusNumber}`);
           statusCode = StatusCodeNumber.MODIFIED;
         }
         relativeCodePaths[relativePath] = statusCode;

@@ -58,6 +58,10 @@ class NullLanguageService {
     return Promise.resolve(null);
   }
 
+  formatAtPosition(fileVersion, position, triggerCharacter) {
+    return Promise.resolve(null);
+  }
+
   getEvaluationExpression(fileVersion, position) {
     return Promise.resolve(null);
   }

@@ -6,19 +6,39 @@ Object.defineProperty(exports, "__esModule", {
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
 
-const NUCLIDE_CONFIG_SCOPE = 'nuclide.'; /**
-                                          * Copyright (c) 2015-present, Facebook, Inc.
-                                          * All rights reserved.
-                                          *
-                                          * This source code is licensed under the license found in the LICENSE file in
-                                          * the root directory of this source tree.
-                                          *
-                                          * 
-                                          * @format
-                                          */
+// Default to "nuclide", but only for unit tests.
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ * @format
+ */
+
+/**
+ * A wrapper over Atom's config functions for use with FeatureLoader.
+ * Each individual loaded package's config is a subconfig of the root package.
+ */
+
+let packageName = atom.inSpecMode() ? 'nuclide' : null;
+
+/**
+ * Sets the root package name.
+ * This gets automatically called from FeatureLoader.
+ */
+function setPackageName(name) {
+  packageName = name;
+}
 
 function formatKeyPath(keyPath) {
-  return `${NUCLIDE_CONFIG_SCOPE}${keyPath}`;
+  if (!packageName) {
+    throw new Error('feature-config must be used with FeatureLoader.');
+  }
+
+  return `${packageName}.${keyPath}`;
 }
 
 /*
@@ -106,13 +126,18 @@ function unset(keyPath, options) {
 
 /**
  * Returns `true` if the feature with the given name is disabled either directly or because the
- *   'nuclide' package itself is disabled.
+ * container package itself is disabled.
  */
 function isFeatureDisabled(name) {
-  return atom.packages.isPackageDisabled('nuclide') || !atom.config.get(`nuclide.use.${name}`);
+  if (!packageName) {
+    throw new Error('feature-config must be used with FeatureLoader.');
+  }
+
+  return atom.packages.isPackageDisabled(packageName) || !atom.config.get(`${packageName}.use.${name}`);
 }
 
 exports.default = {
+  setPackageName,
   get,
   getWithDefaults,
   getSchema,

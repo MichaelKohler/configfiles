@@ -11,10 +11,10 @@ function _load_featureConfig() {
   return _featureConfig = _interopRequireDefault(require('nuclide-commons-atom/feature-config'));
 }
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -31,7 +31,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  */
 
 const DEBUGGER_LOGGER_CATEGORY = 'nuclide-node-debugger';
-exports.default = (0, (_nuclideLogging || _load_nuclideLogging()).getCategoryLogger)(DEBUGGER_LOGGER_CATEGORY);
+exports.default = (0, (_log4js || _load_log4js()).getLogger)(DEBUGGER_LOGGER_CATEGORY);
 function getConfig() {
   return (_featureConfig || _load_featureConfig()).default.get('nuclide-debugger-node');
 }

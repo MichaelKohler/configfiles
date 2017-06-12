@@ -28,7 +28,7 @@ function _load_values() {
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function convertProperties(id, properties) {
-  (_utils || _load_utils()).default.log('Got properties: ' + JSON.stringify(properties));
+  (_utils || _load_utils()).default.debug('Got properties: ' + JSON.stringify(properties));
   return properties.map(property => convertProperty(id, property));
 }
 
@@ -47,7 +47,7 @@ function convertProperties(id, properties) {
  */
 
 function convertProperty(contextId, dbgpProperty) {
-  (_utils || _load_utils()).default.log('Converting to Chrome property: ' + JSON.stringify(dbgpProperty));
+  (_utils || _load_utils()).default.debug('Converting to Chrome property: ' + JSON.stringify(dbgpProperty));
   const result = {
     configurable: false,
     enumerable: true,

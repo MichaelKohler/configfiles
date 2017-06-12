@@ -5,6 +5,12 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Selectors = undefined;
 
+var _nuclideUri;
+
+function _load_nuclideUri() {
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
+}
+
 var _react = _interopRequireDefault(require('react'));
 
 var _Dropdown;
@@ -27,16 +33,18 @@ function _load_ButtonGroup() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const FB_HOST_SUFFIX = '.facebook.com'; /**
-                                         * Copyright (c) 2015-present, Facebook, Inc.
-                                         * All rights reserved.
-                                         *
-                                         * This source code is licensed under the license found in the LICENSE file in
-                                         * the root directory of this source tree.
-                                         *
-                                         * 
-                                         * @format
-                                         */
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ * @format
+ */
+
+const FB_HOST_SUFFIX = '.facebook.com';
 
 class Selectors extends _react.default.Component {
 
@@ -46,10 +54,18 @@ class Selectors extends _react.default.Component {
     }
   }
 
+  _getLabelForHost(host) {
+    if ((_nuclideUri || _load_nuclideUri()).default.isLocal(host)) {
+      return host;
+    }
+    const hostName = (_nuclideUri || _load_nuclideUri()).default.getHostname(host);
+    return hostName.endsWith(FB_HOST_SUFFIX) ? hostName.substring(0, hostName.length - FB_HOST_SUFFIX.length) : hostName;
+  }
+
   _getHostOptions() {
     return this.props.hosts.map(host => {
-      return host.endsWith(FB_HOST_SUFFIX) ? host.substring(0, host.length - FB_HOST_SUFFIX.length) : host;
-    }).map(host => ({ value: host, label: host }));
+      return { value: host, label: this._getLabelForHost(host) };
+    });
   }
 
   _getTypesButtons() {

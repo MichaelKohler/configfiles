@@ -11,10 +11,10 @@ function _load_event() {
   return _event = require('nuclide-commons/event');
 }
 
-var _lodash;
+var _memoizeUntilChanged;
 
-function _load_lodash() {
-  return _lodash = _interopRequireDefault(require('lodash.memoize'));
+function _load_memoizeUntilChanged() {
+  return _memoizeUntilChanged = _interopRequireDefault(require('nuclide-commons/memoizeUntilChanged'));
 }
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
@@ -32,7 +32,10 @@ function observePaneItemVisibility(item) {
     return _rxjsBundlesRxMinJs.Observable.empty();
   }
 
-  return observeActiveItems().map(activeItems => activeItems.includes(item)).distinctUntilChanged();
+  // atom.workspace.reset() (in tests) resets all the panes.
+  // Pass in atom.workspace.getElement() to act as a cache-breaker.
+  // $FlowFixMe: Add atom.workspace.getElement() after 1.17.
+  return observeActiveItems(atom.workspace.getElement()).map(activeItems => activeItems.includes(item)).distinctUntilChanged();
 } /**
    * Copyright (c) 2015-present, Facebook, Inc.
    * All rights reserved.
@@ -44,7 +47,7 @@ function observePaneItemVisibility(item) {
    * @format
    */
 
-const observeActiveItems = (0, (_lodash || _load_lodash()).default)(() => {
+const observeActiveItems = (0, (_memoizeUntilChanged || _load_memoizeUntilChanged()).default)(_cacheKey => {
   // An observable that emits `{pane, item}` whenever the active item of a pane changes.
   const itemActivations = _rxjsBundlesRxMinJs.Observable.merge(
   // $FlowFixMe: Add `getPaneContainers()` to the type defs once Atom 1.17 lands.

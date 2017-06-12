@@ -20,7 +20,7 @@ function _load_collection() {
 var _tokenizedText;
 
 function _load_tokenizedText() {
-  return _tokenizedText = require('../../commons-node/tokenizedText');
+  return _tokenizedText = require('nuclide-commons/tokenized-text');
 }
 
 /**

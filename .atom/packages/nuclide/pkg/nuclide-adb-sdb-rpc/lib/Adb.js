@@ -18,7 +18,7 @@ function _load_nuclideUri() {
 var _process;
 
 function _load_process() {
-  return _process = require('../../commons-node/process');
+  return _process = require('nuclide-commons/process');
 }
 
 var _AdbSdbBase;
@@ -94,27 +94,39 @@ class Adb extends (_AdbSdbBase || _load_AdbSdbBase()).AdbSdbBase {
     return (0, _asyncToGenerator.default)(function* () {
       const infoTable = yield _this3.getCommonDeviceInfo(device);
       const unknownCB = function () {
-        return null;
+        return '';
       };
-      infoTable.set('android_version', (
-      // $FlowFixMe will resolve to null if an error is caught
-      yield _this3.getOSVersion(device).catch(unknownCB)));
-      infoTable.set('manufacturer', (
-      // $FlowFixMe will resolve to null if an error is caught
-      yield _this3.getManufacturer(device).catch(unknownCB)));
-      // $FlowFixMe will resolve to null if an error is caught
+      infoTable.set('android_version', (yield _this3.getOSVersion(device).catch(unknownCB)));
+      infoTable.set('manufacturer', (yield _this3.getManufacturer(device).catch(unknownCB)));
       infoTable.set('brand', (yield _this3.getBrand(device).catch(unknownCB)));
+      infoTable.set('wifi_ip', (yield _this3.getWifiIp(device).catch(unknownCB)));
       return infoTable;
+    })();
+  }
+
+  getWifiIp(device) {
+    var _this4 = this;
+
+    return (0, _asyncToGenerator.default)(function* () {
+      const lines = yield _this4.runShortCommand(device, ['shell', 'ip', 'addr', 'show', 'wlan0']).toPromise();
+      const line = lines.split(/\n/).filter(function (l) {
+        return l.includes('inet');
+      })[0];
+      if (line == null) {
+        return '';
+      }
+      const rawIp = line.trim().split(/\s+/)[1];
+      return rawIp.substring(0, rawIp.indexOf('/'));
     })();
   }
 
   // Can't use kill, the only option is to use the package name
   // http://stackoverflow.com/questions/17154961/adb-shell-operation-not-permitted
-  killProcess(device, packageName) {
-    var _this4 = this;
+  stopPackage(device, packageName) {
+    var _this5 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      yield _this4.runShortCommand(device, ['shell', 'am', 'force-stop', packageName]).toPromise();
+      yield _this5.runShortCommand(device, ['shell', 'am', 'force-stop', packageName]).toPromise();
     })();
   }
 
@@ -160,24 +172,18 @@ class Adb extends (_AdbSdbBase || _load_AdbSdbBase()).AdbSdbBase {
   }
 
   getJavaProcesses(device) {
-    var _this5 = this;
+    var _this6 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      const allProcesses = yield _this5.runShortCommand(device, ['shell', 'ps']).map(function (stdout) {
+      const allProcesses = yield _this6.runShortCommand(device, ['shell', 'ps']).map(function (stdout) {
         const psOutput = stdout.trim();
         return parsePsTableOutput(psOutput, ['user', 'pid', 'name']);
       }).toPromise();
 
-      const args = (device !== '' ? ['-s', device] : []).concat('jdwp');
-      return (0, (_process || _load_process()).observeProcessRaw)(_this5._dbPath, args, {
-        killTreeWhenDone: true,
-        /* TDOO(17353599) */isExitError: function () {
-          return false;
-        }
-      }).catch(function (error) {
+      return _this6.runLongCommand(device, ['jdwp']).catch(function (error) {
         return _rxjsBundlesRxMinJs.Observable.of({ kind: 'error', error });
       }) // TODO(T17463635)
-      .take(1).map(function (output) {
+      .take(1).timeout(1000).map(function (output) {
         const jdwpPids = new Set();
         if (output.kind === 'stdout') {
           const block = output.data;
@@ -194,13 +200,13 @@ class Adb extends (_AdbSdbBase || _load_AdbSdbBase()).AdbSdbBase {
   }
 
   dumpsysPackage(device, pkg) {
-    var _this6 = this;
+    var _this7 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      if (!(yield _this6.isPackageInstalled(device, pkg))) {
+      if (!(yield _this7.isPackageInstalled(device, pkg))) {
         return null;
       }
-      return _this6.runShortCommand(device, ['shell', 'dumpsys', 'package', pkg]).toPromise();
+      return _this7.runShortCommand(device, ['shell', 'dumpsys', 'package', pkg]).toPromise();
     })();
   }
 }

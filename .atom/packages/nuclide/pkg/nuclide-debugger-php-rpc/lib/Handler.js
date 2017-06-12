@@ -46,7 +46,7 @@ class Handler {
 
   unknownMethod(id, method, params) {
     const message = 'Unknown chrome dev tools method: ' + this.getDomain() + '.' + method;
-    (_utils || _load_utils()).default.log(message);
+    (_utils || _load_utils()).default.debug(message);
     this.replyWithError(id, message);
   }
 

@@ -47,7 +47,7 @@ function createDebuggerProvider() {
     name: 'hhvm',
     getLaunchAttachProvider(connection) {
       if ((_nuclideUri || _load_nuclideUri()).default.isRemote(connection)) {
-        return new (_HhvmLaunchAttachProvider || _load_HhvmLaunchAttachProvider()).HhvmLaunchAttachProvider('PHP / Hack', connection);
+        return new (_HhvmLaunchAttachProvider || _load_HhvmLaunchAttachProvider()).HhvmLaunchAttachProvider('Hack / PHP', connection);
       }
       return null;
     }
@@ -60,7 +60,7 @@ function getHomeFragments() {
       title: 'PHP Debugger',
       icon: 'nuclicon-debugger',
       description: 'Connect to a PHP server process and debug Hack code from within Nuclide.',
-      command: 'nuclide-debugger:toggle'
+      command: 'nuclide-debugger:show-attach-dialog'
     },
     priority: 6
   };

@@ -11,12 +11,6 @@ function _load_string() {
   return _string = require('nuclide-commons/string');
 }
 
-var _nuclideDebuggerBase;
-
-function _load_nuclideDebuggerBase() {
-  return _nuclideDebuggerBase = require('../../nuclide-debugger-base');
-}
-
 var _react = _interopRequireDefault(require('react'));
 
 var _AtomInput;
@@ -25,16 +19,22 @@ function _load_AtomInput() {
   return _AtomInput = require('nuclide-commons-ui/AtomInput');
 }
 
-var _Button;
+var _UniversalDisposable;
 
-function _load_Button() {
-  return _Button = require('nuclide-commons-ui/Button');
+function _load_UniversalDisposable() {
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
-var _ButtonGroup;
+var _nuclideUri;
 
-function _load_ButtonGroup() {
-  return _ButtonGroup = require('nuclide-commons-ui/ButtonGroup');
+function _load_nuclideUri() {
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
+}
+
+var _nuclideDebuggerBase;
+
+function _load_nuclideDebuggerBase() {
+  return _nuclideDebuggerBase = require('../../nuclide-debugger-base');
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -55,22 +55,57 @@ class LaunchUIComponent extends _react.default.Component {
   constructor(props) {
     super(props);
     this._handleLaunchClick = this._handleLaunchClick.bind(this);
-    this._cancelClick = this._cancelClick.bind(this);
+
+    this._disposables = new (_UniversalDisposable || _load_UniversalDisposable()).default();
+    this.state = {
+      launchExecutable: '',
+      launchArguments: '',
+      launchEnvironmentVariables: '',
+      launchWorkingDirectory: '',
+      stdinFilePath: ''
+    };
   }
 
-  componentWillMount() {
-    this.props.parentEmitter.on((_nuclideDebuggerBase || _load_nuclideDebuggerBase()).DebuggerLaunchAttachEventTypes.ENTER_KEY_PRESSED, this._handleLaunchClick);
+  _getSerializationArgs() {
+    return [(_nuclideUri || _load_nuclideUri()).default.isRemote(this.props.targetUri) ? (_nuclideUri || _load_nuclideUri()).default.getHostname(this.props.targetUri) : 'local', 'launch', 'native'];
+  }
+
+  setState(newState) {
+    super.setState(newState);
+    this.props.configIsValidChanged(this._debugButtonShouldEnable());
+  }
+
+  _debugButtonShouldEnable() {
+    return true;
   }
 
   componentDidMount() {
+    (0, (_nuclideDebuggerBase || _load_nuclideDebuggerBase()).deserializeDebuggerConfig)(...this._getSerializationArgs(), (transientSettings, savedSettings) => {
+      this.setState({
+        launchExecutable: savedSettings.launchExecutable,
+        launchArguments: savedSettings.launchArguments,
+        launchEnvironmentVariables: savedSettings.launchEnvironmentVariables,
+        launchWorkingDirectory: savedSettings.launchWorkingDirectory,
+        stdinFilePath: savedSettings.stdinFilePath
+      });
+    });
+
     const launchExecutableInput = this.refs.launchExecutable;
     if (launchExecutableInput != null) {
       launchExecutableInput.focus();
     }
+
+    this._disposables.add(atom.commands.add('atom-workspace', {
+      'core:confirm': () => {
+        this._handleLaunchClick();
+      }
+    }));
+
+    this.props.configIsValidChanged(true);
   }
 
   componentWillUnmount() {
-    this.props.parentEmitter.removeListener((_nuclideDebuggerBase || _load_nuclideDebuggerBase()).DebuggerLaunchAttachEventTypes.ENTER_KEY_PRESSED, this._handleLaunchClick);
+    this._disposables.dispose();
   }
 
   render() {
@@ -88,7 +123,9 @@ class LaunchUIComponent extends _react.default.Component {
       _react.default.createElement((_AtomInput || _load_AtomInput()).AtomInput, {
         ref: 'launchExecutable',
         tabIndex: '11',
-        placeholderText: 'Input the executable path you want to launch'
+        placeholderText: 'Input the executable path you want to launch',
+        value: this.state.launchExecutable,
+        onDidChange: value => this.setState({ launchExecutable: value })
       }),
       _react.default.createElement(
         'label',
@@ -98,7 +135,9 @@ class LaunchUIComponent extends _react.default.Component {
       _react.default.createElement((_AtomInput || _load_AtomInput()).AtomInput, {
         ref: 'launchArguments',
         tabIndex: '12',
-        placeholderText: 'Arguments to the executable'
+        placeholderText: 'Arguments to the executable',
+        value: this.state.launchArguments,
+        onDidChange: value => this.setState({ launchArguments: value })
       }),
       _react.default.createElement(
         'label',
@@ -108,7 +147,9 @@ class LaunchUIComponent extends _react.default.Component {
       _react.default.createElement((_AtomInput || _load_AtomInput()).AtomInput, {
         ref: 'launchEnvironmentVariables',
         tabIndex: '13',
-        placeholderText: 'Environment variables (e.g., SHELL=/bin/bash PATH=/bin)'
+        placeholderText: 'Environment variables (e.g., SHELL=/bin/bash PATH=/bin)',
+        value: this.state.launchEnvironmentVariables,
+        onDidChange: value => this.setState({ launchEnvironmentVariables: value })
       }),
       _react.default.createElement(
         'label',
@@ -118,7 +159,9 @@ class LaunchUIComponent extends _react.default.Component {
       _react.default.createElement((_AtomInput || _load_AtomInput()).AtomInput, {
         ref: 'launchWorkingDirectory',
         tabIndex: '14',
-        placeholderText: 'Working directory for the launched executable'
+        placeholderText: 'Working directory for the launched executable',
+        value: this.state.launchWorkingDirectory,
+        onDidChange: value => this.setState({ launchWorkingDirectory: value })
       }),
       _react.default.createElement(
         'label',
@@ -128,34 +171,11 @@ class LaunchUIComponent extends _react.default.Component {
       _react.default.createElement((_AtomInput || _load_AtomInput()).AtomInput, {
         ref: 'stdinFilePath',
         tabIndex: '15',
-        placeholderText: 'Redirect stdin to this file'
-      }),
-      _react.default.createElement(
-        'div',
-        { style: { display: 'flex', flexDirection: 'row-reverse' } },
-        _react.default.createElement(
-          (_ButtonGroup || _load_ButtonGroup()).ButtonGroup,
-          null,
-          _react.default.createElement(
-            (_Button || _load_Button()).Button,
-            { tabIndex: '17', onClick: this._cancelClick },
-            'Cancel'
-          ),
-          _react.default.createElement(
-            (_Button || _load_Button()).Button,
-            {
-              buttonType: (_Button || _load_Button()).ButtonTypes.PRIMARY,
-              tabIndex: '16',
-              onClick: this._handleLaunchClick },
-            'Launch'
-          )
-        )
-      )
+        placeholderText: 'Redirect stdin to this file',
+        value: this.state.stdinFilePath,
+        onDidChange: value => this.setState({ stdinFilePath: value })
+      })
     );
-  }
-
-  _cancelClick() {
-    atom.commands.dispatch(atom.views.getView(atom.workspace), 'nuclide-debugger:toggle-launch-attach');
   }
 
   _handleLaunchClick() {
@@ -174,8 +194,14 @@ class LaunchUIComponent extends _react.default.Component {
     };
     // Fire and forget.
     this.props.actions.launchDebugger(launchTarget);
-    this.props.actions.showDebuggerPanel();
-    this.props.actions.toggleLaunchAttachDialog();
+
+    (0, (_nuclideDebuggerBase || _load_nuclideDebuggerBase()).serializeDebuggerConfig)(...this._getSerializationArgs(), {
+      launchExecutable: this.state.launchExecutable,
+      launchArguments: this.state.launchArguments,
+      launchEnvironmentVariables: this.state.launchEnvironmentVariables,
+      launchWorkingDirectory: this.state.launchWorkingDirectory,
+      stdinFilePath: this.state.stdinFilePath
+    });
   }
 }
 exports.LaunchUIComponent = LaunchUIComponent;

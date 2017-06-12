@@ -134,7 +134,7 @@ module.exports = _client => {
     });
   };
 
-  remoteModule.killProcess = function (arg0, arg1) {
+  remoteModule.stopPackage = function (arg0, arg1) {
     return _client.marshalArguments(Array.from(arguments), [{
       name: "device",
       type: {
@@ -156,7 +156,7 @@ module.exports = _client => {
         kind: "string"
       }
     }]).then(args => {
-      return _client.callRemoteFunction("AdbService/killProcess", "promise", args);
+      return _client.callRemoteFunction("AdbService/stopPackage", "promise", args);
     }).then(value => {
       return _client.unmarshal(value, {
         location: {
@@ -808,9 +808,9 @@ Object.defineProperty(module.exports, "defs", {
         }
       }
     },
-    killProcess: {
+    stopPackage: {
       kind: "function",
-      name: "killProcess",
+      name: "stopPackage",
       location: {
         type: "source",
         fileName: "AdbService.js",
@@ -1976,6 +1976,544 @@ Object.defineProperty(module.exports, "defs", {
           },
           optional: false
         }]
+      }
+    },
+    Level: {
+      kind: "alias",
+      location: {
+        type: "source",
+        fileName: "process-rpc-types.js",
+        line: 44
+      },
+      name: "Level",
+      definition: {
+        location: {
+          type: "source",
+          fileName: "process-rpc-types.js",
+          line: 44
+        },
+        kind: "union",
+        types: [{
+          location: {
+            type: "source",
+            fileName: "process-rpc-types.js",
+            line: 44
+          },
+          kind: "string-literal",
+          value: "info"
+        }, {
+          location: {
+            type: "source",
+            fileName: "process-rpc-types.js",
+            line: 44
+          },
+          kind: "string-literal",
+          value: "log"
+        }, {
+          location: {
+            type: "source",
+            fileName: "process-rpc-types.js",
+            line: 44
+          },
+          kind: "string-literal",
+          value: "warning"
+        }, {
+          location: {
+            type: "source",
+            fileName: "process-rpc-types.js",
+            line: 44
+          },
+          kind: "string-literal",
+          value: "error"
+        }, {
+          location: {
+            type: "source",
+            fileName: "process-rpc-types.js",
+            line: 44
+          },
+          kind: "string-literal",
+          value: "debug"
+        }, {
+          location: {
+            type: "source",
+            fileName: "process-rpc-types.js",
+            line: 44
+          },
+          kind: "string-literal",
+          value: "success"
+        }]
+      }
+    },
+    Message: {
+      kind: "alias",
+      location: {
+        type: "source",
+        fileName: "process-rpc-types.js",
+        line: 45
+      },
+      name: "Message",
+      definition: {
+        location: {
+          type: "source",
+          fileName: "process-rpc-types.js",
+          line: 45
+        },
+        kind: "object",
+        fields: [{
+          location: {
+            type: "source",
+            fileName: "process-rpc-types.js",
+            line: 45
+          },
+          name: "text",
+          type: {
+            location: {
+              type: "source",
+              fileName: "process-rpc-types.js",
+              line: 45
+            },
+            kind: "string"
+          },
+          optional: false
+        }, {
+          location: {
+            type: "source",
+            fileName: "process-rpc-types.js",
+            line: 45
+          },
+          name: "level",
+          type: {
+            location: {
+              type: "source",
+              fileName: "process-rpc-types.js",
+              line: 45
+            },
+            kind: "named",
+            name: "Level"
+          },
+          optional: false
+        }]
+      }
+    },
+    MessageEvent: {
+      kind: "alias",
+      location: {
+        type: "source",
+        fileName: "process-rpc-types.js",
+        line: 47
+      },
+      name: "MessageEvent",
+      definition: {
+        location: {
+          type: "source",
+          fileName: "process-rpc-types.js",
+          line: 47
+        },
+        kind: "object",
+        fields: [{
+          location: {
+            type: "source",
+            fileName: "process-rpc-types.js",
+            line: 48
+          },
+          name: "type",
+          type: {
+            location: {
+              type: "source",
+              fileName: "process-rpc-types.js",
+              line: 48
+            },
+            kind: "string-literal",
+            value: "message"
+          },
+          optional: false
+        }, {
+          location: {
+            type: "source",
+            fileName: "process-rpc-types.js",
+            line: 49
+          },
+          name: "message",
+          type: {
+            location: {
+              type: "source",
+              fileName: "process-rpc-types.js",
+              line: 49
+            },
+            kind: "named",
+            name: "Message"
+          },
+          optional: false
+        }]
+      }
+    },
+    ProgressEvent: {
+      kind: "alias",
+      location: {
+        type: "source",
+        fileName: "process-rpc-types.js",
+        line: 52
+      },
+      name: "ProgressEvent",
+      definition: {
+        location: {
+          type: "source",
+          fileName: "process-rpc-types.js",
+          line: 52
+        },
+        kind: "object",
+        fields: [{
+          location: {
+            type: "source",
+            fileName: "process-rpc-types.js",
+            line: 53
+          },
+          name: "type",
+          type: {
+            location: {
+              type: "source",
+              fileName: "process-rpc-types.js",
+              line: 53
+            },
+            kind: "string-literal",
+            value: "progress"
+          },
+          optional: false
+        }, {
+          location: {
+            type: "source",
+            fileName: "process-rpc-types.js",
+            line: 54
+          },
+          name: "progress",
+          type: {
+            location: {
+              type: "source",
+              fileName: "process-rpc-types.js",
+              line: 54
+            },
+            kind: "nullable",
+            type: {
+              location: {
+                type: "source",
+                fileName: "process-rpc-types.js",
+                line: 54
+              },
+              kind: "number"
+            }
+          },
+          optional: false
+        }]
+      }
+    },
+    ResultEvent: {
+      kind: "alias",
+      location: {
+        type: "source",
+        fileName: "process-rpc-types.js",
+        line: 57
+      },
+      name: "ResultEvent",
+      definition: {
+        location: {
+          type: "source",
+          fileName: "process-rpc-types.js",
+          line: 57
+        },
+        kind: "object",
+        fields: [{
+          location: {
+            type: "source",
+            fileName: "process-rpc-types.js",
+            line: 58
+          },
+          name: "type",
+          type: {
+            location: {
+              type: "source",
+              fileName: "process-rpc-types.js",
+              line: 58
+            },
+            kind: "string-literal",
+            value: "result"
+          },
+          optional: false
+        }, {
+          location: {
+            type: "source",
+            fileName: "process-rpc-types.js",
+            line: 59
+          },
+          name: "result",
+          type: {
+            location: {
+              type: "source",
+              fileName: "process-rpc-types.js",
+              line: 59
+            },
+            kind: "mixed"
+          },
+          optional: false
+        }]
+      }
+    },
+    StatusEvent: {
+      kind: "alias",
+      location: {
+        type: "source",
+        fileName: "process-rpc-types.js",
+        line: 62
+      },
+      name: "StatusEvent",
+      definition: {
+        location: {
+          type: "source",
+          fileName: "process-rpc-types.js",
+          line: 62
+        },
+        kind: "object",
+        fields: [{
+          location: {
+            type: "source",
+            fileName: "process-rpc-types.js",
+            line: 63
+          },
+          name: "type",
+          type: {
+            location: {
+              type: "source",
+              fileName: "process-rpc-types.js",
+              line: 63
+            },
+            kind: "string-literal",
+            value: "status"
+          },
+          optional: false
+        }, {
+          location: {
+            type: "source",
+            fileName: "process-rpc-types.js",
+            line: 64
+          },
+          name: "status",
+          type: {
+            location: {
+              type: "source",
+              fileName: "process-rpc-types.js",
+              line: 64
+            },
+            kind: "nullable",
+            type: {
+              location: {
+                type: "source",
+                fileName: "process-rpc-types.js",
+                line: 64
+              },
+              kind: "string"
+            }
+          },
+          optional: false
+        }]
+      }
+    },
+    TaskEvent: {
+      kind: "alias",
+      location: {
+        type: "source",
+        fileName: "process-rpc-types.js",
+        line: 67
+      },
+      name: "TaskEvent",
+      definition: {
+        location: {
+          type: "source",
+          fileName: "process-rpc-types.js",
+          line: 68
+        },
+        kind: "union",
+        types: [{
+          location: {
+            type: "source",
+            fileName: "process-rpc-types.js",
+            line: 47
+          },
+          kind: "object",
+          fields: [{
+            location: {
+              type: "source",
+              fileName: "process-rpc-types.js",
+              line: 48
+            },
+            name: "type",
+            type: {
+              location: {
+                type: "source",
+                fileName: "process-rpc-types.js",
+                line: 48
+              },
+              kind: "string-literal",
+              value: "message"
+            },
+            optional: false
+          }, {
+            location: {
+              type: "source",
+              fileName: "process-rpc-types.js",
+              line: 49
+            },
+            name: "message",
+            type: {
+              location: {
+                type: "source",
+                fileName: "process-rpc-types.js",
+                line: 49
+              },
+              kind: "named",
+              name: "Message"
+            },
+            optional: false
+          }]
+        }, {
+          location: {
+            type: "source",
+            fileName: "process-rpc-types.js",
+            line: 52
+          },
+          kind: "object",
+          fields: [{
+            location: {
+              type: "source",
+              fileName: "process-rpc-types.js",
+              line: 53
+            },
+            name: "type",
+            type: {
+              location: {
+                type: "source",
+                fileName: "process-rpc-types.js",
+                line: 53
+              },
+              kind: "string-literal",
+              value: "progress"
+            },
+            optional: false
+          }, {
+            location: {
+              type: "source",
+              fileName: "process-rpc-types.js",
+              line: 54
+            },
+            name: "progress",
+            type: {
+              location: {
+                type: "source",
+                fileName: "process-rpc-types.js",
+                line: 54
+              },
+              kind: "nullable",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "process-rpc-types.js",
+                  line: 54
+                },
+                kind: "number"
+              }
+            },
+            optional: false
+          }]
+        }, {
+          location: {
+            type: "source",
+            fileName: "process-rpc-types.js",
+            line: 57
+          },
+          kind: "object",
+          fields: [{
+            location: {
+              type: "source",
+              fileName: "process-rpc-types.js",
+              line: 58
+            },
+            name: "type",
+            type: {
+              location: {
+                type: "source",
+                fileName: "process-rpc-types.js",
+                line: 58
+              },
+              kind: "string-literal",
+              value: "result"
+            },
+            optional: false
+          }, {
+            location: {
+              type: "source",
+              fileName: "process-rpc-types.js",
+              line: 59
+            },
+            name: "result",
+            type: {
+              location: {
+                type: "source",
+                fileName: "process-rpc-types.js",
+                line: 59
+              },
+              kind: "mixed"
+            },
+            optional: false
+          }]
+        }, {
+          location: {
+            type: "source",
+            fileName: "process-rpc-types.js",
+            line: 62
+          },
+          kind: "object",
+          fields: [{
+            location: {
+              type: "source",
+              fileName: "process-rpc-types.js",
+              line: 63
+            },
+            name: "type",
+            type: {
+              location: {
+                type: "source",
+                fileName: "process-rpc-types.js",
+                line: 63
+              },
+              kind: "string-literal",
+              value: "status"
+            },
+            optional: false
+          }, {
+            location: {
+              type: "source",
+              fileName: "process-rpc-types.js",
+              line: 64
+            },
+            name: "status",
+            type: {
+              location: {
+                type: "source",
+                fileName: "process-rpc-types.js",
+                line: 64
+              },
+              kind: "nullable",
+              type: {
+                location: {
+                  type: "source",
+                  fileName: "process-rpc-types.js",
+                  line: 64
+                },
+                kind: "string"
+              }
+            },
+            optional: false
+          }]
+        }],
+        discriminantField: "type"
       }
     },
     AndroidJavaProcess: {

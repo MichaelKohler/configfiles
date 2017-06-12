@@ -27,44 +27,57 @@ function _load_AttachUiComponent() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
-
 class HhvmLaunchAttachProvider extends (_nuclideDebuggerBase || _load_nuclideDebuggerBase()).DebuggerLaunchAttachProvider {
   constructor(debuggingTypeName, targetUri) {
     super(debuggingTypeName, targetUri);
   }
 
-  getActions() {
-    return Promise.resolve(['Attach', 'Launch']);
-  }
+  getCallbacksForAction(action) {
+    return {
+      /**
+       * Whether this provider is enabled or not.
+       */
+      isEnabled: () => {
+        return Promise.resolve(true);
+      },
 
-  getComponent(action, parentEventEmitter) {
-    if (action === 'Launch') {
-      return _react.default.createElement((_LaunchUiComponent || _load_LaunchUiComponent()).LaunchUiComponent, {
-        targetUri: this.getTargetUri(),
-        parentEmitter: parentEventEmitter
-      });
-    } else if (action === 'Attach') {
-      return _react.default.createElement((_AttachUiComponent || _load_AttachUiComponent()).AttachUiComponent, {
-        targetUri: this.getTargetUri(),
-        parentEmitter: parentEventEmitter
-      });
-    } else {
-      if (!false) {
-        throw new Error('Unrecognized action for component.');
+      /**
+       * Returns a list of supported debugger types + environments for the specified action.
+       */
+      getDebuggerTypeNames: super.getCallbacksForAction(action).getDebuggerTypeNames,
+
+      /**
+       * Returns the UI component for configuring the specified debugger type and action.
+       */
+      getComponent: (debuggerTypeName, configIsValidChanged) => {
+        if (action === 'launch') {
+          return _react.default.createElement((_LaunchUiComponent || _load_LaunchUiComponent()).LaunchUiComponent, {
+            targetUri: this.getTargetUri(),
+            configIsValidChanged: configIsValidChanged
+          });
+        } else if (action === 'attach') {
+          return _react.default.createElement((_AttachUiComponent || _load_AttachUiComponent()).AttachUiComponent, {
+            targetUri: this.getTargetUri(),
+            configIsValidChanged: configIsValidChanged
+          });
+        } else {
+          if (!false) {
+            throw new Error('Unrecognized action for component.');
+          }
+        }
       }
-    }
+    };
   }
 
   dispose() {}
 }
-exports.HhvmLaunchAttachProvider = HhvmLaunchAttachProvider;
+exports.HhvmLaunchAttachProvider = HhvmLaunchAttachProvider; /**
+                                                              * Copyright (c) 2015-present, Facebook, Inc.
+                                                              * All rights reserved.
+                                                              *
+                                                              * This source code is licensed under the license found in the LICENSE file in
+                                                              * the root directory of this source tree.
+                                                              *
+                                                              * 
+                                                              * @format
+                                                              */

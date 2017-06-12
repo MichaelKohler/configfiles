@@ -67,10 +67,10 @@ function _load_getElementFilePath() {
   return _getElementFilePath = _interopRequireDefault(require('../../commons-atom/getElementFilePath'));
 }
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 var _goToLocation;
@@ -102,7 +102,7 @@ function getBuildFileName(buckRoot) {
   }
   const buckService = (0, (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).getBuckServiceByNuclideUri)(buckRoot);
   buildFileName = buckService.getBuckConfig(buckRoot, 'buildfile', 'name').catch(error => {
-    (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error(`Error trying to find the name of the buildfile in Buck project '${buckRoot}'`, error);
+    (0, (_log4js || _load_log4js()).getLogger)('nuclide-buck').error(`Error trying to find the name of the buildfile in Buck project '${buckRoot}'`, error);
     return null;
   }).then(result => result || DEFAULT_BUILD_FILE_NAME);
   buildFileNameCache.set(buckRoot, buildFileName);

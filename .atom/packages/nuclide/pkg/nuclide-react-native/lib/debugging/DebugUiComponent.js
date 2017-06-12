@@ -7,28 +7,16 @@ exports.DebugUiComponent = undefined;
 
 var _react = _interopRequireDefault(require('react'));
 
-var _Button;
-
-function _load_Button() {
-  return _Button = require('nuclide-commons-ui/Button');
-}
-
-var _ButtonGroup;
-
-function _load_ButtonGroup() {
-  return _ButtonGroup = require('nuclide-commons-ui/ButtonGroup');
-}
-
 var _Checkbox;
 
 function _load_Checkbox() {
   return _Checkbox = require('nuclide-commons-ui/Checkbox');
 }
 
-var _nuclideDebuggerBase;
+var _UniversalDisposable;
 
-function _load_nuclideDebuggerBase() {
-  return _nuclideDebuggerBase = require('../../../nuclide-debugger-base');
+function _load_UniversalDisposable() {
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -50,9 +38,9 @@ class DebugUiComponent extends _react.default.Component {
 
   constructor(props) {
     super(props);
-    this._handleCancelButtonClick = this._handleCancelButtonClick.bind(this);
     this._handleDebugButtonClick = this._handleDebugButtonClick.bind(this);
 
+    this._disposables = new (_UniversalDisposable || _load_UniversalDisposable()).default();
     this.state = {
       startPackager: false,
       tailIosLogs: false,
@@ -60,12 +48,27 @@ class DebugUiComponent extends _react.default.Component {
     };
   }
 
-  componentWillMount() {
-    this.props.parentEmitter.on((_nuclideDebuggerBase || _load_nuclideDebuggerBase()).DebuggerLaunchAttachEventTypes.ENTER_KEY_PRESSED, this._handleDebugButtonClick);
+  componentDidMount() {
+    this._disposables.add(atom.commands.add('atom-workspace', {
+      'core:confirm': () => {
+        if (this._debugButtonShouldEnable()) {
+          this._handleDebugButtonClick();
+        }
+      }
+    }));
   }
 
   componentWillUnmount() {
-    this.props.parentEmitter.removeListener((_nuclideDebuggerBase || _load_nuclideDebuggerBase()).DebuggerLaunchAttachEventTypes.ENTER_KEY_PRESSED, this._handleDebugButtonClick);
+    this._disposables.dispose();
+  }
+
+  setState(newState) {
+    super.setState(newState);
+    this.props.configIsValidChanged(this._debugButtonShouldEnable());
+  }
+
+  _debugButtonShouldEnable() {
+    return true;
   }
 
   render() {
@@ -103,26 +106,6 @@ class DebugUiComponent extends _react.default.Component {
         'div',
         { className: 'text-left text-smaller text-subtle' },
         'After starting the debugger, enable JS debugging from the developer menu of your React Native app'
-      ),
-      _react.default.createElement(
-        'div',
-        { className: 'nuclide-react-native-debugging-launch-attach-actions' },
-        _react.default.createElement(
-          (_ButtonGroup || _load_ButtonGroup()).ButtonGroup,
-          null,
-          _react.default.createElement(
-            (_Button || _load_Button()).Button,
-            { onClick: this._handleCancelButtonClick },
-            'Cancel'
-          ),
-          _react.default.createElement(
-            (_Button || _load_Button()).Button,
-            {
-              buttonType: (_Button || _load_Button()).ButtonTypes.PRIMARY,
-              onClick: this._handleDebugButtonClick },
-            'Attach'
-          )
-        )
       )
     );
   }
@@ -138,11 +121,6 @@ class DebugUiComponent extends _react.default.Component {
       callWorkspaceCommand('nuclide-adb-logcat:start');
     }
     callWorkspaceCommand('nuclide-react-native:start-debugging');
-    callWorkspaceCommand('nuclide-debugger:toggle-launch-attach');
-  }
-
-  _handleCancelButtonClick() {
-    callWorkspaceCommand('nuclide-debugger:toggle-launch-attach');
   }
 }
 

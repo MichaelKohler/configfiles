@@ -7,10 +7,10 @@ exports.default = installErrorReporter;
 
 var _atom = require('atom');
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../pkg/nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 /**
@@ -40,7 +40,7 @@ function installErrorReporter() {
 
 function onUnhandledException(event) {
   try {
-    (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error(`Caught unhandled exception: ${event.message}`, event.originalError);
+    (0, (_log4js || _load_log4js()).getLogger)('installErrorReporter').error(`Caught unhandled exception: ${event.message}`, event.originalError);
   } catch (e) {
     // Ensure we don't recurse forever. Even under worst case scenarios.
   }
@@ -48,7 +48,7 @@ function onUnhandledException(event) {
 
 function onUnhandledRejection(event) {
   try {
-    (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error('Caught unhandled rejection', event.reason);
+    (0, (_log4js || _load_log4js()).getLogger)('installErrorReporter').error('Caught unhandled rejection', event.reason);
   } catch (e) {
     // Ensure we don't recurse forever. Even under worst case scenarios.
   }

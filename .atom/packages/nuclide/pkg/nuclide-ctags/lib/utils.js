@@ -36,7 +36,7 @@ let getLineNumberForTag = exports.getLineNumberForTag = (() => {
           }
         }
       } catch (e) {
-        (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().warn(`nuclide-ctags: Could not locate pattern in ${tag.file}`, e);
+        (0, (_log4js || _load_log4js()).getLogger)('nuclide-ctags').warn(`nuclide-ctags: Could not locate pattern in ${tag.file}`, e);
       }
     }
 
@@ -48,10 +48,10 @@ let getLineNumberForTag = exports.getLineNumberForTag = (() => {
   };
 })();
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 var _nuclideRemoteConnection;

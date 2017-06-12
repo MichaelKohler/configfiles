@@ -1,15 +1,15 @@
 'use strict';
 
+var _UniversalDisposable;
+
+function _load_UniversalDisposable() {
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
+}
+
 var _createPackage;
 
 function _load_createPackage() {
   return _createPackage = _interopRequireDefault(require('nuclide-commons-atom/createPackage'));
-}
-
-var _nuclideBusySignal;
-
-function _load_nuclideBusySignal() {
-  return _nuclideBusySignal = require('../../nuclide-busy-signal');
 }
 
 var _ArcanistDiagnosticsProvider;
@@ -22,26 +22,23 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// eslint-disable-next-line nuclide-internal/no-cross-atom-imports
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
-
 class Activation {
 
   constructor() {
-    this._busySignalProvider = new (_nuclideBusySignal || _load_nuclideBusySignal()).DedupedBusySignalProviderBase();
+    this._disposables = new (_UniversalDisposable || _load_UniversalDisposable()).default();
   }
 
-  provideBusySignal() {
-    return this._busySignalProvider;
+  dispose() {
+    this._disposables.dispose();
+  }
+
+  consumeBusySignal(service) {
+    this._disposables.add(service);
+    this._busySignalService = service;
+    return new (_UniversalDisposable || _load_UniversalDisposable()).default(() => {
+      this._disposables.remove(service);
+      this._busySignalService = null;
+    });
   }
 
   provideLinter() {
@@ -54,10 +51,22 @@ class Activation {
         if (path == null) {
           return null;
         }
-        return this._busySignalProvider.reportBusy(`Waiting for arc lint results for \`${editor.getTitle()}\``, () => (_ArcanistDiagnosticsProvider || _load_ArcanistDiagnosticsProvider()).lint(editor), { onlyForFile: path });
+        if (this._busySignalService == null) {
+          return (_ArcanistDiagnosticsProvider || _load_ArcanistDiagnosticsProvider()).lint(editor);
+        }
+        return this._busySignalService.reportBusyWhile(`Waiting for arc lint results for \`${editor.getTitle()}\``, () => (_ArcanistDiagnosticsProvider || _load_ArcanistDiagnosticsProvider()).lint(editor), { onlyForFile: path });
       }
     };
   }
-}
+} /**
+   * Copyright (c) 2015-present, Facebook, Inc.
+   * All rights reserved.
+   *
+   * This source code is licensed under the license found in the LICENSE file in
+   * the root directory of this source tree.
+   *
+   * 
+   * @format
+   */
 
 (0, (_createPackage || _load_createPackage()).default)(module.exports, Activation);

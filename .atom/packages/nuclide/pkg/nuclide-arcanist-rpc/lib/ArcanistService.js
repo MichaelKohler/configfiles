@@ -170,7 +170,7 @@ function _load_nuclideUri() {
 var _process;
 
 function _load_process() {
-  return _process = require('../../commons-node/process');
+  return _process = require('nuclide-commons/process');
 }
 
 var _observable;
@@ -182,13 +182,13 @@ function _load_observable() {
 var _nice;
 
 function _load_nice() {
-  return _nice = require('../../commons-node/nice');
+  return _nice = require('nuclide-commons/nice');
 }
 
 var _fsPromise;
 
 function _load_fsPromise() {
-  return _fsPromise = _interopRequireDefault(require('../../commons-node/fsPromise'));
+  return _fsPromise = _interopRequireDefault(require('nuclide-commons/fsPromise'));
 }
 
 var _hgRevisionStateHelpers;
@@ -209,10 +209,10 @@ function _load_nuclideSourceControlHelpers() {
   return _nuclideSourceControlHelpers = require('../../nuclide-source-control-helpers');
 }
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 var _lruCache;
@@ -369,7 +369,7 @@ function execArcLint(cwd, filePaths, skip) {
     try {
       json = JSON.parse(stdout);
     } catch (error) {
-      (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().warn('Error parsing `arc lint` JSON output', stdout);
+      (0, (_log4js || _load_log4js()).getLogger)('nuclide-arcanist-rpc').warn('Error parsing `arc lint` JSON output', stdout);
       return _rxjsBundlesRxMinJs.Observable.empty();
     }
     const output = new Map();

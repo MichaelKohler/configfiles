@@ -3,47 +3,16 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.pathForDebugBridge = undefined;
 
 var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
 
-let pathForDebugBridge = exports.pathForDebugBridge = (() => {
-  var _ref = (0, _asyncToGenerator.default)(function* (db) {
-    return reusePromiseUntilResolved(db, (0, _asyncToGenerator.default)(function* () {
-      const store = getStore(db);
-      const workingPath = yield (0, (_promise || _load_promise()).asyncFind)(store.getPaths(), (() => {
-        var _ref3 = (0, _asyncToGenerator.default)(function* (path) {
-          try {
-            yield (0, (_process || _load_process()).runCommand)(path, ['start-server']).toPromise();
-            return path;
-          } catch (e) {
-            return null;
-          }
-        });
-
-        return function (_x2) {
-          return _ref3.apply(this, arguments);
-        };
-      })());
-      store.notifyWorkingPath(workingPath);
-      if (workingPath != null) {
-        return workingPath;
-      }
-      throw new Error(`${db} is unavailable. Add it to your path and restart nuclide or make sure that ` + `'${db} start-server' works.`);
-    }));
-  });
-
-  return function pathForDebugBridge(_x) {
-    return _ref.apply(this, arguments);
-  };
-})();
-
 exports.getStore = getStore;
+exports.pathForDebugBridge = pathForDebugBridge;
 
 var _process;
 
 function _load_process() {
-  return _process = require('../../commons-node/process');
+  return _process = require('nuclide-commons/process');
 }
 
 var _promise;
@@ -74,10 +43,11 @@ class DebugBridgePathStore {
   }
 
   getPaths() {
-    if (this._lastWorkingPath == null) {
+    const lastWorkingPath = this._lastWorkingPath;
+    if (lastWorkingPath == null) {
       return this._sortedPaths;
     }
-    return (0, (_collection || _load_collection()).arrayUnique)([this._lastWorkingPath].concat(...this._sortedPaths));
+    return (0, (_collection || _load_collection()).arrayUnique)([lastWorkingPath, ...this._sortedPaths]);
   }
 
   notifyWorkingPath(workingPath) {
@@ -118,4 +88,29 @@ function reusePromiseUntilResolved(id, cb) {
     runningPromises.set(id, runningPromise);
   }
   return runningPromise;
+}
+
+function pathForDebugBridge(db) {
+  return reusePromiseUntilResolved(db, (0, _asyncToGenerator.default)(function* () {
+    const store = getStore(db);
+    const workingPath = yield (0, (_promise || _load_promise()).asyncFind)(store.getPaths(), (() => {
+      var _ref2 = (0, _asyncToGenerator.default)(function* (path) {
+        try {
+          yield (0, (_process || _load_process()).runCommand)(path, ['start-server']).toPromise();
+          return path;
+        } catch (e) {
+          return null;
+        }
+      });
+
+      return function (_x) {
+        return _ref2.apply(this, arguments);
+      };
+    })());
+    if (workingPath == null) {
+      throw new Error(`${db} is unavailable. Add it to your path and restart nuclide or make sure that ` + `'${db} start-server' works.`);
+    }
+    store.notifyWorkingPath(workingPath);
+    return workingPath;
+  }));
 }

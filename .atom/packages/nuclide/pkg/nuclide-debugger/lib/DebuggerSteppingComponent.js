@@ -160,7 +160,8 @@ class DebuggerSteppingComponent extends _react.default.Component {
     }
 
     // ChromeActionRegistryActions.PAUSE actually toggles paused state.
-    this.props.actions.triggerDebuggerAction((_ChromeActionRegistryActions || _load_ChromeActionRegistryActions()).default.PAUSE);
+    const actionId = this.state.debuggerMode === (_DebuggerStore || _load_DebuggerStore()).DebuggerMode.RUNNING ? (_ChromeActionRegistryActions || _load_ChromeActionRegistryActions()).default.PAUSE : (_ChromeActionRegistryActions || _load_ChromeActionRegistryActions()).default.RUN;
+    this.props.actions.triggerDebuggerAction(actionId);
   }
 
   render() {

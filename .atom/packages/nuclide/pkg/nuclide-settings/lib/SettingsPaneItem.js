@@ -102,8 +102,9 @@ class NuclideSettingsPaneItem extends _react.default.Component {
     nuclidePackages.forEach(pkg => {
       const pkgName = pkg.name;
       const { nuclide } = pkg.metadata;
+      const config = pkg.metadata.atomConfig || nuclide.config;
 
-      if (nuclide.config && nuclide.configMetadata) {
+      if (config && nuclide.configMetadata) {
         const { pathComponents } = nuclide.configMetadata;
         const categoryName = pathComponents[0];
         const packageTitle = pathComponents[1] || pkgName;
@@ -119,7 +120,7 @@ class NuclideSettingsPaneItem extends _react.default.Component {
 
         // Create settingData for each setting.
         const settings = {};
-        Object.keys(nuclide.config).forEach(settingName => {
+        Object.keys(config).forEach(settingName => {
           const keyPath = pkgName + '.' + settingName;
           const schema = (_featureConfig || _load_featureConfig()).default.getSchema(keyPath);
           const title = getTitle(schema, settingName);

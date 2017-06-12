@@ -39,26 +39,37 @@ function _load_string() {
   return _string = require('nuclide-commons/string');
 }
 
-var _nuclideLogging;
+var _NewProtocolChannelChecker;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_NewProtocolChannelChecker() {
+  return _NewProtocolChannelChecker = require('../../nuclide-debugger-common/lib/NewProtocolChannelChecker');
+}
+
+var _NewProtocolMessageChecker;
+
+function _load_NewProtocolMessageChecker() {
+  return _NewProtocolMessageChecker = _interopRequireDefault(require('./NewProtocolMessageChecker'));
+}
+
+var _log4js;
+
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
+const SESSION_END_EVENT = 'session-end-event'; /**
+                                                * Copyright (c) 2015-present, Facebook, Inc.
+                                                * All rights reserved.
+                                                *
+                                                * This source code is licensed under the license found in the LICENSE file in
+                                                * the root directory of this source tree.
+                                                *
+                                                * 
+                                                * @format
+                                                */
 
-const SESSION_END_EVENT = 'session-end-event';
 const RECEIVED_MESSAGE_EVENT = 'received-message-event';
 
 class DebuggerInstanceBase {
@@ -99,9 +110,11 @@ class DebuggerInstance extends DebuggerInstanceBase {
       this._disposables.add(subscriptions);
     }
     this._disposables.add(rpcService);
-    this._logger = (0, (_nuclideLogging || _load_nuclideLogging()).getCategoryLogger)(`nuclide-debugger-${this.getProviderName()}`);
+    this._logger = (0, (_log4js || _load_log4js()).getLogger)(`nuclide-debugger-${this.getProviderName()}`);
     this._chromeWebSocketServer = new (_WebSocketServer || _load_WebSocketServer()).WebSocketServer();
     this._chromeWebSocket = null;
+    this._useNewChannel = false;
+    this._newProtocolMessageChecker = new (_NewProtocolMessageChecker || _load_NewProtocolMessageChecker()).default();
     this._emitter = new _atom.Emitter();
     this._disposables.add(this._chromeWebSocketServer);
     this._registerServerHandlers();
@@ -125,7 +138,12 @@ class DebuggerInstance extends DebuggerInstanceBase {
   }
 
   getWebsocketAddress() {
-    return Promise.resolve(this._startChromeWebSocketServer());
+    var _this = this;
+
+    return (0, _asyncToGenerator.default)(function* () {
+      _this._useNewChannel = yield (0, (_NewProtocolChannelChecker || _load_NewProtocolChannelChecker()).isNewProtocolChannelEnabled)();
+      return Promise.resolve(_this._startChromeWebSocketServer());
+    })();
   }
 
   _startChromeWebSocketServer() {
@@ -133,7 +151,7 @@ class DebuggerInstance extends DebuggerInstanceBase {
     const wsPort = this._getWebSocketPort();
     this._chromeWebSocketServer.start(wsPort).catch(this._handleWebSocketServerError.bind(this)).then(this._handleWebSocketServerConnection.bind(this));
     const result = 'ws=localhost:' + String(wsPort) + '/';
-    this.getLogger().logInfo('Listening for connection at: ' + result);
+    this.getLogger().info('Listening for connection at: ' + result);
     return result;
   }
 
@@ -144,7 +162,7 @@ class DebuggerInstance extends DebuggerInstanceBase {
       Please choose a different port in the debugger config settings.`;
     }
     atom.notifications.addError(errorMessage);
-    this.getLogger().logError(errorMessage);
+    this.getLogger().error(errorMessage);
     this.dispose();
   }
 
@@ -154,11 +172,11 @@ class DebuggerInstance extends DebuggerInstanceBase {
       return;
     }
     if (this._chromeWebSocket) {
-      this.getLogger().log('Already connected to Chrome WebSocket. Discarding new connection.');
+      this.getLogger().debug('Already connected to Chrome WebSocket. Discarding new connection.');
       webSocket.close();
       return;
     }
-    this.getLogger().log('Connecting to Chrome WebSocket client.');
+    this.getLogger().debug('Connecting to Chrome WebSocket client.');
     this._chromeWebSocket = webSocket;
     webSocket.on('message', this._handleChromeSocketMessage.bind(this));
     webSocket.on('error', this._handleChromeSocketError.bind(this));
@@ -189,34 +207,38 @@ class DebuggerInstance extends DebuggerInstanceBase {
 
   _handleServerMessage(message_) {
     let message = message_;
-    this.getLogger().log('Recieved server message: ' + message);
+    this.getLogger().debug('Recieved server message: ' + message);
     const processedMessage = this.preProcessServerMessage(message);
     const webSocket = this._chromeWebSocket;
-    if (webSocket) {
-      message = this._translateMessageIfNeeded(processedMessage);
-      webSocket.send(message);
+    message = this._translateMessageIfNeeded(processedMessage);
+    if (this._useNewChannel) {
+      this.receiveNuclideMessage(message);
     } else {
-      this.getLogger().logError("Why isn't chrome websocket available?");
+      if (webSocket != null) {
+        webSocket.send(message);
+      } else {
+        this.getLogger().error("Why isn't chrome websocket available?");
+      }
     }
   }
 
   _handleServerError(error) {
-    this.getLogger().logError('Received server error: ' + error);
+    this.getLogger().error('Received server error: ' + error);
   }
 
   _handleSessionEnd() {
-    this.getLogger().log('Ending Session');
+    this.getLogger().debug('Ending Session');
     this._emitter.emit(SESSION_END_EVENT);
     this.dispose();
   }
 
   _handleChromeSocketMessage(message) {
-    var _this = this;
+    var _this2 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      _this.getLogger().log('Recieved Chrome message: ' + message);
-      const processedMessage = yield _this.preProcessClientMessage(message);
-      _this._rpcService.sendCommand((0, (_ChromeMessageRemoting || _load_ChromeMessageRemoting()).translateMessageToServer)(processedMessage));
+      _this2.getLogger().debug('Recieved Chrome message: ' + message);
+      const processedMessage = yield _this2.preProcessClientMessage(message);
+      _this2._rpcService.sendCommand((0, (_ChromeMessageRemoting || _load_ChromeMessageRemoting()).translateMessageToServer)(processedMessage));
     })();
   }
 
@@ -224,6 +246,7 @@ class DebuggerInstance extends DebuggerInstanceBase {
    * The following three methods are used by new Nuclide channel.
    */
   sendNuclideMessage(message) {
+    this._newProtocolMessageChecker.registerSentMessage(message);
     return this._handleChromeSocketMessage(message);
   }
 
@@ -246,12 +269,12 @@ class DebuggerInstance extends DebuggerInstanceBase {
   }
 
   _handleChromeSocketError(error) {
-    this.getLogger().logError('Chrome webSocket error ' + (0, (_string || _load_string()).stringifyError)(error));
+    this.getLogger().error('Chrome webSocket error ' + (0, (_string || _load_string()).stringifyError)(error));
     this.dispose();
   }
 
   _handleChromeSocketClose(code) {
-    this.getLogger().log(`Chrome webSocket closed: ${code}`);
+    this.getLogger().debug(`Chrome webSocket closed: ${code}`);
     this.dispose();
   }
 

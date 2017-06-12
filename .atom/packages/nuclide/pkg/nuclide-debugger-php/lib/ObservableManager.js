@@ -28,20 +28,6 @@ function _load_UniversalDisposable() {
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
-
-const { log, logError } = (_utils || _load_utils()).default;
-
-
-/**
  * The ObservableManager keeps track of the streams we use to talk to the server-side nuclide
  * debugger.  Currently it manages 3 streams:
  *   1. A notification stream to communicate events to atom's notification system.
@@ -53,6 +39,17 @@ const { log, logError } = (_utils || _load_utils()).default;
  * The ObservableManager takes ownership of its observables, and disposes them when its dispose
  * method is called.
  */
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ * @format
+ */
+
 class ObservableManager {
 
   constructor(notifications, outputWindowMessages) {
@@ -84,37 +81,37 @@ class ObservableManager {
   _handleNotificationMessage(message) {
     switch (message.type) {
       case 'info':
-        log('Notification observerable info: ' + message.message);
+        (_utils || _load_utils()).default.debug('Notification observerable info: ' + message.message);
         atom.notifications.addInfo(message.message);
         break;
 
       case 'warning':
-        log('Notification observerable warning: ' + message.message);
+        (_utils || _load_utils()).default.debug('Notification observerable warning: ' + message.message);
         atom.notifications.addWarning(message.message);
         break;
 
       case 'error':
-        logError('Notification observerable error: ' + message.message);
+        (_utils || _load_utils()).default.error('Notification observerable error: ' + message.message);
         atom.notifications.addError(message.message);
         break;
 
       case 'fatalError':
-        logError('Notification observerable fatal error: ' + message.message);
+        (_utils || _load_utils()).default.error('Notification observerable fatal error: ' + message.message);
         atom.notifications.addFatalError(message.message);
         break;
 
       default:
-        logError('Unknown message: ' + JSON.stringify(message));
+        (_utils || _load_utils()).default.error('Unknown message: ' + JSON.stringify(message));
         break;
     }
   }
 
   _handleNotificationError(error) {
-    logError('Notification observerable error: ' + error);
+    (_utils || _load_utils()).default.error('Notification observerable error: ' + error);
   }
 
   _handleNotificationEnd() {
-    log('Notification observerable ends.');
+    (_utils || _load_utils()).default.debug('Notification observerable ends.');
   }
 
   dispose() {

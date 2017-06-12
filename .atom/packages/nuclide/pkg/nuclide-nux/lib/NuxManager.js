@@ -33,10 +33,10 @@ function _load_string() {
   return _string = require('nuclide-commons/string');
 }
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 var _nuclideAnalytics;
@@ -81,7 +81,7 @@ const NUX_PER_SESSION_LIMIT = 3;
 const NEW_TOUR_EVENT = 'nuxTourNew';
 const READY_TOUR_EVENT = 'nuxTourReady';
 
-const logger = (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)();
+const logger = (0, (_log4js || _load_log4js()).getLogger)('nuclide-nux');
 
 class NuxManager {
   // Maps a NUX's unique ID to its corresponding NuxTour

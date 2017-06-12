@@ -5,11 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ATDeviceProcessesProvider = undefined;
 
-var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
-
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * Copyright (c) 2015-present, Facebook, Inc.
@@ -35,14 +31,6 @@ class ATDeviceProcessesProvider {
 
   getType() {
     return this._type;
-  }
-
-  killProcess(host, device, id) {
-    var _this = this;
-
-    return (0, _asyncToGenerator.default)(function* () {
-      return _this._rpcFactory(host).killProcess(device, id);
-    })();
   }
 }
 exports.ATDeviceProcessesProvider = ATDeviceProcessesProvider;

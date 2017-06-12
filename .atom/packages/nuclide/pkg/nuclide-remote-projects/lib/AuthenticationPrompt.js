@@ -8,20 +8,15 @@ var _atom = require('atom');
 
 var _react = _interopRequireDefault(require('react'));
 
+var _AtomNotifications;
+
+function _load_AtomNotifications() {
+  return _AtomNotifications = require('./AtomNotifications');
+}
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /** Component to prompt the user for authentication information. */
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
-
 class AuthenticationPrompt extends _react.default.Component {
 
   constructor(props) {
@@ -38,6 +33,14 @@ class AuthenticationPrompt extends _react.default.Component {
     this._disposables.add(atom.commands.add('atom-workspace', 'core:cancel', event => this.props.onCancel()));
 
     this.refs.password.focus();
+
+    const raiseNativeNotification = (0, (_AtomNotifications || _load_AtomNotifications()).getNotificationService)();
+    if (raiseNativeNotification != null) {
+      const pendingNotification = raiseNativeNotification('Nuclide Remote Connection', 'Nuclide requires additional action to authenticate your remote connection', 2000, false);
+      if (pendingNotification != null) {
+        this._disposables.add(pendingNotification);
+      }
+    }
   }
 
   componentWillUnmount() {
@@ -85,4 +88,13 @@ class AuthenticationPrompt extends _react.default.Component {
     );
   }
 }
-exports.default = AuthenticationPrompt;
+exports.default = AuthenticationPrompt; /**
+                                         * Copyright (c) 2015-present, Facebook, Inc.
+                                         * All rights reserved.
+                                         *
+                                         * This source code is licensed under the license found in the LICENSE file in
+                                         * the root directory of this source tree.
+                                         *
+                                         * 
+                                         * @format
+                                         */

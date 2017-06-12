@@ -164,7 +164,7 @@ var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
 var _process;
 
 function _load_process() {
-  return _process = require('../../commons-node/process');
+  return _process = require('nuclide-commons/process');
 }
 
 var _ClangServerManager;

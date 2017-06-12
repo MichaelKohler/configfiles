@@ -49,10 +49,10 @@ function _load_bindObservableAsProps() {
   return _bindObservableAsProps = require('nuclide-commons-ui/bindObservableAsProps');
 }
 
-var _nuclideLogging;
+var _log4js;
 
-function _load_nuclideLogging() {
-  return _nuclideLogging = require('../../nuclide-logging');
+function _load_log4js() {
+  return _log4js = require('log4js');
 }
 
 var _Icon;
@@ -254,7 +254,7 @@ class BuckTaskRunner {
       const rootEpic = (actions, store) => (0, (_reduxObservable || _load_reduxObservable()).combineEpics)(...epics)(actions, store)
       // Log errors and continue.
       .catch((err, stream) => {
-        (0, (_nuclideLogging || _load_nuclideLogging()).getLogger)().error(err);
+        (0, (_log4js || _load_log4js()).getLogger)('nuclide-buck').error(err);
         return stream;
       });
       this._store = (0, (_redux || _load_redux()).createStore)((_Reducers || _load_Reducers()).default, initialState, (0, (_redux || _load_redux()).applyMiddleware)((0, (_reduxObservable || _load_reduxObservable()).createEpicMiddleware)(rootEpic)));
