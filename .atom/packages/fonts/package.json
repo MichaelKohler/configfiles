@@ -2,40 +2,40 @@
   "_args": [
     [
       {
-        "raw": "/private/var/folders/rc/pbsjktx16ns1x5nysj8k2lhw0000gn/T/d-117416-13492-1gy3xq8.jcyvkuik9/package.tgz",
+        "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117520-4276-kx7x9v.v09q30izfr/package.tgz",
         "scope": null,
         "escapedName": null,
         "name": null,
-        "rawSpec": "/private/var/folders/rc/pbsjktx16ns1x5nysj8k2lhw0000gn/T/d-117416-13492-1gy3xq8.jcyvkuik9/package.tgz",
-        "spec": "/private/var/folders/rc/pbsjktx16ns1x5nysj8k2lhw0000gn/T/d-117416-13492-1gy3xq8.jcyvkuik9/package.tgz",
+        "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117520-4276-kx7x9v.v09q30izfr/package.tgz",
+        "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117520-4276-kx7x9v.v09q30izfr/package.tgz",
         "type": "local"
       },
-      "/private/var/folders/rc/pbsjktx16ns1x5nysj8k2lhw0000gn/T/apm-install-dir-117416-13492-4u4idv.07kvvon7b9"
+      "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-117520-4276-22ltr2.ksekd42t9"
     ]
   ],
-  "_from": "../d-117416-13492-1gy3xq8.jcyvkuik9/package.tgz",
-  "_id": "fonts@2.1.0",
+  "_from": "../d-117520-4276-kx7x9v.v09q30izfr/package.tgz",
+  "_id": "fonts@3.0.2",
   "_inCache": true,
   "_installable": true,
   "_location": "/fonts",
   "_phantomChildren": {},
   "_requested": {
-    "raw": "/private/var/folders/rc/pbsjktx16ns1x5nysj8k2lhw0000gn/T/d-117416-13492-1gy3xq8.jcyvkuik9/package.tgz",
+    "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117520-4276-kx7x9v.v09q30izfr/package.tgz",
     "scope": null,
     "escapedName": null,
     "name": null,
-    "rawSpec": "/private/var/folders/rc/pbsjktx16ns1x5nysj8k2lhw0000gn/T/d-117416-13492-1gy3xq8.jcyvkuik9/package.tgz",
-    "spec": "/private/var/folders/rc/pbsjktx16ns1x5nysj8k2lhw0000gn/T/d-117416-13492-1gy3xq8.jcyvkuik9/package.tgz",
+    "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117520-4276-kx7x9v.v09q30izfr/package.tgz",
+    "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117520-4276-kx7x9v.v09q30izfr/package.tgz",
     "type": "local"
   },
   "_requiredBy": [
     "#USER"
   ],
-  "_resolved": "file:../d-117416-13492-1gy3xq8.jcyvkuik9/package.tgz",
-  "_shasum": "a7e3cd9c71a9e949896951bcce5c8cea2be17636",
+  "_resolved": "file:../d-117520-4276-kx7x9v.v09q30izfr/package.tgz",
+  "_shasum": "01154ab085f21928462c569b1b156f5a0ee58947",
   "_shrinkwrap": null,
-  "_spec": "/private/var/folders/rc/pbsjktx16ns1x5nysj8k2lhw0000gn/T/d-117416-13492-1gy3xq8.jcyvkuik9/package.tgz",
-  "_where": "/private/var/folders/rc/pbsjktx16ns1x5nysj8k2lhw0000gn/T/apm-install-dir-117416-13492-4u4idv.07kvvon7b9",
+  "_spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117520-4276-kx7x9v.v09q30izfr/package.tgz",
+  "_where": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-117520-4276-22ltr2.ksekd42t9",
   "bugs": {
     "url": "https://github.com/braver/fonts/issues"
   },
@@ -136,6 +136,11 @@
         "Verily Serif Mono",
         "saxMono"
       ]
+    },
+    "secondaryFonts": {
+      "description": "Additional fonts for glyphs missing in the main font (e.g. for CJK characters).",
+      "type": "string",
+      "default": "monospace"
     }
   },
   "dependencies": {},
@@ -162,5 +167,19 @@
     "type": "git",
     "url": "git+https://github.com/braver/fonts.git"
   },
-  "version": "2.1.0"
+  "version": "3.0.2",
+  "_atomModuleCache": {
+    "version": 1,
+    "dependencies": [],
+    "extensions": {
+      ".coffee": [
+        "lib/fonts.coffee",
+        "lib/runner.coffee"
+      ],
+      ".json": [
+        "package.json"
+      ]
+    },
+    "folders": []
+  }
 }
