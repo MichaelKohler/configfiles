@@ -143,10 +143,13 @@ class Activation {
     }));
   }
 
-  deserializeConsoleContainer() {
+  deserializeConsoleContainer(state) {
     return (0, (_viewableFromReactElement || _load_viewableFromReactElement()).viewableFromReactElement)(_react.default.createElement((_ConsoleContainer || _load_ConsoleContainer()).ConsoleContainer, {
       store: this._getStore(),
-      createPasteFunction: this._createPasteFunction
+      createPasteFunction: this._createPasteFunction,
+      initialFilterText: state.filterText,
+      initialEnableRegExpFilter: state.enableRegExpFilter,
+      initialUnselectedSourceIds: state.unselectedSourceIds
     }));
   }
 

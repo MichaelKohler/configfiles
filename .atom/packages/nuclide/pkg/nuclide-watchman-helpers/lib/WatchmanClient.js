@@ -69,7 +69,6 @@ class WatchmanClient {
     this._initWatchmanClient();
     this._serializedReconnect = (0, (_promise || _load_promise()).serializeAsyncCall)(() => this._reconnectClient());
     this._subscriptions = new Map();
-    this._watchmanVersionPromise = this.version();
   }
 
   dispose() {
@@ -302,10 +301,6 @@ class WatchmanClient {
     var _this10 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      const watchmanVersion = yield _this10._watchmanVersionPromise;
-      if (!watchmanVersion || watchmanVersion < '3.1.0') {
-        throw new Error('Watchman version: ' + watchmanVersion + ' does not support watch-project');
-      }
       const response = yield _this10._command('watch-project', directoryPath);
       if (response.warning) {
         logger.error('watchman warning: ', response.warning);
@@ -320,15 +315,6 @@ class WatchmanClient {
     return (0, _asyncToGenerator.default)(function* () {
       const { clock } = yield _this11._command('clock', directoryPath);
       return clock;
-    })();
-  }
-
-  version() {
-    var _this12 = this;
-
-    return (0, _asyncToGenerator.default)(function* () {
-      const { version } = yield _this12._command('version');
-      return version;
     })();
   }
 

@@ -54,7 +54,7 @@ class FindReferencesProvider {
   }
 
   static register(name, grammarScopes, config, connectionToLanguageService) {
-    return atom.packages.serviceHub.provide('nuclide-find-references.provider', config.version, new FindReferencesProvider(name, grammarScopes, config.analyticsEventName, connectionToLanguageService));
+    return atom.packages.serviceHub.provide('atom-ide-find-references', config.version, new FindReferencesProvider(name, grammarScopes, config.analyticsEventName, connectionToLanguageService));
   }
 
   isEditorSupported(textEditor) {
@@ -79,4 +79,6 @@ class FindReferencesProvider {
     }));
   }
 }
+
 exports.FindReferencesProvider = FindReferencesProvider;
+null;

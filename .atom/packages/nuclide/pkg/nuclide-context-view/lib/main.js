@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.activate = activate;
 exports.deactivate = deactivate;
-exports.consumeDefinitionService = consumeDefinitionService;
+exports.consumeDefinitionProvider = consumeDefinitionProvider;
 exports.provideNuclideContextView = provideNuclideContextView;
 exports.getHomeFragments = getHomeFragments;
 exports.deserializeContextViewPanelState = deserializeContextViewPanelState;
@@ -30,7 +30,6 @@ var _atom = require('atom');
  * @format
  */
 
-let currentService = null;
 let manager = null;
 let disposables;
 
@@ -39,10 +38,8 @@ function activate() {
 }
 
 function deactivate() {
-  currentService = null;
   disposables.dispose();
   if (manager != null) {
-    manager.consumeDefinitionService(null);
     manager.dispose();
     manager = null;
   }
@@ -76,17 +73,8 @@ const Service = {
   }
 };
 
-function consumeDefinitionService(service) {
-  if (service !== currentService) {
-    currentService = service;
-    getContextViewManager().consumeDefinitionService(currentService);
-  }
-  return new _atom.Disposable(() => {
-    currentService = null;
-    if (manager != null) {
-      manager.consumeDefinitionService(null);
-    }
-  });
+function consumeDefinitionProvider(provider) {
+  return getContextViewManager().consumeDefinitionProvider(provider);
 }
 
 function provideNuclideContextView() {

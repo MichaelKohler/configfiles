@@ -84,7 +84,7 @@ let getLanguageServiceConfig = (() => {
       name: 'Flow',
       grammars: (_constants || _load_constants()).JS_GRAMMARS,
       highlight: enableHighlight ? {
-        version: '0.0.0',
+        version: '0.1.0',
         priority: 1,
         analyticsEventName: 'flow.codehighlight'
       } : undefined,
@@ -100,7 +100,7 @@ let getLanguageServiceConfig = (() => {
         icon: 'nuclicon-flow'
       },
       definition: {
-        version: '0.0.0',
+        version: '0.1.0',
         priority: 20,
         definitionEventName: 'flow.get-definition',
         definitionByIdEventName: 'flow.get-definition-by-id'

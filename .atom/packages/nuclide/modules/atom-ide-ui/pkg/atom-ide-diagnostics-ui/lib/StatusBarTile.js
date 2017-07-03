@@ -42,17 +42,20 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // Stick this to the left of remote-projects (-99)
 /**
- * Copyright (c) 2015-present, Facebook, Inc.
+ * Copyright (c) 2017-present, Facebook, Inc.
  * All rights reserved.
  *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
  *
  * 
  * @format
  */
 
 const STATUS_BAR_PRIORITY = -99.5;
+
+const RENDER_DEBOUNCE_TIME = 100;
 
 class StatusBarTile {
 
@@ -75,7 +78,7 @@ class StatusBarTile {
       warningCount: 0
     };
     this._diagnosticUpdaters.set(diagnosticUpdater, diagnosticCount);
-    this._subscriptions.add(diagnosticUpdater.allMessageUpdates.subscribe(this._onAllMessagesDidUpdate.bind(this, diagnosticUpdater), null, this._onAllMessagesDidUpdate.bind(this, diagnosticUpdater, [])));
+    this._subscriptions.add(diagnosticUpdater.allMessageUpdates.debounceTime(RENDER_DEBOUNCE_TIME).subscribe(this._onAllMessagesDidUpdate.bind(this, diagnosticUpdater), null, this._onAllMessagesDidUpdate.bind(this, diagnosticUpdater, [])));
   }
 
   consumeStatusBar(statusBar) {

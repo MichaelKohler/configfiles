@@ -19,13 +19,9 @@ let newFileSearch = (() => {
       throw new Error('Provided path is not a directory : ' + directory);
     }
 
-    const task = new (_nuclideTask || _load_nuclideTask()).default();
-    yield task.invokeRemoteMethod({
-      file: require.resolve('./process/FileSearch'),
-      method: 'initFileSearchForDirectory',
-      args: [directory, ignoredNames]
-    });
-    return new FileSearchProcess(task, directory, ignoredNames);
+    const fileSearchProcess = new FileSearchProcess(directory, ignoredNames);
+    yield fileSearchProcess.initialize();
+    return fileSearchProcess;
   });
 
   return function newFileSearch(_x, _x2) {
@@ -120,29 +116,50 @@ const logger = (0, (_log4js || _load_log4js()).getLogger)('nuclide-fuzzy-file-se
 
 class FileSearchProcess {
 
-  constructor(task, directory, ignoredNames) {
-    this._task = task;
-    task.onError(buffer => {
-      logger.error('File search process crashed with message:', buffer.toString());
-      this.dispose();
-    });
-    task.onExit(() => this.dispose());
+  constructor(directory, ignoredNames) {
     this._directory = directory;
     this._ignoredNames = ignoredNames;
   }
 
-  query(query) {
+  initialize() {
     var _this = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      const task = _this._task;
+      const task = new (_nuclideTask || _load_nuclideTask()).default();
+      _this._task = task;
+      task.onError(function (buffer) {
+        logger.error('File search process crashed with message:', buffer.toString());
+        _this.dispose();
+      });
+      task.onExit(function () {
+        return _this.dispose();
+      });
+
+      try {
+        yield task.invokeRemoteMethod({
+          file: require.resolve('./process/FileSearch'),
+          method: 'initFileSearchForDirectory',
+          args: [_this._directory, _this._ignoredNames]
+        });
+      } catch (e) {
+        _this.dispose();
+        throw e;
+      }
+    })();
+  }
+
+  query(query) {
+    var _this2 = this;
+
+    return (0, _asyncToGenerator.default)(function* () {
+      const task = _this2._task;
       if (task == null) {
         throw new Error('Task has been disposed');
       }
       return task.invokeRemoteMethod({
         file: require.resolve('./process/FileSearch'),
         method: 'doSearch',
-        args: [_this._directory, query]
+        args: [_this2._directory, query]
       });
     })();
   }

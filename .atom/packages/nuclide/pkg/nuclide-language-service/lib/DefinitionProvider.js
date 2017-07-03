@@ -27,17 +27,6 @@ function _load_nuclideOpenFiles() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
-
 class DefinitionProvider {
 
   constructor(name, grammars, priority, definitionEventName, definitionByIdEventName, connectionToLanguageService) {
@@ -50,7 +39,7 @@ class DefinitionProvider {
   }
 
   static register(name, grammars, config, connectionToLanguageService) {
-    return atom.packages.serviceHub.provide('nuclide-definition-provider', config.version, new DefinitionProvider(name, grammars, config.priority, config.definitionEventName, config.definitionByIdEventName, connectionToLanguageService));
+    return atom.packages.serviceHub.provide('atom-ide-definitions', config.version, new DefinitionProvider(name, grammars, config.priority, config.definitionEventName, config.definitionByIdEventName, connectionToLanguageService));
   }
 
   getDefinition(editor, position) {
@@ -67,18 +56,14 @@ class DefinitionProvider {
       }));
     })();
   }
-
-  getDefinitionById(filePath, id) {
-    var _this2 = this;
-
-    return (0, (_nuclideAnalytics || _load_nuclideAnalytics()).trackTiming)(this._definitionByIdEventName, (0, _asyncToGenerator.default)(function* () {
-      const languageService = _this2._connectionToLanguageService.getForUri(filePath);
-      if (languageService == null) {
-        return null;
-      }
-
-      return (yield languageService).getDefinitionById(filePath, id);
-    }));
-  }
 }
-exports.DefinitionProvider = DefinitionProvider;
+exports.DefinitionProvider = DefinitionProvider; /**
+                                                  * Copyright (c) 2015-present, Facebook, Inc.
+                                                  * All rights reserved.
+                                                  *
+                                                  * This source code is licensed under the license found in the LICENSE file in
+                                                  * the root directory of this source tree.
+                                                  *
+                                                  * 
+                                                  * @format
+                                                  */

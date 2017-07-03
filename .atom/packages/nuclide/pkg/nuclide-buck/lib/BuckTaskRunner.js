@@ -144,12 +144,13 @@ const TASKS = [{
 
 function shouldEnableTask(taskType, ruleType) {
   switch (taskType) {
+    case 'build':
+    case 'test':
+      return true;
     case 'run':
       return ruleType.endsWith('binary');
-    case 'debug':
-      return ruleType.endsWith('binary') || ruleType.endsWith('test');
     default:
-      return true;
+      return false;
   }
 }
 
@@ -200,24 +201,25 @@ class BuckTaskRunner {
     const enabledObservable = storeReady.map(state => state.buckRoot != null).distinctUntilChanged();
 
     const tasksObservable = storeReady.map(state => {
-      const { buildRuleType, selectedDeploymentTarget } = state;
-      const tasksFromPlatform = selectedDeploymentTarget ? selectedDeploymentTarget.platform.tasksForDevice(selectedDeploymentTarget.device) : null;
-      return TASKS.map(task => {
-        let disabled = state.isLoadingPlatforms || buildRuleType == null;
-        if (!disabled) {
-          if (tasksFromPlatform) {
-            disabled = !tasksFromPlatform.has(task.type);
-          } else {
-            if (!buildRuleType) {
-              throw new Error('Invariant violation: "buildRuleType"');
+      const { buildRuleType, platformGroups, selectedDeploymentTarget } = state;
+
+      const tasksFromPlatform = new Set();
+      if (selectedDeploymentTarget != null && selectedDeploymentTarget.platform.isMobile) {
+        selectedDeploymentTarget.platform.tasksForDevice(selectedDeploymentTarget.device).forEach(taskType => tasksFromPlatform.add(taskType));
+      } else if (buildRuleType != null) {
+        const ruleType = buildRuleType;
+        platformGroups.forEach(platformGroup => {
+          platformGroup.platforms.forEach(platform => {
+            if (!platform.isMobile) {
+              platform.tasksForBuildRuleType(ruleType).forEach(taskType => tasksFromPlatform.add(taskType));
             }
-            // No platform provider selected, fall back to default logic
+          });
+        });
+      }
+      return TASKS.map(task => {
+        const enabled = !state.isLoadingPlatforms && buildRuleType != null && (tasksFromPlatform.size > 0 ? tasksFromPlatform.has(task.type) : shouldEnableTask(task.type, buildRuleType.type));
 
-
-            disabled = !shouldEnableTask(task.type, buildRuleType.type);
-          }
-        }
-        return Object.assign({}, task, { disabled });
+        return Object.assign({}, task, { disabled: !enabled });
       });
     }).distinctUntilChanged((a, b) => (0, (_collection || _load_collection()).arrayEqual)(a, b, (_shallowequal || _load_shallowequal()).default));
 

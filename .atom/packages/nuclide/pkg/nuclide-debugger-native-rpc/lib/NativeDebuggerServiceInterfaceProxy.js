@@ -9,18 +9,8 @@ module.exports = _client => {
     return _client.marshalArguments(Array.from(arguments), [{
       name: "targetPid",
       type: {
-        location: {
-          type: "source",
-          fileName: "NativeDebuggerServiceInterface.js",
-          line: 48
-        },
         kind: "nullable",
         type: {
-          location: {
-            type: "source",
-            fileName: "NativeDebuggerServiceInterface.js",
-            line: 48
-          },
           kind: "number"
         }
       }
@@ -28,18 +18,8 @@ module.exports = _client => {
       return _client.callRemoteFunction("NativeDebuggerService/getAttachTargetInfoList", "promise", args);
     }).then(value => {
       return _client.unmarshal(value, {
-        location: {
-          type: "source",
-          fileName: "NativeDebuggerServiceInterface.js",
-          line: 49
-        },
         kind: "array",
         type: {
-          location: {
-            type: "source",
-            fileName: "NativeDebuggerServiceInterface.js",
-            line: 49
-          },
           kind: "named",
           name: "AttachTargetInfo"
         }
@@ -52,11 +32,6 @@ module.exports = _client => {
       _client.createRemoteObject("NativeDebuggerService", this, [arg0], [{
         name: "config",
         type: {
-          location: {
-            type: "source",
-            fileName: "NativeDebuggerServiceInterface.js",
-            line: 54
-          },
           kind: "named",
           name: "DebuggerConfig"
         }
@@ -78,11 +53,6 @@ module.exports = _client => {
         });
       })).concatMap(id => id).concatMap(value => {
         return _client.unmarshal(value, {
-          location: {
-            type: "source",
-            fileName: "NativeDebuggerServiceInterface.js",
-            line: 56
-          },
           kind: "string"
         });
       }).publish();
@@ -103,11 +73,6 @@ module.exports = _client => {
         });
       })).concatMap(id => id).concatMap(value => {
         return _client.unmarshal(value, {
-          location: {
-            type: "source",
-            fileName: "NativeDebuggerServiceInterface.js",
-            line: 60
-          },
           kind: "string"
         });
       }).publish();
@@ -117,11 +82,6 @@ module.exports = _client => {
       return Observable.fromPromise(_client.marshalArguments(Array.from(arguments), [{
         name: "attachInfo",
         type: {
-          location: {
-            type: "source",
-            fileName: "NativeDebuggerServiceInterface.js",
-            line: 64
-          },
           kind: "named",
           name: "AttachTargetInfo"
         }
@@ -139,11 +99,6 @@ module.exports = _client => {
         });
       })).concatMap(id => id).concatMap(value => {
         return _client.unmarshal(value, {
-          location: {
-            type: "source",
-            fileName: "NativeDebuggerServiceInterface.js",
-            line: 64
-          },
           kind: "void"
         });
       }).publish();
@@ -153,11 +108,6 @@ module.exports = _client => {
       return Observable.fromPromise(_client.marshalArguments(Array.from(arguments), [{
         name: "launchInfo",
         type: {
-          location: {
-            type: "source",
-            fileName: "NativeDebuggerServiceInterface.js",
-            line: 68
-          },
           kind: "named",
           name: "LaunchTargetInfo"
         }
@@ -175,11 +125,6 @@ module.exports = _client => {
         });
       })).concatMap(id => id).concatMap(value => {
         return _client.unmarshal(value, {
-          location: {
-            type: "source",
-            fileName: "NativeDebuggerServiceInterface.js",
-            line: 68
-          },
           kind: "void"
         });
       }).publish();
@@ -189,11 +134,6 @@ module.exports = _client => {
       return Observable.fromPromise(_client.marshalArguments(Array.from(arguments), [{
         name: "bootstrapInfo",
         type: {
-          location: {
-            type: "source",
-            fileName: "NativeDebuggerServiceInterface.js",
-            line: 72
-          },
           kind: "named",
           name: "BootstrapDebuggerInfo"
         }
@@ -211,11 +151,6 @@ module.exports = _client => {
         });
       })).concatMap(id => id).concatMap(value => {
         return _client.unmarshal(value, {
-          location: {
-            type: "source",
-            fileName: "NativeDebuggerServiceInterface.js",
-            line: 72
-          },
           kind: "void"
         });
       }).publish();
@@ -225,11 +160,6 @@ module.exports = _client => {
       return _client.marshalArguments(Array.from(arguments), [{
         name: "message",
         type: {
-          location: {
-            type: "source",
-            fileName: "NativeDebuggerServiceInterface.js",
-            line: 76
-          },
           kind: "string"
         }
       }]).then(args => {
@@ -246,11 +176,6 @@ module.exports = _client => {
         });
       }).then(value => {
         return _client.unmarshal(value, {
-          location: {
-            type: "source",
-            fileName: "NativeDebuggerServiceInterface.js",
-            line: 76
-          },
           kind: "void"
         });
       });
@@ -336,73 +261,28 @@ Object.defineProperty(module.exports, "defs", {
       },
       name: "AttachTargetInfo",
       definition: {
-        location: {
-          type: "source",
-          fileName: "NativeDebuggerServiceInterface.js",
-          line: 15
-        },
         kind: "object",
         fields: [{
-          location: {
-            type: "source",
-            fileName: "NativeDebuggerServiceInterface.js",
-            line: 16
-          },
           name: "pid",
           type: {
-            location: {
-              type: "source",
-              fileName: "NativeDebuggerServiceInterface.js",
-              line: 16
-            },
             kind: "number"
           },
           optional: false
         }, {
-          location: {
-            type: "source",
-            fileName: "NativeDebuggerServiceInterface.js",
-            line: 17
-          },
           name: "name",
           type: {
-            location: {
-              type: "source",
-              fileName: "NativeDebuggerServiceInterface.js",
-              line: 17
-            },
             kind: "string"
           },
           optional: false
         }, {
-          location: {
-            type: "source",
-            fileName: "NativeDebuggerServiceInterface.js",
-            line: 18
-          },
           name: "commandName",
           type: {
-            location: {
-              type: "source",
-              fileName: "NativeDebuggerServiceInterface.js",
-              line: 18
-            },
             kind: "string"
           },
           optional: false
         }, {
-          location: {
-            type: "source",
-            fileName: "NativeDebuggerServiceInterface.js",
-            line: 19
-          },
           name: "basepath",
           type: {
-            location: {
-              type: "source",
-              fileName: "NativeDebuggerServiceInterface.js",
-              line: 19
-            },
             kind: "string"
           },
           optional: true
@@ -418,144 +298,54 @@ Object.defineProperty(module.exports, "defs", {
       },
       name: "LaunchTargetInfo",
       definition: {
-        location: {
-          type: "source",
-          fileName: "NativeDebuggerServiceInterface.js",
-          line: 22
-        },
         kind: "object",
         fields: [{
-          location: {
-            type: "source",
-            fileName: "NativeDebuggerServiceInterface.js",
-            line: 23
-          },
           name: "executablePath",
           type: {
-            location: {
-              type: "source",
-              fileName: "NativeDebuggerServiceInterface.js",
-              line: 23
-            },
             kind: "string"
           },
           optional: false
         }, {
-          location: {
-            type: "source",
-            fileName: "NativeDebuggerServiceInterface.js",
-            line: 24
-          },
           name: "arguments",
           type: {
-            location: {
-              type: "source",
-              fileName: "NativeDebuggerServiceInterface.js",
-              line: 24
-            },
             kind: "array",
             type: {
-              location: {
-                type: "source",
-                fileName: "NativeDebuggerServiceInterface.js",
-                line: 24
-              },
               kind: "string"
             }
           },
           optional: false
         }, {
-          location: {
-            type: "source",
-            fileName: "NativeDebuggerServiceInterface.js",
-            line: 25
-          },
           name: "environmentVariables",
           type: {
-            location: {
-              type: "source",
-              fileName: "NativeDebuggerServiceInterface.js",
-              line: 25
-            },
             kind: "array",
             type: {
-              location: {
-                type: "source",
-                fileName: "NativeDebuggerServiceInterface.js",
-                line: 25
-              },
               kind: "string"
             }
           },
           optional: false
         }, {
-          location: {
-            type: "source",
-            fileName: "NativeDebuggerServiceInterface.js",
-            line: 26
-          },
           name: "workingDirectory",
           type: {
-            location: {
-              type: "source",
-              fileName: "NativeDebuggerServiceInterface.js",
-              line: 26
-            },
             kind: "string"
           },
           optional: false
         }, {
-          location: {
-            type: "source",
-            fileName: "NativeDebuggerServiceInterface.js",
-            line: 27
-          },
           name: "stdinFilePath",
           type: {
-            location: {
-              type: "source",
-              fileName: "NativeDebuggerServiceInterface.js",
-              line: 27
-            },
             kind: "string"
           },
           optional: true
         }, {
-          location: {
-            type: "source",
-            fileName: "NativeDebuggerServiceInterface.js",
-            line: 28
-          },
           name: "basepath",
           type: {
-            location: {
-              type: "source",
-              fileName: "NativeDebuggerServiceInterface.js",
-              line: 28
-            },
             kind: "string"
           },
           optional: true
         }, {
-          location: {
-            type: "source",
-            fileName: "NativeDebuggerServiceInterface.js",
-            line: 29
-          },
           name: "lldbPythonPath",
           type: {
-            location: {
-              type: "source",
-              fileName: "NativeDebuggerServiceInterface.js",
-              line: 29
-            },
             kind: "nullable",
             type: {
-              location: {
-                type: "source",
-                fileName: "NativeDebuggerServiceInterface.js",
-                line: 29
-              },
               kind: "string"
             }
           },
@@ -572,76 +362,68 @@ Object.defineProperty(module.exports, "defs", {
       },
       name: "BootstrapDebuggerInfo",
       definition: {
-        location: {
-          type: "source",
-          fileName: "NativeDebuggerServiceInterface.js",
-          line: 32
-        },
         kind: "object",
         fields: [{
-          location: {
-            type: "source",
-            fileName: "NativeDebuggerServiceInterface.js",
-            line: 33
-          },
           name: "lldbBootstrapFiles",
           type: {
-            location: {
-              type: "source",
-              fileName: "NativeDebuggerServiceInterface.js",
-              line: 33
-            },
             kind: "array",
             type: {
-              location: {
-                type: "source",
-                fileName: "NativeDebuggerServiceInterface.js",
-                line: 33
-              },
               kind: "string"
             }
           },
           optional: false
         }, {
-          location: {
-            type: "source",
-            fileName: "NativeDebuggerServiceInterface.js",
-            line: 34
-          },
           name: "basepath",
           type: {
-            location: {
-              type: "source",
-              fileName: "NativeDebuggerServiceInterface.js",
-              line: 34
-            },
             kind: "string"
           },
           optional: true
         }, {
-          location: {
-            type: "source",
-            fileName: "NativeDebuggerServiceInterface.js",
-            line: 35
-          },
           name: "lldbPythonPath",
           type: {
-            location: {
-              type: "source",
-              fileName: "NativeDebuggerServiceInterface.js",
-              line: 35
-            },
             kind: "nullable",
             type: {
-              location: {
-                type: "source",
-                fileName: "NativeDebuggerServiceInterface.js",
-                line: 35
-              },
               kind: "string"
             }
           },
           optional: true
+        }]
+      }
+    },
+    LogLevel: {
+      kind: "alias",
+      location: {
+        type: "source",
+        fileName: "rpc-types.js",
+        line: 12
+      },
+      name: "LogLevel",
+      definition: {
+        kind: "union",
+        types: [{
+          kind: "string-literal",
+          value: "ALL"
+        }, {
+          kind: "string-literal",
+          value: "TRACE"
+        }, {
+          kind: "string-literal",
+          value: "DEBUG"
+        }, {
+          kind: "string-literal",
+          value: "INFO"
+        }, {
+          kind: "string-literal",
+          value: "WARN"
+        }, {
+          kind: "string-literal",
+          value: "ERROR"
+        }, {
+          kind: "string-literal",
+          value: "FATAL"
+        }, {
+          kind: "string-literal",
+          value: "OFF"
         }]
       }
     },
@@ -654,98 +436,38 @@ Object.defineProperty(module.exports, "defs", {
       },
       name: "DebuggerConfig",
       definition: {
-        location: {
-          type: "source",
-          fileName: "NativeDebuggerServiceInterface.js",
-          line: 38
-        },
         kind: "object",
         fields: [{
-          location: {
-            type: "source",
-            fileName: "NativeDebuggerServiceInterface.js",
-            line: 40
-          },
           name: "logLevel",
           type: {
-            location: {
-              type: "source",
-              fileName: "NativeDebuggerServiceInterface.js",
-              line: 40
-            },
             kind: "named",
             name: "LogLevel"
           },
           optional: false
         }, {
-          location: {
-            type: "source",
-            fileName: "NativeDebuggerServiceInterface.js",
-            line: 41
-          },
           name: "pythonBinaryPath",
           type: {
-            location: {
-              type: "source",
-              fileName: "NativeDebuggerServiceInterface.js",
-              line: 41
-            },
             kind: "string"
           },
           optional: false
         }, {
-          location: {
-            type: "source",
-            fileName: "NativeDebuggerServiceInterface.js",
-            line: 42
-          },
           name: "buckConfigRootFile",
           type: {
-            location: {
-              type: "source",
-              fileName: "NativeDebuggerServiceInterface.js",
-              line: 42
-            },
             kind: "string"
           },
           optional: false
         }, {
-          location: {
-            type: "source",
-            fileName: "NativeDebuggerServiceInterface.js",
-            line: 43
-          },
           name: "lldbPythonPath",
           type: {
-            location: {
-              type: "source",
-              fileName: "NativeDebuggerServiceInterface.js",
-              line: 43
-            },
             kind: "nullable",
             type: {
-              location: {
-                type: "source",
-                fileName: "NativeDebuggerServiceInterface.js",
-                line: 43
-              },
               kind: "string"
             }
           },
           optional: false
         }, {
-          location: {
-            type: "source",
-            fileName: "NativeDebuggerServiceInterface.js",
-            line: 44
-          },
           name: "envPythonPath",
           type: {
-            location: {
-              type: "source",
-              fileName: "NativeDebuggerServiceInterface.js",
-              line: 44
-            },
             kind: "string"
           },
           optional: false
@@ -770,42 +492,17 @@ Object.defineProperty(module.exports, "defs", {
         argumentTypes: [{
           name: "targetPid",
           type: {
-            location: {
-              type: "source",
-              fileName: "NativeDebuggerServiceInterface.js",
-              line: 48
-            },
             kind: "nullable",
             type: {
-              location: {
-                type: "source",
-                fileName: "NativeDebuggerServiceInterface.js",
-                line: 48
-              },
               kind: "number"
             }
           }
         }],
         returnType: {
-          location: {
-            type: "source",
-            fileName: "NativeDebuggerServiceInterface.js",
-            line: 49
-          },
           kind: "promise",
           type: {
-            location: {
-              type: "source",
-              fileName: "NativeDebuggerServiceInterface.js",
-              line: 49
-            },
             kind: "array",
             type: {
-              location: {
-                type: "source",
-                fileName: "NativeDebuggerServiceInterface.js",
-                line: 49
-              },
               kind: "named",
               name: "AttachTargetInfo"
             }
@@ -824,11 +521,6 @@ Object.defineProperty(module.exports, "defs", {
       constructorArgs: [{
         name: "config",
         type: {
-          location: {
-            type: "source",
-            fileName: "NativeDebuggerServiceInterface.js",
-            line: 54
-          },
           kind: "named",
           name: "DebuggerConfig"
         }
@@ -844,18 +536,8 @@ Object.defineProperty(module.exports, "defs", {
           kind: "function",
           argumentTypes: [],
           returnType: {
-            location: {
-              type: "source",
-              fileName: "NativeDebuggerServiceInterface.js",
-              line: 56
-            },
             kind: "observable",
             type: {
-              location: {
-                type: "source",
-                fileName: "NativeDebuggerServiceInterface.js",
-                line: 56
-              },
               kind: "string"
             }
           }
@@ -869,18 +551,8 @@ Object.defineProperty(module.exports, "defs", {
           kind: "function",
           argumentTypes: [],
           returnType: {
-            location: {
-              type: "source",
-              fileName: "NativeDebuggerServiceInterface.js",
-              line: 60
-            },
             kind: "observable",
             type: {
-              location: {
-                type: "source",
-                fileName: "NativeDebuggerServiceInterface.js",
-                line: 60
-              },
               kind: "string"
             }
           }
@@ -895,28 +567,13 @@ Object.defineProperty(module.exports, "defs", {
           argumentTypes: [{
             name: "attachInfo",
             type: {
-              location: {
-                type: "source",
-                fileName: "NativeDebuggerServiceInterface.js",
-                line: 64
-              },
               kind: "named",
               name: "AttachTargetInfo"
             }
           }],
           returnType: {
-            location: {
-              type: "source",
-              fileName: "NativeDebuggerServiceInterface.js",
-              line: 64
-            },
             kind: "observable",
             type: {
-              location: {
-                type: "source",
-                fileName: "NativeDebuggerServiceInterface.js",
-                line: 64
-              },
               kind: "void"
             }
           }
@@ -931,28 +588,13 @@ Object.defineProperty(module.exports, "defs", {
           argumentTypes: [{
             name: "launchInfo",
             type: {
-              location: {
-                type: "source",
-                fileName: "NativeDebuggerServiceInterface.js",
-                line: 68
-              },
               kind: "named",
               name: "LaunchTargetInfo"
             }
           }],
           returnType: {
-            location: {
-              type: "source",
-              fileName: "NativeDebuggerServiceInterface.js",
-              line: 68
-            },
             kind: "observable",
             type: {
-              location: {
-                type: "source",
-                fileName: "NativeDebuggerServiceInterface.js",
-                line: 68
-              },
               kind: "void"
             }
           }
@@ -967,28 +609,13 @@ Object.defineProperty(module.exports, "defs", {
           argumentTypes: [{
             name: "bootstrapInfo",
             type: {
-              location: {
-                type: "source",
-                fileName: "NativeDebuggerServiceInterface.js",
-                line: 72
-              },
               kind: "named",
               name: "BootstrapDebuggerInfo"
             }
           }],
           returnType: {
-            location: {
-              type: "source",
-              fileName: "NativeDebuggerServiceInterface.js",
-              line: 72
-            },
             kind: "observable",
             type: {
-              location: {
-                type: "source",
-                fileName: "NativeDebuggerServiceInterface.js",
-                line: 72
-              },
               kind: "void"
             }
           }
@@ -1003,27 +630,12 @@ Object.defineProperty(module.exports, "defs", {
           argumentTypes: [{
             name: "message",
             type: {
-              location: {
-                type: "source",
-                fileName: "NativeDebuggerServiceInterface.js",
-                line: 76
-              },
               kind: "string"
             }
           }],
           returnType: {
-            location: {
-              type: "source",
-              fileName: "NativeDebuggerServiceInterface.js",
-              line: 76
-            },
             kind: "promise",
             type: {
-              location: {
-                type: "source",
-                fileName: "NativeDebuggerServiceInterface.js",
-                line: 76
-              },
               kind: "void"
             }
           }
@@ -1037,104 +649,12 @@ Object.defineProperty(module.exports, "defs", {
           kind: "function",
           argumentTypes: [],
           returnType: {
-            location: {
-              type: "source",
-              fileName: "NativeDebuggerServiceInterface.js",
-              line: 80
-            },
             kind: "promise",
             type: {
-              location: {
-                type: "source",
-                fileName: "NativeDebuggerServiceInterface.js",
-                line: 80
-              },
               kind: "void"
             }
           }
         }
-      }
-    },
-    LogLevel: {
-      kind: "alias",
-      location: {
-        type: "source",
-        fileName: "rpc-types.js",
-        line: 12
-      },
-      name: "LogLevel",
-      definition: {
-        location: {
-          type: "source",
-          fileName: "rpc-types.js",
-          line: 13
-        },
-        kind: "union",
-        types: [{
-          location: {
-            type: "source",
-            fileName: "rpc-types.js",
-            line: 13
-          },
-          kind: "string-literal",
-          value: "ALL"
-        }, {
-          location: {
-            type: "source",
-            fileName: "rpc-types.js",
-            line: 14
-          },
-          kind: "string-literal",
-          value: "TRACE"
-        }, {
-          location: {
-            type: "source",
-            fileName: "rpc-types.js",
-            line: 15
-          },
-          kind: "string-literal",
-          value: "DEBUG"
-        }, {
-          location: {
-            type: "source",
-            fileName: "rpc-types.js",
-            line: 16
-          },
-          kind: "string-literal",
-          value: "INFO"
-        }, {
-          location: {
-            type: "source",
-            fileName: "rpc-types.js",
-            line: 17
-          },
-          kind: "string-literal",
-          value: "WARN"
-        }, {
-          location: {
-            type: "source",
-            fileName: "rpc-types.js",
-            line: 18
-          },
-          kind: "string-literal",
-          value: "ERROR"
-        }, {
-          location: {
-            type: "source",
-            fileName: "rpc-types.js",
-            line: 19
-          },
-          kind: "string-literal",
-          value: "FATAL"
-        }, {
-          location: {
-            type: "source",
-            fileName: "rpc-types.js",
-            line: 20
-          },
-          kind: "string-literal",
-          value: "OFF"
-        }]
       }
     }
   }

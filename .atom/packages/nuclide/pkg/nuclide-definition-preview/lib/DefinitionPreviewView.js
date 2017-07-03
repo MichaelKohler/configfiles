@@ -39,12 +39,6 @@ function _load_AtomTextEditor() {
   return _AtomTextEditor = require('nuclide-commons-ui/AtomTextEditor');
 }
 
-var _textEditor;
-
-function _load_textEditor() {
-  return _textEditor = require('nuclide-commons-atom/text-editor');
-}
-
 var _analytics;
 
 function _load_analytics() {
@@ -61,18 +55,17 @@ var _atom = require('atom');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
+const MINIMUM_EDITOR_HEIGHT = 10; /**
+                                   * Copyright (c) 2015-present, Facebook, Inc.
+                                   * All rights reserved.
+                                   *
+                                   * This source code is licensed under the license found in the LICENSE file in
+                                   * the root directory of this source tree.
+                                   *
+                                   * 
+                                   * @format
+                                   */
 
-const MINIMUM_EDITOR_HEIGHT = 10;
 const EDITOR_HEIGHT_DELTA = 10;
 
 class DefinitionPreviewView extends _react.default.Component {
@@ -90,7 +83,6 @@ class DefinitionPreviewView extends _react.default.Component {
     }
     this.state = {
       buffer,
-      oldBuffer: null,
       editorHeight: height
     };
     this._settingsChangeDisposable = (_featureConfig || _load_featureConfig()).default.observe('nuclide-definition-preview.editorHeight', newHeight => this._setEditorHeight(newHeight));
@@ -107,16 +99,12 @@ class DefinitionPreviewView extends _react.default.Component {
       // the correct path if the new definition prop has a different path than the
       // currently loaded buffer.
       if (definition.path !== this.state.buffer.getPath()) {
-        this.setState({
-          buffer: (0, (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).bufferForUri)(definition.path),
-          oldBuffer: this.state.buffer
-        });
+        this.setState({ buffer: (0, (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).bufferForUri)(definition.path) });
       }
     } else {
       // A null definition has no associated file path, so make a new TextBuffer()
       // that doesn't have an associated file path.
-      const oldBuffer = this.state.buffer;
-      this.setState({ buffer: new _atom.TextBuffer(), oldBuffer });
+      this.setState({ buffer: new _atom.TextBuffer() });
     }
   }
 
@@ -138,10 +126,6 @@ class DefinitionPreviewView extends _react.default.Component {
   }
 
   componentWillUnmount() {
-    this.state.buffer.destroy();
-    if (this.state.oldBuffer != null) {
-      this.state.oldBuffer.destroy();
-    }
     this._settingsChangeDisposable.dispose();
   }
 
@@ -166,17 +150,6 @@ class DefinitionPreviewView extends _react.default.Component {
         type: 'line',
         class: 'nuclide-current-line-highlight'
       });
-      if (_this2.state.oldBuffer != null) {
-        // Only destroy oldBuffer if it's not already open in a tab - otherwise it'll
-        // close the tab using oldBuffer
-        if ((0, (_textEditor || _load_textEditor()).existingEditorForBuffer)(_this2.state.oldBuffer) == null) {
-          if (!(_this2.state.oldBuffer != null)) {
-            throw new Error('Invariant violation: "this.state.oldBuffer != null"');
-          }
-
-          _this2.state.oldBuffer.destroy();
-        }
-      }
     })();
   }
 

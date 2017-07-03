@@ -291,26 +291,30 @@ class ObservableDiagnosticProvider {
       }).mergeMap(language => {
         this._logger.debug(`Observing diagnostics ${connectionName}, ${this._analyticsEventName}`);
         return (0, (_nuclideLanguageServiceRpc || _load_nuclideLanguageServiceRpc()).ensureInvalidations)(this._logger, language.observeDiagnostics().refCount().catch(error => {
-          this._logger.error(`Error: observeDiagnostics, ${this._analyticsEventName} ${error}`);
+          this._logger.error(`Error: observeDiagnostics, ${this._analyticsEventName}`, error);
           return _rxjsBundlesRxMinJs.Observable.empty();
         }));
-      }).map(update => {
-        const { filePath, messages } = update;
-        (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)(this._analyticsEventName);
-        const fileCache = this._connectionToFiles.get(connection);
-        if (messages.length === 0) {
-          this._logger.debug(`Observing diagnostics: removing ${filePath}, ${this._analyticsEventName}`);
-          fileCache.delete(filePath);
-        } else {
-          this._logger.debug(`Observing diagnostics: adding ${filePath}, ${this._analyticsEventName}`);
-          fileCache.add(filePath);
-        }
+      }).map(updates => {
+        const filePathToMessages = new Map();
+        updates.forEach(update => {
+          const { filePath, messages } = update;
+          (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)(this._analyticsEventName);
+          const fileCache = this._connectionToFiles.get(connection);
+          if (messages.length === 0) {
+            this._logger.debug(`Observing diagnostics: removing ${filePath}, ${this._analyticsEventName}`);
+            fileCache.delete(filePath);
+          } else {
+            this._logger.debug(`Observing diagnostics: adding ${filePath}, ${this._analyticsEventName}`);
+            fileCache.add(filePath);
+          }
+          filePathToMessages.set(filePath, messages);
+        });
         return {
-          filePathToMessages: new Map([[filePath, messages]])
+          filePathToMessages
         };
       });
     }).catch(error => {
-      this._logger.error(`Error: observeEntries, ${this._analyticsEventName} ${error}`);
+      this._logger.error(`Error: observeEntries, ${this._analyticsEventName}`, error);
       throw error;
     });
 

@@ -58,13 +58,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 class LaunchProcessInfo extends (_nuclideDebuggerBase || _load_nuclideDebuggerBase()).DebuggerProcessInfo {
 
-  constructor(targetUri, launchTarget) {
+  constructor(targetUri, launchTarget, launchWrapperCommand) {
     super('hhvm', targetUri);
     this._launchTarget = launchTarget;
+    this._launchWrapperCommand = launchWrapperCommand;
   }
 
   clone() {
-    return new LaunchProcessInfo(this._targetUri, this._launchTarget);
+    return new LaunchProcessInfo(this._targetUri, this._launchTarget, this._launchWrapperCommand);
   }
 
   debug() {
@@ -77,6 +78,10 @@ class LaunchProcessInfo extends (_nuclideDebuggerBase || _load_nuclideDebuggerBa
       // Set config related to script launching.
       sessionConfig.endDebugWhenNoRequests = true;
       sessionConfig.launchScriptPath = _this._launchTarget;
+
+      if (_this._launchWrapperCommand != null) {
+        sessionConfig.launchWrapperCommand = _this._launchWrapperCommand;
+      }
 
       (_utils || _load_utils()).default.info(`Connection session config: ${JSON.stringify(sessionConfig)}`);
 

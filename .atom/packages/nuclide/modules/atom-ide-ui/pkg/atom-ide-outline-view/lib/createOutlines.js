@@ -22,11 +22,12 @@ function _load_textEditor() {
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
- * Copyright (c) 2015-present, Facebook, Inc.
+ * Copyright (c) 2017-present, Facebook, Inc.
  * All rights reserved.
  *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
  *
  * 
  * @format
@@ -52,9 +53,10 @@ function uiOutlinesForResult(result) {
         grammar: result.grammar.name
       });
     case 'pane-change':
-      // Render a blank outline when we change panes.
+      // Originally, we displayed a empty pane immediately, but this caused an undesireable
+      // flickering effect so we prefer stale information for the first LOADING_DELAY_MS.
       // If we haven't received anything after LOADING_DELAY_MS, display a loading indicator.
-      return _rxjsBundlesRxMinJs.Observable.concat(_rxjsBundlesRxMinJs.Observable.of({ kind: 'empty' }), _rxjsBundlesRxMinJs.Observable.of({ kind: 'loading' }).delay(LOADING_DELAY_MS));
+      return _rxjsBundlesRxMinJs.Observable.concat(_rxjsBundlesRxMinJs.Observable.of({ kind: 'loading' }).delay(LOADING_DELAY_MS));
     case 'result':
       const outline = result.result;
       if (outline == null) {

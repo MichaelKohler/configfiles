@@ -27,10 +27,21 @@ let debug = exports.debug = (() => {
       throw new Error('Active project is null');
     }
 
-    if (debugMode === 'script') {
-      processInfo = new (_LaunchProcessInfo || _load_LaunchProcessInfo()).LaunchProcessInfo(activeProjectRoot, target);
-    } else {
-      processInfo = new (_AttachProcessInfo || _load_AttachProcessInfo()).AttachProcessInfo(activeProjectRoot);
+    // See if this is a custom debug mode type.
+
+
+    try {
+      // $FlowFB
+      const helper = require('./fb-hhvm');
+      processInfo = helper.getCustomLaunchInfo(debugMode, activeProjectRoot, target);
+    } catch (e) {}
+
+    if (processInfo == null) {
+      if (debugMode === 'script') {
+        processInfo = new (_LaunchProcessInfo || _load_LaunchProcessInfo()).LaunchProcessInfo(activeProjectRoot, target);
+      } else {
+        processInfo = new (_AttachProcessInfo || _load_AttachProcessInfo()).AttachProcessInfo(activeProjectRoot);
+      }
     }
 
     // Use commands here to trigger package activation.

@@ -301,10 +301,17 @@ describe 'Rust grammar', ->
       expect(tokens[2]).toEqual value: ' text', scopes: ['source.rust']
 
   it 'tokenizes keywords', ->
-    for t in ['crate', 'extern', 'mod', 'let', 'proc', 'ref', 'use', 'super', 'as', 'move']
+    for t in ['crate', 'extern', 'mod', 'let', 'ref', 'use', 'super', 'move']
       {tokens} = grammar.tokenizeLine("text #{t} text")
       expect(tokens[0]).toEqual value: 'text ', scopes: ['source.rust']
       expect(tokens[1]).toEqual value: t, scopes: ['source.rust', 'keyword.other.rust']
+      expect(tokens[2]).toEqual value: ' text', scopes: ['source.rust']
+
+  it 'tokenizes reserved keywords', ->
+    for t in ['abstract', 'alignof', 'become', 'do', 'final', 'macro', 'offsetof', 'override', 'priv', 'proc', 'pure', 'sizeof', 'typeof', 'virtual', 'yield']
+      {tokens} = grammar.tokenizeLine("text #{t} text")
+      expect(tokens[0]).toEqual value: 'text ', scopes: ['source.rust']
+      expect(tokens[1]).toEqual value: t, scopes: ['source.rust', 'invalid.deprecated.rust']
       expect(tokens[2]).toEqual value: ' text', scopes: ['source.rust']
 
   it 'tokenizes unsafe keyword', ->
@@ -377,6 +384,24 @@ describe 'Rust grammar', ->
   #
   # Snippets
   #
+
+  it 'tokenizes imports', ->
+    tokens = grammar.tokenizeLines('''
+      extern crate foo;
+      use std::slice;
+      use std::{num, str};
+      use self::foo::{bar, baz};
+      ''')
+    expect(tokens[0][0]).toEqual value: 'extern', scopes: ['source.rust', 'keyword.other.rust']
+    expect(tokens[0][2]).toEqual value: 'crate', scopes: ['source.rust', 'keyword.other.rust']
+    expect(tokens[1][0]).toEqual value: 'use', scopes: ['source.rust', 'keyword.other.rust']
+    expect(tokens[1][2]).toEqual value: '::', scopes: ['source.rust', 'keyword.operator.misc.rust']
+    expect(tokens[2][0]).toEqual value: 'use', scopes: ['source.rust', 'keyword.other.rust']
+    expect(tokens[2][2]).toEqual value: '::', scopes: ['source.rust', 'keyword.operator.misc.rust']
+    expect(tokens[3][0]).toEqual value: 'use', scopes: ['source.rust', 'keyword.other.rust']
+    expect(tokens[3][2]).toEqual value: 'self', scopes: ['source.rust', 'variable.language.rust']
+    expect(tokens[3][3]).toEqual value: '::', scopes: ['source.rust', 'keyword.operator.misc.rust']
+    expect(tokens[3][5]).toEqual value: '::', scopes: ['source.rust', 'keyword.operator.misc.rust']
 
   it 'tokenizes enums', ->
     tokens = grammar.tokenizeLines('''
@@ -451,6 +476,54 @@ describe 'Rust grammar', ->
     expect(tokens[4][5]).toEqual value: '\'', scopes: ['source.rust', 'meta.type_params.rust', 'storage.modifier.lifetime.rust']
     expect(tokens[4][6]).toEqual value: 'a', scopes: ['source.rust', 'meta.type_params.rust', 'storage.modifier.lifetime.rust', 'entity.name.lifetime.rust']
     expect(tokens[4][11]).toEqual value: 'T', scopes: ['source.rust', 'meta.type_params.rust', 'meta.type_params.rust']
+
+  it 'tokenizes impls', ->
+    tokens = grammar.tokenizeLines('''
+      impl MyTrait {
+          fn do_something () { unimplemented!() }
+      }
+      ''')
+    expect(tokens[0][0]).toEqual value: 'impl', scopes: ['source.rust', 'storage.type.rust']
+    expect(tokens[0][2]).toEqual value: 'MyTrait', scopes: ['source.rust', 'entity.name.type.rust']
+
+  it 'tokenizes trait impls', ->
+    tokens = grammar.tokenizeLines('''
+      impl MyTrait for MyStruct {
+          fn create_something (param: &str, mut other_param: u32) -> Option<Self> { unimplemented!() }
+          fn do_whatever<T: Send+Share+Whatever, U: Freeze> (param: &T, other_param: u32) -> Option<U> { unimplemented!() }
+          fn do_all_the_work (&mut self, param: &str, mut other_param: u32) -> bool { unimplemented!() }
+          fn do_even_more<'a, T: Send+Whatever, U: Something<T>+Freeze> (&'a mut self, param: &T) -> &'a U { unimplemented!() }
+      }
+      ''')
+    expect(tokens[0][0]).toEqual value: 'impl', scopes: ['source.rust', 'storage.type.rust']
+    expect(tokens[0][2]).toEqual value: 'MyTrait', scopes: ['source.rust', 'entity.name.type.rust']
+    expect(tokens[0][4]).toEqual value: 'for', scopes: ['source.rust', 'storage.type.rust']
+    expect(tokens[0][6]).toEqual value: 'MyStruct', scopes: ['source.rust', 'entity.name.type.rust']
+    expect(tokens[1][1]).toEqual value: 'fn', scopes: ['source.rust', 'keyword.other.fn.rust']
+    expect(tokens[1][12]).toEqual value: 'Option', scopes: ['source.rust', 'storage.type.core.rust']
+    expect(tokens[1][14]).toEqual value: 'Self', scopes: ['source.rust', 'meta.type_params.rust', 'storage.type.core.rust']
+    expect(tokens[2][1]).toEqual value: 'fn', scopes: ['source.rust', 'keyword.other.fn.rust']
+    expect(tokens[2][6]).toEqual value: 'Send', scopes: ['source.rust', 'meta.type_params.rust', 'support.type.marker.rust']
+    expect(tokens[2][7]).toEqual value: '+Share+Whatever, U: Freeze', scopes: ['source.rust', 'meta.type_params.rust']
+    expect(tokens[3][1]).toEqual value: 'fn', scopes: ['source.rust', 'keyword.other.fn.rust']
+    expect(tokens[4][1]).toEqual value: 'fn', scopes: ['source.rust', 'keyword.other.fn.rust']
+    expect(tokens[4][5]).toEqual value: '\'', scopes: ['source.rust', 'meta.type_params.rust', 'storage.modifier.lifetime.rust']
+    expect(tokens[4][6]).toEqual value: 'a', scopes: ['source.rust', 'meta.type_params.rust', 'storage.modifier.lifetime.rust', 'entity.name.lifetime.rust']
+    expect(tokens[4][11]).toEqual value: 'T', scopes: ['source.rust', 'meta.type_params.rust', 'meta.type_params.rust']
+
+  it 'tokenizes generics and lifetimes in enums'  # TODO
+
+  it 'tokenizes generics and lifetimes in structs'  # TODO
+
+  it 'tokenizes generics and lifetimes in impls'  # TODO
+
+  it 'tokenizes generics and lifetimes in functions'  # TODO
+
+  it 'tokenizes function defintions'  # TODO
+
+  it 'tokenizes function calls'   # TODO
+
+  it 'tokenizes closures'   # TODO
 
   #
   # Issues
@@ -539,8 +612,8 @@ describe 'Rust grammar', ->
       struct Foo<A, B> where text { }
       trait Foo<A, B> : C where { }
     ''')
-    expect(tokens[0][6]).toEqual value: 'where', scopes: ['source.rust', 'keyword.other.where.rust']
-    expect(tokens[1][8]).toEqual value: 'where', scopes: ['source.rust', 'keyword.other.where.rust']
+    expect(tokens[0][7]).toEqual value: 'where', scopes: ['source.rust', 'keyword.other.where.rust']
+    expect(tokens[1][11]).toEqual value: 'where', scopes: ['source.rust', 'keyword.other.where.rust']
     expect(tokens[3][8]).toEqual value: 'where', scopes: ['source.rust', 'keyword.other.where.rust']
     expect(tokens[5][7]).toEqual value: 'where', scopes: ['source.rust', 'keyword.other.where.rust']
     expect(tokens[6][7]).toEqual value: 'where', scopes: ['source.rust', 'keyword.other.where.rust']
@@ -560,14 +633,14 @@ describe 'Rust grammar', ->
     expect(tokens[3][0]).toEqual value: 'derive(Debug)', scopes: ['source.rust', 'meta.attribute.rust']
     expect(tokens[4][0]).toEqual value: 'struct', scopes: ['source.rust', 'storage.type.rust']
 
-  it 'does not tokenize `fn` in argument name as a keyword incorrectly', ->
+  it 'does not tokenize `fn` in argument name as a keyword incorrectly (issue \\#99)', ->
     {tokens} = grammar.tokenizeLine('fn foo(fn_x: ()) {}')
     expect(tokens[0]).toEqual value: 'fn', scopes: ['source.rust', 'keyword.other.fn.rust']
     expect(tokens[1]).toEqual value: ' ', scopes: ['source.rust']
     expect(tokens[2]).toEqual value : 'foo', scopes : [ 'source.rust', 'entity.name.function.rust' ]
     expect(tokens[3]).toEqual value : '(fn_x: ()) ', scopes : [ 'source.rust' ]
 
-  it 'tokenizes function calls with type arguments', ->
+  it 'tokenizes function calls with type arguments (issue \\#98)', ->
     tokens = grammar.tokenizeLines('''
       fn main() {
       foo::bar::<i32, ()>();
@@ -594,7 +667,7 @@ describe 'Rust grammar', ->
     expect(tokens[2][6]).toEqual value: '(', scopes: ['source.rust']
     expect(tokens[2][7]).toEqual value: ');', scopes: ['source.rust']
 
-  it 'tokenizes function calls without type arguments', ->
+  it 'tokenizes function calls without type arguments (issue \\#98)', ->
     tokens = grammar.tokenizeLines('''
       fn main() {
       foo.call();
@@ -605,7 +678,7 @@ describe 'Rust grammar', ->
     expect(tokens[1][2]).toEqual value: '(', scopes: ['source.rust']
     expect(tokens[1][3]).toEqual value: ');', scopes: ['source.rust']
 
-  it 'tokenizes function names correctly', ->
+  it 'tokenizes function names correctly (issue \\#98)', ->
     tokens = grammar.tokenizeLines('''
       fn main() {
       a();
@@ -630,3 +703,35 @@ describe 'Rust grammar', ->
     expect(tokens[8][0]).toEqual value: '_a0', scopes: ['source.rust', 'entity.name.function.rust']
     expect(tokens[9][0]).toEqual value: '_0a', scopes: ['source.rust', 'entity.name.function.rust']
     expect(tokens[10][0]).toEqual value: '__', scopes: ['source.rust', 'entity.name.function.rust']
+
+  it 'tokenizes `as` as an operator (issue \\#110)', ->
+    {tokens} = grammar.tokenizeLine('let i = 10 as f32;')
+    expect(tokens[0]).toEqual value: 'let', scopes: ['source.rust', 'keyword.other.rust']
+    expect(tokens[2]).toEqual value: '=', scopes: ['source.rust', 'keyword.operator.assignment.rust']
+    expect(tokens[4]).toEqual value: '10', scopes: ['source.rust', 'constant.numeric.integer.decimal.rust']
+    expect(tokens[6]).toEqual value: 'as', scopes: ['source.rust', 'keyword.operator.misc.rust']
+    expect(tokens[8]).toEqual value: 'f32', scopes: ['source.rust', 'storage.type.core.rust']
+
+  it 'tokenizes a reserved keyword as deprecated (issue \\#94)', ->
+    {tokens} = grammar.tokenizeLine('let priv = 10;')
+    expect(tokens[0]).toEqual value: 'let', scopes: ['source.rust', 'keyword.other.rust']
+    expect(tokens[2]).toEqual value: 'priv', scopes: ['source.rust', 'invalid.deprecated.rust']
+    expect(tokens[4]).toEqual value: '=', scopes: ['source.rust', 'keyword.operator.assignment.rust']
+    expect(tokens[6]).toEqual value: '10', scopes: ['source.rust', 'constant.numeric.integer.decimal.rust']
+
+  it 'tokenizes types in `impl` statements correctly (issue \\#7)', ->
+    tokens = grammar.tokenizeLines('''
+      struct MyObject<'a> {
+          mystr: &'a str
+      }
+      impl<'a> MyObject<'a> {
+          fn print(&self) {}
+      }
+      impl<'a> Clone for MyObject<'a> {
+          fn clone(&self) {}
+      }
+    ''')
+    expect(tokens[0][2]).toEqual value: 'MyObject', scopes: ['source.rust', 'entity.name.type.rust']
+    expect(tokens[3][6]).toEqual value: 'MyObject', scopes: ['source.rust', 'entity.name.type.rust']
+    expect(tokens[6][6]).toEqual value: 'Clone', scopes: ['source.rust', 'support.type.core.rust']
+    expect(tokens[6][10]).toEqual value: 'MyObject', scopes: ['source.rust', 'entity.name.type.rust']

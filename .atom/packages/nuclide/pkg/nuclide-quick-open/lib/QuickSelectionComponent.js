@@ -18,10 +18,22 @@ function _load_Button() {
   return _Button = require('nuclide-commons-ui/Button');
 }
 
+var _Icon;
+
+function _load_Icon() {
+  return _Icon = require('nuclide-commons-ui/Icon');
+}
+
 var _Tabs;
 
 function _load_Tabs() {
   return _Tabs = _interopRequireDefault(require('../../nuclide-ui/Tabs'));
+}
+
+var _Badge;
+
+function _load_Badge() {
+  return _Badge = require('../../nuclide-ui/Badge');
 }
 
 var _UniversalDisposable;
@@ -214,7 +226,7 @@ class QuickSelectionComponent extends _react.default.Component {
       this.props.onCancellation();
     }), _rxjsBundlesRxMinJs.Observable.fromEvent(document, 'mousedown').subscribe(this._handleDocumentMouseDown),
     // The text editor often changes during dispatches, so wait until the next tick.
-    (0, (_observable || _load_observable()).throttle)((0, (_event || _load_event()).observableFromSubscribeFunction)(cb => this._getTextEditor().onDidChange(cb)), (_observable || _load_observable()).nextTick, { leading: false }).subscribe(this._handleTextInputChange), (0, (_event || _load_event()).observableFromSubscribeFunction)(cb => this.props.searchResultManager.onProvidersChanged(cb)).debounceTime(0, _rxjsBundlesRxMinJs.Scheduler.animationFrame).subscribe(this._handleProvidersChange), (0, (_event || _load_event()).observableFromSubscribeFunction)(cb => this.props.searchResultManager.onResultsChanged(cb)).debounceTime(50)
+    (0, (_observable || _load_observable()).throttle)((0, (_event || _load_event()).observableFromSubscribeFunction)(cb => this._getTextEditor().onDidChange(cb)), (_observable || _load_observable()).microtask, { leading: false }).subscribe(this._handleTextInputChange), (0, (_event || _load_event()).observableFromSubscribeFunction)(cb => this.props.searchResultManager.onProvidersChanged(cb)).debounceTime(0, _rxjsBundlesRxMinJs.Scheduler.animationFrame).subscribe(this._handleProvidersChange), (0, (_event || _load_event()).observableFromSubscribeFunction)(cb => this.props.searchResultManager.onResultsChanged(cb)).debounceTime(50)
     // debounceTime seems to have issues canceling scheduled work. So
     // schedule it after we've debounced the events. See
     // https://github.com/ReactiveX/rxjs/pull/2135
@@ -563,6 +575,7 @@ class QuickSelectionComponent extends _react.default.Component {
       let numResultsForService = 0;
       const directories = this.state.resultsByService[serviceName].results;
       const serviceTitle = this.state.resultsByService[serviceName].title;
+      const totalResults = this.state.resultsByService[serviceName].totalResults;
       const directoryNames = Object.keys(directories);
       const directoriesForService = directoryNames.map(dirName => {
         const resultsForDirectory = directories[dirName];
@@ -649,12 +662,15 @@ class QuickSelectionComponent extends _react.default.Component {
       if (isOmniSearchActive && numResultsForService > 0) {
         serviceLabel = _react.default.createElement(
           'div',
-          { className: 'list-item' },
-          _react.default.createElement(
-            'span',
-            { className: 'icon icon-gear' },
-            serviceTitle
-          )
+          {
+            className: 'quick-open-provider-item list-item',
+            onClick: () => this.props.quickSelectionActions.changeActiveProvider(serviceName) },
+          _react.default.createElement((_Icon || _load_Icon()).Icon, { icon: 'gear', children: serviceTitle }),
+          _react.default.createElement((_Badge || _load_Badge()).Badge, {
+            size: (_Badge || _load_Badge()).BadgeSizes.small,
+            className: 'quick-open-provider-count-badge',
+            value: totalResults
+          })
         );
         return _react.default.createElement(
           'li',

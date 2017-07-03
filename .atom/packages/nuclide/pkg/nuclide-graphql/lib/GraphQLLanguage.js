@@ -11,9 +11,9 @@ let connectionToGraphQLService = (() => {
   var _ref = (0, _asyncToGenerator.default)(function* (connection) {
     const graphqlService = (0, (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).getServiceByConnection)(GRAPHQL_SERVICE_NAME, connection);
     const [fileNotifier, host] = yield Promise.all([(0, (_nuclideOpenFiles || _load_nuclideOpenFiles()).getNotifierByConnection)(connection), (0, (_nuclideLanguageService || _load_nuclideLanguageService()).getHostServices)()]);
-    const graphqlCommand = require.resolve('graphql-language-service/bin/graphql.js');
+    const graphqlCommand = 'graphql-language-service/bin/graphql.js';
 
-    return graphqlService.initializeLsp(graphqlCommand, ['server', '--method', 'stream'], '.graphqlconfig', ['.graphql'], 'INFO', fileNotifier, host);
+    return graphqlService.initializeLsp(graphqlCommand, ['server', '--method', 'stream'], '.graphqlconfig', ['.js', '.graphql'], 'INFO', fileNotifier, host);
   });
 
   return function connectionToGraphQLService(_x) {
@@ -29,7 +29,7 @@ let createLanguageService = (() => {
     };
 
     const definitionConfig = {
-      version: '0.0.0',
+      version: '0.1.0',
       priority: 1,
       definitionEventName: 'graphql.definition',
       definitionByIdEventName: 'graphql.definition-by-id'
@@ -48,7 +48,7 @@ let createLanguageService = (() => {
 
     const atomConfig = {
       name: 'GraphQL',
-      grammars: ['source.graphql'],
+      grammars: ['source.graphql', 'source.js.jsx', 'source.js'],
       diagnostics: diagnosticsConfig,
       definition: definitionConfig,
       autocomplete: autocompleteConfig

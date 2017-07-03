@@ -32,10 +32,10 @@ function _load_UniversalDisposable() {
   return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
-var _Utils;
+var _EventReporter;
 
-function _load_Utils() {
-  return _Utils = require('./Protocol/Utils');
+function _load_EventReporter() {
+  return _EventReporter = require('./Protocol/EventReporter');
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -120,7 +120,7 @@ class CommandDispatcher {
 
     return (0, _asyncToGenerator.default)(function* () {
       _this._ensureSessionCreated();
-      _this._useNewChannel = yield (0, (_NewProtocolChannelChecker || _load_NewProtocolChannelChecker()).isNewProtocolChannelEnabled)();
+      _this._useNewChannel = yield (0, (_NewProtocolChannelChecker || _load_NewProtocolChannelChecker()).isNewProtocolChannelEnabled)(debuggerInstance.getProviderName());
       if (_this._useNewChannel) {
         const dispatchers = yield (_NuclideProtocolParser || _load_NuclideProtocolParser()).default.bootstrap(debuggerInstance);
         _this._bridgeAdapter = new (_BridgeAdapter || _load_BridgeAdapter()).default(dispatchers);
@@ -247,7 +247,7 @@ class CommandDispatcher {
         this._bridgeAdapter.setSingleThreadStepping(args[1]);
         break;
       default:
-        (0, (_Utils || _load_Utils()).reportError)(`Command ${args[0]} is not implemented yet.`);
+        (0, (_EventReporter || _load_EventReporter()).reportError)(`Command ${args[0]} is not implemented yet.`);
         break;
     }
   }

@@ -3,15 +3,8 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.consumeOutputService = consumeOutputService;
 exports.createDebuggerProvider = createDebuggerProvider;
 exports.getHomeFragments = getHomeFragments;
-
-var _nuclideDebuggerBase;
-
-function _load_nuclideDebuggerBase() {
-  return _nuclideDebuggerBase = require('../../nuclide-debugger-base');
-}
 
 var _HhvmLaunchAttachProvider;
 
@@ -37,10 +30,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * 
  * @format
  */
-
-function consumeOutputService(api) {
-  (0, (_nuclideDebuggerBase || _load_nuclideDebuggerBase()).setOutputService)(api);
-}
 
 function createDebuggerProvider() {
   return {

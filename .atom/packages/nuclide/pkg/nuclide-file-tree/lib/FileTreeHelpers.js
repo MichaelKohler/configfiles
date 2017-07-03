@@ -182,12 +182,12 @@ function observeUncommittedChangesKindConfigKey() {
     // We need to map the unsanitized feature-setting string
     // into a properly typed value:
     switch (setting) {
-      case (_Constants || _load_Constants()).ShowUncommittedChangesKind.UNCOMMITTED:
-        return (_Constants || _load_Constants()).ShowUncommittedChangesKind.UNCOMMITTED;
+      case (_Constants || _load_Constants()).ShowUncommittedChangesKind.HEAD:
+        return (_Constants || _load_Constants()).ShowUncommittedChangesKind.HEAD;
       case (_Constants || _load_Constants()).ShowUncommittedChangesKind.STACK:
         return (_Constants || _load_Constants()).ShowUncommittedChangesKind.STACK;
       default:
-        return (_Constants || _load_Constants()).ShowUncommittedChangesKind.HEAD;
+        return (_Constants || _load_Constants()).ShowUncommittedChangesKind.UNCOMMITTED;
     }
   }).distinctUntilChanged());
 }

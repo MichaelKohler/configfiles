@@ -142,13 +142,14 @@ let instance;
  * dispatcher is a mechanism through which FileTreeActions interfaces with FileTreeStore.
  */
 class FileTreeStore {
-  // The configuration for the file-tree. Avoid direct writing.
+
   static getInstance() {
     if (!instance) {
       instance = new FileTreeStore();
     }
     return instance;
-  }
+  } // The configuration for the file-tree. Avoid direct writing.
+
 
   static dispose() {
     if (instance != null) {
@@ -167,6 +168,7 @@ class FileTreeStore {
     this._fileChanges = new (_immutable || _load_immutable()).default.Map();
 
     this._usePrefixNav = false;
+    this._autoExpandSingleChild = true;
     this._isLoadingMap = new (_immutable || _load_immutable()).default.Map();
     this._repositories = new (_immutable || _load_immutable()).default.Set();
 
@@ -358,6 +360,9 @@ class FileTreeStore {
         break;
       case (_FileTreeDispatcher2 || _load_FileTreeDispatcher2()).ActionTypes.SET_USE_PREFIX_NAV:
         this._setUsePrefixNav(payload.usePrefixNav);
+        break;
+      case (_FileTreeDispatcher2 || _load_FileTreeDispatcher2()).ActionTypes.SET_AUTO_EXPAND_SINGLE_CHILD:
+        this._setAutoExpandSingleChild(payload.autoExpandSingleChild);
         break;
       case (_FileTreeDispatcher2 || _load_FileTreeDispatcher2()).ActionTypes.COLLAPSE_NODE_DEEP:
         this._collapseNodeDeep(payload.rootKey, payload.nodeKey);
@@ -646,6 +651,10 @@ class FileTreeStore {
     return this.roots.toArray().map(root => root.uri);
   }
 
+  getCwdKey() {
+    return this._cwdKey;
+  }
+
   /**
    * Returns true if the store has no data, i.e. no roots, no children.
    */
@@ -767,6 +776,10 @@ class FileTreeStore {
 
   usePrefixNav() {
     return this._usePrefixNav;
+  }
+
+  _setAutoExpandSingleChild(autoExpandSingleChild) {
+    this._autoExpandSingleChild = autoExpandSingleChild;
   }
 
   /**
@@ -907,6 +920,8 @@ class FileTreeStore {
   _setFetchedKeys(nodeKey, childrenKeys = []) {
     const directory = (_FileTreeHelpers || _load_FileTreeHelpers()).default.getDirectoryByKey(nodeKey);
 
+    const nodesToAutoExpand = [];
+
     // The node with URI === nodeKey might be present at several roots - update them all
     this._updateNodeAtAllRoots(nodeKey, node => {
       // Maintain the order fetched from the FS
@@ -923,6 +938,10 @@ class FileTreeStore {
           isCwd: uri === this._cwdKey
         }, this._conf);
       });
+
+      if (this._autoExpandSingleChild && childrenNodes.length === 1 && childrenNodes[0].isContainer) {
+        nodesToAutoExpand.push(childrenNodes[0]);
+      }
 
       const children = (_FileTreeNode || _load_FileTreeNode()).FileTreeNode.childrenFromArray(childrenNodes);
       const subscription = node.subscription || this._makeSubscription(nodeKey, directory);
@@ -949,6 +968,9 @@ class FileTreeStore {
     });
 
     this._clearLoading(nodeKey);
+    nodesToAutoExpand.forEach(node => {
+      this._expandNode(node.rootUri, node.uri);
+    });
   }
 
   _makeSubscription(nodeKey, directory) {
@@ -1141,8 +1163,22 @@ class FileTreeStore {
   }
 
   _expandNode(rootKey, nodeKey) {
-    this._updateNodeAtRoot(rootKey, nodeKey, node => {
-      return node.setIsExpanded(true).setRecursive(n => !n.isContainer || !n.isExpanded ? n : null, n => {
+    const recursivelyExpandNode = node => {
+      return node.setIsExpanded(true).setRecursive(n => {
+        if (!n.isContainer) {
+          return n;
+        }
+
+        if (this._autoExpandSingleChild && n.children.size === 1) {
+          if (!n.isExpanded) {
+            return recursivelyExpandNode(n);
+          }
+
+          return null;
+        }
+
+        return !n.isExpanded ? n : null;
+      }, n => {
         if (n.isContainer && n.isExpanded) {
           this._fetchChildKeys(n.uri);
           return n.setIsLoading(true);
@@ -1150,7 +1186,9 @@ class FileTreeStore {
 
         return n;
       });
-    });
+    };
+
+    this._updateNodeAtRoot(rootKey, nodeKey, recursivelyExpandNode);
   }
 
   /**

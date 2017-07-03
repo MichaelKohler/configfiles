@@ -15,13 +15,13 @@ let formatImpl = (() => {
     }
     const instance = (0, (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).getReasonServiceByNuclideUri)(path);
 
-    const syntaxArg = editor.getGrammar().name === 'Reason' ? 're' : 'ml';
+    const language = editor.getGrammar().name === 'Reason' ? 're' : 'ml';
     // Pass the flags here rather than in the service, so that we pick no the
     // extra flags in the (client side) refmtFlags
     // We pipe the current editor buffer into refmt rather than passing the path
     // because the editor buffer might not have been saved to disk.
-    const flags = ['--parse', syntaxArg, '--print', syntaxArg, '--interface', isInterfaceF(path) ? 'true' : 'false', ...getRefmtFlags()];
-    return instance.format(editor.getText(), flags);
+    const refmtFlags = ['--parse', language, '--print', language, '--interface', isInterfaceF(path) ? 'true' : 'false', ...getRefmtFlags()];
+    return instance.format(editor.getText(), (_nuclideUri || _load_nuclideUri()).default.getPath(path), language, refmtFlags);
   });
 
   return function formatImpl(_x, _x2) {

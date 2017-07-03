@@ -3,9 +3,6 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
-
 exports.observeAndroidDevices = observeAndroidDevices;
 exports.observeTizenDevices = observeTizenDevices;
 exports.observeAndroidDevicesX = observeAndroidDevicesX;
@@ -19,10 +16,10 @@ function _load_nuclideRemoteConnection() {
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
 
-var _nuclideExpected;
+var _expected;
 
-function _load_nuclideExpected() {
-  return _nuclideExpected = require('../../nuclide-expected');
+function _load_expected() {
+  return _expected = require('../../commons-node/expected');
 }
 
 var _nuclideAnalytics;
@@ -31,12 +28,24 @@ function _load_nuclideAnalytics() {
   return _nuclideAnalytics = require('../../nuclide-analytics');
 }
 
+var _nuclideUri;
+
+function _load_nuclideUri() {
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
+}
+
+var _cache;
+
+function _load_cache() {
+  return _cache = require('../../commons-node/cache');
+}
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 class DevicePoller {
 
   constructor(type) {
-    this._observables = new Map();
+    this._observables = new (_cache || _load_cache()).Cache();
 
     this._type = type;
   }
@@ -45,28 +54,15 @@ class DevicePoller {
     return this._type === 'adb' ? 'android' : 'tizen';
   }
 
-  observe(host) {
-    let observable = this._observables.get(host);
-    if (observable != null) {
-      return observable;
-    }
-    observable = _rxjsBundlesRxMinJs.Observable.interval(3000).startWith(0).switchMap(() => _rxjsBundlesRxMinJs.Observable.fromPromise(this.fetch(host)).map(devices => (_nuclideExpected || _load_nuclideExpected()).Expect.value(devices)).catch(() => _rxjsBundlesRxMinJs.Observable.of((_nuclideExpected || _load_nuclideExpected()).Expect.error(new Error(`Can't fetch ${this._getPlatform()} devices. Make sure that ${this._type} is in your $PATH and that it works properly.`))))).publishReplay(1).refCount();
-    this._observables.set(host, observable);
-    return observable;
+  observe(_host) {
+    const host = (_nuclideUri || _load_nuclideUri()).default.isRemote(_host) ? _host : '';
+    return this._observables.getOrCreate(host, () => _rxjsBundlesRxMinJs.Observable.interval(2000).startWith(0).switchMap(() => this.fetch(host).map(devices => (_expected || _load_expected()).Expect.value(devices)).catch(() => _rxjsBundlesRxMinJs.Observable.of((_expected || _load_expected()).Expect.error(new Error(`Can't fetch ${this._getPlatform()} devices. Make sure that ${this._type} is in your $PATH and that it works properly.`))))).publishReplay(1).refCount());
   }
 
   fetch(host) {
-    var _this = this;
+    const rpc = this._type === 'adb' ? (0, (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).getAdbServiceByNuclideUri)(host) : (0, (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).getSdbServiceByNuclideUri)(host);
 
-    return (0, _asyncToGenerator.default)(function* () {
-      const rpc = _this._type === 'adb' ? (0, (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).getAdbServiceByNuclideUri)(host) : (0, (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).getSdbServiceByNuclideUri)(host);
-
-      return rpc.getDeviceList().then(function (devices) {
-        return devices.map(function (device) {
-          return _this.parseRawDevice(device);
-        });
-      });
-    })();
+    return rpc.getDeviceList().refCount().map(devices => devices.map(device => this.parseRawDevice(device)));
   }
 
   parseRawDevice(device) {

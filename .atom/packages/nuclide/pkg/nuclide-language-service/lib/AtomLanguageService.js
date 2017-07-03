@@ -128,7 +128,7 @@ class AtomLanguageService {
       }
     };
 
-    this._subscriptions.add(atom.packages.serviceHub.consume('atom-ide-busy-signal', '0.2.0', service => {
+    this._subscriptions.add(atom.packages.serviceHub.consume('atom-ide-busy-signal', '0.1.0', service => {
       this._subscriptions.add(service);
       busySignalService = service;
       return new (_UniversalDisposable || _load_UniversalDisposable()).default(() => {
@@ -139,12 +139,12 @@ class AtomLanguageService {
 
     const highlightConfig = this._config.highlight;
     if (highlightConfig != null) {
-      this._subscriptions.add((_CodeHighlightProvider || _load_CodeHighlightProvider()).CodeHighlightProvider.register(this._config.name, this._selector(), highlightConfig, this._connectionToLanguageService));
+      this._subscriptions.add((_CodeHighlightProvider || _load_CodeHighlightProvider()).CodeHighlightProvider.register(this._config.name, this._config.grammars, highlightConfig, this._connectionToLanguageService));
     }
 
     const outlineConfig = this._config.outline;
     if (outlineConfig != null) {
-      this._subscriptions.add((_OutlineViewProvider || _load_OutlineViewProvider()).OutlineViewProvider.register(this._config.name, this._selector(), outlineConfig, this._connectionToLanguageService));
+      this._subscriptions.add((_OutlineViewProvider || _load_OutlineViewProvider()).OutlineViewProvider.register(this._config.name, this._config.grammars, outlineConfig, this._connectionToLanguageService));
     }
 
     const coverageConfig = this._config.coverage;
@@ -164,7 +164,7 @@ class AtomLanguageService {
 
     const codeFormatConfig = this._config.codeFormat;
     if (codeFormatConfig != null) {
-      this._subscriptions.add((_CodeFormatProvider || _load_CodeFormatProvider()).CodeFormatProvider.register(this._config.name, this._selector(), codeFormatConfig, this._connectionToLanguageService, busySignalProvider));
+      this._subscriptions.add((_CodeFormatProvider || _load_CodeFormatProvider()).CodeFormatProvider.register(this._config.name, this._config.grammars, codeFormatConfig, this._connectionToLanguageService, busySignalProvider));
     }
 
     const findReferencesConfig = this._config.findReferences;
@@ -215,6 +215,12 @@ class AtomLanguageService {
   observeLanguageServices() {
     return this._connectionToLanguageService.observeValues().switchMap(languageService => {
       return _rxjsBundlesRxMinJs.Observable.fromPromise(languageService);
+    });
+  }
+
+  observeConnectionLanguageEntries() {
+    return this._connectionToLanguageService.observeEntries().switchMap(([connection, servicePromise]) => {
+      return _rxjsBundlesRxMinJs.Observable.fromPromise(servicePromise).map(languageService => [connection, languageService]);
     });
   }
 

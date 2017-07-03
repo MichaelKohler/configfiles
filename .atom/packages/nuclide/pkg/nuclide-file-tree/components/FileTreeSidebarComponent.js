@@ -4,6 +4,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _atom = require('atom');
+
 var _react = _interopRequireDefault(require('react'));
 
 var _reactDom = _interopRequireDefault(require('react-dom'));
@@ -76,6 +78,12 @@ function _load_OpenFilesListComponent() {
   return _OpenFilesListComponent = require('./OpenFilesListComponent');
 }
 
+var _LockableHeightComponent;
+
+function _load_LockableHeightComponent() {
+  return _LockableHeightComponent = require('./LockableHeightComponent');
+}
+
 var _FileTreeActions;
 
 function _load_FileTreeActions() {
@@ -136,6 +144,12 @@ function _load_goToLocation() {
   return _goToLocation = require('nuclide-commons-atom/go-to-location');
 }
 
+var _nuclideUri;
+
+function _load_nuclideUri() {
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
+}
+
 var _nuclideAnalytics;
 
 function _load_nuclideAnalytics() {
@@ -152,17 +166,6 @@ function _load_contextMenu() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
-
 class FileTreeSidebarComponent extends _react.default.Component {
 
   constructor() {
@@ -170,6 +173,7 @@ class FileTreeSidebarComponent extends _react.default.Component {
 
     this._actions = (_FileTreeActions || _load_FileTreeActions()).default.getInstance();
     this._store = (_FileTreeStore || _load_FileTreeStore()).FileTreeStore.getInstance();
+    this._emitter = new _atom.Emitter();
     this.state = {
       hidden: false,
       shouldRenderToolbar: false,
@@ -177,19 +181,22 @@ class FileTreeSidebarComponent extends _react.default.Component {
       scrollerScrollTop: 0,
       showOpenFiles: true,
       showUncommittedChanges: true,
-      showUncommittedChangesKind: 'Head changes',
+      showUncommittedChangesKind: 'Uncommitted changes',
       openFilesUris: [],
       modifiedUris: [],
       activeUri: null,
       uncommittedFileChanges: new Map(),
       isCalculatingChanges: false,
-      areStackChangesEnabled: false
+      areStackChangesEnabled: false,
+      path: 'No Current Working Directory',
+      title: 'File Tree',
+      isFileTreeHovered: false
     };
     this._showOpenConfigValues = (0, (_observable || _load_observable()).cacheWhileSubscribed)((_featureConfig || _load_featureConfig()).default.observeAsStream((_Constants || _load_Constants()).SHOW_OPEN_FILE_CONFIG_KEY));
     this._showUncommittedConfigValue = (0, (_observable || _load_observable()).cacheWhileSubscribed)((_featureConfig || _load_featureConfig()).default.observeAsStream((_Constants || _load_Constants()).SHOW_UNCOMMITTED_CHANGES_CONFIG_KEY));
     this._showUncommittedKindConfigValue = (_FileTreeHelpers || _load_FileTreeHelpers()).default.observeUncommittedChangesKindConfigKey();
 
-    this._disposables = new (_UniversalDisposable || _load_UniversalDisposable()).default();
+    this._disposables = new (_UniversalDisposable || _load_UniversalDisposable()).default(this._emitter);
     this._scrollWasTriggeredProgrammatically = false;
     this._handleFocus = this._handleFocus.bind(this);
     this._getScrollerHeight = this._getScrollerHeight.bind(this);
@@ -203,6 +210,7 @@ class FileTreeSidebarComponent extends _react.default.Component {
 
   componentDidMount() {
     this._processExternalUpdate();
+    const fileTreeNode = _reactDom.default.findDOMNode(this.refs.fileTree);
 
     const remeasureEvents = _rxjsBundlesRxMinJs.Observable.merge(_rxjsBundlesRxMinJs.Observable.of(null), _rxjsBundlesRxMinJs.Observable.fromEvent(window, 'resize'), (0, (_event || _load_event()).observableFromSubscribeFunction)(atom.commands.onDidDispatch.bind(atom.commands)).filter(event => event.type === 'nuclide-file-tree:toggle'), _rxjsBundlesRxMinJs.Observable.interval(2000));
 
@@ -234,6 +242,10 @@ class FileTreeSidebarComponent extends _react.default.Component {
       return _rxjsBundlesRxMinJs.Observable.create(() => (0, (_contextMenu || _load_contextMenu()).showMenuForEvent)(event, menuTemplate));
     }).subscribe(), (0, (_observePaneItemVisibility || _load_observePaneItemVisibility()).default)(this).subscribe(visible => {
       this.didChangeVisibility(visible);
+    }), _rxjsBundlesRxMinJs.Observable.fromEvent(fileTreeNode, 'mouseenter').subscribe(() => {
+      this.setState({ isFileTreeHovered: true });
+    }), _rxjsBundlesRxMinJs.Observable.fromEvent(fileTreeNode, 'mouseleave').subscribe(() => {
+      this.setState({ isFileTreeHovered: false });
     }));
   }
 
@@ -378,15 +390,19 @@ All the changes across your entire stacked diff.
         });
       }
       openFilesSection = _react.default.createElement(
-        (_Section || _load_Section()).Section,
-        {
-          className: 'nuclide-file-tree-section-caption',
-          collapsable: true,
-          collapsed: !this._store.openFilesExpanded,
-          headline: 'OPEN FILES',
-          onChange: this._handleOpenFilesExpandedChange,
-          size: 'small' },
-        openFilesList
+        (_LockableHeightComponent || _load_LockableHeightComponent()).LockableHeight,
+        { isLocked: this.state.isFileTreeHovered },
+        _react.default.createElement(
+          (_Section || _load_Section()).Section,
+          {
+            className: 'nuclide-file-tree-section-caption nuclide-file-tree-open-files-section',
+            collapsable: true,
+            collapsed: !this._store.openFilesExpanded,
+            headline: 'OPEN FILES',
+            onChange: this._handleOpenFilesExpandedChange,
+            size: 'small' },
+          openFilesList
+        )
       );
     }
 
@@ -441,6 +457,17 @@ All the changes across your entire stacked diff.
       uncommittedFileChanges,
       isCalculatingChanges
     });
+
+    const title = this.getTitle();
+    const path = this.getPath();
+    if (title !== this.state.title || path !== this.state.path) {
+      this.setState({
+        title,
+        path
+      });
+      this._emitter.emit('did-change-title', this.getTitle());
+      this._emitter.emit('did-change-path', this.getPath());
+    }
   }
 
   _onFileChosen(filePath) {
@@ -581,7 +608,30 @@ All the changes across your entire stacked diff.
   }
 
   getTitle() {
-    return 'File Tree';
+    const cwdKey = this._store.getCwdKey();
+    if (cwdKey == null) {
+      return 'File Tree';
+    }
+
+    return (_nuclideUri || _load_nuclideUri()).default.basename(cwdKey);
+  }
+
+  // This is unfortunate, but Atom uses getTitle() to get the text in the tab and getPath() to get
+  // the text in the tool-tip.
+  getPath() {
+    const cwdKey = this._store.getCwdKey();
+    if (cwdKey == null) {
+      return 'No Current Working Directory';
+    }
+
+    const trimmed = (_nuclideUri || _load_nuclideUri()).default.trimTrailingSeparator(cwdKey);
+    const directory = (_nuclideUri || _load_nuclideUri()).default.getPath(trimmed);
+    const host = (_nuclideUri || _load_nuclideUri()).default.getHostnameOpt(trimmed);
+    if (host == null) {
+      return `Current Working Directory: ${directory}`;
+    }
+
+    return `Current Working Directory: '${directory}' on '${host}'`;
   }
 
   getDefaultLocation() {
@@ -614,9 +664,27 @@ All the changes across your entire stacked diff.
   isPermanentDockItem() {
     return true;
   }
+
+  onDidChangeTitle(callback) {
+    return this._emitter.on('did-change-title', callback);
+  }
+
+  onDidChangePath(callback) {
+    return this._emitter.on('did-change-path', callback);
+  }
 }
 
-exports.default = FileTreeSidebarComponent;
+exports.default = FileTreeSidebarComponent; /**
+                                             * Copyright (c) 2015-present, Facebook, Inc.
+                                             * All rights reserved.
+                                             *
+                                             * This source code is licensed under the license found in the LICENSE file in
+                                             * the root directory of this source tree.
+                                             *
+                                             * 
+                                             * @format
+                                             */
+
 function observeAllModifiedStatusChanges() {
   const paneItemChangeEvents = _rxjsBundlesRxMinJs.Observable.merge((0, (_event || _load_event()).observableFromSubscribeFunction)(atom.workspace.onDidAddPaneItem.bind(atom.workspace)), (0, (_event || _load_event()).observableFromSubscribeFunction)(atom.workspace.onDidDestroyPaneItem.bind(atom.workspace))).startWith(undefined);
 

@@ -334,7 +334,7 @@ function execArcPatch(cwd, differentialRevision) {
   // TODO(T17463635)
   const args = ['patch'];
   if (differentialRevision.match(/^[0-9]+$/)) {
-    args.push('--diff');
+    args.push('--nocommit', '--diff');
   }
   args.push(differentialRevision);
   return _rxjsBundlesRxMinJs.Observable.fromPromise(getArcExecOptions(cwd)).switchMap(opts => (0, (_process || _load_process()).observeProcess)('arc', args, Object.assign({}, opts, {

@@ -56,6 +56,19 @@ function _load_addTooltip() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function hasMobilePlatform(platformGroups) {
+  return platformGroups.some(platformGroup => platformGroup.platforms.some(platform => platform.isMobile));
+} /**
+   * Copyright (c) 2015-present, Facebook, Inc.
+   * All rights reserved.
+   *
+   * This source code is licensed under the license found in the LICENSE file in
+   * the root directory of this source tree.
+   *
+   * 
+   * @format
+   */
+
 class BuckToolbar extends _react.default.Component {
 
   constructor(props) {
@@ -121,7 +134,7 @@ class BuckToolbar extends _react.default.Component {
           className: 'nuclide-buck-status inline-block text-center' },
         status
       ));
-    } else if (platformGroups.length) {
+    } else if (hasMobilePlatform(platformGroups)) {
       const options = this._optionsFromPlatformGroups(platformGroups);
 
       widgets.push(_react.default.createElement((_Dropdown || _load_Dropdown()).Dropdown, {
@@ -203,6 +216,10 @@ class BuckToolbar extends _react.default.Component {
 
     let selectableOptions;
 
+    if (!platform.isMobile) {
+      throw new Error('Invariant violation: "platform.isMobile"');
+    }
+
     if (platform.deviceGroups.length === 0) {
       selectableOptions = [{
         label: `  ${platform.name}`,
@@ -232,7 +249,7 @@ class BuckToolbar extends _react.default.Component {
     const selectableOptions = [];
 
     for (const platform of platformGroup.platforms) {
-      if (platform.deviceGroups.length) {
+      if (platform.isMobile && platform.deviceGroups.length) {
         const submenu = [];
 
         for (const deviceGroup of platform.deviceGroups) {
@@ -272,13 +289,4 @@ class BuckToolbar extends _react.default.Component {
     return { header, selectableOptions };
   }
 }
-exports.default = BuckToolbar; /**
-                                * Copyright (c) 2015-present, Facebook, Inc.
-                                * All rights reserved.
-                                *
-                                * This source code is licensed under the license found in the LICENSE file in
-                                * the root directory of this source tree.
-                                *
-                                * 
-                                * @format
-                                */
+exports.default = BuckToolbar;

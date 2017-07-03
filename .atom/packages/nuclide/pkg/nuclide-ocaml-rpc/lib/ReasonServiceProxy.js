@@ -5,32 +5,34 @@ let Observable;
 module.exports = _client => {
   const remoteModule = {};
 
-  remoteModule.format = function (arg0, arg1) {
+  remoteModule.format = function (arg0, arg1, arg2, arg3) {
     return _client.marshalArguments(Array.from(arguments), [{
       name: "content",
       type: {
-        location: {
-          type: "source",
-          fileName: "ReasonService.js",
-          line: 19
-        },
         kind: "string"
       }
     }, {
-      name: "flags",
+      name: "filePath",
       type: {
-        location: {
-          type: "source",
-          fileName: "ReasonService.js",
-          line: 20
-        },
+        kind: "string"
+      }
+    }, {
+      name: "language",
+      type: {
+        kind: "union",
+        types: [{
+          kind: "string-literal",
+          value: "re"
+        }, {
+          kind: "string-literal",
+          value: "ml"
+        }]
+      }
+    }, {
+      name: "refmtFlags",
+      type: {
         kind: "array",
         type: {
-          location: {
-            type: "source",
-            fileName: "ReasonService.js",
-            line: 20
-          },
           kind: "string"
         }
       }
@@ -38,13 +40,8 @@ module.exports = _client => {
       return _client.callRemoteFunction("ReasonService/format", "promise", args);
     }).then(value => {
       return _client.unmarshal(value, {
-        location: {
-          type: "source",
-          fileName: "ReasonService.js",
-          line: 21
-        },
         kind: "named",
-        name: "refmtResult"
+        name: "formatResult"
       });
     });
   };
@@ -115,99 +112,44 @@ Object.defineProperty(module.exports, "defs", {
         type: "builtin"
       }
     },
-    refmtResult: {
+    formatResult: {
       kind: "alias",
       location: {
         type: "source",
         fileName: "ReasonService.js",
         line: 14
       },
-      name: "refmtResult",
+      name: "formatResult",
       definition: {
-        location: {
-          type: "source",
-          fileName: "ReasonService.js",
-          line: 15
-        },
         kind: "union",
         types: [{
-          location: {
-            type: "source",
-            fileName: "ReasonService.js",
-            line: 15
-          },
           kind: "object",
           fields: [{
-            location: {
-              type: "source",
-              fileName: "ReasonService.js",
-              line: 15
-            },
             name: "type",
             type: {
-              location: {
-                type: "source",
-                fileName: "ReasonService.js",
-                line: 15
-              },
               kind: "string-literal",
               value: "result"
             },
             optional: false
           }, {
-            location: {
-              type: "source",
-              fileName: "ReasonService.js",
-              line: 15
-            },
             name: "formattedResult",
             type: {
-              location: {
-                type: "source",
-                fileName: "ReasonService.js",
-                line: 15
-              },
               kind: "string"
             },
             optional: false
           }]
         }, {
-          location: {
-            type: "source",
-            fileName: "ReasonService.js",
-            line: 16
-          },
           kind: "object",
           fields: [{
-            location: {
-              type: "source",
-              fileName: "ReasonService.js",
-              line: 16
-            },
             name: "type",
             type: {
-              location: {
-                type: "source",
-                fileName: "ReasonService.js",
-                line: 16
-              },
               kind: "string-literal",
               value: "error"
             },
             optional: false
           }, {
-            location: {
-              type: "source",
-              fileName: "ReasonService.js",
-              line: 16
-            },
             name: "error",
             type: {
-              location: {
-                type: "source",
-                fileName: "ReasonService.js",
-                line: 16
-              },
               kind: "string"
             },
             optional: false
@@ -234,47 +176,39 @@ Object.defineProperty(module.exports, "defs", {
         argumentTypes: [{
           name: "content",
           type: {
-            location: {
-              type: "source",
-              fileName: "ReasonService.js",
-              line: 19
-            },
             kind: "string"
           }
         }, {
-          name: "flags",
+          name: "filePath",
           type: {
-            location: {
-              type: "source",
-              fileName: "ReasonService.js",
-              line: 20
-            },
+            kind: "string"
+          }
+        }, {
+          name: "language",
+          type: {
+            kind: "union",
+            types: [{
+              kind: "string-literal",
+              value: "re"
+            }, {
+              kind: "string-literal",
+              value: "ml"
+            }]
+          }
+        }, {
+          name: "refmtFlags",
+          type: {
             kind: "array",
             type: {
-              location: {
-                type: "source",
-                fileName: "ReasonService.js",
-                line: 20
-              },
               kind: "string"
             }
           }
         }],
         returnType: {
-          location: {
-            type: "source",
-            fileName: "ReasonService.js",
-            line: 21
-          },
           kind: "promise",
           type: {
-            location: {
-              type: "source",
-              fileName: "ReasonService.js",
-              line: 21
-            },
             kind: "named",
-            name: "refmtResult"
+            name: "formatResult"
           }
         }
       }

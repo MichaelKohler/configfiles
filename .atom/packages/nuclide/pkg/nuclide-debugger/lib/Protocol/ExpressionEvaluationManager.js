@@ -8,10 +8,10 @@ var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
 
-var _Utils;
+var _EventReporter;
 
-function _load_Utils() {
-  return _Utils = require('./Utils');
+function _load_EventReporter() {
+  return _EventReporter = require('./EventReporter');
 }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -38,7 +38,7 @@ class RemoteObjectProxy {
     return new Promise((resolve, reject) => {
       function callback(error, response) {
         if (error != null) {
-          (0, (_Utils || _load_Utils()).reportError)(`getProperties failed with ${JSON.stringify(error)}`);
+          (0, (_EventReporter || _load_EventReporter()).reportError)(`getProperties failed with ${JSON.stringify(error)}`);
           reject(error);
         }
         resolve(response);
@@ -85,11 +85,11 @@ class ExpressionEvaluationManager {
   evaluateOnCallFrame(transactionId, callFrameId, expression, objectGroup) {
     function callback(error, response) {
       if (error != null) {
-        (0, (_Utils || _load_Utils()).reportError)(`evaluateOnCallFrame failed with ${JSON.stringify(error)}`);
+        (0, (_EventReporter || _load_EventReporter()).reportError)(`evaluateOnCallFrame failed with ${JSON.stringify(error)}`);
         return;
       }
       const { result, wasThrown, exceptionDetails } = response;
-      if (result.objectId != null) {
+      if (result != null && result.objectId != null) {
         this._remoteObjectManager.addObject(result.objectId);
       }
       this._raiseIPCEvent('ExpressionEvaluationResponse', {
@@ -105,7 +105,7 @@ class ExpressionEvaluationManager {
   runtimeEvaluate(transactionId, expression, objectGroup) {
     function callback(error, response) {
       if (error != null) {
-        (0, (_Utils || _load_Utils()).reportError)(`runtimeEvaluate failed with ${JSON.stringify(error)}`);
+        (0, (_EventReporter || _load_EventReporter()).reportError)(`runtimeEvaluate failed with ${JSON.stringify(error)}`);
         return;
       }
       const { result, wasThrown, exceptionDetails } = response;
@@ -125,7 +125,7 @@ class ExpressionEvaluationManager {
   getProperties(id, objectId) {
     const remoteObject = this._remoteObjectManager.getRemoteObjectFromId(objectId);
     if (remoteObject == null) {
-      (0, (_Utils || _load_Utils()).reportError)(`Cannot find object id ${objectId} for getProperties()`);
+      (0, (_EventReporter || _load_EventReporter()).reportError)(`Cannot find object id ${objectId} for getProperties()`);
       return;
     }
     remoteObject.getProperties().then(response => {

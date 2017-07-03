@@ -5,6 +5,12 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.OutlineView = undefined;
 
+var _UniversalDisposable;
+
+function _load_UniversalDisposable() {
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
+}
+
 var _react = _interopRequireDefault(require('react'));
 
 var _classnames;
@@ -49,18 +55,46 @@ function _load_Message() {
   return _Message = require('nuclide-commons-ui/Message');
 }
 
+var _EmptyState;
+
+function _load_EmptyState() {
+  return _EmptyState = require('nuclide-commons-ui/EmptyState');
+}
+
+var _featureConfig;
+
+function _load_featureConfig() {
+  return _featureConfig = _interopRequireDefault(require('nuclide-commons-atom/feature-config'));
+}
+
+var _OutlineViewSearch;
+
+function _load_OutlineViewSearch() {
+  return _OutlineViewSearch = require('./OutlineViewSearch');
+}
+
+var _groupMatchIndexes;
+
+function _load_groupMatchIndexes() {
+  return _groupMatchIndexes = _interopRequireDefault(require('nuclide-commons/groupMatchIndexes'));
+}
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const logger = (0, (_log4js || _load_log4js()).getLogger)('nuclide-outline-view'); /**
-                                                                                    * Copyright (c) 2015-present, Facebook, Inc.
-                                                                                    * All rights reserved.
-                                                                                    *
-                                                                                    * This source code is licensed under the license found in the LICENSE file in
-                                                                                    * the root directory of this source tree.
-                                                                                    *
-                                                                                    * 
-                                                                                    * @format
-                                                                                    */
+/**
+ * Copyright (c) 2017-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ *
+ * 
+ * @format
+ */
+
+const logger = (0, (_log4js || _load_log4js()).getLogger)('atom-ide-outline-view');
+const SEARCH_ENABLED_DEFAULT = true;
 
 const TOKEN_KIND_TO_CLASS_NAME_MAP = {
   keyword: 'syntax--keyword',
@@ -81,7 +115,8 @@ class OutlineView extends _react.default.Component {
     this.state = {
       outline: {
         kind: 'empty'
-      }
+      },
+      searchEnabled: (_featureConfig || _load_featureConfig()).default.getWithDefaults('atom-ide-outline-view.searchEnabled', SEARCH_ENABLED_DEFAULT)
     };
   }
 
@@ -90,9 +125,15 @@ class OutlineView extends _react.default.Component {
       throw new Error('Invariant violation: "this.subscription == null"');
     }
 
-    this.subscription = this.props.outlines.subscribe(outline => {
+    this.subscription = new (_UniversalDisposable || _load_UniversalDisposable()).default(this.props.outlines.subscribe(outline => {
       this.setState({ outline });
-    });
+    }), (_featureConfig || _load_featureConfig()).default.observeAsStream('atom-ide-outline-view.searchEnabled').subscribe(searchEnabled => {
+      if (typeof searchEnabled === 'boolean') {
+        this.setState({ searchEnabled });
+      } else {
+        this.setState({ searchEnabled: SEARCH_ENABLED_DEFAULT });
+      }
+    }));
   }
 
   componentWillUnmount() {
@@ -114,7 +155,10 @@ class OutlineView extends _react.default.Component {
         _react.default.createElement(
           'div',
           { className: 'nuclide-outline-view' },
-          _react.default.createElement(OutlineViewComponent, { outline: this.state.outline })
+          _react.default.createElement(OutlineViewComponent, {
+            outline: this.state.outline,
+            searchEnabled: this.state.searchEnabled
+          })
         )
       )
     );
@@ -126,17 +170,20 @@ exports.OutlineView = OutlineView;
 
 class OutlineViewComponent extends _react.default.Component {
 
+  constructor(props) {
+    super(props);
+    this.state = { searchResults: new Map() };
+  }
+
   render() {
     const outline = this.props.outline;
-    const noOutlineAvailableMessage = _react.default.createElement(
-      (_Message || _load_Message()).Message,
-      null,
-      'No outline available.'
-    );
     switch (outline.kind) {
       case 'empty':
       case 'not-text-editor':
-        return noOutlineAvailableMessage;
+        return _react.default.createElement((_EmptyState || _load_EmptyState()).EmptyState, {
+          title: 'No outline available',
+          message: 'You need to open a file to use outline view.'
+        });
       case 'loading':
         return _react.default.createElement(
           'div',
@@ -147,17 +194,31 @@ class OutlineViewComponent extends _react.default.Component {
           })
         );
       case 'no-provider':
-        return outline.grammar === 'Null Grammar' ? noOutlineAvailableMessage : _react.default.createElement(
-          (_Message || _load_Message()).Message,
-          { type: (_Message || _load_Message()).MessageTypes.warning },
-          'Outline view does not currently support ',
-          outline.grammar,
-          '.'
-        );
+        return outline.grammar === 'Null Grammar' ? _react.default.createElement((_EmptyState || _load_EmptyState()).EmptyState, {
+          title: 'No outline available',
+          message: 'The current file doesn\'t have an associated grammar. You may want to save it.'
+        }) : _react.default.createElement((_EmptyState || _load_EmptyState()).EmptyState, {
+          title: 'No outline available',
+          message: 'Outline view does not currently support ' + outline.grammar + '.'
+        });
       case 'provider-no-outline':
-        return noOutlineAvailableMessage;
+        return _react.default.createElement((_EmptyState || _load_EmptyState()).EmptyState, {
+          title: 'No outline available',
+          message: 'There are no outline providers registered.'
+        });
       case 'outline':
-        return renderTrees(outline.editor, outline.outlineTrees);
+        return _react.default.createElement(
+          'div',
+          null,
+          this.props.searchEnabled ? _react.default.createElement((_OutlineViewSearch || _load_OutlineViewSearch()).OutlineViewSearchComponent, {
+            outlineTrees: outline.outlineTrees,
+            editor: outline.editor,
+            updateSearchResults: searchResults => {
+              this.setState({ searchResults });
+            }
+          }) : null,
+          renderTrees(outline.editor, outline.outlineTrees, this.state.searchResults)
+        );
       default:
         const errorText = `Encountered unexpected outline kind ${outline.kind}`;
         logger.error(errorText);
@@ -175,14 +236,14 @@ class OutlineViewComponent extends _react.default.Component {
 class OutlineTree extends _react.default.PureComponent {
 
   render() {
-    const { editor, outline } = this.props;
+    const { editor, outline, searchResults } = this.props;
 
     const onClick = () => {
       const pane = atom.workspace.paneForItem(editor);
       if (pane == null) {
         return;
       }
-      (_analytics || _load_analytics()).default.track('nuclide-outline-view:go-to-location');
+      (_analytics || _load_analytics()).default.track('atom-ide-outline-view:go-to-location');
       pane.activate();
       pane.activateItem(editor);
       (0, (_goToLocation || _load_goToLocation()).goToLocationInEditor)(editor, outline.startPosition.row, outline.startPosition.column);
@@ -213,14 +274,14 @@ class OutlineTree extends _react.default.PureComponent {
           className: 'list-item nuclide-outline-view-item',
           onClick: onClick,
           onDoubleClick: onDoubleClick },
-        renderItem(outline)
+        renderItem(outline, searchResults.get(outline))
       ),
-      renderTrees(editor, outline.children)
+      renderTrees(editor, outline.children, searchResults)
     );
   }
 }
 
-function renderItem(outline) {
+function renderItem(outline, searchResult) {
   const r = [];
 
   if (outline.icon != null) {
@@ -229,26 +290,50 @@ function renderItem(outline) {
   }
 
   if (outline.tokenizedText != null) {
-    r.push(...outline.tokenizedText.map(renderTextToken));
+    let offset = 0;
+    r.push(...outline.tokenizedText.map((token, i) => {
+      const toReturn = renderTextToken(token, i, searchResult, offset);
+      offset += token.value.length;
+      return toReturn;
+    }));
   } else if (outline.plainText != null) {
-    r.push(outline.plainText);
+    const textWithMatching = searchResult && searchResult.matchingCharacters ? (0, (_groupMatchIndexes || _load_groupMatchIndexes()).default)(outline.plainText, searchResult.matchingCharacters, renderMatchedSubsequence, renderUnmatchedSubsequence) : outline.plainText;
+    r.push(...textWithMatching);
   } else {
     r.push('Missing text');
   }
-
   return r;
 }
 
-function renderTextToken(token, index) {
+function renderTextToken(token, index, searchResult, offset) {
   const className = TOKEN_KIND_TO_CLASS_NAME_MAP[token.kind];
   return _react.default.createElement(
     'span',
     { className: className, key: index },
-    token.value
+    searchResult && searchResult.matchingCharacters ? (0, (_groupMatchIndexes || _load_groupMatchIndexes()).default)(token.value, searchResult.matchingCharacters.map(el => el - offset).filter(el => el >= 0 && el < token.value.length), renderMatchedSubsequence, renderUnmatchedSubsequence) : token.value
   );
 }
 
-function renderTrees(editor, outlines) {
+function renderSubsequence(seq, props) {
+  return _react.default.createElement(
+    'span',
+    props,
+    seq
+  );
+}
+
+function renderUnmatchedSubsequence(seq, key) {
+  return renderSubsequence(seq, { key });
+}
+
+function renderMatchedSubsequence(seq, key) {
+  return renderSubsequence(seq, {
+    key,
+    className: 'atom-ide-outline-view-match'
+  });
+}
+
+function renderTrees(editor, outlines, searchResults) {
   if (outlines.length === 0) {
     return null;
   }
@@ -258,7 +343,15 @@ function renderTrees(editor, outlines) {
     _react.default.createElement(
       'ul',
       { className: 'list-tree', style: { position: 'relative' } },
-      outlines.map((outline, index) => _react.default.createElement(OutlineTree, { editor: editor, outline: outline, key: index }))
+      outlines.map((outline, index) => {
+        const result = searchResults.get(outline);
+        return !result || result.visible ? _react.default.createElement(OutlineTree, {
+          editor: editor,
+          outline: outline,
+          key: index,
+          searchResults: searchResults
+        }) : null;
+      })
     )
   );
 }

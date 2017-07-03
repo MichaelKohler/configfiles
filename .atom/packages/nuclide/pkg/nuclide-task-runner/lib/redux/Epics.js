@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.setProjectRootEpic = setProjectRootEpic;
+exports.setProjectRootForNewTaskRunnerEpic = setProjectRootForNewTaskRunnerEpic;
 exports.setConsolesForTaskRunnersEpic = setConsolesForTaskRunnersEpic;
 exports.addConsoleForTaskRunnerEpic = addConsoleForTaskRunnerEpic;
 exports.removeConsoleForTaskRunnerEpic = removeConsoleForTaskRunnerEpic;
@@ -62,20 +63,37 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ * @format
+ */
+
 function setProjectRootEpic(actions, store) {
-  return actions.ofType((_Actions || _load_Actions()).REGISTER_TASK_RUNNER, (_Actions || _load_Actions()).UNREGISTER_TASK_RUNNER, (_Actions || _load_Actions()).DID_ACTIVATE_INITIAL_PACKAGES)
-  // Refreshes everything. Not the most efficient, but good enough
-  .map(() => (_Actions || _load_Actions()).setProjectRoot(store.getState().projectRoot));
-} /**
-   * Copyright (c) 2015-present, Facebook, Inc.
-   * All rights reserved.
-   *
-   * This source code is licensed under the license found in the LICENSE file in
-   * the root directory of this source tree.
-   *
-   * 
-   * @format
-   */
+  return actions.ofType((_Actions || _load_Actions()).DID_ACTIVATE_INITIAL_PACKAGES).map(() => (_Actions || _load_Actions()).setProjectRoot(store.getState().projectRoot));
+}
+
+function setProjectRootForNewTaskRunnerEpic(actions, store) {
+  return actions.ofType((_Actions || _load_Actions()).REGISTER_TASK_RUNNER).switchMap(action => {
+    if (!(action.type === (_Actions || _load_Actions()).REGISTER_TASK_RUNNER)) {
+      throw new Error('Invariant violation: "action.type === Actions.REGISTER_TASK_RUNNER"');
+    }
+
+    const { taskRunner } = action.payload;
+    const { projectRoot, taskRunnersReady } = store.getState();
+
+    if (!taskRunnersReady) {
+      return _rxjsBundlesRxMinJs.Observable.empty();
+    }
+
+    return getTaskRunnerState(taskRunner, projectRoot).map(result => (_Actions || _load_Actions()).setStateForTaskRunner(result.taskRunner, result.taskRunnerState));
+  });
+}
 
 function setConsolesForTaskRunnersEpic(actions, store) {
   return actions.ofType((_Actions || _load_Actions()).SET_CONSOLE_SERVICE, (_Actions || _load_Actions()).DID_ACTIVATE_INITIAL_PACKAGES).switchMap(() => {
@@ -122,7 +140,7 @@ function removeConsoleForTaskRunnerEpic(actions, store) {
 }
 
 function setActiveTaskRunnerEpic(actions, store, options) {
-  return actions.ofType((_Actions || _load_Actions()).SET_STATES_FOR_TASK_RUNNERS).switchMap(() => {
+  return actions.filter(action => action.type === (_Actions || _load_Actions()).SET_STATES_FOR_TASK_RUNNERS || action.type === (_Actions || _load_Actions()).UNREGISTER_TASK_RUNNER && action.payload.taskRunner === store.getState().activeTaskRunner).switchMap(action => {
     const { projectRoot } = store.getState();
 
     if (!projectRoot) {
@@ -166,7 +184,7 @@ function setActiveTaskRunnerEpic(actions, store, options) {
     }
 
     // We have nothing to go with, let's make best effort to select a task runner
-    if (!taskRunner) {
+    if (!taskRunner || taskRunner === activeTaskRunner && action.type === (_Actions || _load_Actions()).UNREGISTER_TASK_RUNNER) {
       taskRunner = getBestEffortTaskRunner(taskRunners, statesForTaskRunners);
     }
 
@@ -187,20 +205,19 @@ function combineTaskRunnerStatesEpic(actions, store, options) {
       return _rxjsBundlesRxMinJs.Observable.of((_Actions || _load_Actions()).setStatesForTaskRunners(new Map()));
     }
 
-    // This depends on the epic above, triggering setProjectRoot when taskRunners change
-    const runnersAndStates = taskRunners.map(taskRunner => _rxjsBundlesRxMinJs.Observable.create(observer => new (_UniversalDisposable || _load_UniversalDisposable()).default(taskRunner.setProjectRoot(projectRoot, (enabled, tasks) => {
-      observer.next([taskRunner, { enabled, tasks: enabled ? tasks : [] }]);
-    }))));
+    const runnersAndStates = taskRunners.map(taskRunner => getTaskRunnerState(taskRunner, projectRoot));
 
     return _rxjsBundlesRxMinJs.Observable.from(runnersAndStates)
     // $FlowFixMe: type combineAll
     .combineAll().map(tuples => {
       const statesForTaskRunners = new Map();
-      tuples.forEach(([taskRunner, state]) => {
-        statesForTaskRunners.set(taskRunner, state);
+      tuples.forEach(result => {
+        if (store.getState().taskRunners.includes(result.taskRunner)) {
+          statesForTaskRunners.set(result.taskRunner, result.taskRunnerState);
+        }
       });
-      return statesForTaskRunners;
-    }).map(statesForTaskRunners => (_Actions || _load_Actions()).setStatesForTaskRunners(statesForTaskRunners));
+      return (_Actions || _load_Actions()).setStatesForTaskRunners(statesForTaskRunners);
+    });
   });
 }
 
@@ -559,4 +576,13 @@ function promptForShouldSave(taskMeta) {
       notification = null;
     };
   });
+}
+
+function getTaskRunnerState(taskRunner, projectRoot) {
+  return _rxjsBundlesRxMinJs.Observable.create(observer => new (_UniversalDisposable || _load_UniversalDisposable()).default(taskRunner.setProjectRoot(projectRoot, (enabled, tasks) => {
+    observer.next({
+      taskRunner,
+      taskRunnerState: { enabled, tasks: enabled ? tasks : [] }
+    });
+  })));
 }

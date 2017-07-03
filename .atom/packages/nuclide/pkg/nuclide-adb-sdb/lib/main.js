@@ -1,5 +1,17 @@
 'use strict';
 
+var _ServerConnection;
+
+function _load_ServerConnection() {
+  return _ServerConnection = require('../../nuclide-remote-connection/lib/ServerConnection');
+}
+
+var _nuclideRemoteConnection;
+
+function _load_nuclideRemoteConnection() {
+  return _nuclideRemoteConnection = require('../../nuclide-remote-connection');
+}
+
 var _createPackage;
 
 function _load_createPackage() {
@@ -12,17 +24,55 @@ function _load_UniversalDisposable() {
   return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
-var _android_providers;
+var _AppState;
 
-function _load_android_providers() {
-  return _android_providers = require('./android_providers');
+function _load_AppState() {
+  return _AppState = require('./redux/AppState');
 }
 
-var _tizen_providers;
+var _Reducers;
 
-function _load_tizen_providers() {
-  return _tizen_providers = require('./tizen_providers');
+function _load_Reducers() {
+  return _Reducers = _interopRequireWildcard(require('./redux/Reducers'));
 }
+
+var _Epics;
+
+function _load_Epics() {
+  return _Epics = _interopRequireWildcard(require('./redux/Epics'));
+}
+
+var _redux;
+
+function _load_redux() {
+  return _redux = require('redux');
+}
+
+var _reduxObservable;
+
+function _load_reduxObservable() {
+  return _reduxObservable = require('../../commons-node/redux-observable');
+}
+
+var _Registration;
+
+function _load_Registration() {
+  return _Registration = require('./device-panel/Registration');
+}
+
+var _AndroidBridge;
+
+function _load_AndroidBridge() {
+  return _AndroidBridge = require('./bridges/AndroidBridge');
+}
+
+var _TizenBridge;
+
+function _load_TizenBridge() {
+  return _TizenBridge = require('./bridges/TizenBridge');
+}
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -39,8 +89,31 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 class Activation {
 
-  constructor(state) {
-    this._disposables = new (_UniversalDisposable || _load_UniversalDisposable()).default();
+  constructor(rawState) {
+    const initialState = Object.assign({}, (0, (_AppState || _load_AppState()).createEmptyAppState)(), (0, (_AppState || _load_AppState()).deserialize)(rawState));
+
+    const epics = Object.keys(_Epics || _load_Epics()).map(k => (_Epics || _load_Epics())[k]).filter(epic => typeof epic === 'function');
+
+    this._store = (0, (_redux || _load_redux()).createStore)((_Reducers || _load_Reducers()).app, initialState, (0, (_redux || _load_redux()).applyMiddleware)((0, (_reduxObservable || _load_reduxObservable()).createEpicMiddleware)((0, (_reduxObservable || _load_reduxObservable()).combineEpics)(...epics))));
+
+    this._registerCustomDBPaths('local');
+    this._disposables = new (_UniversalDisposable || _load_UniversalDisposable()).default((_ServerConnection || _load_ServerConnection()).ServerConnection.observeRemoteConnections().subscribe(conns => conns.map(conn => {
+      this._registerCustomDBPaths(conn.getUriOfRemotePath('/'));
+    })));
+  }
+
+  _registerCustomDBPaths(host) {
+    const state = this._store.getState();
+    if (state.customAdbPaths.has(host)) {
+      (0, (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).getAdbServiceByNuclideUri)(host).registerCustomPath(state.customAdbPaths.get(host));
+    }
+    if (state.customSdbPaths.has(host)) {
+      (0, (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).getSdbServiceByNuclideUri)(host).registerCustomPath(state.customSdbPaths.get(host));
+    }
+  }
+
+  serialize() {
+    return (0, (_AppState || _load_AppState()).serialize)(this._store.getState());
   }
 
   dispose() {
@@ -48,15 +121,7 @@ class Activation {
   }
 
   consumeDevicePanelServiceApi(api) {
-    this._disposables.add(
-    // list
-    api.registerListProvider((0, (_android_providers || _load_android_providers()).createAndroidDeviceListProvider)()), api.registerListProvider((0, (_tizen_providers || _load_tizen_providers()).createTizenDeviceListProvider)()),
-    // info
-    api.registerInfoProvider((0, (_android_providers || _load_android_providers()).createAndroidInfoProvider)()), api.registerInfoProvider((0, (_tizen_providers || _load_tizen_providers()).createTizenInfoProvider)()),
-    // processes
-    api.registerProcessesProvider((0, (_android_providers || _load_android_providers()).createAndroidProcessesProvider)()),
-    // process tasks
-    api.registerProcessTaskProvider((0, (_android_providers || _load_android_providers()).createAndroidStopPackageProvider)()));
+    this._disposables.add((0, (_Registration || _load_Registration()).registerDevicePanelProviders)(api, new (_AndroidBridge || _load_AndroidBridge()).AndroidBridge(this._store), new (_TizenBridge || _load_TizenBridge()).TizenBridge(this._store)));
   }
 }
 

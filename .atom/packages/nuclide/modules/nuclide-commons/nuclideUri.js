@@ -20,16 +20,20 @@ function _load_string() {
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // eslint-disable-next-line nuclide-internal/prefer-nuclide-uri
-const REMOTE_PATH_URI_PREFIX = 'nuclide://'; /**
-                                              * Copyright (c) 2015-present, Facebook, Inc.
-                                              * All rights reserved.
-                                              *
-                                              * This source code is licensed under the license found in the LICENSE file in
-                                              * the root directory of this source tree.
-                                              *
-                                              * 
-                                              * @format
-                                              */
+const REMOTE_PATH_URI_PREFIX = 'nuclide://';
+// TODO(ljw): following regex is incorrect. A URI scheme must start with
+// [A-Za-z] not [0-9_-]. Also, not all schemes require // after them.
+/**
+ * Copyright (c) 2017-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ *
+ * 
+ * @format
+ */
 
 // NuclideUri's are either a local file path, or a URI
 // of the form nuclide://<host><path>
@@ -242,6 +246,9 @@ function _getWindowsPathFromWindowsFileUri(uri) {
  * Returns null if not a valid file: URI.
  */
 function uriToNuclideUri(uri) {
+  // TODO(ljw): the following check is incorrect. It's designed to support
+  // two-slash file URLs of the form "file://c:\path". But those are invalid
+  // file URLs, and indeed it fails to %-escape "file://c:\My%20Documents".
   const windowsPathFromUri = _getWindowsPathFromWindowsFileUri(uri);
   if (windowsPathFromUri) {
     // If the specified URI is a local file:// URI to a Windows path,

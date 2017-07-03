@@ -9,39 +9,19 @@ module.exports = _client => {
     return _client.marshalArguments(Array.from(arguments), [{
       name: "id",
       type: {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 26
-        },
         kind: "string"
       }
     }, {
       name: "path",
       type: {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 27
-        },
         kind: "named",
         name: "NuclideUri"
       }
     }, {
       name: "priority",
       type: {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 28
-        },
         kind: "nullable",
         type: {
-          location: {
-            type: "source",
-            fileName: "AdbService.js",
-            line: 28
-          },
           kind: "number"
         }
       }
@@ -49,195 +29,129 @@ module.exports = _client => {
       return _client.callRemoteFunction("AdbService/registerAdbPath", "promise", args);
     }).then(value => {
       return _client.unmarshal(value, {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 29
-        },
+        kind: "void"
+      });
+    });
+  };
+
+  remoteModule.getFullConfig = function () {
+    return _client.marshalArguments(Array.from(arguments), []).then(args => {
+      return _client.callRemoteFunction("AdbService/getFullConfig", "promise", args);
+    }).then(value => {
+      return _client.unmarshal(value, {
+        kind: "named",
+        name: "DebugBridgeFullConfig"
+      });
+    });
+  };
+
+  remoteModule.registerCustomPath = function (arg0) {
+    return _client.marshalArguments(Array.from(arguments), [{
+      name: "path",
+      type: {
+        kind: "nullable",
+        type: {
+          kind: "string"
+        }
+      }
+    }]).then(args => {
+      return _client.callRemoteFunction("AdbService/registerCustomPath", "promise", args);
+    }).then(value => {
+      return _client.unmarshal(value, {
         kind: "void"
       });
     });
   };
 
   remoteModule.getDeviceInfo = function (arg0) {
-    return _client.marshalArguments(Array.from(arguments), [{
+    return Observable.fromPromise(_client.marshalArguments(Array.from(arguments), [{
       name: "device",
       type: {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 34
-        },
         kind: "string"
       }
     }]).then(args => {
-      return _client.callRemoteFunction("AdbService/getDeviceInfo", "promise", args);
-    }).then(value => {
+      return _client.callRemoteFunction("AdbService/getDeviceInfo", "observable", args);
+    })).concatMap(id => id).concatMap(value => {
       return _client.unmarshal(value, {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 35
-        },
         kind: "map",
         keyType: {
-          location: {
-            type: "source",
-            fileName: "AdbService.js",
-            line: 35
-          },
           kind: "string"
         },
         valueType: {
-          location: {
-            type: "source",
-            fileName: "AdbService.js",
-            line: 35
-          },
           kind: "string"
         }
       });
-    });
+    }).publish();
   };
 
   remoteModule.getProcesses = function (arg0) {
-    return _client.marshalArguments(Array.from(arguments), [{
+    return Observable.fromPromise(_client.marshalArguments(Array.from(arguments), [{
       name: "device",
       type: {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 39
-        },
         kind: "string"
       }
     }]).then(args => {
-      return _client.callRemoteFunction("AdbService/getProcesses", "promise", args);
-    }).then(value => {
+      return _client.callRemoteFunction("AdbService/getProcesses", "observable", args);
+    })).concatMap(id => id).concatMap(value => {
       return _client.unmarshal(value, {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 39
-        },
         kind: "array",
         type: {
-          location: {
-            type: "source",
-            fileName: "AdbService.js",
-            line: 39
-          },
           kind: "named",
           name: "Process"
         }
       });
-    });
+    }).publish();
   };
 
   remoteModule.stopPackage = function (arg0, arg1) {
     return _client.marshalArguments(Array.from(arguments), [{
       name: "device",
       type: {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 44
-        },
         kind: "string"
       }
     }, {
       name: "packageName",
       type: {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 45
-        },
         kind: "string"
       }
     }]).then(args => {
       return _client.callRemoteFunction("AdbService/stopPackage", "promise", args);
     }).then(value => {
       return _client.unmarshal(value, {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 46
-        },
         kind: "void"
       });
     });
   };
 
   remoteModule.getDeviceList = function () {
-    return _client.marshalArguments(Array.from(arguments), []).then(args => {
-      return _client.callRemoteFunction("AdbService/getDeviceList", "promise", args);
-    }).then(value => {
+    return Observable.fromPromise(_client.marshalArguments(Array.from(arguments), []).then(args => {
+      return _client.callRemoteFunction("AdbService/getDeviceList", "observable", args);
+    })).concatMap(id => id).concatMap(value => {
       return _client.unmarshal(value, {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 50
-        },
         kind: "array",
         type: {
-          location: {
-            type: "source",
-            fileName: "AdbService.js",
-            line: 50
-          },
           kind: "named",
           name: "DeviceDescription"
         }
       });
-    });
-  };
-
-  remoteModule.startServer = function () {
-    return _client.marshalArguments(Array.from(arguments), []).then(args => {
-      return _client.callRemoteFunction("AdbService/startServer", "promise", args);
-    }).then(value => {
-      return _client.unmarshal(value, {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 54
-        },
-        kind: "boolean"
-      });
-    });
+    }).publish();
   };
 
   remoteModule.getPidFromPackageName = function (arg0, arg1) {
     return _client.marshalArguments(Array.from(arguments), [{
       name: "device",
       type: {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 63
-        },
         kind: "string"
       }
     }, {
       name: "packageName",
       type: {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 64
-        },
         kind: "string"
       }
     }]).then(args => {
       return _client.callRemoteFunction("AdbService/getPidFromPackageName", "promise", args);
     }).then(value => {
       return _client.unmarshal(value, {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 65
-        },
         kind: "number"
       });
     });
@@ -247,21 +161,11 @@ module.exports = _client => {
     return Observable.fromPromise(_client.marshalArguments(Array.from(arguments), [{
       name: "device",
       type: {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 70
-        },
         kind: "string"
       }
     }, {
       name: "packagePath",
       type: {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 71
-        },
         kind: "named",
         name: "NuclideUri"
       }
@@ -269,11 +173,6 @@ module.exports = _client => {
       return _client.callRemoteFunction("AdbService/installPackage", "observable", args);
     })).concatMap(id => id).concatMap(value => {
       return _client.unmarshal(value, {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 72
-        },
         kind: "named",
         name: "LegacyProcessMessage"
       });
@@ -284,32 +183,17 @@ module.exports = _client => {
     return Observable.fromPromise(_client.marshalArguments(Array.from(arguments), [{
       name: "device",
       type: {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 80
-        },
         kind: "string"
       }
     }, {
       name: "packageName",
       type: {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 81
-        },
         kind: "string"
       }
     }]).then(args => {
       return _client.callRemoteFunction("AdbService/uninstallPackage", "observable", args);
     })).concatMap(id => id).concatMap(value => {
       return _client.unmarshal(value, {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 82
-        },
         kind: "named",
         name: "LegacyProcessMessage"
       });
@@ -320,115 +204,113 @@ module.exports = _client => {
     return _client.marshalArguments(Array.from(arguments), [{
       name: "device",
       type: {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 90
-        },
         kind: "string"
       }
     }, {
       name: "tcpPort",
       type: {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 91
-        },
         kind: "number"
       }
     }, {
       name: "pid",
       type: {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 92
-        },
         kind: "number"
       }
     }]).then(args => {
       return _client.callRemoteFunction("AdbService/forwardJdwpPortToPid", "promise", args);
     }).then(value => {
       return _client.unmarshal(value, {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 93
-        },
         kind: "string"
       });
     });
   };
 
-  remoteModule.launchActivity = function (arg0, arg1, arg2, arg3, arg4) {
+  remoteModule.launchActivity = function (arg0, arg1, arg2, arg3, arg4, arg5) {
     return _client.marshalArguments(Array.from(arguments), [{
       name: "device",
       type: {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 98
-        },
         kind: "string"
       }
     }, {
       name: "packageName",
       type: {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 99
-        },
         kind: "string"
       }
     }, {
       name: "activity",
       type: {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 100
-        },
         kind: "string"
       }
     }, {
       name: "debug",
       type: {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 101
-        },
         kind: "boolean"
       }
     }, {
       name: "action",
       type: {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 102
-        },
         kind: "nullable",
         type: {
-          location: {
-            type: "source",
-            fileName: "AdbService.js",
-            line: 102
-          },
           kind: "string"
+        }
+      }
+    }, {
+      name: "parameters",
+      type: {
+        kind: "nullable",
+        type: {
+          kind: "map",
+          keyType: {
+            kind: "string"
+          },
+          valueType: {
+            kind: "string"
+          }
         }
       }
     }]).then(args => {
       return _client.callRemoteFunction("AdbService/launchActivity", "promise", args);
     }).then(value => {
       return _client.unmarshal(value, {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 103
-        },
+        kind: "string"
+      });
+    });
+  };
+
+  remoteModule.launchMainActivity = function (arg0, arg1, arg2, arg3) {
+    return _client.marshalArguments(Array.from(arguments), [{
+      name: "device",
+      type: {
+        kind: "string"
+      }
+    }, {
+      name: "packageName",
+      type: {
+        kind: "string"
+      }
+    }, {
+      name: "debug",
+      type: {
+        kind: "boolean"
+      }
+    }, {
+      name: "parameters",
+      type: {
+        kind: "nullable",
+        type: {
+          kind: "map",
+          keyType: {
+            kind: "string"
+          },
+          valueType: {
+            kind: "string"
+          }
+        }
+      }
+    }]).then(args => {
+      return _client.callRemoteFunction("AdbService/launchMainActivity", "promise", args);
+    }).then(value => {
+      return _client.unmarshal(value, {
         kind: "string"
       });
     });
@@ -438,119 +320,149 @@ module.exports = _client => {
     return _client.marshalArguments(Array.from(arguments), [{
       name: "device",
       type: {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 114
-        },
         kind: "string"
       }
     }, {
       name: "packageName",
       type: {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 115
-        },
         kind: "string"
       }
     }, {
       name: "activity",
       type: {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 116
-        },
         kind: "string"
       }
     }]).then(args => {
       return _client.callRemoteFunction("AdbService/activityExists", "promise", args);
     }).then(value => {
       return _client.unmarshal(value, {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 117
-        },
         kind: "boolean"
       });
     });
   };
 
   remoteModule.getJavaProcesses = function (arg0) {
-    return _client.marshalArguments(Array.from(arguments), [{
+    return Observable.fromPromise(_client.marshalArguments(Array.from(arguments), [{
       name: "device",
       type: {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 122
-        },
         kind: "string"
       }
     }]).then(args => {
-      return _client.callRemoteFunction("AdbService/getJavaProcesses", "promise", args);
-    }).then(value => {
+      return _client.callRemoteFunction("AdbService/getJavaProcesses", "observable", args);
+    })).concatMap(id => id).concatMap(value => {
       return _client.unmarshal(value, {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 123
-        },
         kind: "array",
         type: {
-          location: {
-            type: "source",
-            fileName: "AdbService.js",
-            line: 123
-          },
           kind: "named",
           name: "AndroidJavaProcess"
         }
       });
-    });
+    }).publish();
   };
 
   remoteModule.dumpsysPackage = function (arg0, arg1) {
     return _client.marshalArguments(Array.from(arguments), [{
       name: "device",
       type: {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 128
-        },
         kind: "string"
       }
     }, {
       name: "identifier",
       type: {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 129
-        },
         kind: "string"
       }
     }]).then(args => {
       return _client.callRemoteFunction("AdbService/dumpsysPackage", "promise", args);
     }).then(value => {
       return _client.unmarshal(value, {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 130
-        },
         kind: "nullable",
         type: {
-          location: {
-            type: "source",
-            fileName: "AdbService.js",
-            line: 130
-          },
           kind: "string"
+        }
+      });
+    });
+  };
+
+  remoteModule.touchFile = function (arg0, arg1) {
+    return _client.marshalArguments(Array.from(arguments), [{
+      name: "device",
+      type: {
+        kind: "string"
+      }
+    }, {
+      name: "path",
+      type: {
+        kind: "string"
+      }
+    }]).then(args => {
+      return _client.callRemoteFunction("AdbService/touchFile", "promise", args);
+    }).then(value => {
+      return _client.unmarshal(value, {
+        kind: "string"
+      });
+    });
+  };
+
+  remoteModule.removeFile = function (arg0, arg1) {
+    return _client.marshalArguments(Array.from(arguments), [{
+      name: "device",
+      type: {
+        kind: "string"
+      }
+    }, {
+      name: "path",
+      type: {
+        kind: "string"
+      }
+    }]).then(args => {
+      return _client.callRemoteFunction("AdbService/removeFile", "promise", args);
+    }).then(value => {
+      return _client.unmarshal(value, {
+        kind: "string"
+      });
+    });
+  };
+
+  remoteModule.getInstalledPackages = function (arg0) {
+    return _client.marshalArguments(Array.from(arguments), [{
+      name: "device",
+      type: {
+        kind: "string"
+      }
+    }]).then(args => {
+      return _client.callRemoteFunction("AdbService/getInstalledPackages", "promise", args);
+    }).then(value => {
+      return _client.unmarshal(value, {
+        kind: "array",
+        type: {
+          kind: "string"
+        }
+      });
+    });
+  };
+
+  remoteModule.setAdbPort = function (arg0) {
+    return _client.marshalArguments(Array.from(arguments), [{
+      name: "port",
+      type: {
+        kind: "nullable",
+        type: {
+          kind: "number"
+        }
+      }
+    }]).then(args => {
+      return _client.callRemoteFunction("AdbService/setAdbPort", "void", args);
+    });
+  };
+
+  remoteModule.getAdbPort = function () {
+    return _client.marshalArguments(Array.from(arguments), []).then(args => {
+      return _client.callRemoteFunction("AdbService/getAdbPort", "promise", args);
+    }).then(value => {
+      return _client.unmarshal(value, {
+        kind: "nullable",
+        type: {
+          kind: "number"
         }
       });
     });
@@ -628,68 +540,135 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "AdbService.js",
-        line: 25
+        line: 29
       },
       type: {
         location: {
           type: "source",
           fileName: "AdbService.js",
-          line: 25
+          line: 29
         },
         kind: "function",
         argumentTypes: [{
           name: "id",
           type: {
-            location: {
-              type: "source",
-              fileName: "AdbService.js",
-              line: 26
-            },
             kind: "string"
           }
         }, {
           name: "path",
           type: {
-            location: {
-              type: "source",
-              fileName: "AdbService.js",
-              line: 27
-            },
             kind: "named",
             name: "NuclideUri"
           }
         }, {
           name: "priority",
           type: {
-            location: {
-              type: "source",
-              fileName: "AdbService.js",
-              line: 28
-            },
             kind: "nullable",
             type: {
-              location: {
-                type: "source",
-                fileName: "AdbService.js",
-                line: 28
-              },
               kind: "number"
             }
           }
         }],
         returnType: {
-          location: {
-            type: "source",
-            fileName: "AdbService.js",
-            line: 29
-          },
           kind: "promise",
           type: {
-            location: {
-              type: "source",
-              fileName: "AdbService.js",
-              line: 29
-            },
+            kind: "void"
+          }
+        }
+      }
+    },
+    DebugBridgeFullConfig: {
+      kind: "alias",
+      location: {
+        type: "source",
+        fileName: "types.js",
+        line: 40
+      },
+      name: "DebugBridgeFullConfig",
+      definition: {
+        kind: "object",
+        fields: [{
+          name: "active",
+          type: {
+            kind: "nullable",
+            type: {
+              kind: "string"
+            }
+          },
+          optional: false
+        }, {
+          name: "all",
+          type: {
+            kind: "array",
+            type: {
+              kind: "string"
+            }
+          },
+          optional: false
+        }, {
+          name: "port",
+          type: {
+            kind: "nullable",
+            type: {
+              kind: "number"
+            }
+          },
+          optional: false
+        }]
+      }
+    },
+    getFullConfig: {
+      kind: "function",
+      name: "getFullConfig",
+      location: {
+        type: "source",
+        fileName: "AdbService.js",
+        line: 37
+      },
+      type: {
+        location: {
+          type: "source",
+          fileName: "AdbService.js",
+          line: 37
+        },
+        kind: "function",
+        argumentTypes: [],
+        returnType: {
+          kind: "promise",
+          type: {
+            kind: "named",
+            name: "DebugBridgeFullConfig"
+          }
+        }
+      }
+    },
+    registerCustomPath: {
+      kind: "function",
+      name: "registerCustomPath",
+      location: {
+        type: "source",
+        fileName: "AdbService.js",
+        line: 41
+      },
+      type: {
+        location: {
+          type: "source",
+          fileName: "AdbService.js",
+          line: 41
+        },
+        kind: "function",
+        argumentTypes: [{
+          name: "path",
+          type: {
+            kind: "nullable",
+            type: {
+              kind: "string"
+            }
+          }
+        }],
+        returnType: {
+          kind: "promise",
+          type: {
             kind: "void"
           }
         }
@@ -701,58 +680,88 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "AdbService.js",
-        line: 33
+        line: 45
       },
       type: {
         location: {
           type: "source",
           fileName: "AdbService.js",
-          line: 33
+          line: 45
         },
         kind: "function",
         argumentTypes: [{
           name: "device",
           type: {
-            location: {
-              type: "source",
-              fileName: "AdbService.js",
-              line: 34
-            },
             kind: "string"
           }
         }],
         returnType: {
-          location: {
-            type: "source",
-            fileName: "AdbService.js",
-            line: 35
-          },
-          kind: "promise",
+          kind: "observable",
           type: {
-            location: {
-              type: "source",
-              fileName: "AdbService.js",
-              line: 35
-            },
             kind: "map",
             keyType: {
-              location: {
-                type: "source",
-                fileName: "AdbService.js",
-                line: 35
-              },
               kind: "string"
             },
             valueType: {
-              location: {
-                type: "source",
-                fileName: "AdbService.js",
-                line: 35
-              },
               kind: "string"
             }
           }
         }
+      }
+    },
+    Process: {
+      kind: "alias",
+      location: {
+        type: "source",
+        fileName: "types.js",
+        line: 29
+      },
+      name: "Process",
+      definition: {
+        kind: "object",
+        fields: [{
+          name: "user",
+          type: {
+            kind: "string"
+          },
+          optional: false
+        }, {
+          name: "pid",
+          type: {
+            kind: "number"
+          },
+          optional: false
+        }, {
+          name: "name",
+          type: {
+            kind: "string"
+          },
+          optional: false
+        }, {
+          name: "cpuUsage",
+          type: {
+            kind: "nullable",
+            type: {
+              kind: "number"
+            }
+          },
+          optional: false
+        }, {
+          name: "memUsage",
+          type: {
+            kind: "nullable",
+            type: {
+              kind: "number"
+            }
+          },
+          optional: false
+        }, {
+          name: "isJava",
+          type: {
+            kind: "boolean"
+          },
+          optional: false
+        }]
       }
     },
     getProcesses: {
@@ -761,46 +770,26 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "AdbService.js",
-        line: 39
+        line: 51
       },
       type: {
         location: {
           type: "source",
           fileName: "AdbService.js",
-          line: 39
+          line: 51
         },
         kind: "function",
         argumentTypes: [{
           name: "device",
           type: {
-            location: {
-              type: "source",
-              fileName: "AdbService.js",
-              line: 39
-            },
             kind: "string"
           }
         }],
         returnType: {
-          location: {
-            type: "source",
-            fileName: "AdbService.js",
-            line: 39
-          },
-          kind: "promise",
+          kind: "observable",
           type: {
-            location: {
-              type: "source",
-              fileName: "AdbService.js",
-              line: 39
-            },
             kind: "array",
             type: {
-              location: {
-                type: "source",
-                fileName: "AdbService.js",
-                line: 39
-              },
               kind: "named",
               name: "Process"
             }
@@ -814,52 +803,69 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "AdbService.js",
-        line: 43
+        line: 57
       },
       type: {
         location: {
           type: "source",
           fileName: "AdbService.js",
-          line: 43
+          line: 57
         },
         kind: "function",
         argumentTypes: [{
           name: "device",
           type: {
-            location: {
-              type: "source",
-              fileName: "AdbService.js",
-              line: 44
-            },
             kind: "string"
           }
         }, {
           name: "packageName",
           type: {
-            location: {
-              type: "source",
-              fileName: "AdbService.js",
-              line: 45
-            },
             kind: "string"
           }
         }],
         returnType: {
-          location: {
-            type: "source",
-            fileName: "AdbService.js",
-            line: 46
-          },
           kind: "promise",
           type: {
-            location: {
-              type: "source",
-              fileName: "AdbService.js",
-              line: 46
-            },
             kind: "void"
           }
         }
+      }
+    },
+    DeviceDescription: {
+      kind: "alias",
+      location: {
+        type: "source",
+        fileName: "types.js",
+        line: 22
+      },
+      name: "DeviceDescription",
+      definition: {
+        kind: "object",
+        fields: [{
+          name: "name",
+          type: {
+            kind: "string"
+          },
+          optional: false
+        }, {
+          name: "architecture",
+          type: {
+            kind: "string"
+          },
+          optional: false
+        }, {
+          name: "apiVersion",
+          type: {
+            kind: "string"
+          },
+          optional: false
+        }, {
+          name: "model",
+          type: {
+            kind: "string"
+          },
+          optional: false
+        }]
       }
     },
     getDeviceList: {
@@ -868,73 +874,24 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "AdbService.js",
-        line: 50
+        line: 64
       },
       type: {
         location: {
           type: "source",
           fileName: "AdbService.js",
-          line: 50
+          line: 64
         },
         kind: "function",
         argumentTypes: [],
         returnType: {
-          location: {
-            type: "source",
-            fileName: "AdbService.js",
-            line: 50
-          },
-          kind: "promise",
+          kind: "observable",
           type: {
-            location: {
-              type: "source",
-              fileName: "AdbService.js",
-              line: 50
-            },
             kind: "array",
             type: {
-              location: {
-                type: "source",
-                fileName: "AdbService.js",
-                line: 50
-              },
               kind: "named",
               name: "DeviceDescription"
             }
-          }
-        }
-      }
-    },
-    startServer: {
-      kind: "function",
-      name: "startServer",
-      location: {
-        type: "source",
-        fileName: "AdbService.js",
-        line: 54
-      },
-      type: {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 54
-        },
-        kind: "function",
-        argumentTypes: [],
-        returnType: {
-          location: {
-            type: "source",
-            fileName: "AdbService.js",
-            line: 54
-          },
-          kind: "promise",
-          type: {
-            location: {
-              type: "source",
-              fileName: "AdbService.js",
-              line: 54
-            },
-            kind: "boolean"
           }
         }
       }
@@ -945,52 +902,235 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "AdbService.js",
-        line: 62
+        line: 70
       },
       type: {
         location: {
           type: "source",
           fileName: "AdbService.js",
-          line: 62
+          line: 70
         },
         kind: "function",
         argumentTypes: [{
           name: "device",
           type: {
-            location: {
-              type: "source",
-              fileName: "AdbService.js",
-              line: 63
-            },
             kind: "string"
           }
         }, {
           name: "packageName",
           type: {
-            location: {
-              type: "source",
-              fileName: "AdbService.js",
-              line: 64
-            },
             kind: "string"
           }
         }],
         returnType: {
-          location: {
-            type: "source",
-            fileName: "AdbService.js",
-            line: 65
-          },
           kind: "promise",
           type: {
-            location: {
-              type: "source",
-              fileName: "AdbService.js",
-              line: 65
-            },
             kind: "number"
           }
         }
+      }
+    },
+    ProcessExitMessage: {
+      kind: "alias",
+      location: {
+        type: "source",
+        fileName: "process.js",
+        line: 574
+      },
+      name: "ProcessExitMessage",
+      definition: {
+        kind: "object",
+        fields: [{
+          name: "kind",
+          type: {
+            kind: "string-literal",
+            value: "exit"
+          },
+          optional: false
+        }, {
+          name: "exitCode",
+          type: {
+            kind: "nullable",
+            type: {
+              kind: "number"
+            }
+          },
+          optional: false
+        }, {
+          name: "signal",
+          type: {
+            kind: "nullable",
+            type: {
+              kind: "string"
+            }
+          },
+          optional: false
+        }]
+      }
+    },
+    ProcessMessage: {
+      kind: "alias",
+      location: {
+        type: "source",
+        fileName: "process.js",
+        line: 580
+      },
+      name: "ProcessMessage",
+      definition: {
+        kind: "union",
+        types: [{
+          kind: "object",
+          fields: [{
+            name: "kind",
+            type: {
+              kind: "string-literal",
+              value: "stdout"
+            },
+            optional: false
+          }, {
+            name: "data",
+            type: {
+              kind: "string"
+            },
+            optional: false
+          }]
+        }, {
+          kind: "object",
+          fields: [{
+            name: "kind",
+            type: {
+              kind: "string-literal",
+              value: "stderr"
+            },
+            optional: false
+          }, {
+            name: "data",
+            type: {
+              kind: "string"
+            },
+            optional: false
+          }]
+        }, {
+          kind: "object",
+          fields: [{
+            name: "kind",
+            type: {
+              kind: "string-literal",
+              value: "exit"
+            },
+            optional: false
+          }, {
+            name: "exitCode",
+            type: {
+              kind: "nullable",
+              type: {
+                kind: "number"
+              }
+            },
+            optional: false
+          }, {
+            name: "signal",
+            type: {
+              kind: "nullable",
+              type: {
+                kind: "string"
+              }
+            },
+            optional: false
+          }]
+        }],
+        discriminantField: "kind"
+      }
+    },
+    LegacyProcessMessage: {
+      kind: "alias",
+      location: {
+        type: "source",
+        fileName: "process.js",
+        line: 593
+      },
+      name: "LegacyProcessMessage",
+      definition: {
+        kind: "union",
+        types: [{
+          kind: "object",
+          fields: [{
+            name: "kind",
+            type: {
+              kind: "string-literal",
+              value: "stdout"
+            },
+            optional: false
+          }, {
+            name: "data",
+            type: {
+              kind: "string"
+            },
+            optional: false
+          }]
+        }, {
+          kind: "object",
+          fields: [{
+            name: "kind",
+            type: {
+              kind: "string-literal",
+              value: "stderr"
+            },
+            optional: false
+          }, {
+            name: "data",
+            type: {
+              kind: "string"
+            },
+            optional: false
+          }]
+        }, {
+          kind: "object",
+          fields: [{
+            name: "kind",
+            type: {
+              kind: "string-literal",
+              value: "exit"
+            },
+            optional: false
+          }, {
+            name: "exitCode",
+            type: {
+              kind: "nullable",
+              type: {
+                kind: "number"
+              }
+            },
+            optional: false
+          }, {
+            name: "signal",
+            type: {
+              kind: "nullable",
+              type: {
+                kind: "string"
+              }
+            },
+            optional: false
+          }]
+        }, {
+          kind: "object",
+          fields: [{
+            name: "kind",
+            type: {
+              kind: "string-literal",
+              value: "error"
+            },
+            optional: false
+          }, {
+            name: "error",
+            type: {
+              kind: "named",
+              name: "Object"
+            },
+            optional: false
+          }]
+        }],
+        discriminantField: "kind"
       }
     },
     installPackage: {
@@ -999,50 +1139,30 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "AdbService.js",
-        line: 69
+        line: 77
       },
       type: {
         location: {
           type: "source",
           fileName: "AdbService.js",
-          line: 69
+          line: 77
         },
         kind: "function",
         argumentTypes: [{
           name: "device",
           type: {
-            location: {
-              type: "source",
-              fileName: "AdbService.js",
-              line: 70
-            },
             kind: "string"
           }
         }, {
           name: "packagePath",
           type: {
-            location: {
-              type: "source",
-              fileName: "AdbService.js",
-              line: 71
-            },
             kind: "named",
             name: "NuclideUri"
           }
         }],
         returnType: {
-          location: {
-            type: "source",
-            fileName: "AdbService.js",
-            line: 72
-          },
           kind: "observable",
           type: {
-            location: {
-              type: "source",
-              fileName: "AdbService.js",
-              line: 72
-            },
             kind: "named",
             name: "LegacyProcessMessage"
           }
@@ -1055,49 +1175,29 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "AdbService.js",
-        line: 79
+        line: 85
       },
       type: {
         location: {
           type: "source",
           fileName: "AdbService.js",
-          line: 79
+          line: 85
         },
         kind: "function",
         argumentTypes: [{
           name: "device",
           type: {
-            location: {
-              type: "source",
-              fileName: "AdbService.js",
-              line: 80
-            },
             kind: "string"
           }
         }, {
           name: "packageName",
           type: {
-            location: {
-              type: "source",
-              fileName: "AdbService.js",
-              line: 81
-            },
             kind: "string"
           }
         }],
         returnType: {
-          location: {
-            type: "source",
-            fileName: "AdbService.js",
-            line: 82
-          },
           kind: "observable",
           type: {
-            location: {
-              type: "source",
-              fileName: "AdbService.js",
-              line: 82
-            },
             kind: "named",
             name: "LegacyProcessMessage"
           }
@@ -1110,59 +1210,34 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "AdbService.js",
-        line: 89
+        line: 93
       },
       type: {
         location: {
           type: "source",
           fileName: "AdbService.js",
-          line: 89
+          line: 93
         },
         kind: "function",
         argumentTypes: [{
           name: "device",
           type: {
-            location: {
-              type: "source",
-              fileName: "AdbService.js",
-              line: 90
-            },
             kind: "string"
           }
         }, {
           name: "tcpPort",
           type: {
-            location: {
-              type: "source",
-              fileName: "AdbService.js",
-              line: 91
-            },
             kind: "number"
           }
         }, {
           name: "pid",
           type: {
-            location: {
-              type: "source",
-              fileName: "AdbService.js",
-              line: 92
-            },
             kind: "number"
           }
         }],
         returnType: {
-          location: {
-            type: "source",
-            fileName: "AdbService.js",
-            line: 93
-          },
           kind: "promise",
           type: {
-            location: {
-              type: "source",
-              fileName: "AdbService.js",
-              line: 93
-            },
             kind: "string"
           }
         }
@@ -1174,87 +1249,114 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "AdbService.js",
-        line: 97
+        line: 101
       },
       type: {
         location: {
           type: "source",
           fileName: "AdbService.js",
-          line: 97
+          line: 101
         },
         kind: "function",
         argumentTypes: [{
           name: "device",
           type: {
-            location: {
-              type: "source",
-              fileName: "AdbService.js",
-              line: 98
-            },
             kind: "string"
           }
         }, {
           name: "packageName",
           type: {
-            location: {
-              type: "source",
-              fileName: "AdbService.js",
-              line: 99
-            },
             kind: "string"
           }
         }, {
           name: "activity",
           type: {
-            location: {
-              type: "source",
-              fileName: "AdbService.js",
-              line: 100
-            },
             kind: "string"
           }
         }, {
           name: "debug",
           type: {
-            location: {
-              type: "source",
-              fileName: "AdbService.js",
-              line: 101
-            },
             kind: "boolean"
           }
         }, {
           name: "action",
           type: {
-            location: {
-              type: "source",
-              fileName: "AdbService.js",
-              line: 102
-            },
             kind: "nullable",
             type: {
-              location: {
-                type: "source",
-                fileName: "AdbService.js",
-                line: 102
-              },
               kind: "string"
+            }
+          }
+        }, {
+          name: "parameters",
+          type: {
+            kind: "nullable",
+            type: {
+              kind: "map",
+              keyType: {
+                kind: "string"
+              },
+              valueType: {
+                kind: "string"
+              }
             }
           }
         }],
         returnType: {
-          location: {
-            type: "source",
-            fileName: "AdbService.js",
-            line: 103
-          },
           kind: "promise",
           type: {
-            location: {
-              type: "source",
-              fileName: "AdbService.js",
-              line: 103
-            },
+            kind: "string"
+          }
+        }
+      }
+    },
+    launchMainActivity: {
+      kind: "function",
+      name: "launchMainActivity",
+      location: {
+        type: "source",
+        fileName: "AdbService.js",
+        line: 118
+      },
+      type: {
+        location: {
+          type: "source",
+          fileName: "AdbService.js",
+          line: 118
+        },
+        kind: "function",
+        argumentTypes: [{
+          name: "device",
+          type: {
+            kind: "string"
+          }
+        }, {
+          name: "packageName",
+          type: {
+            kind: "string"
+          }
+        }, {
+          name: "debug",
+          type: {
+            kind: "boolean"
+          }
+        }, {
+          name: "parameters",
+          type: {
+            kind: "nullable",
+            type: {
+              kind: "map",
+              keyType: {
+                kind: "string"
+              },
+              valueType: {
+                kind: "string"
+              }
+            }
+          }
+        }],
+        returnType: {
+          kind: "promise",
+          type: {
             kind: "string"
           }
         }
@@ -1263,123 +1365,6 @@ Object.defineProperty(module.exports, "defs", {
     activityExists: {
       kind: "function",
       name: "activityExists",
-      location: {
-        type: "source",
-        fileName: "AdbService.js",
-        line: 113
-      },
-      type: {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 113
-        },
-        kind: "function",
-        argumentTypes: [{
-          name: "device",
-          type: {
-            location: {
-              type: "source",
-              fileName: "AdbService.js",
-              line: 114
-            },
-            kind: "string"
-          }
-        }, {
-          name: "packageName",
-          type: {
-            location: {
-              type: "source",
-              fileName: "AdbService.js",
-              line: 115
-            },
-            kind: "string"
-          }
-        }, {
-          name: "activity",
-          type: {
-            location: {
-              type: "source",
-              fileName: "AdbService.js",
-              line: 116
-            },
-            kind: "string"
-          }
-        }],
-        returnType: {
-          location: {
-            type: "source",
-            fileName: "AdbService.js",
-            line: 117
-          },
-          kind: "promise",
-          type: {
-            location: {
-              type: "source",
-              fileName: "AdbService.js",
-              line: 117
-            },
-            kind: "boolean"
-          }
-        }
-      }
-    },
-    getJavaProcesses: {
-      kind: "function",
-      name: "getJavaProcesses",
-      location: {
-        type: "source",
-        fileName: "AdbService.js",
-        line: 121
-      },
-      type: {
-        location: {
-          type: "source",
-          fileName: "AdbService.js",
-          line: 121
-        },
-        kind: "function",
-        argumentTypes: [{
-          name: "device",
-          type: {
-            location: {
-              type: "source",
-              fileName: "AdbService.js",
-              line: 122
-            },
-            kind: "string"
-          }
-        }],
-        returnType: {
-          location: {
-            type: "source",
-            fileName: "AdbService.js",
-            line: 123
-          },
-          kind: "promise",
-          type: {
-            location: {
-              type: "source",
-              fileName: "AdbService.js",
-              line: 123
-            },
-            kind: "array",
-            type: {
-              location: {
-                type: "source",
-                fileName: "AdbService.js",
-                line: 123
-              },
-              kind: "named",
-              name: "AndroidJavaProcess"
-            }
-          }
-        }
-      }
-    },
-    dumpsysPackage: {
-      kind: "function",
-      name: "dumpsysPackage",
       location: {
         type: "source",
         fileName: "AdbService.js",
@@ -1395,1125 +1380,56 @@ Object.defineProperty(module.exports, "defs", {
         argumentTypes: [{
           name: "device",
           type: {
-            location: {
-              type: "source",
-              fileName: "AdbService.js",
-              line: 128
-            },
             kind: "string"
           }
         }, {
-          name: "identifier",
+          name: "packageName",
           type: {
-            location: {
-              type: "source",
-              fileName: "AdbService.js",
-              line: 129
-            },
+            kind: "string"
+          }
+        }, {
+          name: "activity",
+          type: {
             kind: "string"
           }
         }],
         returnType: {
-          location: {
-            type: "source",
-            fileName: "AdbService.js",
-            line: 130
-          },
           kind: "promise",
           type: {
-            location: {
-              type: "source",
-              fileName: "AdbService.js",
-              line: 130
-            },
-            kind: "nullable",
-            type: {
-              location: {
-                type: "source",
-                fileName: "AdbService.js",
-                line: 130
-              },
-              kind: "string"
-            }
+            kind: "boolean"
           }
         }
       }
     },
-    ProcessExitMessage: {
+    SimpleProcess: {
       kind: "alias",
       location: {
         type: "source",
-        fileName: "process-rpc-types.js",
-        line: 14
+        fileName: "types.js",
+        line: 12
       },
-      name: "ProcessExitMessage",
+      name: "SimpleProcess",
       definition: {
-        location: {
-          type: "source",
-          fileName: "process-rpc-types.js",
-          line: 14
-        },
         kind: "object",
         fields: [{
-          location: {
-            type: "source",
-            fileName: "process-rpc-types.js",
-            line: 15
-          },
-          name: "kind",
+          name: "user",
           type: {
-            location: {
-              type: "source",
-              fileName: "process-rpc-types.js",
-              line: 15
-            },
-            kind: "string-literal",
-            value: "exit"
+            kind: "string"
           },
           optional: false
         }, {
-          location: {
-            type: "source",
-            fileName: "process-rpc-types.js",
-            line: 16
-          },
-          name: "exitCode",
-          type: {
-            location: {
-              type: "source",
-              fileName: "process-rpc-types.js",
-              line: 16
-            },
-            kind: "nullable",
-            type: {
-              location: {
-                type: "source",
-                fileName: "process-rpc-types.js",
-                line: 16
-              },
-              kind: "number"
-            }
-          },
-          optional: false
-        }, {
-          location: {
-            type: "source",
-            fileName: "process-rpc-types.js",
-            line: 17
-          },
-          name: "signal",
-          type: {
-            location: {
-              type: "source",
-              fileName: "process-rpc-types.js",
-              line: 17
-            },
-            kind: "nullable",
-            type: {
-              location: {
-                type: "source",
-                fileName: "process-rpc-types.js",
-                line: 17
-              },
-              kind: "string"
-            }
-          },
-          optional: false
-        }]
-      }
-    },
-    ProcessMessage: {
-      kind: "alias",
-      location: {
-        type: "source",
-        fileName: "process-rpc-types.js",
-        line: 21
-      },
-      name: "ProcessMessage",
-      definition: {
-        location: {
-          type: "source",
-          fileName: "process-rpc-types.js",
-          line: 22
-        },
-        kind: "union",
-        types: [{
-          location: {
-            type: "source",
-            fileName: "process-rpc-types.js",
-            line: 22
-          },
-          kind: "object",
-          fields: [{
-            location: {
-              type: "source",
-              fileName: "process-rpc-types.js",
-              line: 23
-            },
-            name: "kind",
-            type: {
-              location: {
-                type: "source",
-                fileName: "process-rpc-types.js",
-                line: 23
-              },
-              kind: "string-literal",
-              value: "stdout"
-            },
-            optional: false
-          }, {
-            location: {
-              type: "source",
-              fileName: "process-rpc-types.js",
-              line: 24
-            },
-            name: "data",
-            type: {
-              location: {
-                type: "source",
-                fileName: "process-rpc-types.js",
-                line: 24
-              },
-              kind: "string"
-            },
-            optional: false
-          }]
-        }, {
-          location: {
-            type: "source",
-            fileName: "process-rpc-types.js",
-            line: 26
-          },
-          kind: "object",
-          fields: [{
-            location: {
-              type: "source",
-              fileName: "process-rpc-types.js",
-              line: 27
-            },
-            name: "kind",
-            type: {
-              location: {
-                type: "source",
-                fileName: "process-rpc-types.js",
-                line: 27
-              },
-              kind: "string-literal",
-              value: "stderr"
-            },
-            optional: false
-          }, {
-            location: {
-              type: "source",
-              fileName: "process-rpc-types.js",
-              line: 28
-            },
-            name: "data",
-            type: {
-              location: {
-                type: "source",
-                fileName: "process-rpc-types.js",
-                line: 28
-              },
-              kind: "string"
-            },
-            optional: false
-          }]
-        }, {
-          location: {
-            type: "source",
-            fileName: "process-rpc-types.js",
-            line: 14
-          },
-          kind: "object",
-          fields: [{
-            location: {
-              type: "source",
-              fileName: "process-rpc-types.js",
-              line: 15
-            },
-            name: "kind",
-            type: {
-              location: {
-                type: "source",
-                fileName: "process-rpc-types.js",
-                line: 15
-              },
-              kind: "string-literal",
-              value: "exit"
-            },
-            optional: false
-          }, {
-            location: {
-              type: "source",
-              fileName: "process-rpc-types.js",
-              line: 16
-            },
-            name: "exitCode",
-            type: {
-              location: {
-                type: "source",
-                fileName: "process-rpc-types.js",
-                line: 16
-              },
-              kind: "nullable",
-              type: {
-                location: {
-                  type: "source",
-                  fileName: "process-rpc-types.js",
-                  line: 16
-                },
-                kind: "number"
-              }
-            },
-            optional: false
-          }, {
-            location: {
-              type: "source",
-              fileName: "process-rpc-types.js",
-              line: 17
-            },
-            name: "signal",
-            type: {
-              location: {
-                type: "source",
-                fileName: "process-rpc-types.js",
-                line: 17
-              },
-              kind: "nullable",
-              type: {
-                location: {
-                  type: "source",
-                  fileName: "process-rpc-types.js",
-                  line: 17
-                },
-                kind: "string"
-              }
-            },
-            optional: false
-          }]
-        }],
-        discriminantField: "kind"
-      }
-    },
-    LegacyProcessMessage: {
-      kind: "alias",
-      location: {
-        type: "source",
-        fileName: "process-rpc-types.js",
-        line: 34
-      },
-      name: "LegacyProcessMessage",
-      definition: {
-        location: {
-          type: "source",
-          fileName: "process-rpc-types.js",
-          line: 35
-        },
-        kind: "union",
-        types: [{
-          location: {
-            type: "source",
-            fileName: "process-rpc-types.js",
-            line: 22
-          },
-          kind: "object",
-          fields: [{
-            location: {
-              type: "source",
-              fileName: "process-rpc-types.js",
-              line: 23
-            },
-            name: "kind",
-            type: {
-              location: {
-                type: "source",
-                fileName: "process-rpc-types.js",
-                line: 23
-              },
-              kind: "string-literal",
-              value: "stdout"
-            },
-            optional: false
-          }, {
-            location: {
-              type: "source",
-              fileName: "process-rpc-types.js",
-              line: 24
-            },
-            name: "data",
-            type: {
-              location: {
-                type: "source",
-                fileName: "process-rpc-types.js",
-                line: 24
-              },
-              kind: "string"
-            },
-            optional: false
-          }]
-        }, {
-          location: {
-            type: "source",
-            fileName: "process-rpc-types.js",
-            line: 26
-          },
-          kind: "object",
-          fields: [{
-            location: {
-              type: "source",
-              fileName: "process-rpc-types.js",
-              line: 27
-            },
-            name: "kind",
-            type: {
-              location: {
-                type: "source",
-                fileName: "process-rpc-types.js",
-                line: 27
-              },
-              kind: "string-literal",
-              value: "stderr"
-            },
-            optional: false
-          }, {
-            location: {
-              type: "source",
-              fileName: "process-rpc-types.js",
-              line: 28
-            },
-            name: "data",
-            type: {
-              location: {
-                type: "source",
-                fileName: "process-rpc-types.js",
-                line: 28
-              },
-              kind: "string"
-            },
-            optional: false
-          }]
-        }, {
-          location: {
-            type: "source",
-            fileName: "process-rpc-types.js",
-            line: 14
-          },
-          kind: "object",
-          fields: [{
-            location: {
-              type: "source",
-              fileName: "process-rpc-types.js",
-              line: 15
-            },
-            name: "kind",
-            type: {
-              location: {
-                type: "source",
-                fileName: "process-rpc-types.js",
-                line: 15
-              },
-              kind: "string-literal",
-              value: "exit"
-            },
-            optional: false
-          }, {
-            location: {
-              type: "source",
-              fileName: "process-rpc-types.js",
-              line: 16
-            },
-            name: "exitCode",
-            type: {
-              location: {
-                type: "source",
-                fileName: "process-rpc-types.js",
-                line: 16
-              },
-              kind: "nullable",
-              type: {
-                location: {
-                  type: "source",
-                  fileName: "process-rpc-types.js",
-                  line: 16
-                },
-                kind: "number"
-              }
-            },
-            optional: false
-          }, {
-            location: {
-              type: "source",
-              fileName: "process-rpc-types.js",
-              line: 17
-            },
-            name: "signal",
-            type: {
-              location: {
-                type: "source",
-                fileName: "process-rpc-types.js",
-                line: 17
-              },
-              kind: "nullable",
-              type: {
-                location: {
-                  type: "source",
-                  fileName: "process-rpc-types.js",
-                  line: 17
-                },
-                kind: "string"
-              }
-            },
-            optional: false
-          }]
-        }, {
-          location: {
-            type: "source",
-            fileName: "process-rpc-types.js",
-            line: 36
-          },
-          kind: "object",
-          fields: [{
-            location: {
-              type: "source",
-              fileName: "process-rpc-types.js",
-              line: 36
-            },
-            name: "kind",
-            type: {
-              location: {
-                type: "source",
-                fileName: "process-rpc-types.js",
-                line: 36
-              },
-              kind: "string-literal",
-              value: "error"
-            },
-            optional: false
-          }, {
-            location: {
-              type: "source",
-              fileName: "process-rpc-types.js",
-              line: 36
-            },
-            name: "error",
-            type: {
-              location: {
-                type: "source",
-                fileName: "process-rpc-types.js",
-                line: 36
-              },
-              kind: "named",
-              name: "Object"
-            },
-            optional: false
-          }]
-        }],
-        discriminantField: "kind"
-      }
-    },
-    ProcessInfo: {
-      kind: "alias",
-      location: {
-        type: "source",
-        fileName: "process-rpc-types.js",
-        line: 38
-      },
-      name: "ProcessInfo",
-      definition: {
-        location: {
-          type: "source",
-          fileName: "process-rpc-types.js",
-          line: 38
-        },
-        kind: "object",
-        fields: [{
-          location: {
-            type: "source",
-            fileName: "process-rpc-types.js",
-            line: 39
-          },
-          name: "parentPid",
-          type: {
-            location: {
-              type: "source",
-              fileName: "process-rpc-types.js",
-              line: 39
-            },
-            kind: "number"
-          },
-          optional: false
-        }, {
-          location: {
-            type: "source",
-            fileName: "process-rpc-types.js",
-            line: 40
-          },
           name: "pid",
           type: {
-            location: {
-              type: "source",
-              fileName: "process-rpc-types.js",
-              line: 40
-            },
-            kind: "number"
-          },
-          optional: false
-        }, {
-          location: {
-            type: "source",
-            fileName: "process-rpc-types.js",
-            line: 41
-          },
-          name: "command",
-          type: {
-            location: {
-              type: "source",
-              fileName: "process-rpc-types.js",
-              line: 41
-            },
-            kind: "string"
-          },
-          optional: false
-        }]
-      }
-    },
-    Level: {
-      kind: "alias",
-      location: {
-        type: "source",
-        fileName: "process-rpc-types.js",
-        line: 44
-      },
-      name: "Level",
-      definition: {
-        location: {
-          type: "source",
-          fileName: "process-rpc-types.js",
-          line: 44
-        },
-        kind: "union",
-        types: [{
-          location: {
-            type: "source",
-            fileName: "process-rpc-types.js",
-            line: 44
-          },
-          kind: "string-literal",
-          value: "info"
-        }, {
-          location: {
-            type: "source",
-            fileName: "process-rpc-types.js",
-            line: 44
-          },
-          kind: "string-literal",
-          value: "log"
-        }, {
-          location: {
-            type: "source",
-            fileName: "process-rpc-types.js",
-            line: 44
-          },
-          kind: "string-literal",
-          value: "warning"
-        }, {
-          location: {
-            type: "source",
-            fileName: "process-rpc-types.js",
-            line: 44
-          },
-          kind: "string-literal",
-          value: "error"
-        }, {
-          location: {
-            type: "source",
-            fileName: "process-rpc-types.js",
-            line: 44
-          },
-          kind: "string-literal",
-          value: "debug"
-        }, {
-          location: {
-            type: "source",
-            fileName: "process-rpc-types.js",
-            line: 44
-          },
-          kind: "string-literal",
-          value: "success"
-        }]
-      }
-    },
-    Message: {
-      kind: "alias",
-      location: {
-        type: "source",
-        fileName: "process-rpc-types.js",
-        line: 45
-      },
-      name: "Message",
-      definition: {
-        location: {
-          type: "source",
-          fileName: "process-rpc-types.js",
-          line: 45
-        },
-        kind: "object",
-        fields: [{
-          location: {
-            type: "source",
-            fileName: "process-rpc-types.js",
-            line: 45
-          },
-          name: "text",
-          type: {
-            location: {
-              type: "source",
-              fileName: "process-rpc-types.js",
-              line: 45
-            },
             kind: "string"
           },
           optional: false
         }, {
-          location: {
-            type: "source",
-            fileName: "process-rpc-types.js",
-            line: 45
-          },
-          name: "level",
+          name: "name",
           type: {
-            location: {
-              type: "source",
-              fileName: "process-rpc-types.js",
-              line: 45
-            },
-            kind: "named",
-            name: "Level"
+            kind: "string"
           },
           optional: false
         }]
-      }
-    },
-    MessageEvent: {
-      kind: "alias",
-      location: {
-        type: "source",
-        fileName: "process-rpc-types.js",
-        line: 47
-      },
-      name: "MessageEvent",
-      definition: {
-        location: {
-          type: "source",
-          fileName: "process-rpc-types.js",
-          line: 47
-        },
-        kind: "object",
-        fields: [{
-          location: {
-            type: "source",
-            fileName: "process-rpc-types.js",
-            line: 48
-          },
-          name: "type",
-          type: {
-            location: {
-              type: "source",
-              fileName: "process-rpc-types.js",
-              line: 48
-            },
-            kind: "string-literal",
-            value: "message"
-          },
-          optional: false
-        }, {
-          location: {
-            type: "source",
-            fileName: "process-rpc-types.js",
-            line: 49
-          },
-          name: "message",
-          type: {
-            location: {
-              type: "source",
-              fileName: "process-rpc-types.js",
-              line: 49
-            },
-            kind: "named",
-            name: "Message"
-          },
-          optional: false
-        }]
-      }
-    },
-    ProgressEvent: {
-      kind: "alias",
-      location: {
-        type: "source",
-        fileName: "process-rpc-types.js",
-        line: 52
-      },
-      name: "ProgressEvent",
-      definition: {
-        location: {
-          type: "source",
-          fileName: "process-rpc-types.js",
-          line: 52
-        },
-        kind: "object",
-        fields: [{
-          location: {
-            type: "source",
-            fileName: "process-rpc-types.js",
-            line: 53
-          },
-          name: "type",
-          type: {
-            location: {
-              type: "source",
-              fileName: "process-rpc-types.js",
-              line: 53
-            },
-            kind: "string-literal",
-            value: "progress"
-          },
-          optional: false
-        }, {
-          location: {
-            type: "source",
-            fileName: "process-rpc-types.js",
-            line: 54
-          },
-          name: "progress",
-          type: {
-            location: {
-              type: "source",
-              fileName: "process-rpc-types.js",
-              line: 54
-            },
-            kind: "nullable",
-            type: {
-              location: {
-                type: "source",
-                fileName: "process-rpc-types.js",
-                line: 54
-              },
-              kind: "number"
-            }
-          },
-          optional: false
-        }]
-      }
-    },
-    ResultEvent: {
-      kind: "alias",
-      location: {
-        type: "source",
-        fileName: "process-rpc-types.js",
-        line: 57
-      },
-      name: "ResultEvent",
-      definition: {
-        location: {
-          type: "source",
-          fileName: "process-rpc-types.js",
-          line: 57
-        },
-        kind: "object",
-        fields: [{
-          location: {
-            type: "source",
-            fileName: "process-rpc-types.js",
-            line: 58
-          },
-          name: "type",
-          type: {
-            location: {
-              type: "source",
-              fileName: "process-rpc-types.js",
-              line: 58
-            },
-            kind: "string-literal",
-            value: "result"
-          },
-          optional: false
-        }, {
-          location: {
-            type: "source",
-            fileName: "process-rpc-types.js",
-            line: 59
-          },
-          name: "result",
-          type: {
-            location: {
-              type: "source",
-              fileName: "process-rpc-types.js",
-              line: 59
-            },
-            kind: "mixed"
-          },
-          optional: false
-        }]
-      }
-    },
-    StatusEvent: {
-      kind: "alias",
-      location: {
-        type: "source",
-        fileName: "process-rpc-types.js",
-        line: 62
-      },
-      name: "StatusEvent",
-      definition: {
-        location: {
-          type: "source",
-          fileName: "process-rpc-types.js",
-          line: 62
-        },
-        kind: "object",
-        fields: [{
-          location: {
-            type: "source",
-            fileName: "process-rpc-types.js",
-            line: 63
-          },
-          name: "type",
-          type: {
-            location: {
-              type: "source",
-              fileName: "process-rpc-types.js",
-              line: 63
-            },
-            kind: "string-literal",
-            value: "status"
-          },
-          optional: false
-        }, {
-          location: {
-            type: "source",
-            fileName: "process-rpc-types.js",
-            line: 64
-          },
-          name: "status",
-          type: {
-            location: {
-              type: "source",
-              fileName: "process-rpc-types.js",
-              line: 64
-            },
-            kind: "nullable",
-            type: {
-              location: {
-                type: "source",
-                fileName: "process-rpc-types.js",
-                line: 64
-              },
-              kind: "string"
-            }
-          },
-          optional: false
-        }]
-      }
-    },
-    TaskEvent: {
-      kind: "alias",
-      location: {
-        type: "source",
-        fileName: "process-rpc-types.js",
-        line: 67
-      },
-      name: "TaskEvent",
-      definition: {
-        location: {
-          type: "source",
-          fileName: "process-rpc-types.js",
-          line: 68
-        },
-        kind: "union",
-        types: [{
-          location: {
-            type: "source",
-            fileName: "process-rpc-types.js",
-            line: 47
-          },
-          kind: "object",
-          fields: [{
-            location: {
-              type: "source",
-              fileName: "process-rpc-types.js",
-              line: 48
-            },
-            name: "type",
-            type: {
-              location: {
-                type: "source",
-                fileName: "process-rpc-types.js",
-                line: 48
-              },
-              kind: "string-literal",
-              value: "message"
-            },
-            optional: false
-          }, {
-            location: {
-              type: "source",
-              fileName: "process-rpc-types.js",
-              line: 49
-            },
-            name: "message",
-            type: {
-              location: {
-                type: "source",
-                fileName: "process-rpc-types.js",
-                line: 49
-              },
-              kind: "named",
-              name: "Message"
-            },
-            optional: false
-          }]
-        }, {
-          location: {
-            type: "source",
-            fileName: "process-rpc-types.js",
-            line: 52
-          },
-          kind: "object",
-          fields: [{
-            location: {
-              type: "source",
-              fileName: "process-rpc-types.js",
-              line: 53
-            },
-            name: "type",
-            type: {
-              location: {
-                type: "source",
-                fileName: "process-rpc-types.js",
-                line: 53
-              },
-              kind: "string-literal",
-              value: "progress"
-            },
-            optional: false
-          }, {
-            location: {
-              type: "source",
-              fileName: "process-rpc-types.js",
-              line: 54
-            },
-            name: "progress",
-            type: {
-              location: {
-                type: "source",
-                fileName: "process-rpc-types.js",
-                line: 54
-              },
-              kind: "nullable",
-              type: {
-                location: {
-                  type: "source",
-                  fileName: "process-rpc-types.js",
-                  line: 54
-                },
-                kind: "number"
-              }
-            },
-            optional: false
-          }]
-        }, {
-          location: {
-            type: "source",
-            fileName: "process-rpc-types.js",
-            line: 57
-          },
-          kind: "object",
-          fields: [{
-            location: {
-              type: "source",
-              fileName: "process-rpc-types.js",
-              line: 58
-            },
-            name: "type",
-            type: {
-              location: {
-                type: "source",
-                fileName: "process-rpc-types.js",
-                line: 58
-              },
-              kind: "string-literal",
-              value: "result"
-            },
-            optional: false
-          }, {
-            location: {
-              type: "source",
-              fileName: "process-rpc-types.js",
-              line: 59
-            },
-            name: "result",
-            type: {
-              location: {
-                type: "source",
-                fileName: "process-rpc-types.js",
-                line: 59
-              },
-              kind: "mixed"
-            },
-            optional: false
-          }]
-        }, {
-          location: {
-            type: "source",
-            fileName: "process-rpc-types.js",
-            line: 62
-          },
-          kind: "object",
-          fields: [{
-            location: {
-              type: "source",
-              fileName: "process-rpc-types.js",
-              line: 63
-            },
-            name: "type",
-            type: {
-              location: {
-                type: "source",
-                fileName: "process-rpc-types.js",
-                line: 63
-              },
-              kind: "string-literal",
-              value: "status"
-            },
-            optional: false
-          }, {
-            location: {
-              type: "source",
-              fileName: "process-rpc-types.js",
-              line: 64
-            },
-            name: "status",
-            type: {
-              location: {
-                type: "source",
-                fileName: "process-rpc-types.js",
-                line: 64
-              },
-              kind: "nullable",
-              type: {
-                location: {
-                  type: "source",
-                  fileName: "process-rpc-types.js",
-                  line: 64
-                },
-                kind: "string"
-              }
-            },
-            optional: false
-          }]
-        }],
-        discriminantField: "type"
       }
     },
     AndroidJavaProcess: {
@@ -2521,311 +1437,238 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "types.js",
-        line: 12
+        line: 18
       },
       name: "AndroidJavaProcess",
       definition: {
-        location: {
-          type: "source",
-          fileName: "types.js",
-          line: 12
-        },
-        kind: "object",
-        fields: [{
-          location: {
-            type: "source",
-            fileName: "types.js",
-            line: 13
-          },
-          name: "user",
-          type: {
-            location: {
-              type: "source",
-              fileName: "types.js",
-              line: 13
-            },
-            kind: "string"
-          },
-          optional: false
-        }, {
-          location: {
-            type: "source",
-            fileName: "types.js",
-            line: 14
-          },
-          name: "pid",
-          type: {
-            location: {
-              type: "source",
-              fileName: "types.js",
-              line: 14
-            },
-            kind: "string"
-          },
-          optional: false
-        }, {
-          location: {
-            type: "source",
-            fileName: "types.js",
-            line: 15
-          },
-          name: "name",
-          type: {
-            location: {
-              type: "source",
-              fileName: "types.js",
-              line: 15
-            },
-            kind: "string"
-          },
-          optional: false
-        }]
+        kind: "named",
+        name: "SimpleProcess"
       }
     },
-    DebugBridgeType: {
-      kind: "alias",
+    getJavaProcesses: {
+      kind: "function",
+      name: "getJavaProcesses",
       location: {
         type: "source",
-        fileName: "types.js",
-        line: 18
+        fileName: "AdbService.js",
+        line: 135
       },
-      name: "DebugBridgeType",
-      definition: {
+      type: {
         location: {
           type: "source",
-          fileName: "types.js",
-          line: 18
+          fileName: "AdbService.js",
+          line: 135
         },
-        kind: "union",
-        types: [{
-          location: {
-            type: "source",
-            fileName: "types.js",
-            line: 18
-          },
-          kind: "string-literal",
-          value: "adb"
-        }, {
-          location: {
-            type: "source",
-            fileName: "types.js",
-            line: 18
-          },
-          kind: "string-literal",
-          value: "sdb"
-        }]
+        kind: "function",
+        argumentTypes: [{
+          name: "device",
+          type: {
+            kind: "string"
+          }
+        }],
+        returnType: {
+          kind: "observable",
+          type: {
+            kind: "array",
+            type: {
+              kind: "named",
+              name: "AndroidJavaProcess"
+            }
+          }
+        }
       }
     },
-    DeviceDescription: {
-      kind: "alias",
+    dumpsysPackage: {
+      kind: "function",
+      name: "dumpsysPackage",
       location: {
         type: "source",
-        fileName: "types.js",
-        line: 20
+        fileName: "AdbService.js",
+        line: 141
       },
-      name: "DeviceDescription",
-      definition: {
+      type: {
         location: {
           type: "source",
-          fileName: "types.js",
-          line: 20
+          fileName: "AdbService.js",
+          line: 141
         },
-        kind: "object",
-        fields: [{
-          location: {
-            type: "source",
-            fileName: "types.js",
-            line: 21
-          },
-          name: "name",
+        kind: "function",
+        argumentTypes: [{
+          name: "device",
           type: {
-            location: {
-              type: "source",
-              fileName: "types.js",
-              line: 21
-            },
             kind: "string"
-          },
-          optional: false
+          }
         }, {
-          location: {
-            type: "source",
-            fileName: "types.js",
-            line: 22
-          },
-          name: "architecture",
+          name: "identifier",
           type: {
-            location: {
-              type: "source",
-              fileName: "types.js",
-              line: 22
-            },
             kind: "string"
-          },
-          optional: false
-        }, {
-          location: {
-            type: "source",
-            fileName: "types.js",
-            line: 23
-          },
-          name: "apiVersion",
+          }
+        }],
+        returnType: {
+          kind: "promise",
           type: {
-            location: {
-              type: "source",
-              fileName: "types.js",
-              line: 23
-            },
-            kind: "string"
-          },
-          optional: false
-        }, {
-          location: {
-            type: "source",
-            fileName: "types.js",
-            line: 24
-          },
-          name: "model",
-          type: {
-            location: {
-              type: "source",
-              fileName: "types.js",
-              line: 24
-            },
-            kind: "string"
-          },
-          optional: false
-        }]
-      }
-    },
-    Process: {
-      kind: "alias",
-      location: {
-        type: "source",
-        fileName: "types.js",
-        line: 27
-      },
-      name: "Process",
-      definition: {
-        location: {
-          type: "source",
-          fileName: "types.js",
-          line: 27
-        },
-        kind: "object",
-        fields: [{
-          location: {
-            type: "source",
-            fileName: "types.js",
-            line: 28
-          },
-          name: "user",
-          type: {
-            location: {
-              type: "source",
-              fileName: "types.js",
-              line: 28
-            },
-            kind: "string"
-          },
-          optional: false
-        }, {
-          location: {
-            type: "source",
-            fileName: "types.js",
-            line: 29
-          },
-          name: "pid",
-          type: {
-            location: {
-              type: "source",
-              fileName: "types.js",
-              line: 29
-            },
-            kind: "number"
-          },
-          optional: false
-        }, {
-          location: {
-            type: "source",
-            fileName: "types.js",
-            line: 30
-          },
-          name: "name",
-          type: {
-            location: {
-              type: "source",
-              fileName: "types.js",
-              line: 30
-            },
-            kind: "string"
-          },
-          optional: false
-        }, {
-          location: {
-            type: "source",
-            fileName: "types.js",
-            line: 31
-          },
-          name: "cpuUsage",
-          type: {
-            location: {
-              type: "source",
-              fileName: "types.js",
-              line: 31
-            },
             kind: "nullable",
             type: {
-              location: {
-                type: "source",
-                fileName: "types.js",
-                line: 31
-              },
-              kind: "number"
+              kind: "string"
             }
-          },
-          optional: false
-        }, {
-          location: {
-            type: "source",
-            fileName: "types.js",
-            line: 32
-          },
-          name: "memUsage",
+          }
+        }
+      }
+    },
+    touchFile: {
+      kind: "function",
+      name: "touchFile",
+      location: {
+        type: "source",
+        fileName: "AdbService.js",
+        line: 148
+      },
+      type: {
+        location: {
+          type: "source",
+          fileName: "AdbService.js",
+          line: 148
+        },
+        kind: "function",
+        argumentTypes: [{
+          name: "device",
           type: {
-            location: {
-              type: "source",
-              fileName: "types.js",
-              line: 32
-            },
+            kind: "string"
+          }
+        }, {
+          name: "path",
+          type: {
+            kind: "string"
+          }
+        }],
+        returnType: {
+          kind: "promise",
+          type: {
+            kind: "string"
+          }
+        }
+      }
+    },
+    removeFile: {
+      kind: "function",
+      name: "removeFile",
+      location: {
+        type: "source",
+        fileName: "AdbService.js",
+        line: 152
+      },
+      type: {
+        location: {
+          type: "source",
+          fileName: "AdbService.js",
+          line: 152
+        },
+        kind: "function",
+        argumentTypes: [{
+          name: "device",
+          type: {
+            kind: "string"
+          }
+        }, {
+          name: "path",
+          type: {
+            kind: "string"
+          }
+        }],
+        returnType: {
+          kind: "promise",
+          type: {
+            kind: "string"
+          }
+        }
+      }
+    },
+    getInstalledPackages: {
+      kind: "function",
+      name: "getInstalledPackages",
+      location: {
+        type: "source",
+        fileName: "AdbService.js",
+        line: 159
+      },
+      type: {
+        location: {
+          type: "source",
+          fileName: "AdbService.js",
+          line: 159
+        },
+        kind: "function",
+        argumentTypes: [{
+          name: "device",
+          type: {
+            kind: "string"
+          }
+        }],
+        returnType: {
+          kind: "promise",
+          type: {
+            kind: "array",
+            type: {
+              kind: "string"
+            }
+          }
+        }
+      }
+    },
+    setAdbPort: {
+      kind: "function",
+      name: "setAdbPort",
+      location: {
+        type: "source",
+        fileName: "AdbService.js",
+        line: 165
+      },
+      type: {
+        location: {
+          type: "source",
+          fileName: "AdbService.js",
+          line: 165
+        },
+        kind: "function",
+        argumentTypes: [{
+          name: "port",
+          type: {
             kind: "nullable",
             type: {
-              location: {
-                type: "source",
-                fileName: "types.js",
-                line: 32
-              },
               kind: "number"
             }
-          },
-          optional: false
-        }, {
-          location: {
-            type: "source",
-            fileName: "types.js",
-            line: 33
-          },
-          name: "isJava",
+          }
+        }],
+        returnType: {
+          kind: "void"
+        }
+      }
+    },
+    getAdbPort: {
+      kind: "function",
+      name: "getAdbPort",
+      location: {
+        type: "source",
+        fileName: "AdbService.js",
+        line: 169
+      },
+      type: {
+        location: {
+          type: "source",
+          fileName: "AdbService.js",
+          line: 169
+        },
+        kind: "function",
+        argumentTypes: [],
+        returnType: {
+          kind: "promise",
           type: {
-            location: {
-              type: "source",
-              fileName: "types.js",
-              line: 33
-            },
-            kind: "boolean"
-          },
-          optional: false
-        }]
+            kind: "nullable",
+            type: {
+              kind: "number"
+            }
+          }
+        }
       }
     }
   }

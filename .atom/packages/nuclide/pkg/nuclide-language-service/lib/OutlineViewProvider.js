@@ -29,16 +29,16 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 class OutlineViewProvider {
 
-  constructor(name, selector, priority, analyticsEventName, connectionToLanguageService) {
+  constructor(name, grammarScopes, priority, analyticsEventName, connectionToLanguageService) {
     this.name = name;
-    this.grammarScopes = selector;
+    this.grammarScopes = grammarScopes;
     this.priority = priority;
     this._analyticsEventName = analyticsEventName;
     this._connectionToLanguageService = connectionToLanguageService;
   }
 
-  static register(name, selector, config, connectionToLanguageService) {
-    return atom.packages.serviceHub.provide('atom-ide-outline-view', config.version, new OutlineViewProvider(name, selector, config.priority, config.analyticsEventName, connectionToLanguageService));
+  static register(name, grammarScopes, config, connectionToLanguageService) {
+    return atom.packages.serviceHub.provide('atom-ide-outline-view', config.version, new OutlineViewProvider(name, grammarScopes, config.priority, config.analyticsEventName, connectionToLanguageService));
   }
 
   getOutline(editor) {
@@ -55,6 +55,7 @@ class OutlineViewProvider {
     }));
   }
 }
+
 exports.OutlineViewProvider = OutlineViewProvider; /**
                                                     * Copyright (c) 2015-present, Facebook, Inc.
                                                     * All rights reserved.
@@ -65,3 +66,5 @@ exports.OutlineViewProvider = OutlineViewProvider; /**
                                                     * 
                                                     * @format
                                                     */
+
+null;

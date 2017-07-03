@@ -69,6 +69,10 @@ class Section extends _react.default.Component {
       conditionalProps.onClick = this._toggleCollapsed;
       conditionalProps.title = collapsed ? 'Click to expand' : 'Click to collapse';
     }
+    // Any custom title prop should override the default title.
+    if (this.props.title != null) {
+      conditionalProps.title = this.props.title;
+    }
     const HeadlineComponent = getHeadlineComponent(this.props.size);
     return _react.default.createElement(
       'div',
@@ -80,7 +84,9 @@ class Section extends _react.default.Component {
       ),
       _react.default.createElement(
         'div',
-        { style: collapsed ? { display: 'none' } : {} },
+        {
+          style: collapsed ? { display: 'none' } : {},
+          className: 'nuclide-ui-section-body' },
         this.props.children
       )
     );

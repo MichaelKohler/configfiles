@@ -107,8 +107,6 @@ class ClientCallback {
     const value = { id, result };
     if (error != null) {
       value.error = error;
-    } else if (result.error != null) {
-      value.error = result.error;
     }
     sendJsonObject(this._serverMessages, value);
   }

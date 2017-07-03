@@ -24,17 +24,6 @@ function _load_textEditor() {
  * Returns true if the application was successful, otherwise false (e.g. if the oldText did not
  * match).
  */
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
-
 function applyTextEdits(path, ...edits) {
   const editor = (0, (_textEditor || _load_textEditor()).existingEditorForUri)(path);
 
@@ -43,7 +32,17 @@ function applyTextEdits(path, ...edits) {
   }
 
   return applyTextEditsToBuffer(editor.getBuffer(), edits);
-}
+} /**
+   * Copyright (c) 2017-present, Facebook, Inc.
+   * All rights reserved.
+   *
+   * This source code is licensed under the BSD-style license found in the
+   * LICENSE file in the root directory of this source tree. An additional grant
+   * of patent rights can be found in the PATENTS file in the same directory.
+   *
+   * 
+   * @format
+   */
 
 function applyTextEditsToBuffer(buffer, edits) {
   // Special-case whole-buffer changes to minimize disruption.

@@ -5,7 +5,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.HgRepositoryClient = undefined;
 
-var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
+var _hgDiffOutputParser;
+
+function _load_hgDiffOutputParser() {
+  return _hgDiffOutputParser = require('../../nuclide-hg-rpc/lib/hg-diff-output-parser');
+}
 
 var _atom = require('atom');
 
@@ -19,6 +23,12 @@ var _RevisionsCache;
 
 function _load_RevisionsCache() {
   return _RevisionsCache = _interopRequireDefault(require('./RevisionsCache'));
+}
+
+var _utils;
+
+function _load_utils() {
+  return _utils = require('./utils');
 }
 
 var _hgConstants;
@@ -142,6 +152,7 @@ class HgRepositoryClient {
     this._revisionStatusCache = getRevisionStatusCache(this._revisionsCache, this._workingDirectory.getPath());
     this._revisionIdToFileChanges = new (_lruCache || _load_lruCache()).default({ max: 100 });
     this._fileContentsAtRevisionIds = new (_lruCache || _load_lruCache()).default({ max: 20 });
+    this._fileContentsAtHead = new (_lruCache || _load_lruCache()).default({ max: 30 });
 
     this._emitter = new _atom.Emitter();
     this._subscriptions = new (_UniversalDisposable || _load_UniversalDisposable()).default(this._emitter, this._service);
@@ -177,7 +188,7 @@ class HgRepositoryClient {
           this._hgDiffCacheFilesToClear.add(filePath);
         }));
       });
-    }).subscribe(filePath => this._updateDiffInfo([filePath]));
+    }).subscribe(filePath => this._updateDiffInfo([filePath]).toPromise());
 
     this._subscriptions.add(diffStatsSubscription);
 
@@ -593,52 +604,86 @@ class HgRepositoryClient {
    *   if it has no changes, or if there is a pending `hg diff` call for it already.
    */
   _updateDiffInfo(filePaths) {
-    var _this = this;
+    const pathsToFetch = filePaths.filter(aPath => {
+      // Don't try to fetch information for this path if it's not in the repo.
+      if (!this.isPathRelevant(aPath)) {
+        return false;
+      }
+      // Don't do another update for this path if we are in the middle of running an update.
+      if (this._hgDiffCacheFilesUpdating.has(aPath)) {
+        return false;
+      } else {
+        this._hgDiffCacheFilesUpdating.add(aPath);
+        return true;
+      }
+    });
 
-    return (0, _asyncToGenerator.default)(function* () {
-      const pathsToFetch = filePaths.filter(function (aPath) {
-        // Don't try to fetch information for this path if it's not in the repo.
-        if (!_this.isPathRelevant(aPath)) {
-          return false;
+    if (pathsToFetch.length === 0) {
+      return _rxjsBundlesRxMinJs.Observable.of(new Map());
+    }
+
+    return this._getCurrentHeadId().switchMap(currentHeadId => {
+      return this._getFileDiffs(pathsToFetch, currentHeadId).do(pathsToDiffInfo => {
+        if (pathsToDiffInfo) {
+          for (const [filePath, diffInfo] of pathsToDiffInfo) {
+            this._hgDiffCache.set(filePath, diffInfo);
+          }
         }
-        // Don't do another update for this path if we are in the middle of running an update.
-        if (_this._hgDiffCacheFilesUpdating.has(aPath)) {
-          return false;
-        } else {
-          _this._hgDiffCacheFilesUpdating.add(aPath);
-          return true;
+
+        // Remove files marked for deletion.
+        this._hgDiffCacheFilesToClear.forEach(fileToClear => {
+          this._hgDiffCache.delete(fileToClear);
+        });
+        this._hgDiffCacheFilesToClear.clear();
+
+        // The fetched files can now be updated again.
+        for (const pathToFetch of pathsToFetch) {
+          this._hgDiffCacheFilesUpdating.delete(pathToFetch);
         }
+
+        // TODO (t9113913) Ideally, we could send more targeted events that better
+        // describe what change has occurred. Right now, GitRepository dictates either
+        // 'did-change-status' or 'did-change-statuses'.
+        this._emitter.emit('did-change-statuses');
       });
+    });
+  }
 
-      if (pathsToFetch.length === 0) {
-        return new Map();
+  _getFileDiffs(pathsToFetch, revision) {
+    const fileContents = pathsToFetch.map(filePath => {
+      const cachedContent = this._fileContentsAtHead.get(filePath);
+      let contentObservable;
+      if (cachedContent == null) {
+        contentObservable = this._service.fetchFileContentAtRevision(filePath, revision).refCount().map(contents => {
+          this._fileContentsAtHead.set(filePath, contents);
+          return contents;
+        });
+      } else {
+        contentObservable = _rxjsBundlesRxMinJs.Observable.of(cachedContent);
       }
+      return contentObservable.switchMap(content => {
+        return (0, (_utils || _load_utils()).gitDiffContentAgainstFile)(content, filePath);
+      }).map(diff => ({
+        filePath,
+        diff
+      }));
+    });
+    const diffs = _rxjsBundlesRxMinJs.Observable.merge(...fileContents).map(({ filePath, diff }) => {
+      // This is to differentiate between diff delimiter and the source
+      // eslint-disable-next-line no-useless-escape
+      const toParse = diff.split('\-\-\- ');
+      const lineDiff = (0, (_hgDiffOutputParser || _load_hgDiffOutputParser()).parseHgDiffUnifiedOutput)(toParse[1]);
+      return [filePath, lineDiff];
+    }).toArray().map(contents => new Map(contents));
+    return diffs;
+  }
 
-      // Call the HgService and update our cache with the results.
-      const pathsToDiffInfo = yield _this._service.fetchDiffInfo(pathsToFetch);
-      if (pathsToDiffInfo) {
-        for (const [filePath, diffInfo] of pathsToDiffInfo) {
-          _this._hgDiffCache.set(filePath, diffInfo);
-        }
-      }
+  _getCurrentHeadId() {
+    if (this._currentHeadId != null) {
+      return _rxjsBundlesRxMinJs.Observable.of(this._currentHeadId);
+    }
 
-      // Remove files marked for deletion.
-      _this._hgDiffCacheFilesToClear.forEach(function (fileToClear) {
-        _this._hgDiffCache.delete(fileToClear);
-      });
-      _this._hgDiffCacheFilesToClear.clear();
-
-      // The fetched files can now be updated again.
-      for (const pathToFetch of pathsToFetch) {
-        _this._hgDiffCacheFilesUpdating.delete(pathToFetch);
-      }
-
-      // TODO (t9113913) Ideally, we could send more targeted events that better
-      // describe what change has occurred. Right now, GitRepository dictates either
-      // 'did-change-status' or 'did-change-statuses'.
-      _this._emitter.emit('did-change-statuses');
-      return pathsToDiffInfo;
-    })();
+    return this._service.getHeadId().refCount().do(headId => this._currentHeadId = headId);
   }
 
   _updateInteractiveMode(isInteractiveMode) {
@@ -647,14 +692,6 @@ class HgRepositoryClient {
 
   fetchMergeConflictsWithDetails() {
     return this._service.fetchMergeConflictsWithDetails().refCount();
-  }
-
-  /*
-   * Setting fetchResolved will return all resolved and unresolved conflicts,
-   * the default would only fetch the current unresolved conflicts.
-   */
-  fetchMergeConflicts(fetchResolved) {
-    return this._service.fetchMergeConflicts(fetchResolved);
   }
 
   markConflictedFile(filePath, resolved) {
@@ -858,12 +895,16 @@ class HgRepositoryClient {
 
   commit(message, filePaths = []) {
     // TODO(T17463635)
-    return this._service.commit(message, filePaths).refCount().do(processMessage => this._clearOnSuccessExit(processMessage));
+    return this._service.commit(message, filePaths).refCount().do(processMessage => this._clearOnSuccessExit(processMessage, filePaths));
   }
 
   amend(message, amendMode, filePaths = []) {
     // TODO(T17463635)
-    return this._service.amend(message, amendMode, filePaths).refCount().do(processMessage => this._clearOnSuccessExit(processMessage));
+    return this._service.amend(message, amendMode, filePaths).refCount().do(processMessage => this._clearOnSuccessExit(processMessage, filePaths));
+  }
+
+  editCommitMessage(revision, message) {
+    return this._service.editCommitMessage(revision, message).refCount();
   }
 
   splitRevision() {
@@ -872,9 +913,9 @@ class HgRepositoryClient {
     return this._service.splitRevision().refCount().finally(this._updateInteractiveMode.bind(this, false));
   }
 
-  _clearOnSuccessExit(message) {
+  _clearOnSuccessExit(message, filePaths) {
     if (message.kind === 'exit' && message.exitCode === 0) {
-      this._clearClientCache();
+      this._clearClientCache(filePaths);
     }
   }
 
@@ -908,9 +949,20 @@ class HgRepositoryClient {
     return this._service.pull(options).refCount();
   }
 
-  _clearClientCache() {
-    this._hgDiffCache = new Map();
-    this._hgStatusCache = new Map();
+  _clearClientCache(filePaths) {
+    if (filePaths.length === 0) {
+      this._hgDiffCache = new Map();
+      this._hgStatusCache = new Map();
+      this._fileContentsAtHead.reset();
+      this._currentHeadId = null;
+    } else {
+      this._hgDiffCache = new Map(this._hgDiffCache);
+      this._hgStatusCache = new Map(this._hgStatusCache);
+      filePaths.forEach(filePath => {
+        this._hgDiffCache.delete(filePath);
+        this._hgStatusCache.delete(filePath);
+      });
+    }
     this._emitter.emit('did-change-statuses');
   }
 }

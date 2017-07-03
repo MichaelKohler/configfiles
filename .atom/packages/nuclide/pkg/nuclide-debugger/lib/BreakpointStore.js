@@ -75,6 +75,12 @@ class BreakpointStore {
       case (_DebuggerDispatcher || _load_DebuggerDispatcher()).ActionTypes.DELETE_ALL_BREAKPOINTS:
         this._deleteAllBreakpoints();
         break;
+      case (_DebuggerDispatcher || _load_DebuggerDispatcher()).ActionTypes.ENABLE_ALL_BREAKPOINTS:
+        this._enableAllBreakpoints();
+        break;
+      case (_DebuggerDispatcher || _load_DebuggerDispatcher()).ActionTypes.DISABLE_ALL_BREAKPOINTS:
+        this._disableAllBreakpoints();
+        break;
       case (_DebuggerDispatcher || _load_DebuggerDispatcher()).ActionTypes.TOGGLE_BREAKPOINT:
         this._toggleBreakpoint(payload.data.path, payload.data.line);
         break;
@@ -148,7 +154,7 @@ class BreakpointStore {
     });
   }
 
-  _deleteAllBreakpoints() {
+  _forEachBreakpoint(callback) {
     for (const path of this._breakpoints.keys()) {
       const lineMap = this._breakpoints.get(path);
 
@@ -157,9 +163,27 @@ class BreakpointStore {
       }
 
       for (const line of lineMap.keys()) {
-        this._deleteBreakpoint(path, line);
+        const bp = lineMap.get(line);
+
+        if (!(bp != null)) {
+          throw new Error('Invariant violation: "bp != null"');
+        }
+
+        callback(path, line, bp.id);
       }
     }
+  }
+
+  _deleteAllBreakpoints() {
+    this._forEachBreakpoint((path, line, breakpointId) => this._deleteBreakpoint(path, line));
+  }
+
+  _enableAllBreakpoints() {
+    this._forEachBreakpoint((path, line, breakpointId) => this._updateBreakpointEnabled(breakpointId, true));
+  }
+
+  _disableAllBreakpoints() {
+    this._forEachBreakpoint((path, line, breakpointId) => this._updateBreakpointEnabled(breakpointId, false));
   }
 
   _deleteBreakpoint(path, line, userAction = true) {

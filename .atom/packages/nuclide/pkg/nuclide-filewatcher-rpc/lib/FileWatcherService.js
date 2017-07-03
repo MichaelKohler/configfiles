@@ -37,6 +37,7 @@ let unwatchDirectoryRecursive = (() => {
 })();
 
 exports.watchFile = watchFile;
+exports.watchFileWithNode = watchFileWithNode;
 exports.watchDirectory = watchDirectory;
 exports.watchDirectoryRecursive = watchDirectoryRecursive;
 
@@ -51,6 +52,8 @@ var _SharedObservableCache;
 function _load_SharedObservableCache() {
   return _SharedObservableCache = _interopRequireDefault(require('../../commons-node/SharedObservableCache'));
 }
+
+var _fs = _interopRequireDefault(require('fs'));
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
 
@@ -82,10 +85,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // Cache an observable for each watched entity (file or directory).
 // Multiple watches for the same entity can share the same observable.
-const entityWatches = new (_SharedObservableCache || _load_SharedObservableCache()).default(registerWatch);
-
-// In addition, expose the observer behind each observable so we can
-// dispatch events from the root subscription.
 /**
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -97,6 +96,10 @@ const entityWatches = new (_SharedObservableCache || _load_SharedObservableCache
  * @format
  */
 
+const entityWatches = new (_SharedObservableCache || _load_SharedObservableCache()).default(registerWatch);
+
+// In addition, expose the observer behind each observable so we can
+// dispatch events from the root subscription.
 const entityObserver = new Map();
 
 let watchmanClient = null;
@@ -109,6 +112,19 @@ function getWatchmanClient() {
 
 function watchFile(filePath) {
   return watchEntity(filePath, true).publish();
+}
+
+function watchFileWithNode(filePath) {
+  return _rxjsBundlesRxMinJs.Observable.create(observer => {
+    const watcher = _fs.default.watch(filePath, { persistent: false }, eventType => {
+      if (eventType === 'rename') {
+        observer.next({ path: filePath, type: 'delete' });
+      } else {
+        observer.next({ path: filePath, type: 'change' });
+      }
+    });
+    return () => watcher.close();
+  }).publish();
 }
 
 function watchDirectory(directoryPath) {

@@ -2,40 +2,39 @@
   "_args": [
     [
       {
-        "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117512-34695-gm72gg.y0o9c9dx6r/package.tgz",
+        "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-11763-25969-cs2rts.phvrall3di/package.tgz",
         "scope": null,
         "escapedName": null,
         "name": null,
-        "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117512-34695-gm72gg.y0o9c9dx6r/package.tgz",
-        "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117512-34695-gm72gg.y0o9c9dx6r/package.tgz",
+        "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-11763-25969-cs2rts.phvrall3di/package.tgz",
+        "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-11763-25969-cs2rts.phvrall3di/package.tgz",
         "type": "local"
       },
-      "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-117512-34695-1g60wze.7sia0xusor"
+      "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-11763-25969-gyl4vz.f0l3sg7gb9"
     ]
   ],
-  "_from": "../d-117512-34695-gm72gg.y0o9c9dx6r/package.tgz",
-  "_id": "file-icons@2.1.7",
+  "_from": "../d-11763-25969-cs2rts.phvrall3di/package.tgz",
+  "_id": "file-icons@2.1.8",
   "_inCache": true,
-  "_installable": true,
   "_location": "/file-icons",
   "_phantomChildren": {},
   "_requested": {
-    "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117512-34695-gm72gg.y0o9c9dx6r/package.tgz",
+    "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-11763-25969-cs2rts.phvrall3di/package.tgz",
     "scope": null,
     "escapedName": null,
     "name": null,
-    "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117512-34695-gm72gg.y0o9c9dx6r/package.tgz",
-    "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117512-34695-gm72gg.y0o9c9dx6r/package.tgz",
+    "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-11763-25969-cs2rts.phvrall3di/package.tgz",
+    "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-11763-25969-cs2rts.phvrall3di/package.tgz",
     "type": "local"
   },
   "_requiredBy": [
     "#USER"
   ],
-  "_resolved": "file:../d-117512-34695-gm72gg.y0o9c9dx6r/package.tgz",
-  "_shasum": "130c9dad88f0de4892e3ed5380b871458e9b273c",
+  "_resolved": "file:../d-11763-25969-cs2rts.phvrall3di/package.tgz",
+  "_shasum": "75003478bfc451465680051982fdf8950a0da711",
   "_shrinkwrap": null,
-  "_spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117512-34695-gm72gg.y0o9c9dx6r/package.tgz",
-  "_where": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-117512-34695-1g60wze.7sia0xusor",
+  "_spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-11763-25969-cs2rts.phvrall3di/package.tgz",
+  "_where": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-11763-25969-gyl4vz.f0l3sg7gb9",
   "atomTestRunner": "atom-mocha",
   "bugs": {
     "url": "https://github.com/file-icons/atom/issues"
@@ -127,7 +126,7 @@
     "unzip": "*"
   },
   "engines": {
-    "atom": ">1.11.0"
+    "atom": ">1.17.0"
   },
   "homepage": "https://github.com/file-icons/atom",
   "license": "MIT",
@@ -153,7 +152,7 @@
     "type": "git",
     "url": "git+https://github.com/file-icons/atom.git"
   },
-  "version": "2.1.7",
+  "version": "2.1.8",
   "_atomModuleCache": {
     "version": 1,
     "dependencies": [
@@ -434,7 +433,7 @@
       },
       {
         "name": "isobject",
-        "version": "3.0.0",
+        "version": "3.0.1",
         "path": "node_modules/isobject/index.js"
       },
       {
@@ -584,12 +583,12 @@
       },
       {
         "name": "snapdragon-node",
-        "version": "2.0.1",
+        "version": "2.1.1",
         "path": "node_modules/snapdragon-node/index.js"
       },
       {
         "name": "snapdragon-util",
-        "version": "3.0.0",
+        "version": "3.0.1",
         "path": "node_modules/snapdragon-util/index.js"
       },
       {
@@ -1673,7 +1672,7 @@
         "dependencies": {
           "define-property": "^1.0.0",
           "isobject": "^3.0.0",
-          "snapdragon-util": "^3.0.0"
+          "snapdragon-util": "^3.0.1"
         }
       },
       {

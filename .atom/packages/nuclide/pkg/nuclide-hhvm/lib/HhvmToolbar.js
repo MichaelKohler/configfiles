@@ -61,13 +61,20 @@ class HhvmToolbar extends _react.default.Component {
   }
 
   _updateLastScriptCommand(command) {
-    if (this.props.projectStore.getDebugMode() === 'script') {
+    if (this.props.projectStore.getDebugMode() !== 'webserver') {
       this.props.projectStore.updateLastScriptCommand(command);
     }
   }
 
   _getMenuItems() {
-    return this._isTargetLaunchable(this.props.projectStore.getCurrentFilePath()) ? DEBUG_OPTIONS : NO_LAUNCH_DEBUG_OPTIONS;
+    const additionalOptions = [];
+    try {
+      // $FlowFB: This is suppressed elsewhere, so vary the filename.
+      const helpers = require('./fb-hhvm.js');
+      additionalOptions.push(...helpers.getAdditionalLaunchOptions());
+    } catch (e) {}
+
+    return (this._isTargetLaunchable(this.props.projectStore.getCurrentFilePath()) ? DEBUG_OPTIONS : NO_LAUNCH_DEBUG_OPTIONS).concat(additionalOptions);
   }
 
   _isTargetLaunchable(targetFilePath) {
@@ -91,14 +98,16 @@ class HhvmToolbar extends _react.default.Component {
     if (store.getDebugMode() === 'script' && !this._isTargetLaunchable(store.getCurrentFilePath())) {
       store.setDebugMode('webserver');
     }
+    this._suggestTargetIfCustomDebugMode(store.getDebugMode());
     this.refs.debugTarget.setText(store.getDebugTarget());
   }
 
   render() {
     const store = this.props.projectStore;
-    const isDebugScript = store.getDebugMode() === 'script';
+    const isDebugScript = store.getDebugMode() !== 'webserver';
     const isDisabled = !isDebugScript;
     const value = store.getDebugTarget();
+
     return _react.default.createElement(
       'div',
       { className: 'hhvm-toolbar' },
@@ -138,8 +147,24 @@ class HhvmToolbar extends _react.default.Component {
     );
   }
 
+  _suggestTargetIfCustomDebugMode(debugMode) {
+    // If a custom debug mode is selected, suggest a debug target for the user.
+    if (DEBUG_OPTIONS.find(option => option.value === debugMode) == null) {
+      try {
+        // $FlowFB
+        const helpers = require('./fb-hhvm');
+        const store = this.props.projectStore;
+        const suggestedTarget = helpers.suggestDebugTargetName(debugMode, store.getCurrentFilePath());
+        if (suggestedTarget != null) {
+          store.updateLastScriptCommand(suggestedTarget);
+        }
+      } catch (e) {}
+    }
+  }
+
   _handleDropdownChange(value) {
     this.props.projectStore.setDebugMode(value);
+    this._suggestTargetIfCustomDebugMode(value);
   }
 }
 exports.default = HhvmToolbar;

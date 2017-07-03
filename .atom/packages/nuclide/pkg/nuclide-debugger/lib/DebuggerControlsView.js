@@ -27,23 +27,22 @@ function _load_DebuggerStore() {
   return _DebuggerStore = require('./DebuggerStore');
 }
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _DebuggerControllerView;
 
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
+function _load_DebuggerControllerView() {
+  return _DebuggerControllerView = _interopRequireDefault(require('./DebuggerControllerView'));
+}
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 class DebuggerControlsView extends _react.default.PureComponent {
 
   constructor(props) {
     super(props);
+
+    this._openDevTools = this._openDevTools.bind(this);
+    this._stopDebugging = this._stopDebugging.bind(this);
+
     this._disposables = new _atom.CompositeDisposable();
     const debuggerStore = props.model.getStore();
     this.state = {
@@ -115,6 +114,17 @@ class DebuggerControlsView extends _react.default.PureComponent {
       { className: 'nuclide-debugger-container-new' },
       _react.default.createElement(
         'div',
+        { className: 'nuclide-debugger-section-header' },
+        _react.default.createElement((_DebuggerControllerView || _load_DebuggerControllerView()).default, {
+          store: model.getStore(),
+          bridge: model.getBridge(),
+          breakpointStore: model.getBreakpointStore(),
+          openDevTools: this._openDevTools,
+          stopDebugging: this._stopDebugging
+        })
+      ),
+      _react.default.createElement(
+        'div',
         { className: 'nuclide-debugger-section-header nuclide-debugger-controls-section' },
         _react.default.createElement((_DebuggerSteppingComponent || _load_DebuggerSteppingComponent()).DebuggerSteppingComponent, {
           actions: actions,
@@ -125,5 +135,24 @@ class DebuggerControlsView extends _react.default.PureComponent {
       debuggerStoppedNotice
     );
   }
+
+  _openDevTools() {
+    const { model } = this.props;
+    model.getActions().openDevTools();
+  }
+
+  _stopDebugging() {
+    const { model } = this.props;
+    model.getActions().stopDebugging();
+  }
 }
-exports.DebuggerControlsView = DebuggerControlsView;
+exports.DebuggerControlsView = DebuggerControlsView; /**
+                                                      * Copyright (c) 2015-present, Facebook, Inc.
+                                                      * All rights reserved.
+                                                      *
+                                                      * This source code is licensed under the license found in the LICENSE file in
+                                                      * the root directory of this source tree.
+                                                      *
+                                                      * 
+                                                      * @format
+                                                      */

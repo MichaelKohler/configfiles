@@ -222,20 +222,26 @@ class RemoteConnection {
     }, (() => {
       var _ref = (0, _asyncToGenerator.default)(function* (error) {
         let warningMessageToUser = '';
+        let detail;
         const fileSystemService = _this3.getService(FILE_SYSTEM_SERVICE);
         if (yield fileSystemService.isNfs(rootDirectoryUri)) {
           warningMessageToUser += `This project directory: \`${rootDirectoryPath}\` is on <b>\`NFS\`</b> filesystem. ` + 'Nuclide works best with local (non-NFS) root directory.' + 'e.g. `/data/users/$USER`' + 'features such as synced remote file editing, file search, ' + 'and Mercurial-related updates will not work.<br/>';
         } else {
-          warningMessageToUser += 'You just connected to a remote project ' + `\`${rootDirectoryPath}\` without Watchman support, which means that ` + 'crucial features such as synced remote file editing, file search, ' + 'and Mercurial-related updates will not work.<br/><br/>' + 'A possible workaround is to create an empty `.watchmanconfig` file ' + 'in the remote folder, which will enable Watchman if you have it installed.<br/><br/>';
+          warningMessageToUser += 'You just connected to a remote project ' + `\`${rootDirectoryPath}\` without Watchman support, which means that ` + 'crucial features such as synced remote file editing, file search, ' + 'and Mercurial-related updates will not work.';
 
-          const loggedErrorMessage = error.message || error;
-          logger.error(`Watcher failed to start - watcher features disabled! Error: ${loggedErrorMessage}`);
-
-          warningMessageToUser += '<b><a href="https://facebook.github.io/watchman/">Watchman</a> Error:</b>' + loggedErrorMessage;
+          const watchmanConfig = yield fileSystemService.findNearestAncestorNamed('.watchmanconfig', rootDirectoryUri).catch(function () {
+            return null;
+          });
+          if (watchmanConfig == null) {
+            warningMessageToUser += '<br/><br/>A possible workaround is to create an empty `.watchmanconfig` file ' + 'in the remote folder, which will enable Watchman if you have it installed.';
+          }
+          detail = error.message || error;
+          logger.error('Watchman failed to start - watcher features disabled!', error);
         }
         // Add a persistent warning message to make sure the user sees it before dismissing.
         atom.notifications.addWarning(warningMessageToUser, {
-          dismissable: true
+          dismissable: true,
+          detail
         });
       });
 

@@ -32,11 +32,12 @@ function _load_UniversalDisposable() {
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const doNothing = () => {}; /**
-                             * Copyright (c) 2015-present, Facebook, Inc.
+                             * Copyright (c) 2017-present, Facebook, Inc.
                              * All rights reserved.
                              *
-                             * This source code is licensed under the license found in the LICENSE file in
-                             * the root directory of this source tree.
+                             * This source code is licensed under the BSD-style license found in the
+                             * LICENSE file in the root directory of this source tree. An additional grant
+                             * of patent rights can be found in the PATENTS file in the same directory.
                              *
                              * 
                              * @format
@@ -59,6 +60,7 @@ function setupTextEditor(props) {
     autoHeight: props.autoGrow
   };
   const textEditor = atom.workspace.buildTextEditor(textEditorParams);
+  disposables.add(() => textEditor.destroy());
 
   if (props.grammar != null) {
     textEditor.setGrammar(props.grammar);

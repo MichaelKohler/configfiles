@@ -7,6 +7,13 @@ exports.JAVASCRIPT_WORD_REGEX = exports.JAVASCRIPT_WHOLE_STRING_IDENTIFIER_REGEX
 exports.getReplacementPrefix = getReplacementPrefix;
 exports.shouldFilter = shouldFilter;
 exports.filterResultsByPrefix = filterResultsByPrefix;
+exports.flowCoordsToAtomCoords = flowCoordsToAtomCoords;
+
+var _simpleTextBuffer;
+
+function _load_simpleTextBuffer() {
+  return _simpleTextBuffer = require('simple-text-buffer');
+}
 
 var _fuzzaldrinPlus;
 
@@ -17,16 +24,18 @@ function _load_fuzzaldrinPlus() {
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // A simple heuristic for identifier names in JavaScript.
-const JAVASCRIPT_IDENTIFIER_REGEX = exports.JAVASCRIPT_IDENTIFIER_REGEX = /[$_a-zA-Z][$_\w]*/g; /**
-                                                                                                 * Copyright (c) 2015-present, Facebook, Inc.
-                                                                                                 * All rights reserved.
-                                                                                                 *
-                                                                                                 * This source code is licensed under the license found in the LICENSE file in
-                                                                                                 * the root directory of this source tree.
-                                                                                                 *
-                                                                                                 * 
-                                                                                                 * @format
-                                                                                                 */
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ * @format
+ */
+
+const JAVASCRIPT_IDENTIFIER_REGEX = exports.JAVASCRIPT_IDENTIFIER_REGEX = /[$_a-zA-Z][$_\w]*/g;
 
 const JAVASCRIPT_WHOLE_STRING_IDENTIFIER_REGEX = exports.JAVASCRIPT_WHOLE_STRING_IDENTIFIER_REGEX = /^[$_a-zA-Z][$_\w]*$/;
 
@@ -77,4 +86,10 @@ function filterResultsByPrefix(prefix, results) {
     });
   }
   return Object.assign({}, results, { items });
+}
+
+function flowCoordsToAtomCoords(flowCoords) {
+  return new (_simpleTextBuffer || _load_simpleTextBuffer()).Range([flowCoords.start.line - 1, flowCoords.start.column - 1], [flowCoords.end.line - 1,
+  // Yes, this is inconsistent. Yes, it works as expected in practice.
+  flowCoords.end.column]);
 }

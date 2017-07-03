@@ -230,10 +230,6 @@ class PythonSingleFileLanguageService {
     return (0, (_DefinitionHelpers || _load_DefinitionHelpers()).getDefinition)(serverManager, filePath, buffer, position);
   }
 
-  getDefinitionById(file, id) {
-    return Promise.resolve(null);
-  }
-
   findReferences(filePath, buffer, position) {
     var _this = this;
 

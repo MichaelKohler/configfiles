@@ -141,7 +141,7 @@ class DebuggerInstance extends DebuggerInstanceBase {
     var _this = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      _this._useNewChannel = yield (0, (_NewProtocolChannelChecker || _load_NewProtocolChannelChecker()).isNewProtocolChannelEnabled)();
+      _this._useNewChannel = yield (0, (_NewProtocolChannelChecker || _load_NewProtocolChannelChecker()).isNewProtocolChannelEnabled)(_this.getProviderName());
       return Promise.resolve(_this._startChromeWebSocketServer());
     })();
   }

@@ -8,8 +8,8 @@ exports.formatCode = exports.getLocalReferences = exports.getOutline = exports.g
 var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
 
 let getClangService = (() => {
-  var _ref = (0, _asyncToGenerator.default)(function* (src, contents, compilationDBFile, defaultFlags, blocking) {
-    const server = serverManager.getClangServer(src, contents, compilationDBFile, defaultFlags);
+  var _ref = (0, _asyncToGenerator.default)(function* (src, contents, compilationDB, defaultFlags, blocking) {
+    const server = serverManager.getClangServer(src, contents, compilationDB, defaultFlags);
     if (!server.isReady()) {
       if (blocking) {
         yield server.waitForReady();
@@ -37,8 +37,8 @@ let getClangService = (() => {
 
 
 let getCompletions = exports.getCompletions = (() => {
-  var _ref3 = (0, _asyncToGenerator.default)(function* (src, contents, line, column, tokenStartColumn, prefix, compilationDBFile, defaultFlags) {
-    const service = yield getClangService(src, contents, compilationDBFile, defaultFlags);
+  var _ref3 = (0, _asyncToGenerator.default)(function* (src, contents, line, column, tokenStartColumn, prefix, compilationDB, defaultFlags) {
+    const service = yield getClangService(src, contents, compilationDB, defaultFlags);
     if (service != null) {
       return service.get_completions(contents, line, column, tokenStartColumn, prefix);
     }
@@ -50,8 +50,8 @@ let getCompletions = exports.getCompletions = (() => {
 })();
 
 let getDeclaration = exports.getDeclaration = (() => {
-  var _ref4 = (0, _asyncToGenerator.default)(function* (src, contents, line, column, compilationDBFile, defaultFlags) {
-    const service = yield getClangService(src, contents, compilationDBFile, defaultFlags);
+  var _ref4 = (0, _asyncToGenerator.default)(function* (src, contents, line, column, compilationDB, defaultFlags) {
+    const service = yield getClangService(src, contents, compilationDB, defaultFlags);
     if (service != null) {
       return service.get_declaration(contents, line, column);
     }
@@ -68,8 +68,8 @@ let getDeclaration = exports.getDeclaration = (() => {
 
 
 let getDeclarationInfo = exports.getDeclarationInfo = (() => {
-  var _ref5 = (0, _asyncToGenerator.default)(function* (src, contents, line, column, compilationDBFile, defaultFlags) {
-    const service = yield getClangService(src, contents, compilationDBFile, defaultFlags);
+  var _ref5 = (0, _asyncToGenerator.default)(function* (src, contents, line, column, compilationDB, defaultFlags) {
+    const service = yield getClangService(src, contents, compilationDB, defaultFlags);
     if (service != null) {
       return service.get_declaration_info(contents, line, column);
     }
@@ -81,8 +81,8 @@ let getDeclarationInfo = exports.getDeclarationInfo = (() => {
 })();
 
 let getRelatedSourceOrHeader = exports.getRelatedSourceOrHeader = (() => {
-  var _ref6 = (0, _asyncToGenerator.default)(function* (src, compilationDBFile) {
-    return serverManager.getClangFlagsManager().getRelatedSrcFileForHeader(src, compilationDBFile);
+  var _ref6 = (0, _asyncToGenerator.default)(function* (src, compilationDB) {
+    return serverManager.getClangFlagsManager().getRelatedSrcFileForHeader(src, compilationDB);
   });
 
   return function getRelatedSourceOrHeader(_x26, _x27) {
@@ -91,8 +91,8 @@ let getRelatedSourceOrHeader = exports.getRelatedSourceOrHeader = (() => {
 })();
 
 let getOutline = exports.getOutline = (() => {
-  var _ref7 = (0, _asyncToGenerator.default)(function* (src, contents, compilationDBFile, defaultFlags) {
-    const service = yield getClangService(src, contents, compilationDBFile, defaultFlags, true);
+  var _ref7 = (0, _asyncToGenerator.default)(function* (src, contents, compilationDB, defaultFlags) {
+    const service = yield getClangService(src, contents, compilationDB, defaultFlags, true);
     if (service != null) {
       return service.get_outline(contents);
     }
@@ -104,8 +104,8 @@ let getOutline = exports.getOutline = (() => {
 })();
 
 let getLocalReferences = exports.getLocalReferences = (() => {
-  var _ref8 = (0, _asyncToGenerator.default)(function* (src, contents, line, column, compilationDBFile, defaultFlags) {
-    const service = yield getClangService(src, contents, compilationDBFile, defaultFlags, true);
+  var _ref8 = (0, _asyncToGenerator.default)(function* (src, contents, line, column, compilationDB, defaultFlags) {
+    const service = yield getClangService(src, contents, compilationDB, defaultFlags, true);
     if (service != null) {
       return service.get_local_references(contents, line, column);
     }
@@ -145,11 +145,11 @@ let formatCode = exports.formatCode = (() => {
 /**
  * Kill the Clang server for a particular source file,
  * as well as all the cached compilation flags.
- * If no file is provided, all servers are reset.
  */
 
 
 exports.compile = compile;
+exports.resetForSource = resetForSource;
 exports.reset = reset;
 exports.dispose = dispose;
 
@@ -239,11 +239,11 @@ const ClangCursorToDeclarationTypes = exports.ClangCursorToDeclarationTypes = Ob
 
 const ClangCursorTypes = exports.ClangCursorTypes = (0, (_collection || _load_collection()).keyMirror)(ClangCursorToDeclarationTypes);
 
-function compile(src, contents, compilationDBFile, defaultFlags) {
+function compile(src, contents, compilationDB, defaultFlags) {
   const doCompile = (() => {
     var _ref2 = (0, _asyncToGenerator.default)(function* () {
       // Note: restarts the server if the flags changed.
-      const server = serverManager.getClangServer(src, contents, compilationDBFile, defaultFlags, true);
+      const server = serverManager.getClangServer(src, contents, compilationDB, defaultFlags, true);
       if (!server.isDisposed()) {
         return server.compile(contents);
       }
@@ -256,8 +256,15 @@ function compile(src, contents, compilationDBFile, defaultFlags) {
   return _rxjsBundlesRxMinJs.Observable.fromPromise(doCompile()).publish();
 }
 
-function reset(src) {
+function resetForSource(src) {
   serverManager.reset(src);
+}
+
+/**
+ * Reset all servers
+ */
+function reset() {
+  serverManager.reset();
 }
 
 function dispose() {

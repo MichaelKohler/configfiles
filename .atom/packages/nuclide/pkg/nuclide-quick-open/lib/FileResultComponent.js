@@ -18,18 +18,13 @@ function _load_PathWithFileIcon() {
   return _PathWithFileIcon = _interopRequireDefault(require('../../nuclide-ui/PathWithFileIcon'));
 }
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _groupMatchIndexes;
 
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
+function _load_groupMatchIndexes() {
+  return _groupMatchIndexes = _interopRequireDefault(require('nuclide-commons/groupMatchIndexes'));
+}
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function renderSubsequence(seq, props) {
   return seq.length === 0 ? null : _react.default.createElement(
@@ -37,7 +32,16 @@ function renderSubsequence(seq, props) {
     props,
     seq
   );
-}
+} /**
+   * Copyright (c) 2015-present, Facebook, Inc.
+   * All rights reserved.
+   *
+   * This source code is licensed under the license found in the LICENSE file in
+   * the root directory of this source tree.
+   *
+   * 
+   * @format
+   */
 
 function renderUnmatchedSubsequence(seq, key) {
   return renderSubsequence(seq, { key });
@@ -60,32 +64,7 @@ class FileResultComponent {
       matchIndexes = matchIndexes.map(i => i - (dirName.length - 1));
     }
 
-    let streakOngoing = false;
-    let start = 0;
-    const pathComponents = [];
-    // Split the path into highlighted and non-highlighted subsequences for optimal rendering perf.
-    // Do this in O(n) where n is the number of matchIndexes (ie. less than the length of the path).
-    matchIndexes.forEach((i, n) => {
-      if (matchIndexes[n + 1] === i + 1) {
-        if (!streakOngoing) {
-          pathComponents.push(renderUnmatchedSubsequence(filePath.slice(start, i), i));
-          start = i;
-          streakOngoing = true;
-        }
-      } else {
-        if (streakOngoing) {
-          pathComponents.push(renderMatchedSubsequence(filePath.slice(start, i + 1), i));
-          streakOngoing = false;
-        } else {
-          if (i > 0) {
-            pathComponents.push(renderUnmatchedSubsequence(filePath.slice(start, i), `before${i}`));
-          }
-          pathComponents.push(renderMatchedSubsequence(filePath.slice(i, i + 1), i));
-        }
-        start = i + 1;
-      }
-    });
-    pathComponents.push(renderUnmatchedSubsequence(filePath.slice(start, filePath.length), 'last'));
+    const pathComponents = (0, (_groupMatchIndexes || _load_groupMatchIndexes()).default)(filePath, matchIndexes, renderMatchedSubsequence, renderUnmatchedSubsequence);
     return _react.default.createElement(
       (_PathWithFileIcon || _load_PathWithFileIcon()).default,
       { path: (_nuclideUri || _load_nuclideUri()).default.basename(filePath) },

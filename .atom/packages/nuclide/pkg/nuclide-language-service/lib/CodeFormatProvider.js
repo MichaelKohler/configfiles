@@ -46,19 +46,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 class CodeFormatProvider {
 
-  constructor(name, selector, priority, analyticsEventName, connectionToLanguageService, busySignalProvider) {
+  constructor(name, grammarScopes, priority, analyticsEventName, connectionToLanguageService, busySignalProvider) {
     this.name = name;
-    this.selector = selector;
-    this.inclusionPriority = priority;
+    this.grammarScopes = grammarScopes;
+    this.priority = priority;
     this._connectionToLanguageService = connectionToLanguageService;
     this._busySignalProvider = busySignalProvider;
   }
 
-  static register(name, selector, config, connectionToLanguageService, busySignalProvider) {
-    const disposable = new (_UniversalDisposable || _load_UniversalDisposable()).default(atom.packages.serviceHub.provide('nuclide-code-format.provider', config.version, config.canFormatRanges ? new RangeFormatProvider(name, selector, config.priority, config.analyticsEventName, connectionToLanguageService, busySignalProvider).provide() : new FileFormatProvider(name, selector, config.priority, config.analyticsEventName, connectionToLanguageService, busySignalProvider).provide()));
+  static register(name, grammarScopes, config, connectionToLanguageService, busySignalProvider) {
+    const disposable = new (_UniversalDisposable || _load_UniversalDisposable()).default(config.canFormatRanges ? atom.packages.serviceHub.provide('atom-ide-code-format.range', config.version, new RangeFormatProvider(name, grammarScopes, config.priority, config.analyticsEventName, connectionToLanguageService, busySignalProvider).provide()) : atom.packages.serviceHub.provide('atom-ide-code-format.file', config.version, new FileFormatProvider(name, grammarScopes, config.priority, config.analyticsEventName, connectionToLanguageService, busySignalProvider).provide()));
 
     if (config.canFormatAtPosition) {
-      disposable.add(atom.packages.serviceHub.provide('nuclide-code-format.provider', config.version, new PositionFormatProvider(name, selector, config.priority, config.analyticsEventName, connectionToLanguageService, busySignalProvider).provide()));
+      disposable.add(atom.packages.serviceHub.provide('atom-ide-code-format.onType', config.version, new PositionFormatProvider(name, grammarScopes, config.priority, config.analyticsEventName, connectionToLanguageService, busySignalProvider).provide()));
     }
 
     return disposable;
@@ -67,8 +67,8 @@ class CodeFormatProvider {
 
 exports.CodeFormatProvider = CodeFormatProvider;
 class RangeFormatProvider extends CodeFormatProvider {
-  constructor(name, selector, priority, analyticsEventName, connectionToLanguageService, busySignalProvider) {
-    super(name, selector, priority, analyticsEventName, connectionToLanguageService, busySignalProvider);
+  constructor(name, grammarScopes, priority, analyticsEventName, connectionToLanguageService, busySignalProvider) {
+    super(name, grammarScopes, priority, analyticsEventName, connectionToLanguageService, busySignalProvider);
   }
 
   formatCode(editor, range) {
@@ -93,15 +93,15 @@ class RangeFormatProvider extends CodeFormatProvider {
   provide() {
     return {
       formatCode: this.formatCode.bind(this),
-      selector: this.selector,
-      inclusionPriority: this.inclusionPriority
+      grammarScopes: this.grammarScopes,
+      priority: this.priority
     };
   }
 }
 
 class FileFormatProvider extends CodeFormatProvider {
-  constructor(name, selector, priority, analyticsEventName, connectionToLanguageService, busySignalProvider) {
-    super(name, selector, priority, analyticsEventName, connectionToLanguageService, busySignalProvider);
+  constructor(name, grammarScopes, priority, analyticsEventName, connectionToLanguageService, busySignalProvider) {
+    super(name, grammarScopes, priority, analyticsEventName, connectionToLanguageService, busySignalProvider);
   }
 
   formatEntireFile(editor, range) {
@@ -126,8 +126,8 @@ class FileFormatProvider extends CodeFormatProvider {
   provide() {
     return {
       formatEntireFile: this.formatEntireFile.bind(this),
-      selector: this.selector,
-      inclusionPriority: this.inclusionPriority
+      grammarScopes: this.grammarScopes,
+      priority: this.priority
     };
   }
 }
@@ -155,8 +155,8 @@ class PositionFormatProvider extends CodeFormatProvider {
   provide() {
     return {
       formatAtPosition: this.formatAtPosition.bind(this),
-      selector: this.selector,
-      inclusionPriority: this.inclusionPriority
+      grammarScopes: this.grammarScopes,
+      priority: this.priority
     };
   }
 }

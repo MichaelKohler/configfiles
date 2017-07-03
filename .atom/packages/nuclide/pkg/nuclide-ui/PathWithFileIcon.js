@@ -38,7 +38,7 @@ class PathWithFileIcon extends _react.default.Component {
   constructor(props) {
     super(props);
     this._mounted = false;
-    this._disposables = new (_UniversalDisposable || _load_UniversalDisposable()).default(atom.packages.serviceHub.consume('file-icons.element-icons', '1.0.0', this._consumeFileIconService.bind(this)), () => {
+    this._disposables = new (_UniversalDisposable || _load_UniversalDisposable()).default(consumeServiceAsync('file-icons.element-icons', '1.0.0', this._consumeFileIconService.bind(this)), () => {
       if (this._fileIconsDisposable != null) {
         this._fileIconsDisposable.dispose();
       }
@@ -137,4 +137,38 @@ class PathWithFileIcon extends _react.default.Component {
     );
   }
 }
-exports.default = PathWithFileIcon;
+
+exports.default = PathWithFileIcon; /**
+                                     * Currently, Atom's service hub [provides services while iterating over consumers][0]. If, as a
+                                     * result of providing a service, new consumers are added, its array will be mutated, screwing up
+                                     * the next step of the iteration.
+                                     *
+                                     * This is the case with the above component as providing the service may cause it to be mounted (or
+                                     * unmounted), which in turn will cause it to consume (or "unconsume" by disposing) the service.
+                                     *
+                                     * This function is a workaround that delays both the consuming of the service and the disposal,
+                                     * without affecting the API. This way, the ServiceHub's array won't be synchronously mutated while
+                                     * iterating over it. We should be able to remove this workaround (in favor of calling
+                                     * `serviceHub.consume()` directly) once atom/service-hub#11 makes it into our oldest-supported
+                                     * version of Atom.
+                                     *
+                                     * [0]: https://github.com/atom/service-hub/blob/v0.7.3/src/service-hub.coffee#L32-L34
+                                     */
+
+function consumeServiceAsync(service, version, callback) {
+  let serviceDisposable;
+  // Don't call `consume()` synchronously.
+  const id = setImmediate(() => {
+    serviceDisposable = atom.packages.serviceHub.consume(service, version, callback);
+  });
+  return new (_UniversalDisposable || _load_UniversalDisposable()).default(() => {
+    clearImmediate(id);
+  }, () => {
+    if (serviceDisposable != null) {
+      // "unconsume" the service asynchronously too.
+      setImmediate(() => {
+        serviceDisposable.dispose();
+      });
+    }
+  });
+}

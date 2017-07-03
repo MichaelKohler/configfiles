@@ -419,12 +419,20 @@ class HgService {
         return;
       } else if (mergeDirectoryExists) {
         // Detect if the repository is in a conflict state.
-        const mergeConflicts = yield _this4.fetchMergeConflicts();
-        if (mergeConflicts.length > 0) {
+        const mergeConflicts = yield _this4._fetchMergeConflictsWithDetails();
+        if (mergeConflicts != null) {
           _this4._isInConflict = true;
           _this4._hgConflictStateDidChangeObserver.next(true);
         }
       }
+    })();
+  }
+
+  _fetchMergeConflictsWithDetails() {
+    var _this5 = this;
+
+    return (0, _asyncToGenerator.default)(function* () {
+      return _this5.fetchMergeConflictsWithDetails().refCount().toPromise();
     })();
   }
 
@@ -485,7 +493,7 @@ class HgService {
    *   If a path has no changes, it will not appear in the returned Map.
    */
   fetchDiffInfo(filePaths) {
-    var _this5 = this;
+    var _this6 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
       // '--unified 0' gives us 0 lines of context around each change (we don't
@@ -494,11 +502,11 @@ class HgService {
       // '--nodates' avoids appending dates to the file path line.
       const args = ['diff', '--unified', '0', '--noprefix', '--nodates'].concat(filePaths);
       const options = {
-        cwd: _this5._workingDirectory
+        cwd: _this6._workingDirectory
       };
       let output;
       try {
-        output = yield _this5._hgAsyncExecute(args, options);
+        output = yield _this6._hgAsyncExecute(args, options);
       } catch (e) {
         (0, (_log4js || _load_log4js()).getLogger)('nuclide-hg-rpc').error(`Error when running hg diff for paths: ${filePaths.toString()} \n\tError: ${e.stderr}`);
         return null;
@@ -506,7 +514,7 @@ class HgService {
       const pathToDiffInfo = (0, (_hgDiffOutputParser || _load_hgDiffOutputParser()).parseMultiFileHgDiffUnifiedOutput)(output.stdout);
       const absolutePathToDiffInfo = new Map();
       for (const [filePath, diffInfo] of pathToDiffInfo) {
-        absolutePathToDiffInfo.set((_nuclideUri || _load_nuclideUri()).default.join(_this5._workingDirectory, filePath), diffInfo);
+        absolutePathToDiffInfo.set((_nuclideUri || _load_nuclideUri()).default.join(_this6._workingDirectory, filePath), diffInfo);
       }
       return absolutePathToDiffInfo;
     })();
@@ -591,11 +599,11 @@ class HgService {
    * or `null` if no common ancestor was found.
    */
   fetchRevisionInfoBetweenHeadAndBase() {
-    var _this6 = this;
+    var _this7 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      const forkBaseName = yield getForkBaseName(_this6._workingDirectory);
-      const revisionsInfo = yield (0, (_hgRevisionExpressionHelpers || _load_hgRevisionExpressionHelpers()).fetchRevisionInfoBetweenRevisions)((0, (_hgRevisionExpressionHelpers || _load_hgRevisionExpressionHelpers()).expressionForCommonAncestor)(forkBaseName), (0, (_hgRevisionExpressionHelpers || _load_hgRevisionExpressionHelpers()).expressionForRevisionsBeforeHead)(0), _this6._workingDirectory);
+      const forkBaseName = yield getForkBaseName(_this7._workingDirectory);
+      const revisionsInfo = yield (0, (_hgRevisionExpressionHelpers || _load_hgRevisionExpressionHelpers()).fetchRevisionInfoBetweenRevisions)((0, (_hgRevisionExpressionHelpers || _load_hgRevisionExpressionHelpers()).expressionForCommonAncestor)(forkBaseName), (0, (_hgRevisionExpressionHelpers || _load_hgRevisionExpressionHelpers()).expressionForRevisionsBeforeHead)(0), _this7._workingDirectory);
       return revisionsInfo;
     })();
   }
@@ -608,11 +616,11 @@ class HgService {
    * Resolve the revision details of the base branch
    */
   getBaseRevision() {
-    var _this7 = this;
+    var _this8 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      const forkBaseName = yield getForkBaseName(_this7._workingDirectory);
-      return (0, (_hgRevisionExpressionHelpers || _load_hgRevisionExpressionHelpers()).fetchRevisionInfo)((0, (_hgRevisionExpressionHelpers || _load_hgRevisionExpressionHelpers()).expressionForCommonAncestor)(forkBaseName), _this7._workingDirectory);
+      const forkBaseName = yield getForkBaseName(_this8._workingDirectory);
+      return (0, (_hgRevisionExpressionHelpers || _load_hgRevisionExpressionHelpers()).fetchRevisionInfo)((0, (_hgRevisionExpressionHelpers || _load_hgRevisionExpressionHelpers()).expressionForCommonAncestor)(forkBaseName), _this8._workingDirectory);
     })();
   }
 
@@ -623,15 +631,15 @@ class HgService {
    * @return An Array that maps a line number (0-indexed) to the revision info.
    */
   getBlameAtHead(filePath) {
-    var _this8 = this;
+    var _this9 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
       let revisionsByLine;
       try {
-        revisionsByLine = (yield _this8._hgAsyncExecute(['blame', '-c', // Query the hash
-        '-T', '{node|short}\n', // Just display the hash per line
+        revisionsByLine = (yield _this9._hgAsyncExecute(['blame', '-c', // Query the hash
+        '-T', '{lines % "{node|short}\n"}', // Just display the hash per line
         '-r', 'wdir()', // Blank out uncommitted changes
-        filePath], { cwd: _this8._workingDirectory })).stdout.split('\n');
+        filePath], { cwd: _this9._workingDirectory })).stdout.split('\n');
       } catch (e) {
         (0, (_log4js || _load_log4js()).getLogger)('nuclide-hg-rpc').error(`LocalHgServiceBase failed to fetch blame for file: ${filePath}. Error: ${e.stderr}`);
         throw e;
@@ -643,7 +651,7 @@ class HgService {
 
       let revisionsArray;
       try {
-        revisionsArray = yield (0, (_hgRevisionExpressionHelpers || _load_hgRevisionExpressionHelpers()).fetchRevisionsInfo)(uniqueRevisions.join('+'), _this8._workingDirectory, { hidden: true, shouldLimit: false }).toPromise();
+        revisionsArray = yield (0, (_hgRevisionExpressionHelpers || _load_hgRevisionExpressionHelpers()).fetchRevisionsInfo)(uniqueRevisions.join('+'), _this9._workingDirectory, { hidden: true, shouldLimit: false }).toPromise();
       } catch (e) {
         (0, (_log4js || _load_log4js()).getLogger)('nuclide-hg-rpc').error(`LocalHgServiceBase failed to fetch blame for file: ${filePath}. Error: ${e.stderr}`);
         throw e;
@@ -665,15 +673,15 @@ class HgService {
    * @param key Name of config item
    */
   getConfigValueAsync(key) {
-    var _this9 = this;
+    var _this10 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
       const args = ['config', key];
       const execOptions = {
-        cwd: _this9._workingDirectory
+        cwd: _this10._workingDirectory
       };
       try {
-        return (yield _this9._hgAsyncExecute(args, execOptions)).stdout.trim();
+        return (yield _this10._hgAsyncExecute(args, execOptions)).stdout.trim();
       } catch (e) {
         (0, (_log4js || _load_log4js()).getLogger)('nuclide-hg-rpc').error(`Failed to fetch Hg config for key ${key}.  Error: ${e.toString()}`);
         return null;
@@ -688,15 +696,15 @@ class HgService {
    * https://bitbucket.org/facebook/hg-experimental/src/fbf23b3f96bade5986121a7c57d7400585d75f54/phabdiff.py.
    */
   getDifferentialRevisionForChangeSetId(changeSetId) {
-    var _this10 = this;
+    var _this11 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
       const args = ['log', '-T', '{phabdiff}\n', '--limit', '1', '--rev', changeSetId];
       const execOptions = {
-        cwd: _this10._workingDirectory
+        cwd: _this11._workingDirectory
       };
       try {
-        const output = yield _this10._hgAsyncExecute(args, execOptions);
+        const output = yield _this11._hgAsyncExecute(args, execOptions);
         const stdout = output.stdout.trim();
         return stdout ? stdout : null;
       } catch (e) {
@@ -715,18 +723,18 @@ class HgService {
    * @return The output from running the command.
    */
   getSmartlog(ttyOutput, concise) {
-    var _this11 = this;
+    var _this12 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
       // disable the pager extension so that 'hg ssl' terminates. We can't just use
       // HGPLAIN because we have not found a way to get colored output when we do.
       const args = ['--config', 'extensions.pager=!', concise ? 'ssl' : 'smartlog'];
       const execOptions = {
-        cwd: _this11._workingDirectory,
+        cwd: _this12._workingDirectory,
         NO_HGPLAIN: concise, // `hg ssl` is likely user-defined.
         TTY_OUTPUT: ttyOutput
       };
-      return _this11._hgAsyncExecute(args, execOptions);
+      return _this12._hgAsyncExecute(args, execOptions);
     })();
   }
 
@@ -763,6 +771,20 @@ class HgService {
   commit(message, filePaths = []) {
     // TODO(T17463635)
     return this._commitCode(message, ['commit', ...filePaths]).publish();
+  }
+
+  /*
+   * Edit commit message associated with a revision
+   * @param revision Hash of the revision to be updated
+   * @param message New commit message
+   * @return Process update message while running metaedit
+   */
+  editCommitMessage(revision, message) {
+    const args = ['metaedit', '-r', revision, '-m', message];
+    const execOptions = {
+      cwd: this._workingDirectory
+    };
+    return this._hgObserveExecution(args, execOptions).publish();
   }
 
   /**
@@ -819,15 +841,15 @@ class HgService {
   }
 
   _runSimpleInWorkingDirectory(action, args) {
-    var _this12 = this;
+    var _this13 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
       const options = {
-        cwd: _this12._workingDirectory
+        cwd: _this13._workingDirectory
       };
       const cmd = [action].concat(args);
       try {
-        yield _this12._hgAsyncExecute(cmd, options);
+        yield _this13._hgAsyncExecute(cmd, options);
       } catch (e) {
         const errorString = e.stderr || e.message || e.toString();
         (0, (_log4js || _load_log4js()).getLogger)('nuclide-hg-rpc').error('hg %s failed with [%s] arguments: %s', action, args.toString(), errorString);
@@ -850,7 +872,7 @@ class HgService {
     const executionOptions = {
       cwd: this._workingDirectory
     };
-    return (0, (_hgUtils || _load_hgUtils()).hgObserveExecution)(args, executionOptions).timeout(300000).switchMap((_hgUtils || _load_hgUtils()).processExitCodeAndThrow).publish();
+    return (0, (_hgUtils || _load_hgUtils()).hgObserveExecution)(args, executionOptions).switchMap((_hgUtils || _load_hgUtils()).processExitCodeAndThrow).publish();
   }
 
   show(revision) {
@@ -874,7 +896,7 @@ class HgService {
    * Undoes the effect of a local commit, specifically the working directory parent.
    */
   uncommit() {
-    return this._runSimpleInWorkingDirectory('strip', ['.', '--keep']);
+    return this._runSimpleInWorkingDirectory('reset', ['--rev', '.^']);
   }
 
   /**
@@ -889,11 +911,11 @@ class HgService {
    * @param create Currently, this parameter is ignored.
    */
   checkoutForkBase() {
-    var _this13 = this;
+    var _this14 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      const forkBaseName = yield getForkBaseName(_this13._workingDirectory);
-      yield _this13._runSimpleInWorkingDirectory('checkout', [forkBaseName]);
+      const forkBaseName = yield getForkBaseName(_this14._workingDirectory);
+      yield _this14._runSimpleInWorkingDirectory('checkout', [forkBaseName]);
     })();
   }
 
@@ -914,7 +936,7 @@ class HgService {
    * @param destPath What should the file be renamed/moved to.
    */
   rename(filePaths, destPath, after) {
-    var _this14 = this;
+    var _this15 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
       const args = [...filePaths.map(function (p) {
@@ -925,10 +947,10 @@ class HgService {
         args.unshift('--after');
       }
       try {
-        yield _this14._runSimpleInWorkingDirectory('rename', args);
+        yield _this15._runSimpleInWorkingDirectory('rename', args);
       } catch (e) {
         if (after) {
-          _this14._rethrowErrorIfHelpful(e);
+          _this15._rethrowErrorIfHelpful(e);
         } else {
           throw e;
         }
@@ -941,7 +963,7 @@ class HgService {
    * @param filePath Which file should be removed.
    */
   remove(filePaths, after) {
-    var _this15 = this;
+    var _this16 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
       const args = ['-f', ...filePaths.map(function (p) {
@@ -952,10 +974,10 @@ class HgService {
       }
 
       try {
-        yield _this15._runSimpleInWorkingDirectory('remove', args);
+        yield _this16._runSimpleInWorkingDirectory('remove', args);
       } catch (e) {
         if (after) {
-          _this15._rethrowErrorIfHelpful(e);
+          _this16._rethrowErrorIfHelpful(e);
         } else {
           throw e;
         }
@@ -969,14 +991,14 @@ class HgService {
    * @param filePath Which file(s) should be forgotten.
    */
   forget(filePaths) {
-    var _this16 = this;
+    var _this17 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
       const args = [...filePaths.map(function (p) {
         return (_nuclideUri || _load_nuclideUri()).default.getPath(p);
       })];
       try {
-        yield _this16._runSimpleInWorkingDirectory('forget', args);
+        yield _this17._runSimpleInWorkingDirectory('forget', args);
       } catch (e) {
         throw e;
       }
@@ -992,16 +1014,16 @@ class HgService {
   }
 
   getTemplateCommitMessage() {
-    var _this17 = this;
+    var _this18 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
       const args = ['debugcommitmessage'];
       const execOptions = {
-        cwd: _this17._workingDirectory
+        cwd: _this18._workingDirectory
       };
 
       try {
-        const { stdout } = yield _this17._hgAsyncExecute(args, execOptions);
+        const { stdout } = yield _this18._hgAsyncExecute(args, execOptions);
         return stdout;
       } catch (e) {
         (0, (_log4js || _load_log4js()).getLogger)('nuclide-hg-rpc').error('Failed when trying to get template commit message');
@@ -1011,15 +1033,15 @@ class HgService {
   }
 
   getHeadCommitMessage() {
-    var _this18 = this;
+    var _this19 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
       const args = ['log', '-T', '{desc}\n', '--limit', '1', '--rev', (0, (_hgRevisionExpressionHelpers || _load_hgRevisionExpressionHelpers()).expressionForRevisionsBeforeHead)(0)];
       const execOptions = {
-        cwd: _this18._workingDirectory
+        cwd: _this19._workingDirectory
       };
       try {
-        const output = yield _this18._hgAsyncExecute(args, execOptions);
+        const output = yield _this19._hgAsyncExecute(args, execOptions);
         const stdout = output.stdout.trim();
         return stdout || null;
       } catch (e) {
@@ -1031,7 +1053,7 @@ class HgService {
   }
 
   log(filePaths, limit) {
-    var _this19 = this;
+    var _this20 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
       const args = ['log', '-Tjson'];
@@ -1043,9 +1065,9 @@ class HgService {
       }
 
       const execOptions = {
-        cwd: _this19._workingDirectory
+        cwd: _this20._workingDirectory
       };
-      const result = yield _this19._hgAsyncExecute(args, execOptions);
+      const result = yield _this20._hgAsyncExecute(args, execOptions);
       const entries = JSON.parse(result.stdout);
       return { entries };
     })();
@@ -1082,79 +1104,6 @@ class HgService {
     })
     // `resolve --all` returns a non-zero exit code when there's no conflicts.
     .catch(() => _rxjsBundlesRxMinJs.Observable.of(null)).publish();
-  }
-
-  /*
-   * Setting fetchResolved will return all resolved and unresolved conflicts,
-   * the default would only fetch the current unresolved conflicts.
-   */
-  fetchMergeConflicts(fetchResolved) {
-    var _this20 = this;
-
-    return (0, _asyncToGenerator.default)(function* () {
-      const { stdout } = yield _this20._hgAsyncExecute(['resolve', '--list', '-Tjson'], {
-        cwd: _this20._workingDirectory
-      });
-      const fileListStatuses = JSON.parse(stdout);
-      const resolvedFiles = fetchResolved ? fileListStatuses.filter(function (fileStatus) {
-        return fileStatus.status === (_hgConstants || _load_hgConstants()).MergeConflictFileStatus.RESOLVED;
-      }).map(function (fileStatus) {
-        return {
-          path: fileStatus.path,
-          status: (_hgConstants || _load_hgConstants()).MergeConflictStatus.RESOLVED
-        };
-      }) : [];
-      const conflictedFiles = fileListStatuses.filter(function (fileStatus) {
-        return fileStatus.status === (_hgConstants || _load_hgConstants()).MergeConflictFileStatus.UNRESOLVED;
-      });
-      const origBackupPath = yield _this20._getOrigBackupPath();
-      const conflicts = yield Promise.all(conflictedFiles.map((() => {
-        var _ref5 = (0, _asyncToGenerator.default)(function* (conflictedFile) {
-          let status;
-          // Heuristic: If the `.orig` file doesn't exist, then it's deleted by the rebasing commit.
-          if (yield _this20._checkOrigFile(origBackupPath, conflictedFile.path)) {
-            status = (_hgConstants || _load_hgConstants()).MergeConflictStatus.BOTH_CHANGED;
-          } else {
-            status = (_hgConstants || _load_hgConstants()).MergeConflictStatus.DELETED_IN_THEIRS;
-          }
-          return {
-            path: conflictedFile.path,
-            status
-          };
-        });
-
-        return function (_x4) {
-          return _ref5.apply(this, arguments);
-        };
-      })()));
-      return [...conflicts, ...resolvedFiles];
-    })();
-  }
-
-  _getOrigBackupPath() {
-    var _this21 = this;
-
-    return (0, _asyncToGenerator.default)(function* () {
-      if (_this21._origBackupPath == null) {
-        const relativeBackupPath = yield _this21.getConfigValueAsync('ui.origbackuppath');
-        if (relativeBackupPath == null) {
-          _this21._origBackupPath = _this21._workingDirectory;
-        } else {
-          _this21._origBackupPath = (_nuclideUri || _load_nuclideUri()).default.join(_this21._workingDirectory, relativeBackupPath);
-        }
-      }
-      return _this21._origBackupPath;
-    })();
-  }
-
-  _checkOrigFile(origBackupPath, filePath) {
-    return (0, _asyncToGenerator.default)(function* () {
-      const origFilePath = (_nuclideUri || _load_nuclideUri()).default.join(origBackupPath, `${filePath}.orig`);
-      logger.info('origBackupPath:', origBackupPath);
-      logger.info('filePath:', filePath);
-      logger.info('origFilePath:', origFilePath);
-      return (_fsPromise || _load_fsPromise()).default.exists(origFilePath);
-    })();
   }
 
   markConflictedFile(filePath, resolved) {
@@ -1219,7 +1168,7 @@ class HgService {
    * @param destPath What should the new file be named to.
    */
   copy(filePaths, destPath, after) {
-    var _this22 = this;
+    var _this21 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
       const args = [...filePaths.map(function (p) {
@@ -1230,15 +1179,26 @@ class HgService {
         args.unshift('--after');
       }
       try {
-        yield _this22._runSimpleInWorkingDirectory('copy', args);
+        yield _this21._runSimpleInWorkingDirectory('copy', args);
       } catch (e) {
         if (after) {
-          _this22._rethrowErrorIfHelpful(e);
+          _this21._rethrowErrorIfHelpful(e);
         } else {
           throw e;
         }
       }
     })();
+  }
+
+  /**
+   * Gets the current head revision id
+   */
+  getHeadId() {
+    const args = ['log', '--template', '{node}', '--limit', '1'];
+    const execOptions = {
+      cwd: this._workingDirectory
+    };
+    return this._hgRunCommand(args, execOptions).publish();
   }
 }
 exports.HgService = HgService;

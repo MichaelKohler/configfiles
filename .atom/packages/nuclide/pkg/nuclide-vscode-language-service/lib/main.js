@@ -28,7 +28,7 @@ function _load_nuclideLanguageServiceRpc() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function createMultiLspLanguageService(logger, fileCache, host, consoleSource, command, args, projectFileName, fileExtensions) {
+function createMultiLspLanguageService(logger, fileCache, host, languageId, command, args, projectFileName, fileExtensions, initializationOptions) {
   const result = new (_nuclideLanguageServiceRpc || _load_nuclideLanguageServiceRpc()).MultiProjectLanguageService();
 
   // This MultiProjectLanguageService stores LspLanguageServices, lazily
@@ -49,7 +49,7 @@ function createMultiLspLanguageService(logger, fileCache, host, consoleSource, c
       // We're awaiting until AtomLanguageService has observed diagnostics (to
       // prevent race condition: see below).
 
-      const lsp = new (_LspLanguageService || _load_LspLanguageService()).LspLanguageService(logger, fileCache, (yield (0, (_nuclideLanguageServiceRpc || _load_nuclideLanguageServiceRpc()).forkHostServices)(host, logger)), consoleSource, command, args, projectDir, fileExtensions);
+      const lsp = new (_LspLanguageService || _load_LspLanguageService()).LspLanguageService(logger, fileCache, (yield (0, (_nuclideLanguageServiceRpc || _load_nuclideLanguageServiceRpc()).forkHostServices)(host, logger)), languageId, command, args, projectDir, fileExtensions, initializationOptions);
 
       lsp.start(); // Kick off 'Initializing'...
       return lsp;

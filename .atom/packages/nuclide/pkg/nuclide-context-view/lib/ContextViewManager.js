@@ -23,6 +23,12 @@ function _load_collection() {
   return _collection = require('nuclide-commons/collection');
 }
 
+var _UniversalDisposable;
+
+function _load_UniversalDisposable() {
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
+}
+
 var _react = _interopRequireDefault(require('react'));
 
 var _reactDom = _interopRequireDefault(require('react-dom'));
@@ -33,7 +39,11 @@ function _load_debounced() {
   return _debounced = require('nuclide-commons-atom/debounced');
 }
 
-var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
+var _ProviderRegistry;
+
+function _load_ProviderRegistry() {
+  return _ProviderRegistry = _interopRequireDefault(require('nuclide-commons-atom/ProviderRegistry'));
+}
 
 var _nuclideAnalytics;
 
@@ -101,7 +111,7 @@ class ContextViewManager {
     this._contextProviders = [];
     this._defServiceSubscription = null;
     this._settingDisposables = new Map();
-    this._definitionService = null;
+    this._definitionProviders = new (_ProviderRegistry || _load_ProviderRegistry()).default();
     this._isVisible = false;
     this._locked = false; // Should be unlocked by default
     this.currentDefinition = null;
@@ -112,10 +122,9 @@ class ContextViewManager {
     this._panelDOMElement = document.createElement('div');
     this._panelDOMElement.style.display = 'flex';
 
-    this._visibilitySubscription = (0, (_observePaneItemVisibility || _load_observePaneItemVisibility()).default)(this).subscribe(visible => {
+    this._disposables = new (_UniversalDisposable || _load_UniversalDisposable()).default((0, (_observePaneItemVisibility || _load_observePaneItemVisibility()).default)(this).subscribe(visible => {
       this.didChangeVisibility(visible);
-    });
-
+    }));
     this._render();
   }
   // Subscriptions to all changes in registered context providers' `priority` setting.
@@ -128,7 +137,7 @@ class ContextViewManager {
     this._settingDisposables.forEach(disposable => {
       disposable.dispose();
     });
-    this._visibilitySubscription.unsubscribe();
+    this._disposables.dispose();
   }
 
   hide() {
@@ -184,35 +193,39 @@ class ContextViewManager {
    * to the definition service to an Observable<Definition>, and
    * re-renders if necessary.
    */
-  consumeDefinitionService(service) {
-    this._definitionService = service;
+  consumeDefinitionProvider(provider) {
+    const disposable = this._definitionProviders.addProvider(provider);
+    this._disposables.add(disposable);
     this.updateSubscription();
     this._render();
+    return disposable;
   }
 
   /**
    * Subscribes or unsubscribes to definition service based on the current state.
    */
   updateSubscription() {
+    if (this._defServiceSubscription != null) {
+      this._defServiceSubscription.unsubscribe();
+      this._defServiceSubscription = null;
+    }
     // Only subscribe if panel showing && there's something to subscribe to && not locked
-    if (this._isVisible && this._definitionService != null && !this._locked) {
-      this._defServiceSubscription = (0, (_debounced || _load_debounced()).observeTextEditorsPositions)(EDITOR_DEBOUNCE_INTERVAL, POSITION_DEBOUNCE_INTERVAL).filter(editorPos => editorPos != null).map(editorPos => {
+    if (this._isVisible && !this._locked) {
+      this._defServiceSubscription = (0, (_debounced || _load_debounced()).observeTextEditorsPositions)(EDITOR_DEBOUNCE_INTERVAL, POSITION_DEBOUNCE_INTERVAL).filter(editorPos => editorPos != null).switchMap(editorPos => {
         return (0, (_nuclideAnalytics || _load_nuclideAnalytics()).trackTiming)('nuclide-context-view:getDefinition', () => {
           if (!(editorPos != null)) {
             throw new Error('Invariant violation: "editorPos != null"');
           }
 
-          if (!(this._definitionService != null)) {
-            throw new Error('Invariant violation: "this._definitionService != null"');
+          const definitionProvider = this._definitionProviders.getProviderForEditor(editorPos.editor);
+          if (definitionProvider == null) {
+            return Promise.resolve(null);
           }
-
-          return this._definitionService.getDefinition(editorPos.editor, editorPos.position).catch(error => {
+          return definitionProvider.getDefinition(editorPos.editor, editorPos.position).catch(error => {
             logger.error('Error querying definition service: ', error);
             return null;
           });
         });
-      }).switchMap(queryResult => {
-        return queryResult != null ? _rxjsBundlesRxMinJs.Observable.fromPromise(queryResult) : _rxjsBundlesRxMinJs.Observable.empty();
       }).map(queryResult => {
         if (queryResult != null) {
           (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)('nuclide-context-view:filterQueryResults', {
@@ -225,11 +238,6 @@ class ContextViewManager {
         return null;
       }).subscribe(def => this.updateCurrentDefinition(def));
       return;
-    }
-    // Otherwise, unsubscribe if there is a subscription
-    if (this._defServiceSubscription != null) {
-      this._defServiceSubscription.unsubscribe();
-      this._defServiceSubscription = null;
     }
   }
 

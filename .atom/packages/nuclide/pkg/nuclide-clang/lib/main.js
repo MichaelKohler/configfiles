@@ -83,18 +83,17 @@ function _load_libclang() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
+let busySignalService = null; /**
+                               * Copyright (c) 2015-present, Facebook, Inc.
+                               * All rights reserved.
+                               *
+                               * This source code is licensed under the license found in the LICENSE file in
+                               * the root directory of this source tree.
+                               *
+                               * 
+                               * @format
+                               */
 
-let busySignalService = null;
 let subscriptions = null;
 
 function activate() {
@@ -111,7 +110,7 @@ function activate() {
     if (path == null) {
       return;
     }
-    yield (0, (_libclang || _load_libclang()).reset)(editor);
+    yield (0, (_libclang || _load_libclang()).resetForSource)(editor);
   })));
 }
 
@@ -145,9 +144,6 @@ function provideDefinitions() {
     grammarScopes: (_constants || _load_constants()).GRAMMARS,
     getDefinition(editor, position) {
       return (_DefinitionHelpers || _load_DefinitionHelpers()).default.getDefinition(editor, position);
-    },
-    getDefinitionById(filePath, id) {
-      return (_DefinitionHelpers || _load_DefinitionHelpers()).default.getDefinitionById(filePath, id);
     }
   };
 }
@@ -167,8 +163,8 @@ function consumeBusySignal(service) {
 
 function provideCodeFormat() {
   return {
-    selector: Array.from((_constants || _load_constants()).GRAMMAR_SET).join(', '),
-    inclusionPriority: 1,
+    grammarScopes: Array.from((_constants || _load_constants()).GRAMMAR_SET),
+    priority: 1,
     formatEntireFile(editor, range) {
       return (_CodeFormatHelpers || _load_CodeFormatHelpers()).default.formatEntireFile(editor, range);
     }

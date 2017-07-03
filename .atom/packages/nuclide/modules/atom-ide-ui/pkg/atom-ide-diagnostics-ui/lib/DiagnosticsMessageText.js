@@ -42,11 +42,12 @@ function separateUrls(message) {
   }
   return parts;
 } /**
-   * Copyright (c) 2015-present, Facebook, Inc.
+   * Copyright (c) 2017-present, Facebook, Inc.
    * All rights reserved.
    *
-   * This source code is licensed under the license found in the LICENSE file in
-   * the root directory of this source tree.
+   * This source code is licensed under the BSD-style license found in the
+   * LICENSE file in the root directory of this source tree. An additional grant
+   * of patent rights can be found in the PATENTS file in the same directory.
    *
    * 
    * @format
@@ -81,12 +82,15 @@ function renderRowWithLinks(message, rowIndex) {
 const DiagnosticsMessageText = exports.DiagnosticsMessageText = props => {
   const { message } = props;
   if (message.html != null) {
-    return _react.default.createElement('span', { dangerouslySetInnerHTML: { __html: message.html } });
+    return _react.default.createElement('span', {
+      title: message.text,
+      dangerouslySetInnerHTML: { __html: message.html }
+    });
   } else if (message.text != null) {
     const rows = props.preserveNewlines !== false ? message.text.split('\n') : [message.text];
     return _react.default.createElement(
       'span',
-      null,
+      { title: message.text },
       rows.map(renderRowWithLinks)
     );
   } else {

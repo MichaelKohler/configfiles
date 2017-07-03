@@ -14,10 +14,10 @@ function _load_featureConfig() {
   return _featureConfig = _interopRequireDefault(require('nuclide-commons-atom/feature-config'));
 }
 
-var _hyperclickUtils;
+var _range;
 
-function _load_hyperclickUtils() {
-  return _hyperclickUtils = require('./hyperclick-utils');
+function _load_range() {
+  return _range = require('nuclide-commons-atom/range');
 }
 
 var _showTriggerConflictWarning;
@@ -41,11 +41,12 @@ const WARN_ABOUT_TRIGGER_CONFLICT_KEY = 'hyperclick.warnAboutTriggerConflict';
  * Call `dispose` to disable the feature.
  */
 /**
- * Copyright (c) 2015-present, Facebook, Inc.
+ * Copyright (c) 2017-present, Facebook, Inc.
  * All rights reserved.
  *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
  *
  * 
  * @format
@@ -182,7 +183,7 @@ class HyperclickForTextEditor {
     };
 
     // Don't fetch suggestions if the mouse is still in the same 'word', where
-    // 'word' is a whitespace-delimited group of characters.
+    // 'word' is defined by the wordRegExp at the current position.
     //
     // If the last suggestion had multiple ranges, we have no choice but to
     // fetch suggestions because the new word might be between those ranges.
@@ -192,8 +193,8 @@ class HyperclickForTextEditor {
     if (this._isMouseAtLastWordRange() && lastSuggestionIsNotMultiRange) {
       return;
     }
-    const { range } = (0, (_hyperclickUtils || _load_hyperclickUtils()).getWordTextAndRange)(this._textEditor, this._getMousePositionAsBufferPosition());
-    this._lastWordRange = range;
+    const match = (0, (_range || _load_range()).wordAtPosition)(this._textEditor, this._getMousePositionAsBufferPosition());
+    this._lastWordRange = match != null ? match.range : null;
 
     if (this._isHyperclickEvent(mouseEvent)) {
       // Clear the suggestion if the mouse moved out of the range.

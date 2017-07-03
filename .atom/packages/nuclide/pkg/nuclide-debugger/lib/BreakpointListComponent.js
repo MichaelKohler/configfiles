@@ -106,10 +106,14 @@ class BreakpointListComponent extends _react.default.Component {
     .sort((breakpointA, breakpointB) => 100 * (Number(breakpointB.resolved) - Number(breakpointA.resolved)) + 10 * breakpointA.basename.localeCompare(breakpointB.basename) + Math.sign(breakpointA.line - breakpointB.line)).map((breakpoint, i) => {
       const { basename, line, enabled, resolved, path } = breakpoint;
       const label = `${basename}:${line + 1}`;
-      const title = resolved ? null : 'Unresolved Breakpoint';
+      const title = !enabled ? 'Disabled breakpoint' : !resolved ? 'Unresolved Breakpoint' : `Breakpoint at ${label} (resolved)`;
       const content = _react.default.createElement(
         'div',
-        { className: 'nuclide-debugger-breakpoint', key: i },
+        {
+          className: (0, (_classnames || _load_classnames()).default)('nuclide-debugger-breakpoint', {
+            'nuclide-debugger-breakpoint-disabled': !enabled
+          }),
+          key: i },
         _react.default.createElement((_Checkbox || _load_Checkbox()).Checkbox, {
           checked: enabled,
           indeterminate: !resolved,

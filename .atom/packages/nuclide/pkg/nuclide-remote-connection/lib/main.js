@@ -51,7 +51,6 @@ exports.getHgServiceByNuclideUri = getHgServiceByNuclideUri;
 exports.getInfoServiceByNuclideUri = getInfoServiceByNuclideUri;
 exports.getMerlinServiceByNuclideUri = getMerlinServiceByNuclideUri;
 exports.getNativeDebuggerServiceByNuclideUri = getNativeDebuggerServiceByNuclideUri;
-exports.getNodeDebuggerServiceByNuclideUri = getNodeDebuggerServiceByNuclideUri;
 exports.getOpenFilesServiceByNuclideUri = getOpenFilesServiceByNuclideUri;
 exports.getPhpDebuggerServiceByNuclideUri = getPhpDebuggerServiceByNuclideUri;
 exports.getPythonServiceByNuclideUri = getPythonServiceByNuclideUri;
@@ -200,10 +199,6 @@ function getMerlinServiceByNuclideUri(uri) {
 
 function getNativeDebuggerServiceByNuclideUri(uri) {
   return (0, (_nullthrows || _load_nullthrows()).default)((0, (_serviceManager || _load_serviceManager()).getServiceByNuclideUri)('NativeDebuggerService', uri));
-}
-
-function getNodeDebuggerServiceByNuclideUri(uri) {
-  return (0, (_nullthrows || _load_nullthrows()).default)((0, (_serviceManager || _load_serviceManager()).getServiceByNuclideUri)('NodeDebuggerService', uri));
 }
 
 function getOpenFilesServiceByNuclideUri(uri) {

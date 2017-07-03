@@ -42,9 +42,9 @@
     }
   },
   "providedServices": {
-    "hyperclick.provider": {
+    "hyperclick": {
       "versions": {
-        "0.0.0": "getHyperclickProvider"
+        "0.1.0": "getHyperclickProvider"
       }
     },
     "atom-ide-diagnostics": {
@@ -60,6 +60,11 @@
     "nuclide.buck-platforms": {
       "versions": {
         "0.0.0": "providePlatformService"
+      }
+    },
+    "nuclide.clang.compilation-database": {
+      "versions": {
+        "0.0.0": "provideClangCompilationDatabase"
       }
     }
   },

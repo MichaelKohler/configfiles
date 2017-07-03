@@ -239,7 +239,7 @@ class DebuggerHandler extends (_Handler || _load_Handler()).default {
         _this5.replyWithError(id, 'Invalid arguments to Debugger.setBreakpointByUrl: ' + JSON.stringify(params));
         return;
       }
-      _this5._files.registerFile(url);
+      yield _this5._files.registerFile(url);
 
       const path = (0, (_helpers || _load_helpers()).uriToPath)(url);
       const breakpointStore = _this5._connectionMultiplexer.getBreakpointStore();
@@ -284,7 +284,7 @@ class DebuggerHandler extends (_Handler || _load_Handler()).default {
 
       const filePath = (_nuclideUri || _load_nuclideUri()).default.getPath(scriptId);
       const url = (0, (_helpers || _load_helpers()).pathToUri)(filePath);
-      _this6._files.registerFile(url);
+      yield _this6._files.registerFile(url);
 
       // Chrome lineNumber is 0-based while xdebug lineno is 1-based.
       _this6._temporaryBreakpointpointId = yield breakpointStore.setFileLineBreakpointForConnection(enabledConnection, String(id), filePath, lineNumber + 1,
@@ -355,7 +355,7 @@ class DebuggerHandler extends (_Handler || _load_Handler()).default {
 
     return (0, _asyncToGenerator.default)(function* () {
       (_utils2 || _load_utils2()).default.debug('Converting frame: ' + JSON.stringify(frame));
-      const file = _this10._files.registerFile((0, (_frame || _load_frame()).fileUrlOfFrame)(frame));
+      const file = yield _this10._files.registerFile((0, (_frame || _load_frame()).fileUrlOfFrame)(frame));
       const location = (0, (_frame || _load_frame()).locationOfFrame)(frame);
       const hasSource = yield file.hasSource();
       if (!hasSource) {

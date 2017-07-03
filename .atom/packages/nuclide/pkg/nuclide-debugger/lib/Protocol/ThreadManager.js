@@ -6,10 +6,10 @@ Object.defineProperty(exports, "__esModule", {
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
 
-var _Utils;
+var _EventReporter;
 
-function _load_Utils() {
-  return _Utils = require('./Utils');
+function _load_EventReporter() {
+  return _EventReporter = require('./EventReporter');
 }
 
 /**
@@ -41,7 +41,7 @@ class ThreadManager {
     return new Promise((resolve, reject) => {
       function callback(error, response) {
         if (error != null) {
-          (0, (_Utils || _load_Utils()).reportError)(`getThreadStack failed with ${JSON.stringify(error)}`);
+          (0, (_EventReporter || _load_EventReporter()).reportError)(`getThreadStack failed with ${JSON.stringify(error)}`);
           reject(error);
         }
         resolve(response.callFrames);

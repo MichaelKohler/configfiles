@@ -270,6 +270,13 @@ class FileTreeActions {
     });
   }
 
+  setAutoExpandSingleChild(autoExpandSingleChild) {
+    this._dispatcher.dispatch({
+      actionType: (_FileTreeDispatcher2 || _load_FileTreeDispatcher2()).ActionTypes.SET_AUTO_EXPAND_SINGLE_CHILD,
+      autoExpandSingleChild
+    });
+  }
+
   confirmNode(rootKey, nodeKey, pending = false) {
     const node = this._store.getNode(rootKey, nodeKey);
     if (node == null) {

@@ -103,7 +103,13 @@ function failConnection(socket, errorMessage) {
 }
 
 function isCorrectConnection(isAttachConnection, message) {
-  const { pid, idekeyRegex, attachScriptRegex, launchScriptPath } = (0, (_config || _load_config()).getConfig)();
+  const {
+    pid,
+    idekeyRegex,
+    attachScriptRegex,
+    launchScriptPath,
+    launchWrapperCommand
+  } = (0, (_config || _load_config()).getConfig)();
   if (!message || !message.init || !message.init.$) {
     (_utils || _load_utils()).default.error('Incorrect init');
     return false;
@@ -135,6 +141,10 @@ function isCorrectConnection(isAttachConnection, message) {
     // TODO: Pass arguments separately from script path so this check can be simpler.
     if (!(launchScriptPath != null)) {
       throw new Error('Null launchScriptPath in launch mode');
+    }
+
+    if (launchWrapperCommand != null) {
+      return (_nuclideUri || _load_nuclideUri()).default.basename(requestScriptPath) === launchWrapperCommand;
     }
 
     return (0, (_string || _load_string()).shellParse)(launchScriptPath)[0] === requestScriptPath;

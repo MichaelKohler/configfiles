@@ -113,7 +113,7 @@ class ClangServerManager {
    * Currently, there's no "status" observable, so we can only provide a busy signal to the user
    * on diagnostic requests - and hence we only restart on 'compile' requests.
    */
-  getClangServer(src, contents, compilationDBFile, defaultFlags, restartIfChanged) {
+  getClangServer(src, contents, compilationDB, defaultFlags, restartIfChanged) {
     let server = this._servers.get(src);
     if (server != null) {
       if (restartIfChanged && server.getFlagsChanged()) {
@@ -122,7 +122,7 @@ class ClangServerManager {
         return server;
       }
     }
-    server = new (_ClangServer || _load_ClangServer()).default(src, contents, (0, (_findClangServerArgs || _load_findClangServerArgs()).default)(src), this._getFlags(src, compilationDBFile, defaultFlags));
+    server = new (_ClangServer || _load_ClangServer()).default(src, contents, (0, (_findClangServerArgs || _load_findClangServerArgs()).default)(src), this._getFlags(src, compilationDB, defaultFlags));
     server.waitForReady().then(() => this._checkMemoryUsage());
     this._servers.set(src, server);
     return server;
@@ -130,11 +130,11 @@ class ClangServerManager {
 
   // 1. Attempt to get flags from ClangFlagsManager.
   // 2. Otherwise, fall back to default flags.
-  _getFlags(src, compilationDBFile, defaultFlags) {
+  _getFlags(src, compilationDB, defaultFlags) {
     var _this = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      const flagsData = yield _this._flagsManager.getFlagsForSrc(src, compilationDBFile).catch(function (e) {
+      const flagsData = yield _this._flagsManager.getFlagsForSrc(src, compilationDB).catch(function (e) {
         (0, (_log4js || _load_log4js()).getLogger)('nuclide-clang-rpc').error(`Error getting flags for ${src}:`, e);
         return null;
       });

@@ -7,6 +7,7 @@ exports.createDebuggerView = createDebuggerView;
 exports.activate = activate;
 exports.serialize = serialize;
 exports.deactivate = deactivate;
+exports.consumeOutputService = consumeOutputService;
 exports.consumeRegisterExecutor = consumeRegisterExecutor;
 exports.consumeDebuggerProvider = consumeDebuggerProvider;
 exports.consumeEvaluationExpressionProvider = consumeEvaluationExpressionProvider;
@@ -32,12 +33,6 @@ function _load_UniversalDisposable() {
 }
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
-
-var _classnames;
-
-function _load_classnames() {
-  return _classnames = _interopRequireDefault(require('classnames'));
-}
 
 var _atom = require('atom');
 
@@ -111,18 +106,6 @@ function _load_DebuggerStore() {
   return _DebuggerStore = require('./DebuggerStore');
 }
 
-var _NewDebuggerView;
-
-function _load_NewDebuggerView() {
-  return _NewDebuggerView = require('./NewDebuggerView');
-}
-
-var _DebuggerControllerView;
-
-function _load_DebuggerControllerView() {
-  return _DebuggerControllerView = _interopRequireDefault(require('./DebuggerControllerView'));
-}
-
 var _range;
 
 function _load_range() {
@@ -139,6 +122,12 @@ var _DebuggerPaneViewModel;
 
 function _load_DebuggerPaneViewModel() {
   return _DebuggerPaneViewModel = require('./DebuggerPaneViewModel');
+}
+
+var _DebuggerPaneContainerViewModel;
+
+function _load_DebuggerPaneContainerViewModel() {
+  return _DebuggerPaneContainerViewModel = require('./DebuggerPaneContainerViewModel');
 }
 
 var _os = _interopRequireDefault(require('os'));
@@ -207,89 +196,9 @@ function getLineForEvent(editor, event) {
   cursorLine);
 }
 
-class DebuggerView extends _react.default.Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      showOldView: false,
-      debuggerConnection: ''
-    };
-    this._openDevTools = this._openDevTools.bind(this);
-    this._stopDebugging = this._stopDebugging.bind(this);
-  }
-
-  _getUiTypeForAnalytics() {
-    return this.state.showOldView ? 'chrome-devtools' : 'nuclide';
-  }
-
-  componentDidMount() {
-    (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)((_constants || _load_constants()).AnalyticsEvents.DEBUGGER_UI_MOUNTED, {
-      frontend: this._getUiTypeForAnalytics()
-    });
-    // Wait for UI to initialize and "calm down"
-    this._nuxTimeout = setTimeout(() => {
-      if (activation != null && !this.state.showOldView) {
-        activation.tryTriggerNux(NUX_NEW_DEBUGGER_UI_ID);
-      }
-    }, 2000);
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.showOldView !== this.state.showOldView) {
-      (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)((_constants || _load_constants()).AnalyticsEvents.DEBUGGER_UI_TOGGLED, {
-        frontend: this._getUiTypeForAnalytics()
-      });
-    }
-  }
-
-  componentWillUnmount() {
-    if (this._nuxTimeout) {
-      clearTimeout(this._nuxTimeout);
-    }
-  }
-
-  _openDevTools() {
-    this.props.model.getActions().openDevTools();
-  }
-
-  _stopDebugging() {
-    this.props.model.getActions().stopDebugging();
-  }
-
-  render() {
-    const { model } = this.props;
-    const { showOldView } = this.state;
-    return _react.default.createElement(
-      'div',
-      { className: 'nuclide-debugger-root' },
-      _react.default.createElement(
-        'div',
-        {
-          className: (0, (_classnames || _load_classnames()).default)({
-            'nuclide-debugger-container-old-enabled': showOldView
-          }) },
-        _react.default.createElement((_DebuggerControllerView || _load_DebuggerControllerView()).default, {
-          store: model.getStore(),
-          bridge: model.getBridge(),
-          breakpointStore: model.getBreakpointStore(),
-          openDevTools: this._openDevTools,
-          stopDebugging: this._stopDebugging
-        })
-      ),
-      !showOldView ? _react.default.createElement((_NewDebuggerView || _load_NewDebuggerView()).NewDebuggerView, {
-        model: model,
-        watchExpressionListStore: model.getWatchExpressionListStore()
-      }) : null
-    );
-  }
-}
-
 function createDebuggerView(model) {
   let view = null;
-  if (model instanceof (_DebuggerModel || _load_DebuggerModel()).default) {
-    view = _react.default.createElement(DebuggerView, { model: model });
-  } else if (model instanceof (_DebuggerPaneViewModel || _load_DebuggerPaneViewModel()).DebuggerPaneViewModel) {
+  if (model instanceof (_DebuggerPaneViewModel || _load_DebuggerPaneViewModel()).DebuggerPaneViewModel || model instanceof (_DebuggerPaneContainerViewModel || _load_DebuggerPaneContainerViewModel()).DebuggerPaneContainerViewModel) {
     view = model.createView();
   }
 
@@ -381,6 +290,10 @@ class Activation {
     }), atom.commands.add('atom-workspace', {
       'nuclide-debugger:remove-all-breakpoints': this._deleteAllBreakpoints.bind(this)
     }), atom.commands.add('atom-workspace', {
+      'nuclide-debugger:enable-all-breakpoints': this._enableAllBreakpoints.bind(this)
+    }), atom.commands.add('atom-workspace', {
+      'nuclide-debugger:disable-all-breakpoints': this._disableAllBreakpoints.bind(this)
+    }), atom.commands.add('atom-workspace', {
       'nuclide-debugger:remove-breakpoint': this._deleteBreakpoint.bind(this)
     }), atom.commands.add('atom-workspace', {
       'nuclide-debugger:add-to-watch': this._addToWatch.bind(this)
@@ -394,6 +307,12 @@ class Activation {
     // Context Menu Items.
     atom.contextMenu.add({
       '.nuclide-debugger-breakpoint': [{
+        label: 'Enable All Breakpoints',
+        command: 'nuclide-debugger:enable-all-breakpoints'
+      }, {
+        label: 'Disable All Breakpoints',
+        command: 'nuclide-debugger:disable-all-breakpoints'
+      }, {
         label: 'Remove Breakpoint',
         command: 'nuclide-debugger:remove-breakpoint'
       }, {
@@ -594,6 +513,16 @@ class Activation {
     actions.deleteAllBreakpoints();
   }
 
+  _enableAllBreakpoints() {
+    const actions = this._model.getActions();
+    actions.enableAllBreakpoints();
+  }
+
+  _disableAllBreakpoints() {
+    const actions = this._model.getActions();
+    actions.disableAllBreakpoints();
+  }
+
   _renderConfigDialog(panel, chooseConnection, dialogMode, dialogCloser) {
     if (this._selectedDebugConnection == null) {
       // If no connection is selected yet, default to the local connection.
@@ -735,9 +664,8 @@ function createDatatipProvider() {
   if (datatipProvider == null) {
     datatipProvider = {
       // Eligibility is determined online, based on registered EvaluationExpression providers.
-      validForScope: scope => true,
       providerName: DATATIP_PACKAGE_NAME,
-      inclusionPriority: 1,
+      priority: 1,
       datatip: (editor, position) => {
         if (activation == null) {
           return Promise.resolve(null);
@@ -774,6 +702,10 @@ function deactivate() {
     activation.dispose();
     activation = null;
   }
+}
+
+function consumeOutputService(api) {
+  (0, (_nuclideDebuggerBase || _load_nuclideDebuggerBase()).setOutputService)(api);
 }
 
 function registerConsoleExecutor(watchExpressionStore, registerExecutor) {

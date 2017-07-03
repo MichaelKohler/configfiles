@@ -202,7 +202,12 @@
   "consumedServices": {
     "hyperclick.provider": {
       "versions": {
-        "0.0.0": "consumeProvider"
+        "0.0.0": "addLegacyProvider"
+      }
+    },
+    "hyperclick": {
+      "versions": {
+        "0.1.0": "addProvider"
       }
     }
   },
@@ -213,8 +218,5 @@
       }
     }
   },
-  "viewProviders" : [
-    "provideHyperclickView"
-  ],
   "private": true
 }

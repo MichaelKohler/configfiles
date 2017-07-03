@@ -7,6 +7,7 @@ exports.didActivateInitialPackages = didActivateInitialPackages;
 exports.registerTaskRunner = registerTaskRunner;
 exports.runTask = runTask;
 exports.selectTaskRunner = selectTaskRunner;
+exports.setStateForTaskRunner = setStateForTaskRunner;
 exports.setStatesForTaskRunners = setStatesForTaskRunners;
 exports.setProjectRoot = setProjectRoot;
 exports.setConsoleService = setConsoleService;
@@ -33,6 +34,7 @@ const REGISTER_TASK_RUNNER = exports.REGISTER_TASK_RUNNER = 'REGISTER_TASK_RUNNE
 const REQUEST_TOGGLE_TOOLBAR_VISIBILITY = exports.REQUEST_TOGGLE_TOOLBAR_VISIBILITY = 'REQUEST_TOGGLE_TOOLBAR_VISIBILITY';
 const RUN_TASK = exports.RUN_TASK = 'RUN_TASK';
 const SELECT_TASK_RUNNER = exports.SELECT_TASK_RUNNER = 'SELECT_TASK_RUNNER';
+const SET_STATE_FOR_TASK_RUNNER = exports.SET_STATE_FOR_TASK_RUNNER = 'SET_STATE_FOR_TASK_RUNNER';
 const SET_STATES_FOR_TASK_RUNNERS = exports.SET_STATES_FOR_TASK_RUNNERS = 'SET_STATES_FOR_TASK_RUNNERS';
 const SET_PROJECT_ROOT = exports.SET_PROJECT_ROOT = 'SET_PROJECT_ROOT';
 const SET_CONSOLE_SERVICE = exports.SET_CONSOLE_SERVICE = 'SET_CONSOLE_SERVICE';
@@ -79,6 +81,14 @@ function selectTaskRunner(taskRunner, updateUserPreferences) {
   };
 }
 
+function setStateForTaskRunner(taskRunner, taskRunnerState) {
+  return {
+    type: SET_STATE_FOR_TASK_RUNNER,
+    payload: { taskRunner, taskRunnerState }
+  };
+}
+
+// Only sets the states for task runners that have keys in the map
 function setStatesForTaskRunners(statesForTaskRunners) {
   return {
     type: SET_STATES_FOR_TASK_RUNNERS,

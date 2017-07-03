@@ -5,21 +5,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.activate = activate;
 exports.deactivate = deactivate;
-exports.createDebuggerProvider = createDebuggerProvider;
 exports.consumeOutputService = consumeOutputService;
 exports.consumeCwdApi = consumeCwdApi;
-
-var _nuclideUri;
-
-function _load_nuclideUri() {
-  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
-}
-
-var _ReactNativeLaunchAttachProvider;
-
-function _load_ReactNativeLaunchAttachProvider() {
-  return _ReactNativeLaunchAttachProvider = require('./debugging/ReactNativeLaunchAttachProvider');
-}
 
 var _Activation;
 
@@ -57,18 +44,6 @@ function deactivate() {
 
   activation.dispose();
   activation = null;
-}
-
-function createDebuggerProvider() {
-  return {
-    name: 'react-native',
-    getLaunchAttachProvider(connection) {
-      if ((_nuclideUri || _load_nuclideUri()).default.isLocal(connection)) {
-        return new (_ReactNativeLaunchAttachProvider || _load_ReactNativeLaunchAttachProvider()).ReactNativeLaunchAttachProvider('React Native', connection);
-      }
-      return null;
-    }
-  };
 }
 
 function consumeOutputService(api) {

@@ -47,16 +47,16 @@ function _load_loadingNotification() {
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // Diffing is O(lines^2), so don't bother for files with too many lines.
-const DIFF_LINE_LIMIT = 10000; /**
-                                * Copyright (c) 2015-present, Facebook, Inc.
-                                * All rights reserved.
-                                *
-                                * This source code is licensed under the license found in the LICENSE file in
-                                * the root directory of this source tree.
-                                *
-                                * 
-                                * @format
-                                */
+const DIFF_LINE_LIMIT = 5000; /**
+                               * Copyright (c) 2015-present, Facebook, Inc.
+                               * All rights reserved.
+                               *
+                               * This source code is licensed under the license found in the LICENSE file in
+                               * the root directory of this source tree.
+                               *
+                               * 
+                               * @format
+                               */
 
 class NuclideTextBuffer extends _atom.TextBuffer {
 
@@ -140,7 +140,7 @@ class NuclideTextBuffer extends _atom.TextBuffer {
         }
 
         _this._pendingSaveContents = toSaveContents;
-        yield (0, (_loadingNotification || _load_loadingNotification()).default)(file.write(toSaveContents), `Saving ${(_nuclideUri || _load_nuclideUri()).default.nuclideUriToDisplayString(filePath)}...`, 1000 /* delay */
+        yield (0, (_loadingNotification || _load_loadingNotification()).default)(file.write(toSaveContents), `Saving \`${(_nuclideUri || _load_nuclideUri()).default.nuclideUriToDisplayString(filePath)}\`...`, 1000 /* delay */
         );
         _this.cachedDiskContents = toSaveContents;
         _this._saveID++;

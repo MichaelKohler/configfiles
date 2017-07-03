@@ -81,10 +81,6 @@ class ServerLanguageService {
     })();
   }
 
-  getDefinitionById(file, id) {
-    return this._service.getDefinitionById(file, id);
-  }
-
   findReferences(fileVersion, position) {
     var _this4 = this;
 
@@ -237,20 +233,22 @@ null;
 
 function ensureInvalidations(logger, diagnostics) {
   const filesWithErrors = new Set();
-  const trackedDiagnostics = diagnostics.do(diagnostic => {
-    const filePath = diagnostic.filePath;
-    if (diagnostic.messages.length === 0) {
-      logger.debug(`Removing ${filePath} from files with errors`);
-      filesWithErrors.delete(filePath);
-    } else {
-      logger.debug(`Adding ${filePath} to files with errors`);
-      filesWithErrors.add(filePath);
+  const trackedDiagnostics = diagnostics.do(diagnosticArray => {
+    for (const diagnostic of diagnosticArray) {
+      const filePath = diagnostic.filePath;
+      if (diagnostic.messages.length === 0) {
+        logger.debug(`Removing ${filePath} from files with errors`);
+        filesWithErrors.delete(filePath);
+      } else {
+        logger.debug(`Adding ${filePath} to files with errors`);
+        filesWithErrors.add(filePath);
+      }
     }
   });
 
   const fileInvalidations = _rxjsBundlesRxMinJs.Observable.defer(() => {
     logger.debug('Clearing errors after stream closed');
-    return _rxjsBundlesRxMinJs.Observable.from(Array.from(filesWithErrors).map(file => {
+    return _rxjsBundlesRxMinJs.Observable.of(Array.from(filesWithErrors).map(file => {
       logger.debug(`Clearing errors for ${file} after connection closed`);
       return {
         filePath: file,

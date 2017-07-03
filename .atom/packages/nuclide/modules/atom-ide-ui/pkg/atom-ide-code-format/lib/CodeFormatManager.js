@@ -26,6 +26,12 @@ function _load_UniversalDisposable() {
   return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
+var _ProviderRegistry;
+
+function _load_ProviderRegistry() {
+  return _ProviderRegistry = _interopRequireDefault(require('nuclide-commons-atom/ProviderRegistry'));
+}
+
 var _textEditor;
 
 function _load_textEditor() {
@@ -52,31 +58,31 @@ function _load_log4js() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+const logger = (0, (_log4js || _load_log4js()).getLogger)('atom-ide-code-format');
+
+// Save events are critical, so don't allow providers to block them.
 /**
- * Copyright (c) 2015-present, Facebook, Inc.
+ * Copyright (c) 2017-present, Facebook, Inc.
  * All rights reserved.
  *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
  *
  * 
  * @format
  */
 
-const logger = (0, (_log4js || _load_log4js()).getLogger)('atom-ide-code-format');
-
-// Save events are critical, so don't allow providers to block them.
 const SAVE_TIMEOUT = 2500;
 
 class CodeFormatManager {
 
   constructor() {
-    this._rangeProviders = [];
-    this._fileProviders = [];
-    this._onTypeProviders = [];
-    this._onSaveProviders = [];
-
     this._subscriptions = new (_UniversalDisposable || _load_UniversalDisposable()).default(this._subscribeToEvents());
+    this._rangeProviders = new (_ProviderRegistry || _load_ProviderRegistry()).default();
+    this._fileProviders = new (_ProviderRegistry || _load_ProviderRegistry()).default();
+    this._onTypeProviders = new (_ProviderRegistry || _load_ProviderRegistry()).default();
+    this._onSaveProviders = new (_ProviderRegistry || _load_ProviderRegistry()).default();
   }
 
   /**
@@ -212,9 +218,8 @@ class CodeFormatManager {
         // selection.)
         formatRange = new _atom.Range([selectionStart.row, 0], selectionEnd.column === 0 ? selectionEnd : [selectionEnd.row + 1, 0]);
       }
-      const { scopeName } = editor.getGrammar();
-      const rangeProvider = this._getMatchingProviderForScopeName(this._rangeProviders, scopeName);
-      const fileProvider = this._getMatchingProviderForScopeName(this._fileProviders, scopeName);
+      const rangeProvider = this._rangeProviders.getProviderForEditor(editor);
+      const fileProvider = this._fileProviders.getProviderForEditor(editor);
       const contents = editor.getText();
       if (rangeProvider != null && (
       // When formatting the entire file, prefer file-based providers.
@@ -256,8 +261,7 @@ class CodeFormatManager {
       // the character that will usually cause a reformat (i.e. `}` instead of `{`).
       const character = event.newText[event.newText.length - 1];
 
-      const { scopeName } = editor.getGrammar();
-      const provider = this._getMatchingProviderForScopeName(this._onTypeProviders, scopeName);
+      const provider = this._onTypeProviders.getProviderForEditor(editor);
       if (provider == null) {
         return _rxjsBundlesRxMinJs.Observable.empty();
       }
@@ -276,7 +280,7 @@ class CodeFormatManager {
       // We want to wait until the cursor has actually moved before we issue a
       // format request, so that we format at the right position (and potentially
       // also let any other event handlers have their go).
-      return (_observable || _load_observable()).nextTick.switchMap(() => provider.formatAtPosition(editor, editor.getCursorBufferPosition().translate([0, -1]), character)).map(edits => {
+      return (_observable || _load_observable()).microtask.switchMap(() => provider.formatAtPosition(editor, editor.getCursorBufferPosition().translate([0, -1]), character)).map(edits => {
         if (edits.length === 0) {
           return;
         }
@@ -293,9 +297,7 @@ class CodeFormatManager {
   }
 
   _formatCodeOnSaveInTextEditor(editor) {
-    const { scopeName } = editor.getGrammar();
-    const saveProvider = this._getMatchingProviderForScopeName(this._onSaveProviders, scopeName);
-
+    const saveProvider = this._onSaveProviders.getProviderForEditor(editor);
     if (saveProvider != null) {
       return _rxjsBundlesRxMinJs.Observable.fromPromise(saveProvider.formatOnSave(editor)).map(edits => {
         (0, (_textEdit || _load_textEdit()).applyTextEditsToBuffer)(editor.getBuffer(), edits);
@@ -306,38 +308,20 @@ class CodeFormatManager {
     return _rxjsBundlesRxMinJs.Observable.empty();
   }
 
-  _getMatchingProviderForScopeName(providers, scopeName) {
-    return providers.find(provider => {
-      const providerGrammars = provider.selector.split(/, ?/);
-      return provider.inclusionPriority > 0 && providerGrammars.indexOf(scopeName) !== -1;
-    });
-  }
-
   addRangeProvider(provider) {
-    return this._addProvider(this._rangeProviders, provider);
+    return this._rangeProviders.addProvider(provider);
   }
 
   addFileProvider(provider) {
-    return this._addProvider(this._fileProviders, provider);
+    return this._fileProviders.addProvider(provider);
   }
 
   addOnTypeProvider(provider) {
-    return this._addProvider(this._onTypeProviders, provider);
+    return this._onTypeProviders.addProvider(provider);
   }
 
   addOnSaveProvider(provider) {
-    return this._addProvider(this._onSaveProviders, provider);
-  }
-
-  _addProvider(providers, provider) {
-    providers.push(provider);
-    providers.sort((a, b) => b.inclusionPriority - a.inclusionPriority);
-    return new (_UniversalDisposable || _load_UniversalDisposable()).default(() => {
-      const index = providers.indexOf(provider);
-      if (index !== -1) {
-        providers.splice(index);
-      }
-    });
+    return this._onSaveProviders.addProvider(provider);
   }
 
   dispose() {

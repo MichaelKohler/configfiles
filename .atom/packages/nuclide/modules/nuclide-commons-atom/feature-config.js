@@ -6,13 +6,19 @@ Object.defineProperty(exports, "__esModule", {
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
 
-// Default to "nuclide", but only for unit tests.
+let packageName = null;
+
 /**
- * Copyright (c) 2015-present, Facebook, Inc.
+ * Sets the root package name.
+ * This gets automatically called from FeatureLoader.
+ */
+/**
+ * Copyright (c) 2017-present, Facebook, Inc.
  * All rights reserved.
  *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
  *
  * 
  * @format
@@ -23,21 +29,14 @@ var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
  * Each individual loaded package's config is a subconfig of the root package.
  */
 
-let packageName = atom.inSpecMode() ? 'nuclide' : null;
-
-/**
- * Sets the root package name.
- * This gets automatically called from FeatureLoader.
- */
 function setPackageName(name) {
   packageName = name;
 }
 
 function formatKeyPath(keyPath) {
-  if (!packageName) {
-    throw new Error('feature-config must be used with FeatureLoader.');
+  if (packageName == null) {
+    return keyPath;
   }
-
   return `${packageName}.${keyPath}`;
 }
 
@@ -129,10 +128,9 @@ function unset(keyPath, options) {
  * container package itself is disabled.
  */
 function isFeatureDisabled(name) {
-  if (!packageName) {
-    throw new Error('feature-config must be used with FeatureLoader.');
+  if (packageName == null) {
+    return atom.packages.isPackageDisabled(name);
   }
-
   return atom.packages.isPackageDisabled(packageName) || !atom.config.get(`${packageName}.use.${name}`);
 }
 

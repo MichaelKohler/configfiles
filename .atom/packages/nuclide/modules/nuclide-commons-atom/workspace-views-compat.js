@@ -29,11 +29,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * non-nuclide items.
  */
 /**
- * Copyright (c) 2015-present, Facebook, Inc.
+ * Copyright (c) 2017-present, Facebook, Inc.
  * All rights reserved.
  *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
  *
  * 
  * @format
@@ -69,12 +70,18 @@ function getDocksWorkspaceViewsService() {
         // eslint-disable-next-line nuclide-internal/atom-apis
         atom.workspace.open(uri, { searchAllPanes: true });
       } else if (visible === false) {
-        // TODO: Add `atom.workspace.hide()` and use that instead.
-        const hasItem = atom.workspace.getPaneItems().some(item => typeof item.getURI === 'function' && item.getURI() === uri);
-        if (hasItem) {
-          // TODO(matthewwithanm): Add this to the Flow defs once docks land
-          // $FlowIgnore
-          atom.workspace.toggle(uri);
+        // TODO(jxg) remove this once Atom 1.17 lands.
+        if (typeof atom.workspace.hide === 'function') {
+          // Atom version >=1.17
+          atom.workspace.hide(uri);
+        } else {
+          // Atom version <1.17
+          const hasItem = atom.workspace.getPaneItems().some(item => typeof item.getURI === 'function' && item.getURI() === uri);
+          if (hasItem) {
+            // TODO(matthewwithanm): Add this to the Flow defs once docks land
+            // $FlowIgnore
+            atom.workspace.toggle(uri);
+          }
         }
       } else {
         // TODO(matthewwithanm): Add this to the Flow defs once docks land

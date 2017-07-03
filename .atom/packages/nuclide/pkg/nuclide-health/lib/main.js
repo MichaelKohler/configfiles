@@ -66,7 +66,31 @@ function _load_getStats() {
   return _getStats = _interopRequireDefault(require('./getStats'));
 }
 
+var _trackStalls;
+
+function _load_trackStalls() {
+  return _trackStalls = _interopRequireDefault(require('./trackStalls'));
+}
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// Imports from within this Nuclide package.
+
+
+// Imports from other Nuclide packages.
+
+
+// Imports from non-Nuclide modules.
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ * @format
+ */
 
 class Activation {
 
@@ -99,7 +123,7 @@ class Activation {
     // Keep the toolbar jewel up-to-date.
     packageStates.map(formatToolbarJewelLabel).subscribe(this._updateToolbarJewel),
     // Buffer the stats and send analytics periodically.
-    statsStream.buffer(analyticsTimeouts.switchMap(_rxjsBundlesRxMinJs.Observable.interval)).subscribe(this._updateAnalytics));
+    statsStream.buffer(analyticsTimeouts.switchMap(_rxjsBundlesRxMinJs.Observable.interval)).subscribe(this._updateAnalytics), (0, (_trackStalls || _load_trackStalls()).default)());
   }
 
   dispose() {
@@ -176,24 +200,6 @@ class Activation {
     (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)('nuclide-health', aggregateStats);
   }
 }
-
-// Imports from within this Nuclide package.
-
-
-// Imports from other Nuclide packages.
-
-
-// Imports from non-Nuclide modules.
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
 
 function aggregate(values) {
   const avg = values.reduce((prevValue, currValue, index) => {

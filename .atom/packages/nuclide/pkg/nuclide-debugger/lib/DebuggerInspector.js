@@ -34,7 +34,7 @@ class DebuggerInspector extends _react.default.PureComponent {
   render() {
     return _react.default.createElement(
       'div',
-      { className: 'inspector' },
+      { className: 'inspector', style: { 'text-align': 'right' } },
       _react.default.createElement(
         'div',
         { className: 'control-bar' },

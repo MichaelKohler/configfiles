@@ -184,9 +184,10 @@ class WorkingSetSelectionComponent extends _react.default.Component {
   _checkFocus(event) {
     const node = _reactDom.default.findDOMNode(this);
     // If the next active element (`event.relatedTarget`) is not a descendant of this modal, close
-    // the modal.
+    // the modal.  In the case of a canceled _deleteWorkingSet, relatedTarget is null
+    // and we don't want to close the modal
     // $FlowFixMe
-    if (!node.contains(event.relatedTarget)) {
+    if (event.relatedTarget != null && !node.contains(event.relatedTarget)) {
       this.props.onClose();
     }
   }
@@ -200,7 +201,13 @@ class WorkingSetSelectionComponent extends _react.default.Component {
   }
 
   _deleteWorkingSet(name) {
-    this.props.workingSetsStore.deleteWorkingSet(name);
+    const result = atom.confirm({
+      message: `Please confirm: delete working set '${name}'?`,
+      buttons: ['Delete', 'Cancel']
+    });
+    if (result === 0) {
+      this.props.workingSetsStore.deleteWorkingSet(name);
+    }
   }
 }
 

@@ -24,6 +24,12 @@ function _load_featureConfig() {
   return _featureConfig = _interopRequireDefault(require('nuclide-commons-atom/feature-config'));
 }
 
+var _disablePackage;
+
+function _load_disablePackage() {
+  return _disablePackage = _interopRequireDefault(require('../../commons-atom/disablePackage'));
+}
+
 var _viewableFromReactElement;
 
 function _load_viewableFromReactElement() {
@@ -76,16 +82,18 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * Minimum interval (in ms) between onChangeActivePaneItem events before revealing the active pane
  * item in the file tree.
  */
-const OPEN_FILES_UPDATE_DEBOUNCE_INTERVAL_MS = 150; /**
-                                                     * Copyright (c) 2015-present, Facebook, Inc.
-                                                     * All rights reserved.
-                                                     *
-                                                     * This source code is licensed under the license found in the LICENSE file in
-                                                     * the root directory of this source tree.
-                                                     *
-                                                     * 
-                                                     * @format
-                                                     */
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ * @format
+ */
+
+const OPEN_FILES_UPDATE_DEBOUNCE_INTERVAL_MS = 150;
 
 const DESERIALIZER_VERSION = atom.workspace.getLeftDock == null ? 1 : 2;
 
@@ -98,21 +106,18 @@ class Activation {
       state = {};
     }
 
-    // Disable Atom's bundled 'tree-view' package. If this activation is happening during the
-    // normal startup activation, the `onDidActivateInitialPackages` handler below must unload the
-    // 'tree-view' because it will have been loaded during startup.
-    disableTreeViewPackage();
-
-    // Disabling and unloading Atom's bundled 'tree-view' must happen after activation because this
-    // package's `activate` is called during an traversal of all initial packages to activate.
-    // Disabling a package during the traversal has no effect if this is a startup load because
-    // `PackageManager` does not re-load the list of packages to activate after each iteration.
-    this._didActivateDisposable = atom.packages.onDidActivateInitialPackages(() => {
-      disableTreeViewPackage();
-      this._didActivateDisposable.dispose();
-    });
-
-    this._disposables = new (_UniversalDisposable || _load_UniversalDisposable()).default(this._didActivateDisposable, () => {
+    this._disposables = new (_UniversalDisposable || _load_UniversalDisposable()).default((0, (_disablePackage || _load_disablePackage()).default)('tree-view'),
+    // This is a horrible hack to work around the fact that the tree view doesn't properly clean
+    // up after its views when disabled as soon as it's activated. See atom/tree-view#1136
+    (0, (_event || _load_event()).observableFromSubscribeFunction)(atom.workspace.observePaneItems.bind(atom.workspace))
+    // Wait for any post-addition work to be done by tree-view.
+    // $FlowFixMe: Add `delayWhen` to RxJS defs
+    .delayWhen(() => (_observable || _load_observable()).macrotask).subscribe(item => {
+      if (item != null && typeof item.getURI === 'function' && item.getURI() === 'atom://tree-view' && atom.packages.isPackageDisabled('tree-view') && atom.workspace.paneForItem(item) && // Make sure it's still in the workspace.
+      typeof item.destroy === 'function') {
+        item.destroy();
+      }
+    }), () => {
       this._fileTreeController.destroy();
     });
 
@@ -124,8 +129,9 @@ class Activation {
     const ignoredNamesSetting = 'core.ignoredNames';
     const prefixKeyNavSetting = 'nuclide-file-tree.allowKeyboardPrefixNavigation';
     const allowPendingPaneItems = 'core.allowPendingPaneItems';
+    const autoExpandSingleChild = 'nuclide-file-tree.autoExpandSingleChild';
 
-    this._disposables.add(this._fixContextMenuHighlight(), (_featureConfig || _load_featureConfig()).default.observe(prefixKeyNavSetting, x => this._setPrefixKeyNavSetting(x)), (_featureConfig || _load_featureConfig()).default.observe((_Constants || _load_Constants()).REVEAL_FILE_ON_SWITCH_SETTING, x => this._setRevealOnFileSwitch(x)), atom.config.observe(ignoredNamesSetting, x => this._setIgnoredNames(x)), (_featureConfig || _load_featureConfig()).default.observe(hideIgnoredNamesSetting, x => this._setHideIgnoredNames(x)), atom.config.observe(excludeVcsIgnoredPathsSetting, this._setExcludeVcsIgnoredPaths.bind(this)), atom.config.observe(allowPendingPaneItems, this._setUsePreviewTabs.bind(this)), atom.commands.add('atom-workspace', 'nuclide-file-tree:toggle-focus', () => {
+    this._disposables.add(this._fixContextMenuHighlight(), (_featureConfig || _load_featureConfig()).default.observe(prefixKeyNavSetting, x => this._setPrefixKeyNavSetting(x)), (_featureConfig || _load_featureConfig()).default.observe((_Constants || _load_Constants()).REVEAL_FILE_ON_SWITCH_SETTING, x => this._setRevealOnFileSwitch(x)), atom.config.observe(ignoredNamesSetting, x => this._setIgnoredNames(x)), (_featureConfig || _load_featureConfig()).default.observe(hideIgnoredNamesSetting, x => this._setHideIgnoredNames(x)), atom.config.observe(excludeVcsIgnoredPathsSetting, this._setExcludeVcsIgnoredPaths.bind(this)), atom.config.observe(allowPendingPaneItems, this._setUsePreviewTabs.bind(this)), (_featureConfig || _load_featureConfig()).default.observe(autoExpandSingleChild, this._setAutoExpandSingleChild.bind(this)), atom.commands.add('atom-workspace', 'nuclide-file-tree:toggle-focus', () => {
       const component = this._fileTreeComponent;
       if (component == null) {
         return;
@@ -185,12 +191,6 @@ class Activation {
   }
 
   dispose() {
-    // Re-enable Atom's bundled 'tree-view' when this package is disabled to leave the user's
-    // environment the way this package found it.
-    if ((_featureConfig || _load_featureConfig()).default.isFeatureDisabled('nuclide-file-tree') && atom.packages.isPackageDisabled('tree-view')) {
-      atom.packages.enablePackage('tree-view');
-    }
-
     this._disposables.dispose();
   }
 
@@ -290,6 +290,10 @@ class Activation {
     this._fileTreeController.setUsePreviewTabs(usePreviewTabs);
   }
 
+  _setAutoExpandSingleChild(autoExpandSingleChild) {
+    this._fileTreeController.setAutoExpandSingleChild(autoExpandSingleChild === true);
+  }
+
   getContextMenuForFileTree() {
     if (!this._fileTreeController) {
       throw new Error('Invariant violation: "this._fileTreeController"');
@@ -327,24 +331,6 @@ class Activation {
 
   deserializeFileTreeSidebarComponent() {
     return this._createView();
-  }
-}
-
-function disableTreeViewPackage() {
-  if (!atom.packages.isPackageDisabled('tree-view')) {
-    // Calling `disablePackage` on a package first *loads* the package. This step must come
-    // before calling `unloadPackage`.
-    atom.packages.disablePackage('tree-view');
-  }
-
-  if (atom.packages.isPackageActive('tree-view')) {
-    // Only *inactive* packages can be unloaded. Attempting to unload an active package is
-    // considered an exception. Deactivating must come before unloading.
-    atom.packages.deactivatePackage('tree-view');
-  }
-
-  if (atom.packages.isPackageLoaded('tree-view')) {
-    atom.packages.unloadPackage('tree-view');
   }
 }
 

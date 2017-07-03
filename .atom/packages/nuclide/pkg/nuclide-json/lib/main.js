@@ -83,8 +83,8 @@ function getHyperclickProvider() {
 
 function provideCodeFormat() {
   return {
-    selector: 'source.json',
-    inclusionPriority: 1,
+    grammarScopes: ['source.json'],
+    priority: 1,
     formatEntireFile(editor, range) {
       return (_CodeFormatHelpers || _load_CodeFormatHelpers()).default.formatEntireFile(editor, range);
     }

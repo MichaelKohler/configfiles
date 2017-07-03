@@ -23,19 +23,36 @@ class StackTraceManager {
   }
 
   setSelectedCallFrameIndex(index) {
-    if (!(index < this._currentThreadFrames.length)) {
-      throw new Error('Invariant violation: "index < this._currentThreadFrames.length"');
+    if (this.isEmpty()) {
+      return;
+    }
+
+    if (!(index >= 0 && index < this._currentThreadFrames.length)) {
+      throw new Error('Invariant violation: "index >= 0 && index < this._currentThreadFrames.length"');
     }
 
     this._currentCallFrameIndex = index;
     const currentFrame = this.getCurrentFrame();
+
+    if (!(currentFrame != null)) {
+      throw new Error('Invariant violation: "currentFrame != null"');
+    }
+
     this._raiseIPCEvent('CallFrameSelected', {
       sourceURL: this._debuggerDispatcher.getFileUriFromScriptId(currentFrame.location.scriptId),
       lineNumber: currentFrame.location.lineNumber
     });
   }
 
+  isEmpty() {
+    return this._currentThreadFrames.length === 0;
+  }
+
   getCurrentFrame() {
+    if (this.isEmpty()) {
+      return null;
+    }
+
     if (!(this._currentCallFrameIndex < this._currentThreadFrames.length)) {
       throw new Error('Invariant violation: "this._currentCallFrameIndex < this._currentThreadFrames.length"');
     }
@@ -57,7 +74,7 @@ class StackTraceManager {
   _selectFirstFrameWithSource() {
     const frameWithSourceIndex = this._currentThreadFrames.findIndex(frame => frame.hasSource !== false);
     // Default to first frame if can't find any frame with source.
-    this.setSelectedCallFrameIndex(frameWithSourceIndex || 0);
+    this.setSelectedCallFrameIndex(frameWithSourceIndex !== -1 ? frameWithSourceIndex : 0);
   }
 
   _parseCallstack() {

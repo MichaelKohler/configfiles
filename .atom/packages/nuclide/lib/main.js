@@ -233,6 +233,27 @@ function activate() {
       (0, (_atomPackageDeps || _load_atomPackageDeps()).install)('nuclide', /* promptUser */false);
     }
   }
+
+  sortNuclideMenu();
+  disposables.add(atom.packages.onDidActivatePackage(() => {
+    sortNuclideMenu();
+  }));
+}
+
+function sortNuclideMenu() {
+  const nuclideMenu = atom.menu.template.find(menu => menu.label === 'Nuclide');
+  if (nuclideMenu != null) {
+    nuclideMenu.submenu.sort((a, b) => {
+      // Always put the "Version" label up top.
+      if (a.label.startsWith('Version')) {
+        return -1;
+      }
+
+      // Sort everything else alphabetically.
+      return a.label.localeCompare(b.label);
+    });
+    atom.menu.update();
+  }
 }
 
 function deactivate() {

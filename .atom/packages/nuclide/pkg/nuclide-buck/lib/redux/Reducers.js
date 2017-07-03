@@ -104,7 +104,7 @@ function selectValidDeploymentTarget(preferredPlatformName, preferredDeviceName,
   if (preferredPlatformName) {
     for (const platformGroup of platformGroups) {
       for (const platform of platformGroup.platforms) {
-        if (platform.name === preferredPlatformName) {
+        if (platform.isMobile && platform.name === preferredPlatformName) {
           existingPlatform = platform;
           if (preferredDeviceName) {
             for (const deviceGroup of platform.deviceGroups) {
@@ -134,7 +134,7 @@ function selectValidDeploymentTarget(preferredPlatformName, preferredDeviceName,
     existingPlatform = platformGroups[0].platforms[0];
   }
 
-  if (!existingDevice && existingPlatform.deviceGroups.length && existingPlatform.deviceGroups[0].devices.length) {
+  if (!existingDevice && existingPlatform.isMobile && existingPlatform.deviceGroups.length && existingPlatform.deviceGroups[0].devices.length) {
     existingDevice = existingPlatform.deviceGroups[0].devices[0];
   }
 
@@ -142,7 +142,7 @@ function selectValidDeploymentTarget(preferredPlatformName, preferredDeviceName,
 }
 
 function getPlatformProviderUiForDeploymentTarget(deploymentTarget) {
-  if (deploymentTarget == null || deploymentTarget.platform.extraUiWhenSelected == null) {
+  if (deploymentTarget == null || !deploymentTarget.platform.isMobile || deploymentTarget.platform.extraUiWhenSelected == null) {
     return null;
   }
   return deploymentTarget.platform.extraUiWhenSelected(deploymentTarget.device);

@@ -87,6 +87,7 @@ Some of the supported beautifiers are developed for Node.js and are automaticall
 | Fortran Beautifier | :warning: 1 executable | :x: No Docker support | :bookmark_tabs: Manually:<br/>1. Install [Emacs (`emacs`)](https://www.gnu.org/software/emacs/) by following https://www.gnu.org/software/emacs/<br/> |
 | Gherkin formatter | :white_check_mark: | :ok_hand: Not necessary | :smiley: Nothing! |
 | gofmt | :warning: Manual installation | :construction: Not an executable | :page_facing_up: Go to https://golang.org/cmd/gofmt/ and follow the instructions. |
+| goimports | :warning: 1 executable | :white_check_mark: :100:% of executables | :whale: With [Docker](https://www.docker.com/):<br/>1. Install [goimports (`goimports`)](https://godoc.org/golang.org/x/tools/cmd/goimports) with `docker pull unibeautify/goimports`<br/><br/>:bookmark_tabs: Manually:<br/>1. Install [goimports (`goimports`)](https://godoc.org/golang.org/x/tools/cmd/goimports) by following https://godoc.org/golang.org/x/tools/cmd/goimports<br/> |
 | hh_format | :warning: Manual installation | :construction: Not an executable | :page_facing_up: Go to http://hhvm.com/ and follow the instructions. |
 | HTML Beautifier | :warning: Manual installation | :construction: Not an executable | :page_facing_up: Go to https://github.com/threedaymonk/htmlbeautifier and follow the instructions. |
 | JS Beautify | :white_check_mark: | :ok_hand: Not necessary | :smiley: Nothing! |
@@ -98,7 +99,7 @@ Some of the supported beautifiers are developed for Node.js and are automaticall
 | ocp-indent | :warning: Manual installation | :construction: Not an executable | :page_facing_up: Go to https://www.typerex.org/ocp-indent.html and follow the instructions. |
 | Perltidy | :warning: Manual installation | :construction: Not an executable | :page_facing_up: Go to http://perltidy.sourceforge.net/ and follow the instructions. |
 | PHP-CS-Fixer | :warning: 2 executables | :warning: Only 1 of 2 executables | :whale: With [Docker](https://www.docker.com/):<br/>1. Install [PHP-CS-Fixer (`php-cs-fixer`)](https://github.com/FriendsOfPHP/PHP-CS-Fixer) with `docker pull unibeautify/php-cs-fixer`<br/><br/>:bookmark_tabs: Manually:<br/>1. Install [PHP (`php`)](http://php.net/) by following http://php.net/manual/en/install.php<br/>2. Install [PHP-CS-Fixer (`php-cs-fixer`)](https://github.com/FriendsOfPHP/PHP-CS-Fixer) by following https://github.com/FriendsOfPHP/PHP-CS-Fixer#installation<br/> |
-| PHPCBF | :warning: 1 executable | :white_check_mark: :100:% of executables | :whale: With [Docker](https://www.docker.com/):<br/>1. Install [PHPCBF (`phpcbf`)](https://github.com/squizlabs/PHP_CodeSniffer) with `docker pull unibeautify/phpcbf`<br/><br/>:bookmark_tabs: Manually:<br/>1. Install [PHPCBF (`phpcbf`)](https://github.com/squizlabs/PHP_CodeSniffer) by following https://github.com/squizlabs/PHP_CodeSniffer#installation<br/> |
+| PHPCBF | :warning: 2 executables | :warning: Only 1 of 2 executables | :whale: With [Docker](https://www.docker.com/):<br/>1. Install [PHPCBF (`phpcbf`)](https://github.com/squizlabs/PHP_CodeSniffer) with `docker pull unibeautify/phpcbf`<br/><br/>:bookmark_tabs: Manually:<br/>1. Install [PHP (`php`)](http://php.net/) by following http://php.net/manual/en/install.php<br/>2. Install [PHPCBF (`phpcbf`)](https://github.com/squizlabs/PHP_CodeSniffer) by following https://github.com/squizlabs/PHP_CodeSniffer#installation<br/> |
 | Pretty Diff | :white_check_mark: | :ok_hand: Not necessary | :smiley: Nothing! |
 | Pug Beautify | :white_check_mark: | :ok_hand: Not necessary | :smiley: Nothing! |
 | puppet-lint | :warning: Manual installation | :construction: Not an executable | :page_facing_up: Go to http://puppet-lint.com/ and follow the instructions. |
@@ -139,10 +140,10 @@ See [all supported options in the documentation at  `docs/options.md`](docs/opti
 | Elm | `Elm` |`.elm` | **[`elm-format`](https://github.com/avh4/elm-format)** |
 | ERB | `HTML (Ruby - ERB)`, `HTML (Rails)` |`.erb` | **[`Pretty Diff`](https://github.com/prettydiff/prettydiff)**, [`HTML Beautifier`](https://github.com/threedaymonk/htmlbeautifier) |
 | Erlang | `Erlang` |`.erl` | **[`erl_tidy`](http://erlang.org/doc/man/erl_tidy.html)** |
-| Fortran | `Fortran - Modern` |`.f90`, `.F90`, `.f95`, `.F95` | **[`Fortran Beautifier`](https://www.gnu.org/software/emacs/)** |
+| Fortran | `Fortran - Modern` |`.f90`, `.F90`, `.f95`, `.F95`, `.f03`, `.F03`, `.f08`, `.F08` | **[`Fortran Beautifier`](https://www.gnu.org/software/emacs/)** |
 | gherkin | `Gherkin` |`.feature` | **[`Gherkin formatter`](https://github.com/Glavin001/atom-beautify/blob/master/src/beautifiers/gherkin.coffee)** |
 | GLSL | `C`, `opencl`, `GLSL` |`.vert`, `.frag` | **[`clang-format`](https://clang.llvm.org/docs/ClangFormat.html)** |
-| Go | `Go` |`.go` | **[`gofmt`](https://golang.org/cmd/gofmt/)** |
+| Go | `Go` |`.go` | **[`gofmt`](https://golang.org/cmd/gofmt/)**, [`goimports`](https://godoc.org/golang.org/x/tools/cmd/goimports) |
 | Golang Template | `HTML (Go)`, `Go Template` |`.gohtml` | **[`Pretty Diff`](https://github.com/prettydiff/prettydiff)** |
 | Handlebars | `Handlebars`, `HTML (Handlebars)` |`.hbs`, `.handlebars` | **[`JS Beautify`](https://github.com/beautify-web/js-beautify)**, [`Pretty Diff`](https://github.com/prettydiff/prettydiff) |
 | Haskell | `Haskell` |`.hs` | **[`stylish-haskell`](https://github.com/jaspervdj/stylish-haskell)** |

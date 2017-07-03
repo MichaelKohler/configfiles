@@ -26,7 +26,7 @@ let connectionToHackService = (() => {
     if (yield getUseLspConnection()) {
       const host = yield (0, (_nuclideLanguageService || _load_nuclideLanguageService()).getHostServices)();
       return hackService.initializeLsp(config.hhClientPath, // command
-      ['lsp'], // arguments
+      ['lsp', '--from', 'nuclide'], // arguments
       '.hhconfig', // project file
       ['.php'], // which file-notifications should be sent to LSP
       config.logLevel, fileNotifier, host);
@@ -47,7 +47,7 @@ let createLanguageService = (() => {
       name: 'Hack',
       grammars: (_nuclideHackCommon || _load_nuclideHackCommon()).HACK_GRAMMARS,
       highlight: {
-        version: '0.0.0',
+        version: '0.1.0',
         priority: 1,
         analyticsEventName: 'hack.codehighlight'
       },
@@ -63,7 +63,7 @@ let createLanguageService = (() => {
         icon: 'nuclicon-hack'
       },
       definition: {
-        version: '0.0.0',
+        version: '0.1.0',
         priority: 20,
         definitionEventName: 'hack.get-definition',
         definitionByIdEventName: 'hack.get-definition-by-id'
@@ -74,14 +74,14 @@ let createLanguageService = (() => {
         analyticsEventName: 'hack.typeHint'
       },
       codeFormat: {
-        version: '0.0.0',
+        version: '0.1.0',
         priority: 1,
         analyticsEventName: 'hack.formatCode',
         canFormatRanges: true,
         canFormatAtPosition: usingLsp
       },
       findReferences: {
-        version: '0.0.0',
+        version: '0.1.0',
         analyticsEventName: 'hack:findReferences'
       },
       evaluationExpression: {

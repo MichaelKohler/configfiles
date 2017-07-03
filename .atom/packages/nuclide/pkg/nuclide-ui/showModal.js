@@ -42,7 +42,12 @@ function showModal(contentFactory, options = defaults) {
     priority: options.priority,
     className: options.className
   });
-  const disposable = new (_UniversalDisposable || _load_UniversalDisposable()).default(options.disableDismissOnClickOutsideModal ? () => undefined : _rxjsBundlesRxMinJs.Observable.fromEvent(document, 'mousedown').subscribe(({ target }) => {
+  const shouldDismissOnClickOutsideModal = options.shouldDismissOnClickOutsideModal || (() => true);
+  const disposable = new (_UniversalDisposable || _load_UniversalDisposable()).default(_rxjsBundlesRxMinJs.Observable.fromEvent(document, 'mousedown').subscribe(({ target }) => {
+    if (!shouldDismissOnClickOutsideModal()) {
+      return;
+    }
+
     if (!(target instanceof Node)) {
       throw new Error('Invariant violation: "target instanceof Node"');
     }

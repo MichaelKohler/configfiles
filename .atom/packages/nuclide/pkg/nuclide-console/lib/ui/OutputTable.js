@@ -24,6 +24,12 @@ function _load_RecordView() {
   return _RecordView = _interopRequireDefault(require('./RecordView'));
 }
 
+var _recordsChanged;
+
+function _load_recordsChanged() {
+  return _recordsChanged = _interopRequireDefault(require('../recordsChanged'));
+}
+
 var _ResizeSensitiveContainer;
 
 function _load_ResizeSensitiveContainer() {
@@ -33,22 +39,20 @@ function _load_ResizeSensitiveContainer() {
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // The number of extra rows to render beyond what is visible
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
-
-const OVERSCAN_COUNT = 5;
+const OVERSCAN_COUNT = 5; /**
+                           * Copyright (c) 2015-present, Facebook, Inc.
+                           * All rights reserved.
+                           *
+                           * This source code is licensed under the license found in the LICENSE file in
+                           * the root directory of this source tree.
+                           *
+                           * 
+                           * @format
+                           */
 
 class OutputTable extends _react.default.Component {
 
-  // This is a <List> from react-virtualized (untyped library)
+  // The currently rendered range.
   constructor(props) {
     super(props);
     this._hasher = new (_Hasher || _load_Hasher()).default();
@@ -57,6 +61,7 @@ class OutputTable extends _react.default.Component {
     this._getProvider = this._getProvider.bind(this);
     this._getRowHeight = this._getRowHeight.bind(this);
     this._handleListRef = this._handleListRef.bind(this);
+    this._handleListRender = this._handleListRender.bind(this);
     this._handleTableWrapper = this._handleTableWrapper.bind(this);
     this._handleRecordHeightChange = this._handleRecordHeightChange.bind(this);
     this._handleResize = this._handleResize.bind(this);
@@ -66,10 +71,14 @@ class OutputTable extends _react.default.Component {
       width: 0,
       height: 0
     };
+    this._startIndex = 0;
+    this._stopIndex = 0;
   }
+  // This is a <List> from react-virtualized (untyped library)
+
 
   componentDidUpdate(prevProps, prevState) {
-    if (this._list != null && prevProps.displayableRecords.length !== this.props.displayableRecords.length) {
+    if (this._list != null && (0, (_recordsChanged || _load_recordsChanged()).default)(prevProps.displayableRecords, this.props.displayableRecords)) {
       // $FlowIgnore Untyped react-virtualized List method
       this._list.recomputeRowHeights();
     }
@@ -90,9 +99,15 @@ class OutputTable extends _react.default.Component {
         rowHeight: this._getRowHeight,
         rowRenderer: this._renderRow,
         overscanRowCount: OVERSCAN_COUNT,
-        onScroll: this._onScroll
+        onScroll: this._onScroll,
+        onRowsRendered: this._handleListRender
       }) : null
     );
+  }
+
+  _handleListRender(opts) {
+    this._startIndex = opts.startIndex;
+    this._stopIndex = opts.stopIndex;
   }
 
   scrollToBottom() {
@@ -170,9 +185,22 @@ class OutputTable extends _react.default.Component {
       // The react-virtualized List component is provided the row heights
       // through a function, so it has no way of knowing that a row's height
       // has changed unless we explicitly notify it to recompute the heights.
-      if (this._list != null) {
+      if (this._list == null) {
+        return;
+      }
+      // $FlowIgnore Untyped react-virtualized List component method
+      this._list.recomputeRowHeights();
+
+      // If the element in the viewport when its height changes, scroll to ensure that the entirety
+      // of the record is in the viewport. This is important not just for if the last record changes
+      // height through user interaction (e.g. expanding a debugger variable), but also because this
+      // is the mechanism through which the record's true initial height is reported. Therefore, we
+      // may have scrolled to the bottom, and only afterwards received its true height. In this
+      // case, it's important that we then scroll to the new bottom.
+      const index = this.props.displayableRecords.findIndex(record => record.id === recordId);
+      if (index >= this._startIndex && index <= this._stopIndex) {
         // $FlowIgnore Untyped react-virtualized List component method
-        this._list.recomputeRowHeights();
+        this._list.scrollToRow(index);
       }
     });
   }

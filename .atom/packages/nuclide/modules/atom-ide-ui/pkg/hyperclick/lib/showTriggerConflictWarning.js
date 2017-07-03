@@ -4,15 +4,35 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = showTriggerConflictWarning;
+
+var _featureConfig;
+
+function _load_featureConfig() {
+  return _featureConfig = _interopRequireDefault(require('nuclide-commons-atom/feature-config'));
+}
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * Copyright (c) 2017-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ *
+ * 
+ * @format
+ */
+
 function showTriggerConflictWarning() {
-  const pkg = atom.config.get('nuclide.hyperclick') == null ? 'hyperclick' : 'nuclide.hyperclick';
-  const triggerKeys = atom.config.get(`${pkg}.${process.platform}TriggerKeys`);
+  const triggerKeys = (_featureConfig || _load_featureConfig()).default.get(`hyperclick.${process.platform}TriggerKeys`);
 
   if (!(typeof triggerKeys === 'string')) {
     throw new Error('Invariant violation: "typeof triggerKeys === \'string\'"');
   }
 
-  const triggerKeyDescription = getTriggerDescription(pkg, triggerKeys);
+  const triggerKeyDescription = getTriggerDescription(triggerKeys);
   const { platform } = process;
   const commandOrMeta = platform === 'darwin' ? 'command' : 'meta';
   const optionOrAlt = platform === 'darwin' ? 'option' : 'alt';
@@ -21,19 +41,10 @@ function showTriggerConflictWarning() {
     description: `If you want to use ${triggerKeyDescription} for multiple cursors instead,` + ' change the Hyperclick "Trigger Keys" setting.<br /><br />' + `(You can still use ${alternative} + click for multiple cursors.)`,
     dismissable: true
   });
-} /**
-   * Copyright (c) 2015-present, Facebook, Inc.
-   * All rights reserved.
-   *
-   * This source code is licensed under the license found in the LICENSE file in
-   * the root directory of this source tree.
-   *
-   * 
-   * @format
-   */
+}
 
-function getTriggerDescription(pkg, trigger) {
-  const schema = atom.config.getSchema(`${pkg}.${process.platform}TriggerKeys`);
+function getTriggerDescription(trigger) {
+  const schema = (_featureConfig || _load_featureConfig()).default.getSchema(`hyperclick.${process.platform}TriggerKeys`);
 
   if (!(schema != null && schema.enum != null)) {
     throw new Error('Invariant violation: "schema != null && schema.enum != null"');

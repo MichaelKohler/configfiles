@@ -1,5 +1,69 @@
 # Nuclide Changelog
 
+## v0.236.0
+
+### Highlights
+
+* Add a key binding hint to the status bar which shows available key bindings for the most recently taken action.
+
+### General
+
+* Fixed stale diagnostics after file renames.
+* Fixed some issues with keyboard navigation shortcuts in the file tree on Windows.
+* Fixed remote connection restoration with Atom 1.18.
+* Dropping node and react native support from Nuclide based on low internal usage and feedback outside Facebook -- that'd enable us to improve Nuclide's debugger quality first and later, add proper debugging support.
+
+### Debugger
+
+* PHP/Hack Debugger: Fixed bug causing output to stdout to be echo'ed twice in the Nuclide console.
+* Added support for nested debugger tabs so that the debugger panes share docks nicely with other components (such as Outline View or the Commit Form) while retaining the ability to individually close, stack or move debugger panes around the workspace.
+
+## v0.235.0
+
+### Hotfix Release
+* Removed an improper watchman version check.
+
+
+## v0.234.0
+
+### Highlights
+* The Outline View now has a search box to filter results.
+
+## General
+
+* Nuclide now requires Atom ≥ 1.17.2.
+* File Tree now shows your current working directory name in the title, and hovering over the title shows the full path including remote machine name.
+* File Tree: When opening a file, the Open Files section will no longer resize until  the mouse leaves the File Tree.
+* File Tree's Open Files listing now supports the file-icons package.
+* Main menu: Items in the “Nuclide” menu are now sorted alphabetically.
+* Working Sets: Fixed a bug preventing people from being able to close the Working Set selection modal.
+* “Find References” now defaults to opening in the bottom pane.
+    * This is configurable in Nuclide Settings (“where to open the find references pane”).
+* Console: Fix autoscroll when large messages are added.
+
+## Languages
+
+* Faster autocompletion in Flow (when using v48+) thanks to using the persistent connection.
+
+## Debugger
+
+* Fix error when remote root folder is removed (ie. disconnected) after debugging.
+
+
+## v0.233.0
+
+### General
+
+* Fixed an issue where running code format on a large file could end up hanging Nuclide and Atom
+* Added a "Set Current Working Root Here" context menu to file tabs.
+* The owner and group of remote files are now preserved.
+
+### Debugger
+
+* Updated Debugger documentation to reflect many changes to the launch/attach workflow, debugger panes and updated screenshots to match latest UI.
+* Added work around to fix an issue in Atom 1.17+ where opening a new pane like the Outline View or Commit Form while the debugger is open causes an odd and difficult to use pane layout
+* Added “Enable All” and “Disable All” commands to the Breakpoint pane context menu
+
 ## v0.232.0
 
 ### Hotfix Release

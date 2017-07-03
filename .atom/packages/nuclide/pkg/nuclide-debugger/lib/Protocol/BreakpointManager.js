@@ -4,10 +4,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _Utils;
+var _EventReporter;
 
-function _load_Utils() {
-  return _Utils = require('./Utils');
+function _load_EventReporter() {
+  return _EventReporter = require('./EventReporter');
 }
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
@@ -65,7 +65,7 @@ class BreakpointManager {
   setFilelineBreakpoint(request) {
     function callback(error, response) {
       if (error != null) {
-        (0, (_Utils || _load_Utils()).reportError)(`setFilelineBreakpoint failed with ${JSON.stringify(error)}`);
+        (0, (_EventReporter || _load_EventReporter()).reportError)(`setFilelineBreakpoint failed with ${JSON.stringify(error)}`);
         return;
       }
       const { breakpointId, locations, resolved } = response;
@@ -88,7 +88,7 @@ class BreakpointManager {
   _assignBreakpointId(request, breakpointId) {
     const breakpoint = this._findBreakpointOnFileLine(request.sourceURL, request.lineNumber);
     if (breakpoint == null) {
-      (0, (_Utils || _load_Utils()).reportError)('Why are we assigning id to a non-exist breakpoint?');
+      (0, (_EventReporter || _load_EventReporter()).reportError)('Why are we assigning id to a non-exist breakpoint?');
       return;
     }
     breakpoint.id = breakpointId;
@@ -103,7 +103,7 @@ class BreakpointManager {
       // In current design, there is a UI race between user sets breakpoint
       // while engine haven't created it yet so this may be expected.
       // Issue an warning instead of error.
-      (0, (_Utils || _load_Utils()).reportWarning)('Do you try to update a breakpoint not exist?');
+      (0, (_EventReporter || _load_EventReporter()).reportWarning)('Do you try to update a breakpoint not exist?');
     }
   }
 
@@ -154,7 +154,7 @@ class BreakpointManager {
       // In current design, there is a UI race between user remove breakpoint
       // while engine haven't created it yet so this may be expected.
       // Issue an warning instead of error.
-      (0, (_Utils || _load_Utils()).reportWarning)('Do you try to remove a breakpoint not exist?');
+      (0, (_EventReporter || _load_EventReporter()).reportWarning)('Do you try to remove a breakpoint not exist?');
     }
   }
 
@@ -192,10 +192,14 @@ class BreakpointManager {
   _sendBreakpointResolved(breakpointId, location) {
     const breakpoint = this._getBreakpointFromId(breakpointId);
     if (breakpoint != null) {
-      this._breakpointEvent$.next(['BreakpointRemoved', breakpoint.request]);
-      this._breakpointEvent$.next(['BreakpointAdded', this._createIPCBreakpointFromLocation(breakpoint.request, location)]);
+      this._raiseIPCEvent('BreakpointRemoved', breakpoint.request);
+      this._raiseIPCEvent('BreakpointAdded', this._createResolvedBreakpointFromLocation(location, breakpoint.request.condition));
+      // Update original request's location to the new bound one.
+      breakpoint.request.lineNumber = location.lineNumber;
     } else {
-      (0, (_Utils || _load_Utils()).reportError)(`Got breakpoint resolved for non-existing breakpoint: ${breakpointId}, ${JSON.stringify(location)};`);
+      // Some engine(C++) may fire breakpointResolved before setBreakpointByUrl
+      // is resolved.
+      this._raiseIPCEvent('BreakpointAdded', this._createResolvedBreakpointFromLocation(location, ''));
     }
   }
 
@@ -203,12 +207,16 @@ class BreakpointManager {
     return this._breakpointList.find(bp => bp.id === breakpointId);
   }
 
-  _createIPCBreakpointFromLocation(originalRequest, bpLocation) {
-    const newCopy = Object.assign({}, originalRequest);
-    // TODO: also get the new source URL from ScriptId in Location.
-    newCopy.lineNumber = bpLocation.lineNumber;
-    newCopy.resolved = true;
-    return newCopy;
+  _createResolvedBreakpointFromLocation(bpLocation, condition) {
+    const { scriptId, lineNumber } = bpLocation;
+    const sourceURL = this._debuggerDispatcher.getFileUriFromScriptId(scriptId);
+    return {
+      sourceURL,
+      lineNumber,
+      condition,
+      enabled: true,
+      resolved: true
+    };
   }
 
   handleBreakpointResolved(params) {
@@ -219,6 +227,12 @@ class BreakpointManager {
       // User has removed this breakpoint before engine resolves it.
       // This is an expected scenario, just ignore it.
     }
+  }
+
+  // Not a real IPC event, but simulate the chrome IPC events/responses
+  // across bridge boundary.
+  _raiseIPCEvent(...args) {
+    this._breakpointEvent$.next(args);
   }
 }
 exports.default = BreakpointManager;

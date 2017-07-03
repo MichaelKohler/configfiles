@@ -4,13 +4,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.getStopFlowOnExit = getStopFlowOnExit;
-exports.flowCoordsToAtomCoords = flowCoordsToAtomCoords;
-
-var _simpleTextBuffer;
-
-function _load_simpleTextBuffer() {
-  return _simpleTextBuffer = require('simple-text-buffer');
-}
 
 var _config;
 
@@ -30,9 +23,3 @@ function getStopFlowOnExit() {
    * 
    * @format
    */
-
-function flowCoordsToAtomCoords(flowCoords) {
-  return new (_simpleTextBuffer || _load_simpleTextBuffer()).Range([flowCoords.start.line - 1, flowCoords.start.column - 1], [flowCoords.end.line - 1,
-  // Yes, this is inconsistent. Yes, it works as expected in practice.
-  flowCoords.end.column]);
-}

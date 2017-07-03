@@ -66,14 +66,15 @@ class AttachProcessInfo extends (_nuclideDebuggerBase || _load_nuclideDebuggerBa
   }
 
   preAttachActions() {
-    return (0, _asyncToGenerator.default)(function* () {
-      try {
-        // TODO(t18124539) @nmote This should require FlowFB but when used flow
-        // complains that it is an unused supression.
-        const services = require('./fb/services');
-        services.startSlog();
-      } catch (_) {}
-    })();
+    try {
+      // TODO(t18124539) @nmote This should require FlowFB but when used flow
+      // complains that it is an unused supression.
+      // eslint-disable-next-line nuclide-internal/flow-fb-oss
+      const services = require('./fb/services');
+      return services.startSlog();
+    } catch (_) {
+      return Promise.resolve();
+    }
   }
 
   debug() {

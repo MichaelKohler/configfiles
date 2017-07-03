@@ -46,18 +46,15 @@ function _load_DebuggerSettingsManager() {
   return _DebuggerSettingsManager = _interopRequireDefault(require('./DebuggerSettingsManager'));
 }
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _EventReporter;
 
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
+function _load_EventReporter() {
+  return _EventReporter = _interopRequireWildcard(require('./EventReporter'));
+}
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 class BridgeAdapter {
 
@@ -125,7 +122,9 @@ class BridgeAdapter {
 
   _updateCurrentScopes() {
     const currentFrame = this._stackTraceManager.getCurrentFrame();
-    this._expressionEvaluationManager.updateCurrentFrameScope(currentFrame.scopeChain);
+    if (currentFrame != null) {
+      this._expressionEvaluationManager.updateCurrentFrameScope(currentFrame.scopeChain);
+    }
   }
 
   setInitialBreakpoints(breakpoints) {
@@ -146,8 +145,11 @@ class BridgeAdapter {
 
   evaluateExpression(transactionId, expression, objectGroup) {
     if (this._pausedMode) {
-      const callFrameId = this._stackTraceManager.getCurrentFrame().callFrameId;
-      this._expressionEvaluationManager.evaluateOnCallFrame(transactionId, callFrameId, expression, objectGroup);
+      const currentFrame = this._stackTraceManager.getCurrentFrame();
+      if (currentFrame != null) {
+        const callFrameId = currentFrame.callFrameId;
+        this._expressionEvaluationManager.evaluateOnCallFrame(transactionId, callFrameId, expression, objectGroup);
+      }
     } else {
       this._expressionEvaluationManager.runtimeEvaluate(transactionId, expression, objectGroup);
     }
@@ -219,7 +221,8 @@ class BridgeAdapter {
           const params = event.params;
           this._pausedMode = true;
           this._stackTraceManager.refreshStack(params.callFrames);
-          this._executionManager.handleDebuggerPaused(params);
+          const currentFrame = this._stackTraceManager.getCurrentFrame();
+          this._executionManager.raiseDebuggerPause(params, currentFrame ? currentFrame.location : null);
           this._updateCurrentScopes();
           break;
         }
@@ -247,7 +250,7 @@ class BridgeAdapter {
     const executionManager = this._executionManager;
     const threadManager = this._threadManager;
     const expessionEvaluatorManager = this._expressionEvaluationManager;
-    return breakpointManager.getEventObservable().merge(stackTraceManager.getEventObservable()).merge(executionManager.getEventObservable()).merge(threadManager.getEventObservable()).merge(expessionEvaluatorManager.getEventObservable()).map(args => {
+    return breakpointManager.getEventObservable().merge(stackTraceManager.getEventObservable()).merge(executionManager.getEventObservable()).merge(threadManager.getEventObservable()).merge(expessionEvaluatorManager.getEventObservable()).merge((_EventReporter || _load_EventReporter()).getEventObservable()).map(args => {
       return { channel: 'notification', args };
     });
   }
@@ -256,4 +259,13 @@ class BridgeAdapter {
     this._subscriptions.dispose();
   }
 }
-exports.default = BridgeAdapter;
+exports.default = BridgeAdapter; /**
+                                  * Copyright (c) 2015-present, Facebook, Inc.
+                                  * All rights reserved.
+                                  *
+                                  * This source code is licensed under the license found in the LICENSE file in
+                                  * the root directory of this source tree.
+                                  *
+                                  * 
+                                  * @format
+                                  */

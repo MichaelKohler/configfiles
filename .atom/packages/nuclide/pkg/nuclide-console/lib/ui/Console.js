@@ -60,7 +60,24 @@ function _load_shallowequal() {
   return _shallowequal = _interopRequireDefault(require('shallowequal'));
 }
 
+var _recordsChanged;
+
+function _load_recordsChanged() {
+  return _recordsChanged = _interopRequireDefault(require('../recordsChanged'));
+}
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ * @format
+ */
 
 class Console extends _react.default.Component {
 
@@ -98,7 +115,7 @@ class Console extends _react.default.Component {
   componentDidUpdate(prevProps) {
     // If records are added while we're scrolled to the bottom (or very very close, at least),
     // automatically scroll.
-    if (this._isScrolledNearBottom && this.props.displayableRecords.length > prevProps.displayableRecords.length) {
+    if (this._isScrolledNearBottom && (0, (_recordsChanged || _load_recordsChanged()).default)(prevProps.displayableRecords, this.props.displayableRecords)) {
       this._scrollToBottom();
     }
   }
@@ -126,16 +143,14 @@ class Console extends _react.default.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.displayableRecords.length > this.props.displayableRecords.length) {
-      // If we receive new messages after we've scrolled away from the bottom, show the
-      // "new messages" notification.
-      if (!this._isScrolledNearBottom) {
-        this.setState({ unseenMessages: true });
-      }
-    }
-
+    // If the messages were cleared, hide the notification.
     if (nextProps.displayableRecords.length === 0) {
       this.setState({ unseenMessages: false });
+    } else if (
+    // If we receive new messages after we've scrolled away from the bottom, show the "new
+    // messages" notification.
+    !this._isScrolledNearBottom && (0, (_recordsChanged || _load_recordsChanged()).default)(this.props.displayableRecords, nextProps.displayableRecords)) {
+      this.setState({ unseenMessages: true });
     }
   }
 
@@ -236,13 +251,4 @@ class Console extends _react.default.Component {
     this.setState({ unseenMessages: false });
   }
 }
-exports.default = Console; /**
-                            * Copyright (c) 2015-present, Facebook, Inc.
-                            * All rights reserved.
-                            *
-                            * This source code is licensed under the license found in the LICENSE file in
-                            * the root directory of this source tree.
-                            *
-                            * 
-                            * @format
-                            */
+exports.default = Console;

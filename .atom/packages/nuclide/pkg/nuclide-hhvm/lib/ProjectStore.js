@@ -122,7 +122,7 @@ class ProjectStore {
 
   getDebugTarget() {
     const filePath = this._currentFilePath;
-    if (this._debugMode === 'script') {
+    if (this._debugMode !== 'webserver') {
       const localPath = (_nuclideUri || _load_nuclideUri()).default.getPath(filePath);
       const lastScriptCommand = this.getLastScriptCommand(localPath);
       return lastScriptCommand === '' ? localPath : lastScriptCommand;

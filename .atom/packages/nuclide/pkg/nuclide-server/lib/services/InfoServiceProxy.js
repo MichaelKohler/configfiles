@@ -10,11 +10,6 @@ module.exports = _client => {
       return _client.callRemoteFunction("InfoService/getServerVersion", "promise", args);
     }).then(value => {
       return _client.unmarshal(value, {
-        location: {
-          type: "source",
-          fileName: "InfoService.js",
-          line: 18
-        },
         kind: "string"
       });
     });
@@ -24,22 +19,12 @@ module.exports = _client => {
     return _client.marshalArguments(Array.from(arguments), [{
       name: "shutdownServer",
       type: {
-        location: {
-          type: "source",
-          fileName: "InfoService.js",
-          line: 25
-        },
         kind: "boolean"
       }
     }]).then(args => {
       return _client.callRemoteFunction("InfoService/closeConnection", "promise", args);
     }).then(value => {
       return _client.unmarshal(value, {
-        location: {
-          type: "source",
-          fileName: "InfoService.js",
-          line: 25
-        },
         kind: "void"
       });
     });
@@ -128,18 +113,8 @@ Object.defineProperty(module.exports, "defs", {
         kind: "function",
         argumentTypes: [],
         returnType: {
-          location: {
-            type: "source",
-            fileName: "InfoService.js",
-            line: 18
-          },
           kind: "promise",
           type: {
-            location: {
-              type: "source",
-              fileName: "InfoService.js",
-              line: 18
-            },
             kind: "string"
           }
         }
@@ -163,27 +138,12 @@ Object.defineProperty(module.exports, "defs", {
         argumentTypes: [{
           name: "shutdownServer",
           type: {
-            location: {
-              type: "source",
-              fileName: "InfoService.js",
-              line: 25
-            },
             kind: "boolean"
           }
         }],
         returnType: {
-          location: {
-            type: "source",
-            fileName: "InfoService.js",
-            line: 25
-          },
           kind: "promise",
           type: {
-            location: {
-              type: "source",
-              fileName: "InfoService.js",
-              line: 25
-            },
             kind: "void"
           }
         }

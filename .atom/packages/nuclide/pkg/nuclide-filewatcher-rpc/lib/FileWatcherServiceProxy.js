@@ -9,11 +9,6 @@ module.exports = _client => {
     return Observable.fromPromise(_client.marshalArguments(Array.from(arguments), [{
       name: "filePath",
       type: {
-        location: {
-          type: "source",
-          fileName: "FileWatcherService.js",
-          line: 52
-        },
         kind: "named",
         name: "NuclideUri"
       }
@@ -21,11 +16,23 @@ module.exports = _client => {
       return _client.callRemoteFunction("FileWatcherService/watchFile", "observable", args);
     })).concatMap(id => id).concatMap(value => {
       return _client.unmarshal(value, {
-        location: {
-          type: "source",
-          fileName: "FileWatcherService.js",
-          line: 53
-        },
+        kind: "named",
+        name: "WatchResult"
+      });
+    }).publish();
+  };
+
+  remoteModule.watchFileWithNode = function (arg0) {
+    return Observable.fromPromise(_client.marshalArguments(Array.from(arguments), [{
+      name: "filePath",
+      type: {
+        kind: "named",
+        name: "NuclideUri"
+      }
+    }]).then(args => {
+      return _client.callRemoteFunction("FileWatcherService/watchFileWithNode", "observable", args);
+    })).concatMap(id => id).concatMap(value => {
+      return _client.unmarshal(value, {
         kind: "named",
         name: "WatchResult"
       });
@@ -36,11 +43,6 @@ module.exports = _client => {
     return Observable.fromPromise(_client.marshalArguments(Array.from(arguments), [{
       name: "directoryPath",
       type: {
-        location: {
-          type: "source",
-          fileName: "FileWatcherService.js",
-          line: 58
-        },
         kind: "named",
         name: "NuclideUri"
       }
@@ -48,11 +50,6 @@ module.exports = _client => {
       return _client.callRemoteFunction("FileWatcherService/watchDirectory", "observable", args);
     })).concatMap(id => id).concatMap(value => {
       return _client.unmarshal(value, {
-        location: {
-          type: "source",
-          fileName: "FileWatcherService.js",
-          line: 59
-        },
         kind: "named",
         name: "WatchResult"
       });
@@ -63,11 +60,6 @@ module.exports = _client => {
     return Observable.fromPromise(_client.marshalArguments(Array.from(arguments), [{
       name: "directoryPath",
       type: {
-        location: {
-          type: "source",
-          fileName: "FileWatcherService.js",
-          line: 102
-        },
         kind: "named",
         name: "NuclideUri"
       }
@@ -75,11 +67,6 @@ module.exports = _client => {
       return _client.callRemoteFunction("FileWatcherService/watchDirectoryRecursive", "observable", args);
     })).concatMap(id => id).concatMap(value => {
       return _client.unmarshal(value, {
-        location: {
-          type: "source",
-          fileName: "FileWatcherService.js",
-          line: 103
-        },
         kind: "string"
       });
     }).publish();
@@ -156,46 +143,21 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "FileWatcherService.js",
-        line: 28
+        line: 29
       },
       name: "WatchResult",
       definition: {
-        location: {
-          type: "source",
-          fileName: "FileWatcherService.js",
-          line: 28
-        },
         kind: "object",
         fields: [{
-          location: {
-            type: "source",
-            fileName: "FileWatcherService.js",
-            line: 29
-          },
           name: "path",
           type: {
-            location: {
-              type: "source",
-              fileName: "FileWatcherService.js",
-              line: 29
-            },
             kind: "named",
             name: "NuclideUri"
           },
           optional: false
         }, {
-          location: {
-            type: "source",
-            fileName: "FileWatcherService.js",
-            line: 30
-          },
           name: "type",
           type: {
-            location: {
-              type: "source",
-              fileName: "FileWatcherService.js",
-              line: 30
-            },
             kind: "string"
           },
           optional: false
@@ -208,40 +170,56 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "FileWatcherService.js",
-        line: 51
+        line: 52
       },
       type: {
         location: {
           type: "source",
           fileName: "FileWatcherService.js",
-          line: 51
+          line: 52
         },
         kind: "function",
         argumentTypes: [{
           name: "filePath",
           type: {
-            location: {
-              type: "source",
-              fileName: "FileWatcherService.js",
-              line: 52
-            },
             kind: "named",
             name: "NuclideUri"
           }
         }],
         returnType: {
-          location: {
-            type: "source",
-            fileName: "FileWatcherService.js",
-            line: 53
-          },
           kind: "observable",
           type: {
-            location: {
-              type: "source",
-              fileName: "FileWatcherService.js",
-              line: 53
-            },
+            kind: "named",
+            name: "WatchResult"
+          }
+        }
+      }
+    },
+    watchFileWithNode: {
+      kind: "function",
+      name: "watchFileWithNode",
+      location: {
+        type: "source",
+        fileName: "FileWatcherService.js",
+        line: 58
+      },
+      type: {
+        location: {
+          type: "source",
+          fileName: "FileWatcherService.js",
+          line: 58
+        },
+        kind: "function",
+        argumentTypes: [{
+          name: "filePath",
+          type: {
+            kind: "named",
+            name: "NuclideUri"
+          }
+        }],
+        returnType: {
+          kind: "observable",
+          type: {
             kind: "named",
             name: "WatchResult"
           }
@@ -254,40 +232,25 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "FileWatcherService.js",
-        line: 57
+        line: 73
       },
       type: {
         location: {
           type: "source",
           fileName: "FileWatcherService.js",
-          line: 57
+          line: 73
         },
         kind: "function",
         argumentTypes: [{
           name: "directoryPath",
           type: {
-            location: {
-              type: "source",
-              fileName: "FileWatcherService.js",
-              line: 58
-            },
             kind: "named",
             name: "NuclideUri"
           }
         }],
         returnType: {
-          location: {
-            type: "source",
-            fileName: "FileWatcherService.js",
-            line: 59
-          },
           kind: "observable",
           type: {
-            location: {
-              type: "source",
-              fileName: "FileWatcherService.js",
-              line: 59
-            },
             kind: "named",
             name: "WatchResult"
           }
@@ -300,40 +263,25 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "FileWatcherService.js",
-        line: 101
+        line: 117
       },
       type: {
         location: {
           type: "source",
           fileName: "FileWatcherService.js",
-          line: 101
+          line: 117
         },
         kind: "function",
         argumentTypes: [{
           name: "directoryPath",
           type: {
-            location: {
-              type: "source",
-              fileName: "FileWatcherService.js",
-              line: 102
-            },
             kind: "named",
             name: "NuclideUri"
           }
         }],
         returnType: {
-          location: {
-            type: "source",
-            fileName: "FileWatcherService.js",
-            line: 103
-          },
           kind: "observable",
           type: {
-            location: {
-              type: "source",
-              fileName: "FileWatcherService.js",
-              line: 103
-            },
             kind: "string"
           }
         }

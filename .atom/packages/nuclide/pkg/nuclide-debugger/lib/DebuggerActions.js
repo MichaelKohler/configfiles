@@ -529,6 +529,20 @@ class DebuggerActions {
     });
   }
 
+  enableAllBreakpoints() {
+    this._dispatcher.dispatch({
+      actionType: (_DebuggerDispatcher || _load_DebuggerDispatcher()).ActionTypes.ENABLE_ALL_BREAKPOINTS,
+      data: {}
+    });
+  }
+
+  disableAllBreakpoints() {
+    this._dispatcher.dispatch({
+      actionType: (_DebuggerDispatcher || _load_DebuggerDispatcher()).ActionTypes.DISABLE_ALL_BREAKPOINTS,
+      data: {}
+    });
+  }
+
   toggleBreakpoint(path, line) {
     (0, (_nuclideAnalytics || _load_nuclideAnalytics()).track)((_constants || _load_constants()).AnalyticsEvents.DEBUGGER_BREAKPOINT_TOGGLE);
     this._dispatcher.dispatch({

@@ -66,6 +66,12 @@ function _load_process() {
   return _process = require('nuclide-commons/process');
 }
 
+var _nuclideUri;
+
+function _load_nuclideUri() {
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
+}
+
 var _helpers;
 
 function _load_helpers() {
@@ -74,18 +80,19 @@ function _load_helpers() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.pathToUri = (_helpers || _load_helpers()).pathToUri;
-exports.uriToPath = (_helpers || _load_helpers()).uriToPath; /**
-                                                              * Copyright (c) 2015-present, Facebook, Inc.
-                                                              * All rights reserved.
-                                                              *
-                                                              * This source code is licensed under the license found in the LICENSE file in
-                                                              * the root directory of this source tree.
-                                                              *
-                                                              * 
-                                                              * @format
-                                                              */
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ * @format
+ */
 
+exports.pathToUri = (_helpers || _load_helpers()).pathToUri;
+exports.uriToPath = (_helpers || _load_helpers()).uriToPath;
 const DUMMY_FRAME_ID = exports.DUMMY_FRAME_ID = 'Frame.0';
 
 function isContinuationCommand(command) {
@@ -147,11 +154,25 @@ function launchScriptToDebug(scriptPath, sendToOutputWindow) {
 }
 
 function launchPhpScriptWithXDebugEnabled(scriptPath, sendToOutputWindowAndResolve) {
-  const { phpRuntimePath, phpRuntimeArgs } = (0, (_config || _load_config()).getConfig)();
+  const {
+    phpRuntimePath,
+    phpRuntimeArgs,
+    dummyRequestFilePath,
+    launchWrapperCommand
+  } = (0, (_config || _load_config()).getConfig)();
   const runtimeArgs = (0, (_string || _load_string()).shellParse)(phpRuntimeArgs);
+  const isDummyLaunch = scriptPath === dummyRequestFilePath;
+
+  let processPath = phpRuntimePath;
+  const processOptions = {};
+  if (!isDummyLaunch && launchWrapperCommand != null) {
+    processPath = launchWrapperCommand;
+    processOptions.cwd = (_nuclideUri || _load_nuclideUri()).default.dirname(dummyRequestFilePath);
+  }
+
   const scriptArgs = (0, (_string || _load_string()).shellParse)(scriptPath);
   const args = [...runtimeArgs, ...scriptArgs];
-  const proc = _child_process.default.spawn(phpRuntimePath, args);
+  const proc = _child_process.default.spawn(processPath, args, processOptions);
   (_utils || _load_utils()).default.debug((_dedent || _load_dedent()).default`
     child_process(${proc.pid}) spawned with xdebug enabled.
     $ ${phpRuntimePath} ${args.join(' ')}
@@ -162,14 +183,16 @@ function launchPhpScriptWithXDebugEnabled(scriptPath, sendToOutputWindowAndResol
     const block = chunk.toString();
     const output = `child_process(${proc.pid}) stdout: ${block}`;
     (_utils || _load_utils()).default.debug(output);
-    if (sendToOutputWindowAndResolve != null) {
-      sendToOutputWindowAndResolve(block, 'text');
-    }
+    // No need to forward stdout to the client here. Stdout is also sent
+    // over the XDebug protocol channel and is forwarded to the client
+    // by DbgpSocket.
   });
   proc.stderr.on('data', chunk => {
     const block = chunk.toString().trim();
     const output = `child_process(${proc.pid}) stderr: ${block}`;
     (_utils || _load_utils()).default.debug(output);
+    // TODO: Remove this when XDebug forwards stderr streams over
+    // DbgpSocket.
     if (sendToOutputWindowAndResolve != null) {
       sendToOutputWindowAndResolve(block, 'error');
     }

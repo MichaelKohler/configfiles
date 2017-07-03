@@ -147,7 +147,7 @@ class ClangServer {
       this._usesDefaultFlags = flagsData.usesDefaultFlags;
     }).switchMap(flagsData => {
       if (flagsData != null && flagsData.flagsFile != null) {
-        return (0, (_nuclideFilewatcherRpc || _load_nuclideFilewatcherRpc()).watchFile)(flagsData.flagsFile).refCount().take(1);
+        return (0, (_nuclideFilewatcherRpc || _load_nuclideFilewatcherRpc()).watchFileWithNode)(flagsData.flagsFile).refCount().take(1);
       }
       return _rxjsBundlesRxMinJs.Observable.empty();
     }).subscribe(x => {

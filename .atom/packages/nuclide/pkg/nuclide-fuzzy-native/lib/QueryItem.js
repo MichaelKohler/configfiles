@@ -13,29 +13,30 @@ function _load_nuclideUri() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const NON_UPPERCASE_CHARS_REGEXP = /[^a-z0-9]/g;
+const NON_UPPERCASE_CHARS_REGEXP = /[^a-z0-9]/g; /**
+                                                  * Copyright (c) 2015-present, Facebook, Inc.
+                                                  * All rights reserved.
+                                                  *
+                                                  * This source code is licensed under the license found in the LICENSE file in
+                                                  * the root directory of this source tree.
+                                                  *
+                                                  * 
+                                                  * @format
+                                                  */
+
+function sanitize(str) {
+  return str.toLowerCase().replace(NON_UPPERCASE_CHARS_REGEXP, '');
+}
+
 /**
  * Returns the score of the common subsequence between `needle` and `haystack` or -1 if there is
  * no common subsequence.
  * A lower number means `needle` is more relevant to `haystack`.
  */
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
-
 function scoreCommonSubsequence(needle_, haystack_) {
-  // Don't ignore the needle's case, but strip punctuation.
-  const needle = needle_.replace(/[^a-zA-Z0-9]/g, '');
-  let haystack = haystack_;
-  haystack = haystack.toLowerCase();
-  haystack = haystack.replace(NON_UPPERCASE_CHARS_REGEXP, '');
+  // Sanitize the needle and haystack.
+  const needle = sanitize(needle_);
+  const haystack = sanitize(haystack_);
   if (needle.length === haystack.length) {
     return needle === haystack ? 0 : -1;
   }

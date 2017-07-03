@@ -422,7 +422,8 @@ class SearchResultManager {
           error: cachedResult.error || defaultResult.error
         };
         return results;
-      }, {})
+      }, {}),
+      totalResults: 0
     };
   }
 
@@ -434,6 +435,7 @@ class SearchResultManager {
         const resultForProvider = this._getResultsForProvider(sanitizedQuery, providerName);
         // TODO replace this with a ranking algorithm.
         for (const dir in resultForProvider.results) {
+          resultForProvider.totalResults += resultForProvider.results[dir].results.length;
           resultForProvider.results[dir].results = resultForProvider.results[dir].results.slice(0, MAX_OMNI_RESULTS_PER_SERVICE);
         }
         return [providerName, resultForProvider];

@@ -202,19 +202,21 @@ let readFile = exports.readFile = (() => {
 
 let copyFilePermissions = (() => {
   var _ref9 = (0, _asyncToGenerator.default)(function* (sourcePath, destinationPath) {
-    let permissions;
     try {
-      permissions = (yield (_fsPromise || _load_fsPromise()).default.stat(sourcePath)).mode;
+      const { mode, uid, gid } = yield (_fsPromise || _load_fsPromise()).default.stat(sourcePath);
+      yield Promise.all([
+      // The user may not have permissions to use the uid/gid.
+      (_fsPromise || _load_fsPromise()).default.chown(destinationPath, uid, gid).catch(function () {}), (_fsPromise || _load_fsPromise()).default.chmod(destinationPath, mode)]);
     } catch (e) {
       // If the file does not exist, then ENOENT will be thrown.
       if (e.code !== 'ENOENT') {
         throw e;
       }
       // For new files, use the default process file creation mask.
+      yield (_fsPromise || _load_fsPromise()).default.chmod(destinationPath,
       // $FlowIssue: umask argument is optional
-      permissions = 0o666 & ~process.umask(); // eslint-disable-line no-bitwise
+      0o666 & ~process.umask());
     }
-    yield (_fsPromise || _load_fsPromise()).default.chmod(destinationPath, permissions);
   });
 
   return function copyFilePermissions(_x13, _x14) {

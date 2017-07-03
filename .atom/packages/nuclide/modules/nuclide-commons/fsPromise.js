@@ -208,11 +208,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @return path to a temporary directory.
  */
 /**
- * Copyright (c) 2015-present, Facebook, Inc.
+ * Copyright (c) 2017-present, Facebook, Inc.
  * All rights reserved.
  *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
  *
  * 
  * @format
@@ -335,6 +336,18 @@ function writeFile(filename, data, options) {
 function chmod(path, mode) {
   return new Promise((resolve, reject) => {
     _fs.default.chmod(path, mode, (err, result) => {
+      if (err == null) {
+        resolve(result);
+      } else {
+        reject(err);
+      }
+    });
+  });
+}
+
+function chown(path, uid, gid) {
+  return new Promise((resolve, reject) => {
+    _fs.default.chown(path, uid, gid, (err, result) => {
       if (err == null) {
         resolve(result);
       } else {
@@ -487,6 +500,7 @@ exports.default = {
   writeFile,
 
   chmod,
+  chown,
   lstat,
   mkdir,
   readFile,

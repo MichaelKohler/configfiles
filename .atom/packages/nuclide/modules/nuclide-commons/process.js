@@ -268,45 +268,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * [1]: https://nodejs.org/api/child_process.html#child_process_child_process_spawn_command_args_options
  * [2]: https://nodejs.org/api/errors.html#errors_class_system_error
  */
-function runCommand(command, args = [], options = {}, rest) {
-  return runCommandDetailed(command, args, options).map(event => event.stdout);
-}
-
 /**
- * Returns an observable that spawns a process and emits events on stdout, stderr and exit. Output
- * is buffered by line. Unsubscribing before the observable completes will kill the process. This
- * function accepts the same options as `runCommand()`, and throws the same errors.
- *
- * Besides emitting multiple events, another difference with `runCommand()` is the ProcessExitErrors
- * thrown by `observeProcess()`. Whereas ProcessExitErrors thrown by `runCommand()` contain the
- * entirety of stdout and stderr, those thrown by `observeProcess()` contain a truncated amount of
- * stderr and no stdout. This is because `observeProcess()` is usually used with long-running
- * processes that may continue to produce output for a long while. The abbreviated stderr is
- * included to help with debugging.
- *
- * Example:
- *
- * ```js
- * const filesToTail: Observable<NuclideUri> = f();
- * const subscription = filesToTail
- *   // `switchMap()` means only one file will be tailed at a time.
- *   .switchMap(path => observeProcess('tail', ['-f', path]))
- *   .filter(event => event.kind === 'stdout')
- *   .map(event => event.data)
- *   .subscribe(line => {
- *     console.log(line);
- *   });
- * ```
- */
-
-
-// TODO(T17266325): Replace this in favor of `atom.whenShellEnvironmentLoaded()` when it lands
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
+ * Copyright (c) 2017-present, Facebook, Inc.
  * All rights reserved.
  *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
  *
  * 
  * @format
@@ -350,6 +318,39 @@ function runCommand(command, args = [], options = {}, rest) {
 //
 // [RxJS]: http://reactivex.io/rxjs/
 
+function runCommand(command, args = [], options = {}, rest) {
+  return runCommandDetailed(command, args, options).map(event => event.stdout);
+}
+
+/**
+ * Returns an observable that spawns a process and emits events on stdout, stderr and exit. Output
+ * is buffered by line. Unsubscribing before the observable completes will kill the process. This
+ * function accepts the same options as `runCommand()`, and throws the same errors.
+ *
+ * Besides emitting multiple events, another difference with `runCommand()` is the ProcessExitErrors
+ * thrown by `observeProcess()`. Whereas ProcessExitErrors thrown by `runCommand()` contain the
+ * entirety of stdout and stderr, those thrown by `observeProcess()` contain a truncated amount of
+ * stderr and no stdout. This is because `observeProcess()` is usually used with long-running
+ * processes that may continue to produce output for a long while. The abbreviated stderr is
+ * included to help with debugging.
+ *
+ * Example:
+ *
+ * ```js
+ * const filesToTail: Observable<NuclideUri> = f();
+ * const subscription = filesToTail
+ *   // `switchMap()` means only one file will be tailed at a time.
+ *   .switchMap(path => observeProcess('tail', ['-f', path]))
+ *   .filter(event => event.kind === 'stdout')
+ *   .map(event => event.data)
+ *   .subscribe(line => {
+ *     console.log(line);
+ *   });
+ * ```
+ */
+
+
+// TODO(T17266325): Replace this in favor of `atom.whenShellEnvironmentLoaded()` when it lands
 function observeProcess(command, args, options) {
   return spawn(command, args, options).flatMap(proc => getOutputStream(proc, options));
 }
@@ -593,6 +594,14 @@ function logStreamErrors(proc, command, args, options) {
 //
 // Types
 //
+
+// Exactly one of exitCode and signal will be non-null.
+// Killing a process will result in a null exitCode but a non-null signal.
+
+
+// In older versions of process.js, errors were emitted as messages instead of errors. This type
+// exists to support the transition, but no new usages should be added.
+
 
 //
 // Errors

@@ -41,6 +41,12 @@ function _load_UniversalDisposable() {
   return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
+var _goToLocation;
+
+function _load_goToLocation() {
+  return _goToLocation = require('nuclide-commons-atom/go-to-location');
+}
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
@@ -205,31 +211,24 @@ class HunkDiff extends _react.default.Component {
 
   render() {
     const { hunk, grammar } = this.props;
-    const { content, changes } = hunk;
+    const { changes } = hunk;
     // Remove the first character in each line (/[+- ]/) which indicates addition / deletion
     const text = changes.map(change => change.content.slice(1)).join('\n');
     const textBuffer = new _atom.TextBuffer();
     textBuffer.setText(text);
 
-    return _react.default.createElement(
-      (_Section || _load_Section()).Section,
-      {
-        collapsable: this.props.collapsable,
-        headline: content,
-        size: 'medium' },
-      _react.default.createElement((_AtomTextEditor || _load_AtomTextEditor()).AtomTextEditor, {
-        autoGrow: true,
-        className: 'nuclide-ui-hunk-diff-text-editor',
-        correctContainerWidth: false,
-        grammar: grammar,
-        gutterHidden: true,
-        readOnly: true,
-        ref: editorRef => {
-          this.editor = editorRef && editorRef.getModel();
-        },
-        textBuffer: textBuffer
-      })
-    );
+    return _react.default.createElement((_AtomTextEditor || _load_AtomTextEditor()).AtomTextEditor, {
+      autoGrow: true,
+      className: 'nuclide-ui-hunk-diff-text-editor',
+      correctContainerWidth: false,
+      grammar: grammar,
+      gutterHidden: true,
+      readOnly: true,
+      ref: editorRef => {
+        this.editor = editorRef && editorRef.getModel();
+      },
+      textBuffer: textBuffer
+    });
   }
 }
 
@@ -237,8 +236,22 @@ exports.HunkDiff = HunkDiff; /* Renders changes to a single file. */
 
 class FileChanges extends _react.default.Component {
 
+  constructor(props) {
+    super(props);
+    this._handleFilenameClick = this._handleFilenameClick.bind(this);
+  }
+
+  _handleFilenameClick(event) {
+    const { fullPath } = this.props;
+    if (fullPath == null) {
+      return;
+    }
+    (0, (_goToLocation || _load_goToLocation()).goToLocation)(fullPath);
+    event.stopPropagation();
+  }
+
   render() {
-    const { diff } = this.props;
+    const { diff, fullPath, collapsable, collapsedByDefault } = this.props;
     const { additions, annotation, chunks, deletions, to: fileName } = diff;
     const grammar = atom.grammars.selectGrammar(fileName, '');
     const hunks = [];
@@ -248,7 +261,6 @@ class FileChanges extends _react.default.Component {
         hunks.push(_react.default.createElement('div', { className: 'nuclide-ui-hunk-diff-spacer', key: `spacer-${i}` }));
       }
       hunks.push(_react.default.createElement(this.props.hunkComponentClass, {
-        collapsable: this.props.collapsable,
         extraData: this.props.extraData,
         key: chunk.oldStart,
         grammar: grammar,
@@ -274,28 +286,35 @@ class FileChanges extends _react.default.Component {
       'span',
       null,
       annotationComponent,
-      _react.default.createElement('br', null),
-      additions,
       ' ',
-      (0, (_string || _load_string()).pluralize)('addition', additions),
-      ',',
+      '(',
+      additions + deletions,
       ' ',
-      deletions,
-      ' ',
-      (0, (_string || _load_string()).pluralize)('deletion', deletions)
+      (0, (_string || _load_string()).pluralize)('line', additions + deletions),
+      ')'
     );
+
+    const renderedFilename = fullPath != null ? _react.default.createElement(
+      'a',
+      { onClick: this._handleFilenameClick },
+      fileName
+    ) : fileName;
 
     const headline = _react.default.createElement(
       'span',
-      null,
-      fileName,
-      _react.default.createElement('br', null),
+      { className: 'nuclide-ui-file-changes-item' },
+      renderedFilename,
+      ' ',
       diffDetails
     );
 
     return _react.default.createElement(
       (_Section || _load_Section()).Section,
-      { collapsable: this.props.collapsable, headline: headline },
+      {
+        collapsable: collapsable,
+        collapsedByDefault: collapsedByDefault,
+        headline: headline,
+        title: 'Click to open' },
       hunks
     );
   }

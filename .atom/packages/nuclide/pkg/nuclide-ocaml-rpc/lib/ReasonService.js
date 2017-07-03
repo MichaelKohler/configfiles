@@ -8,11 +8,11 @@ exports.format = undefined;
 var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
 
 let format = exports.format = (() => {
-  var _ref = (0, _asyncToGenerator.default)(function* (content, flags) {
-    return (0, (_ReasonProcess || _load_ReasonProcess()).refmt)(content, flags);
+  var _ref = (0, _asyncToGenerator.default)(function* (content, filePath, language, refmtFlags) {
+    return (0, (_ReasonProcess || _load_ReasonProcess()).formatImpl)(content, filePath, language, refmtFlags);
   });
 
-  return function format(_x, _x2) {
+  return function format(_x, _x2, _x3, _x4) {
     return _ref.apply(this, arguments);
   };
 })(); /**

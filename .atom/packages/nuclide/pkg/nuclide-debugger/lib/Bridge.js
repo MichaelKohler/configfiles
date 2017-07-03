@@ -4,6 +4,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
+
 var _nuclideUri;
 
 function _load_nuclideUri() {
@@ -34,20 +36,48 @@ function _load_ChromeActionRegistryActions() {
   return _ChromeActionRegistryActions = _interopRequireDefault(require('./ChromeActionRegistryActions'));
 }
 
+var _nuclideDebuggerBase;
+
+function _load_nuclideDebuggerBase() {
+  return _nuclideDebuggerBase = require('../../nuclide-debugger-base');
+}
+
+var _log4js;
+
+function _load_log4js() {
+  return _log4js = require('log4js');
+}
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-class Bridge {
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ * @format
+ */
 
+const logger = (0, (_log4js || _load_log4js()).getLogger)('nuclide-debugger');
+
+class Bridge {
+  // Contains disposable items that are only available during
+  // debug mode.
   constructor(debuggerModel) {
     this._handleIpcMessage = this._handleIpcMessage.bind(this);
     this._debuggerModel = debuggerModel;
     this._suppressBreakpointSync = false;
     this._commandDispatcher = new (_CommandDispatcher || _load_CommandDispatcher()).default();
+    this._consoleEvent$ = new _rxjsBundlesRxMinJs.Subject();
     this._disposables = new (_UniversalDisposable || _load_UniversalDisposable()).default(debuggerModel.getBreakpointStore().onUserChange(this._handleUserBreakpointChange.bind(this)));
+    const subscription = (0, (_nuclideDebuggerBase || _load_nuclideDebuggerBase()).registerConsoleLogging)('Debugger', this._consoleEvent$);
+    if (subscription != null) {
+      this._disposables.add(subscription);
+    }
   }
-  // Contains disposable items that are only available during
-  // debug mode.
-
 
   dispose() {
     this.leaveDebugMode();
@@ -214,9 +244,36 @@ class Bridge {
           case 'ThreadUpdate':
             this._handleThreadUpdate(event.args[1]);
             break;
+          case 'ReportError':
+            this._reportEngineError(event.args[1]);
+            break;
+          case 'ReportWarning':
+            this._reportEngineWarning(event.args[1]);
+            break;
         }
         break;
     }
+  }
+
+  _sendConsoleMessage(level, text) {
+    this._consoleEvent$.next(JSON.stringify({
+      level,
+      text
+    }));
+  }
+
+  _reportEngineError(message) {
+    const outputMessage = `Debugger engine reports error: ${message}`;
+    logger.error(outputMessage);
+    this._sendConsoleMessage('error', outputMessage);
+    atom.notifications.addError(outputMessage);
+  }
+
+  _reportEngineWarning(message) {
+    const outputMessage = `Debugger engine reports warning: ${message}`;
+    logger.warn(outputMessage);
+    this._sendConsoleMessage('warning', outputMessage);
+    atom.notifications.addWarning(outputMessage);
   }
 
   _updateDebuggerSettings() {
@@ -241,6 +298,7 @@ class Bridge {
   }
 
   _handleDebuggerResumed() {
+    this._clearInterface();
     this._debuggerModel.getActions().setDebuggerMode((_DebuggerStore || _load_DebuggerStore()).DebuggerMode.RUNNING);
   }
 
@@ -371,13 +429,4 @@ class Bridge {
     this._commandDispatcher.openDevTools();
   }
 }
-exports.default = Bridge; /**
-                           * Copyright (c) 2015-present, Facebook, Inc.
-                           * All rights reserved.
-                           *
-                           * This source code is licensed under the license found in the LICENSE file in
-                           * the root directory of this source tree.
-                           *
-                           * 
-                           * @format
-                           */
+exports.default = Bridge;

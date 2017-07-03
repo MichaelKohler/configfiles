@@ -98,7 +98,7 @@ class Activation {
     // We don't know if this package is being activated as part of Atom's initial package
     // activation phase or being enabled through the settings later (in which case we would have
     // missed the `onDidActivatePackage` event).
-    (0, (_event || _load_event()).observableFromSubscribeFunction)(cb => atom.packages.onDidActivatePackage(cb)).race((_observable || _load_observable()).nextTick).first().subscribe(() => {
+    (0, (_event || _load_event()).observableFromSubscribeFunction)(cb => atom.packages.onDidActivatePackage(cb)).race((_observable || _load_observable()).microtask).first().subscribe(() => {
       this._needToDispatchActivatedAction = true;
       this._maybeDispatchActivatedAction();
     }));

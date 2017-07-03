@@ -306,7 +306,6 @@ function addRemoteFolderToProject(connection) {
   });
 
   function closeRemoteConnection() {
-    const hostname = connection.getRemoteHostname();
     const closeConnection = shutdownIfLast => {
       connection.close(shutdownIfLast);
     };
@@ -323,51 +322,13 @@ function addRemoteFolderToProject(connection) {
       return;
     }
 
-    const confirmServerActionOnLastProject = (_featureConfig || _load_featureConfig()).default.get('nuclide-remote-projects.confirmServerActionOnLastProject');
-
-    if (!(typeof confirmServerActionOnLastProject === 'boolean')) {
-      throw new Error('Invariant violation: "typeof confirmServerActionOnLastProject === \'boolean\'"');
-    }
-
     const shutdownServerAfterDisconnection = (_featureConfig || _load_featureConfig()).default.get('nuclide-remote-projects.shutdownServerAfterDisconnection');
 
     if (!(typeof shutdownServerAfterDisconnection === 'boolean')) {
       throw new Error('Invariant violation: "typeof shutdownServerAfterDisconnection === \'boolean\'"');
     }
 
-    if (!confirmServerActionOnLastProject) {
-      const shutdownIfLast = shutdownServerAfterDisconnection;
-      closeConnection(shutdownIfLast);
-      return;
-    }
-
-    const buttons = ['Keep It', 'Shutdown'];
-    const buttonToActions = new Map();
-
-    buttonToActions.set(buttons[0], () => closeConnection( /* shutdownIfLast */false));
-    buttonToActions.set(buttons[1], () => closeConnection( /* shutdownIfLast */true));
-
-    if (shutdownServerAfterDisconnection) {
-      // Atom takes the first button in the list as default option.
-      buttons.reverse();
-    }
-
-    const choice = atom.confirm({
-      message: "No more remote projects on the host: '" + hostname + "'. Would you like to shutdown Nuclide server there?",
-      buttons
-    });
-
-    if (!(choice != null)) {
-      throw new Error('Invariant violation: "choice != null"');
-    }
-
-    const action = buttonToActions.get(buttons[choice]);
-
-    if (!action) {
-      throw new Error('Invariant violation: "action"');
-    }
-
-    action();
+    closeConnection(shutdownServerAfterDisconnection);
   }
 
   return subscription;

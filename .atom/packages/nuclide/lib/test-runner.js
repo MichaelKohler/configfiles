@@ -111,7 +111,7 @@ exports.default = (() => {
             // and it doesn't load for unit tests, it's necessary to manually
             // construct any default config that they define.
             Object.keys(nuclideConfig).forEach(key => {
-              atomGlobal.config.setSchema(`nuclide.${pkg.name}.${key}`, nuclideConfig[key]);
+              atomGlobal.config.setSchema(`${pkg.name}.${key}`, nuclideConfig[key]);
             });
           });
         }

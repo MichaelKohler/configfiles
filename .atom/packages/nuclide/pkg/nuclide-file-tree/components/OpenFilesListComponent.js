@@ -25,6 +25,18 @@ function _load_FileTreeHelpers() {
   return _FileTreeHelpers = _interopRequireDefault(require('../lib/FileTreeHelpers'));
 }
 
+var _PathWithFileIcon;
+
+function _load_PathWithFileIcon() {
+  return _PathWithFileIcon = _interopRequireDefault(require('../../nuclide-ui/PathWithFileIcon'));
+}
+
+var _Tree;
+
+function _load_Tree() {
+  return _Tree = require('../../nuclide-ui/Tree');
+}
+
 var _nuclideAnalytics;
 
 function _load_nuclideAnalytics() {
@@ -52,7 +64,7 @@ class OpenFilesListComponent extends _react.default.PureComponent {
   componentDidUpdate(prevProps) {
     const selectedRow = this.refs.selectedRow;
     if (selectedRow != null && prevProps.activeUri !== this.props.activeUri) {
-      selectedRow.scrollIntoViewIfNeeded();
+      selectedRow.scrollIntoView();
     }
   }
 
@@ -109,37 +121,35 @@ class OpenFilesListComponent extends _react.default.PureComponent {
         (_PanelComponentScroller || _load_PanelComponentScroller()).PanelComponentScroller,
         null,
         _react.default.createElement(
-          'ul',
-          { className: 'list-tree nuclide-file-tree-open-files-list' },
-          sortedEntries.map(e => {
-            const isHoveredUri = this.state.hoveredUri === e.uri;
-            return _react.default.createElement(
-              'li',
-              {
-                className: (0, (_classnames || _load_classnames()).default)('list-item', {
+          (_Tree || _load_Tree()).TreeList,
+          { showArrows: true, className: 'nuclide-file-tree-open-files-list' },
+          _react.default.createElement(
+            (_Tree || _load_Tree()).NestedTreeItem,
+            { hasFlatChildren: true },
+            sortedEntries.map(e => {
+              const isHoveredUri = this.state.hoveredUri === e.uri;
+              return _react.default.createElement(
+                (_Tree || _load_Tree()).TreeItem,
+                {
+                  className: (0, (_classnames || _load_classnames()).default)({ 'text-highlight': isHoveredUri }),
                   selected: e.isSelected,
-                  'text-highlight': isHoveredUri
+                  key: e.uri,
+                  onClick: this._onClick.bind(this, e),
+                  onMouseEnter: this._onListItemMouseEnter.bind(this, e),
+                  onMouseLeave: this._onListItemMouseLeave,
+                  ref: e.isSelected ? 'selectedRow' : null },
+                _react.default.createElement('span', {
+                  className: (0, (_classnames || _load_classnames()).default)('icon', {
+                    'icon-primitive-dot': e.isModified && !isHoveredUri,
+                    'icon-x': isHoveredUri || !e.isModified,
+                    'text-info': e.isModified
+                  }),
+                  onClick: this._onCloseClick.bind(this, e)
                 }),
-                key: e.uri,
-                onClick: this._onClick.bind(this, e),
-                onMouseEnter: this._onListItemMouseEnter.bind(this, e),
-                onMouseLeave: this._onListItemMouseLeave,
-                ref: e.isSelected ? 'selectedRow' : null },
-              _react.default.createElement('span', {
-                className: (0, (_classnames || _load_classnames()).default)('icon', {
-                  'icon-primitive-dot': e.isModified && !isHoveredUri,
-                  'icon-x': isHoveredUri || !e.isModified,
-                  'text-info': e.isModified
-                }),
-                onClick: this._onCloseClick.bind(this, e)
-              }),
-              _react.default.createElement(
-                'span',
-                { className: 'icon icon-file-text', 'data-name': e.name },
-                e.name
-              )
-            );
-          })
+                _react.default.createElement((_PathWithFileIcon || _load_PathWithFileIcon()).default, { path: e.name })
+              );
+            })
+          )
         )
       )
     );

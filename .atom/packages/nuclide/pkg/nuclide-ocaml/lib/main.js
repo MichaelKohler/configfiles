@@ -125,8 +125,8 @@ function createTypeHintProvider() {
 
 function createCodeFormatProvider() {
   return {
-    selector: Array.from((_constants || _load_constants()).GRAMMARS).join(', '),
-    inclusionPriority: 1,
+    grammarScopes: Array.from((_constants || _load_constants()).GRAMMARS),
+    priority: 1,
     formatEntireFile: (editor, range) => (0, (_CodeFormatHelpers || _load_CodeFormatHelpers()).getEntireFormatting)(editor, range)
   };
 }

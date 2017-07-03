@@ -3,23 +3,6 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
-
-// Flow definitions for Microsoft's Language Server Protocol
-// https://github.com/Microsoft/language-server-protocol/blob/master/protocol.md
-// https://github.com/Microsoft/language-server-protocol/blob/master/versions/protocol-2-x.md
-
-// Structures
-
 const DiagnosticSeverity = exports.DiagnosticSeverity = {
   // Reports an error.
   Error: 1,
@@ -29,7 +12,22 @@ const DiagnosticSeverity = exports.DiagnosticSeverity = {
   Information: 3,
   // Reports a hint.
   Hint: 4
-};
+}; /**
+    * Copyright (c) 2015-present, Facebook, Inc.
+    * All rights reserved.
+    *
+    * This source code is licensed under the license found in the LICENSE file in
+    * the root directory of this source tree.
+    *
+    * 
+    * @format
+    */
+
+// Flow definitions for Microsoft's Language Server Protocol
+// https://github.com/Microsoft/language-server-protocol/blob/master/protocol.md
+// https://github.com/Microsoft/language-server-protocol/blob/master/versions/protocol-2-x.md
+
+// Structures
 
 // General
 

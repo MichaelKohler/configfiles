@@ -14,7 +14,8 @@ let initializeLsp = exports.initializeLsp = (() => {
     }
 
     (_config || _load_config()).logger.setLevel(logLevel);
-    return (0, (_nuclideVscodeLanguageService || _load_nuclideVscodeLanguageService()).createMultiLspLanguageService)((_config || _load_config()).logger, fileNotifier, host, 'GraphQL', command, args, projectFileName, fileExtensions);
+
+    return (0, (_nuclideVscodeLanguageService || _load_nuclideVscodeLanguageService()).createMultiLspLanguageService)((_config || _load_config()).logger, fileNotifier, host, 'graphql', require.resolve(command), args, projectFileName, fileExtensions, {});
   });
 
   return function initializeLsp(_x, _x2, _x3, _x4, _x5, _x6, _x7) {

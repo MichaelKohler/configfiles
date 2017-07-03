@@ -26,35 +26,45 @@ function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in ob
                                                                                                                                                                                                                               * @format
                                                                                                                                                                                                                               */
 
-const TreeItem = props => {
-  const { className, selected, children } = props,
-        remainingProps = _objectWithoutProperties(props, ['className', 'selected', 'children']);
-  return _react.default.createElement(
-    'li',
-    Object.assign({
-      className: (0, (_classnames || _load_classnames()).default)(className, {
-        selected
-      }, 'list-item')
-    }, remainingProps),
-    selected && typeof children === 'string' ? // String children must be wrapped to receive correct styles when selected.
-    _react.default.createElement(
-      'span',
-      null,
-      children
-    ) : children
-  );
-};
+class TreeItem extends _react.default.Component {
+
+  scrollIntoView() {
+    this._liNode && this._liNode.scrollIntoView();
+  }
+
+  render() {
+    const _props = this.props,
+          { className, selected, children } = _props,
+          remainingProps = _objectWithoutProperties(_props, ['className', 'selected', 'children']);
+    return _react.default.createElement(
+      'li',
+      Object.assign({
+        className: (0, (_classnames || _load_classnames()).default)(className, {
+          selected
+        }, 'list-item')
+      }, remainingProps, {
+        ref: liNode => this._liNode = liNode }),
+      selected && typeof children === 'string' ? // String children must be wrapped to receive correct styles when selected.
+      _react.default.createElement(
+        'span',
+        null,
+        children
+      ) : children
+    );
+  }
+}
 
 exports.TreeItem = TreeItem;
 const NestedTreeItem = props => {
   const {
     className,
+    hasFlatChildren,
     selected,
     collapsed,
     title,
     children
   } = props,
-        remainingProps = _objectWithoutProperties(props, ['className', 'selected', 'collapsed', 'title', 'children']);
+        remainingProps = _objectWithoutProperties(props, ['className', 'hasFlatChildren', 'selected', 'collapsed', 'title', 'children']);
   return _react.default.createElement(
     'li',
     Object.assign({
@@ -63,14 +73,14 @@ const NestedTreeItem = props => {
         collapsed
       }, 'list-nested-item')
     }, remainingProps),
-    _react.default.createElement(
+    title ? _react.default.createElement(
       'div',
       { className: 'list-item' },
       title
-    ),
+    ) : null,
     _react.default.createElement(
       TreeList,
-      null,
+      { hasFlatChildren: hasFlatChildren },
       children
     )
   );
@@ -81,7 +91,8 @@ const TreeList = exports.TreeList = props => _react.default.createElement(
   'ul',
   {
     className: (0, (_classnames || _load_classnames()).default)(props.className, {
-      'has-collapsable-children': props.showArrows
+      'has-collapsable-children': props.showArrows,
+      'has-flat-children': props.hasFlatChildren
     }, 'list-tree') },
   props.children
 );

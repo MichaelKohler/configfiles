@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.nextAnimationFrame = exports.nextTick = undefined;
+exports.nextAnimationFrame = exports.macrotask = exports.microtask = undefined;
 exports.splitStream = splitStream;
 exports.bufferUntil = bufferUntil;
 exports.cacheWhileSubscribed = cacheWhileSubscribed;
@@ -73,11 +73,12 @@ function splitStream(input) {
  *     specifying whether to complete the buffer (and begin a new one).
  */
 /**
- * Copyright (c) 2015-present, Facebook, Inc.
+ * Copyright (c) 2017-present, Facebook, Inc.
  * All rights reserved.
  *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
  *
  * 
  * @format
@@ -270,11 +271,21 @@ function throttle(source, duration, options_) {
   });
 }
 
-const nextTick = exports.nextTick = _rxjsBundlesRxMinJs.Observable.create(observer => {
+const microtask = exports.microtask = _rxjsBundlesRxMinJs.Observable.create(observer => {
   process.nextTick(() => {
     observer.next();
     observer.complete();
   });
+});
+
+const macrotask = exports.macrotask = _rxjsBundlesRxMinJs.Observable.create(observer => {
+  const timerId = setImmediate(() => {
+    observer.next();
+    observer.complete();
+  });
+  return () => {
+    clearImmediate(timerId);
+  };
 });
 
 const nextAnimationFrame = exports.nextAnimationFrame = _rxjsBundlesRxMinJs.Observable.create(observer => {

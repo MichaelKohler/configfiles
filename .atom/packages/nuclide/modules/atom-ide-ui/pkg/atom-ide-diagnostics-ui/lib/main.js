@@ -79,23 +79,25 @@ var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const LINTER_PACKAGE = 'linter'; /**
-                                  * Copyright (c) 2015-present, Facebook, Inc.
+                                  * Copyright (c) 2017-present, Facebook, Inc.
                                   * All rights reserved.
                                   *
-                                  * This source code is licensed under the license found in the LICENSE file in
-                                  * the root directory of this source tree.
+                                  * This source code is licensed under the BSD-style license found in the
+                                  * LICENSE file in the root directory of this source tree. An additional grant
+                                  * of patent rights can be found in the PATENTS file in the same directory.
                                   *
                                   * 
                                   * @format
                                   */
 
-// TODO(hansonw): This needs to be moved.
-// eslint-disable-next-line nuclide-internal/modules-dependencies
-
 const MAX_OPEN_ALL_FILES = 20;
 
 function disableLinter() {
   atom.packages.disablePackage(LINTER_PACKAGE);
+}
+
+function getEditorDiagnosticUpdates(editor, diagnosticUpdater) {
+  return (0, (_event || _load_event()).observableFromSubscribeFunction)(editor.onDidChangePath.bind(editor)).startWith(editor.getPath()).switchMap(filePath => filePath != null ? diagnosticUpdater.getFileMessageUpdates(filePath) : _rxjsBundlesRxMinJs.Observable.empty()).takeUntil((0, (_event || _load_event()).observableFromSubscribeFunction)(editor.onDidDestroy.bind(editor)));
 }
 
 class Activation {
@@ -114,9 +116,8 @@ class Activation {
   consumeDatatipService(service) {
     const datatipProvider = {
       // show this datatip for every type of file
-      validForScope: scope => true,
       providerName: 'nuclide-diagnostics-datatip',
-      inclusionPriority: 1,
+      priority: 1,
       datatip: this._datatip.bind(this)
     };
     const disposable = service.addProvider(datatipProvider);
@@ -167,23 +168,17 @@ class Activation {
     this._subscriptions.add(
     // Track diagnostics for all active editors.
     (0, (_textEditor || _load_textEditor()).observeTextEditors)(editor => {
-      const filePath = editor.getPath();
-      if (!filePath) {
-        return;
-      }
       this._fileDiagnostics.set(editor, []);
       // TODO: this is actually inefficient - this filters all file events
       // by their path, so this is actually O(N^2) in the number of editors.
       // We should merge the store and UI packages to get direct access.
-      const subscription = diagnosticUpdater.getFileMessageUpdates(filePath).subscribe(update => {
+      const subscription = getEditorDiagnosticUpdates(editor, diagnosticUpdater).finally(() => {
+        this._subscriptions.remove(subscription);
+        this._fileDiagnostics.delete(editor);
+      }).subscribe(update => {
         this._fileDiagnostics.set(editor, update.messages);
       });
       this._subscriptions.add(subscription);
-      editor.onDidDestroy(() => {
-        subscription.unsubscribe();
-        this._subscriptions.remove(subscription);
-        this._fileDiagnostics.delete(editor);
-      });
     }));
     return new (_UniversalDisposable || _load_UniversalDisposable()).default(atomCommandsDisposable, () => {
       if (!(this._diagnosticUpdaters.getValue() === diagnosticUpdater)) {
@@ -246,25 +241,21 @@ class Activation {
 
 function gutterConsumeDiagnosticUpdates(diagnosticUpdater) {
   const fixer = diagnosticUpdater.applyFix.bind(diagnosticUpdater);
-  return (0, (_textEditor || _load_textEditor()).observeTextEditors)(editor => {
-    const filePath = editor.getPath();
-    if (!filePath) {
-      return; // The file is likely untitled.
-    }
-
-    const callback = update => {
-      // Although the subscription below should be cleaned up on editor destroy,
+  const subscriptions = new (_UniversalDisposable || _load_UniversalDisposable()).default();
+  subscriptions.add((0, (_textEditor || _load_textEditor()).observeTextEditors)(editor => {
+    const subscription = getEditorDiagnosticUpdates(editor, diagnosticUpdater).finally(() => {
+      subscriptions.remove(subscription);
+    }).subscribe(update => {
+      // Although the subscription should be cleaned up on editor destroy,
       // the very act of destroying the editor can trigger diagnostic updates.
       // Thus this callback can still be triggered after the editor is destroyed.
       if (!editor.isDestroyed()) {
         (0, (_gutter || _load_gutter()).applyUpdateToEditor)(editor, update, fixer);
       }
-    };
-    const disposable = new (_UniversalDisposable || _load_UniversalDisposable()).default(diagnosticUpdater.getFileMessageUpdates(filePath).subscribe(callback));
-
-    // Be sure to remove the subscription on the DiagnosticStore once the editor is closed.
-    editor.onDidDestroy(() => disposable.dispose());
-  });
+    });
+    subscriptions.add(subscription);
+  }));
+  return subscriptions;
 }
 
 function addAtomCommands(diagnosticUpdater) {

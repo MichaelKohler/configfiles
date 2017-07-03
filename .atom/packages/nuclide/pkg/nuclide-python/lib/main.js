@@ -1,9 +1,5 @@
 'use strict';
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
 var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
 
 let connectionToPythonService = (() => {
@@ -23,11 +19,6 @@ let connectionToPythonService = (() => {
     return _ref.apply(this, arguments);
   };
 })();
-
-exports.activate = activate;
-exports.provideLint = provideLint;
-exports.consumeBusySignal = consumeBusySignal;
-exports.deactivate = deactivate;
 
 var _constants;
 
@@ -65,20 +56,38 @@ function _load_nuclideLanguageService() {
   return _nuclideLanguageService = require('../../nuclide-language-service');
 }
 
+var _createPackage;
+
+function _load_createPackage() {
+  return _createPackage = _interopRequireDefault(require('nuclide-commons-atom/createPackage'));
+}
+
+var _pythonPlatform;
+
+function _load_pythonPlatform() {
+  return _pythonPlatform = require('./pythonPlatform');
+}
+
+var _UniversalDisposable;
+
+function _load_UniversalDisposable() {
+  return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
+}
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const PYTHON_SERVICE_NAME = 'PythonService'; /**
-                                              * Copyright (c) 2015-present, Facebook, Inc.
-                                              * All rights reserved.
-                                              *
-                                              * This source code is licensed under the license found in the LICENSE file in
-                                              * the root directory of this source tree.
-                                              *
-                                              * 
-                                              * @format
-                                              */
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ * @format
+ */
 
-let busySignalService = null;
+const PYTHON_SERVICE_NAME = 'PythonService';
 
 const atomConfig = {
   name: 'Python',
@@ -89,14 +98,14 @@ const atomConfig = {
     analyticsEventName: 'python.outline'
   },
   codeFormat: {
-    version: '0.0.0',
+    version: '0.1.0',
     priority: 1,
     analyticsEventName: 'python.formatCode',
     canFormatRanges: false,
     canFormatAtPosition: false
   },
   findReferences: {
-    version: '0.0.0',
+    version: '0.1.0',
     analyticsEventName: 'python.get-references'
   },
   autocomplete: {
@@ -110,52 +119,53 @@ const atomConfig = {
     onDidInsertSuggestionAnalyticsEventName: 'nuclide-python.autocomplete-chosen'
   },
   definition: {
-    version: '0.0.0',
+    version: '0.1.0',
     priority: 20,
     definitionEventName: 'python.get-definition',
     definitionByIdEventName: 'python.get-definition-by-id'
   }
 };
 
-let pythonLanguageService = null;
+class Activation {
 
-function activate() {
-  if (pythonLanguageService == null) {
-    pythonLanguageService = new (_nuclideLanguageService || _load_nuclideLanguageService()).AtomLanguageService(connectionToPythonService, atomConfig);
-    pythonLanguageService.activate();
+  constructor(rawState) {
+    this._busySignalService = null;
+
+    this._pythonLanguageService = new (_nuclideLanguageService || _load_nuclideLanguageService()).AtomLanguageService(connectionToPythonService, atomConfig);
+    this._pythonLanguageService.activate();
+    this._subscriptions = new (_UniversalDisposable || _load_UniversalDisposable()).default(this._pythonLanguageService);
   }
-}
 
-function provideLint() {
-  return {
-    grammarScopes: Array.from((_constants || _load_constants()).GRAMMAR_SET),
-    scope: 'file',
-    lintOnFly: (0, (_config || _load_config()).getLintOnFly)(),
-    name: 'nuclide-python',
-    lint(editor) {
-      if (busySignalService == null) {
-        return (_LintHelpers || _load_LintHelpers()).default.lint(editor);
+  consumeBusySignal(service) {
+    this._subscriptions.add(service);
+    this._busySignalService = service;
+    return new (_UniversalDisposable || _load_UniversalDisposable()).default(() => {
+      this._busySignalService = null;
+    });
+  }
+
+  provideLint() {
+    return {
+      grammarScopes: Array.from((_constants || _load_constants()).GRAMMAR_SET),
+      scope: 'file',
+      lintOnFly: (0, (_config || _load_config()).getLintOnFly)(),
+      name: 'nuclide-python',
+      lint(editor) {
+        if (this._busySignalService == null) {
+          return (_LintHelpers || _load_LintHelpers()).default.lint(editor);
+        }
+        return this._busySignalService.reportBusyWhile(`Python: Waiting for flake8 lint results for \`${editor.getTitle()}\``, () => (_LintHelpers || _load_LintHelpers()).default.lint(editor));
       }
-      return busySignalService.reportBusyWhile(`Python: Waiting for flake8 lint results for \`${editor.getTitle()}\``, () => (_LintHelpers || _load_LintHelpers()).default.lint(editor));
-    }
-  };
-}
-
-function consumeBusySignal(service) {
-  busySignalService = service;
-  return {
-    dispose: () => {
-      busySignalService = null;
-    }
-  };
-}
-
-function deactivate() {
-  if (pythonLanguageService != null) {
-    pythonLanguageService.dispose();
-    pythonLanguageService = null;
+    };
   }
-  if (busySignalService != null) {
-    busySignalService.dispose();
+
+  consumePlatformService(service) {
+    this._subscriptions.add(service.register((_pythonPlatform || _load_pythonPlatform()).providePythonPlatformGroup));
+  }
+
+  dispose() {
+    this._subscriptions.dispose();
   }
 }
+
+(0, (_createPackage || _load_createPackage()).default)(module.exports, Activation);

@@ -7,6 +7,17 @@ exports.initialize = exports.initializeLsp = undefined;
 
 var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
 
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ * @format
+ */
+
 let initializeLsp = exports.initializeLsp = (() => {
   var _ref = (0, _asyncToGenerator.default)(function* (command, args, projectFileName, fileExtensions, logLevel, fileNotifier, host) {
     if (!(fileNotifier instanceof (_nuclideOpenFilesRpc || _load_nuclideOpenFilesRpc()).FileCache)) {
@@ -15,22 +26,13 @@ let initializeLsp = exports.initializeLsp = (() => {
 
     (_hackConfig || _load_hackConfig()).logger.setLevel(logLevel);
     const cmd = command === '' ? yield (0, (_hackConfig || _load_hackConfig()).getHackCommand)() : command;
-    return (0, (_nuclideVscodeLanguageService || _load_nuclideVscodeLanguageService()).createMultiLspLanguageService)((_hackConfig || _load_hackConfig()).logger, fileNotifier, host, 'Hack', cmd, args, projectFileName, fileExtensions);
+    return (0, (_nuclideVscodeLanguageService || _load_nuclideVscodeLanguageService()).createMultiLspLanguageService)((_hackConfig || _load_hackConfig()).logger, fileNotifier, host, 'hack', cmd, args, projectFileName, fileExtensions, {});
   });
 
   return function initializeLsp(_x, _x2, _x3, _x4, _x5, _x6, _x7) {
     return _ref.apply(this, arguments);
   };
-})(); /**
-       * Copyright (c) 2015-present, Facebook, Inc.
-       * All rights reserved.
-       *
-       * This source code is licensed under the license found in the LICENSE file in
-       * the root directory of this source tree.
-       *
-       * 
-       * @format
-       */
+})();
 
 let initialize = exports.initialize = (() => {
   var _ref2 = (0, _asyncToGenerator.default)(function* (hackCommand, logLevel, fileNotifier) {
@@ -241,10 +243,10 @@ class HackSingleFileLanguageService {
         return hackDiagnostics.filename !== '';
       }).map(hackDiagnostics => {
         (_hackConfig || _load_hackConfig()).logger.debug(`Got hack error in ${hackDiagnostics.filename}`);
-        return {
+        return [{
           filePath: hackDiagnostics.filename,
           messages: hackDiagnostics.errors.map(diagnostic => (0, (_Diagnostics || _load_Diagnostics()).hackMessageToDiagnosticMessage)(diagnostic.message))
-        };
+        }];
       }));
     }).catch(error => {
       (_hackConfig || _load_hackConfig()).logger.error(`Error: observeDiagnostics ${error}`);
@@ -278,35 +280,6 @@ class HackSingleFileLanguageService {
 
       const hackDefinitions = Array.isArray(result) ? result : [result];
       return (0, (_Definitions || _load_Definitions()).convertDefinitions)(hackDefinitions, filePath, projectRoot);
-    })();
-  }
-
-  getDefinitionById(file, id) {
-    return (0, _asyncToGenerator.default)(function* () {
-      const definition = yield (0, (_HackHelpers || _load_HackHelpers()).callHHClient)(
-      /* args */['--get-definition-by-id', id],
-      /* errorStream */false,
-      /* processInput */null,
-      /* cwd */file);
-      if (definition == null) {
-        return null;
-      }
-
-      const result = {
-        path: definition.position.filename,
-        position: (0, (_HackHelpers || _load_HackHelpers()).atomPointOfHackRangeStart)(definition.position),
-        name: definition.name,
-        language: 'php',
-        // TODO: range
-        projectRoot: definition.hackRoot
-      };
-      if (typeof definition.id === 'string') {
-        return Object.assign({}, result, {
-          id: definition.id
-        });
-      } else {
-        return result;
-      }
     })();
   }
 

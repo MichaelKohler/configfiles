@@ -4,6 +4,14 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
+
+var _fsPromise;
+
+function _load_fsPromise() {
+  return _fsPromise = _interopRequireDefault(require('nuclide-commons/fsPromise'));
+}
+
 var _helpers;
 
 function _load_helpers() {
@@ -26,32 +34,48 @@ class FileCache {
   constructor(sendServerMethod) {
     this._sendServerMethod = sendServerMethod;
     this._files = new Map();
+    this._realpathCache = {};
   }
 
   registerFile(fileUrl) {
-    const filepath = (0, (_helpers || _load_helpers()).uriToPath)(fileUrl);
-    if (!this._files.has(filepath)) {
-      this._files.set(filepath, new (_File || _load_File()).default(filepath));
-      this._sendServerMethod('Debugger.scriptParsed', {
-        scriptId: filepath,
-        url: fileUrl,
-        startLine: 0,
-        startColumn: 0,
-        endLine: 0,
-        endColumn: 0
-      });
-    }
-    const result = this._files.get(filepath);
+    var _this = this;
 
-    if (!(result != null)) {
-      throw new Error('Invariant violation: "result != null"');
-    }
+    return (0, _asyncToGenerator.default)(function* () {
+      const filepath = (0, (_helpers || _load_helpers()).uriToPath)(fileUrl);
+      let realFilepath;
+      try {
+        realFilepath = yield (_fsPromise || _load_fsPromise()).default.realpath(filepath, _this._realpathCache);
+      } catch (error) {
+        realFilepath = filepath;
+      }
+      if (!_this._files.has(filepath)) {
+        _this._files.set(filepath, new (_File || _load_File()).default(filepath));
+        _this._sendServerMethod('Debugger.scriptParsed', {
+          scriptId: filepath,
+          url: (0, (_helpers || _load_helpers()).pathToUri)(realFilepath),
+          startLine: 0,
+          startColumn: 0,
+          endLine: 0,
+          endColumn: 0
+        });
+      }
+      const result = _this._files.get(filepath);
 
-    return result;
+      if (!(result != null)) {
+        throw new Error('Invariant violation: "result != null"');
+      }
+
+      return result;
+    })();
   }
 
   getFileSource(filepath) {
-    return this.registerFile(filepath).getSource();
+    var _this2 = this;
+
+    return (0, _asyncToGenerator.default)(function* () {
+      const file = yield _this2.registerFile(filepath);
+      return file.getSource();
+    })();
   }
 }
 exports.default = FileCache; /**

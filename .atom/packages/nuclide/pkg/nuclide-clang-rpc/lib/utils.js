@@ -3,6 +3,39 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.guessBuildFile = undefined;
+
+var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
+
+// The file may be new. Look for a nearby BUCK or TARGETS file.
+let guessBuildFile = exports.guessBuildFile = (() => {
+  var _ref = (0, _asyncToGenerator.default)(function* (file) {
+    const dir = (_nuclideUri || _load_nuclideUri()).default.dirname(file);
+    let bestMatch = null;
+    yield Promise.all(['BUCK', 'TARGETS', 'compile_commands.json'].map((() => {
+      var _ref2 = (0, _asyncToGenerator.default)(function* (name) {
+        const nearestDir = yield (_fsPromise || _load_fsPromise()).default.findNearestFile(name, dir);
+        if (nearestDir != null) {
+          const match = (_nuclideUri || _load_nuclideUri()).default.join(nearestDir, name);
+          // Return the closest (most specific) match.
+          if (bestMatch == null || match.length > bestMatch.length) {
+            bestMatch = match;
+          }
+        }
+      });
+
+      return function (_x2) {
+        return _ref2.apply(this, arguments);
+      };
+    })()));
+    return bestMatch;
+  });
+
+  return function guessBuildFile(_x) {
+    return _ref.apply(this, arguments);
+  };
+})();
+
 exports.isHeaderFile = isHeaderFile;
 exports.isSourceFile = isSourceFile;
 exports.commonPrefix = commonPrefix;
@@ -22,6 +55,12 @@ function _load_nuclideUri() {
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
 
+var _fsPromise;
+
+function _load_fsPromise() {
+  return _fsPromise = _interopRequireDefault(require('nuclide-commons/fsPromise'));
+}
+
 var _process;
 
 function _load_process() {
@@ -30,18 +69,17 @@ function _load_process() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
+const HEADER_EXTENSIONS = new Set(['.h', '.hh', '.hpp', '.hxx', '.h++']); /**
+                                                                           * Copyright (c) 2015-present, Facebook, Inc.
+                                                                           * All rights reserved.
+                                                                           *
+                                                                           * This source code is licensed under the license found in the LICENSE file in
+                                                                           * the root directory of this source tree.
+                                                                           *
+                                                                           * 
+                                                                           * @format
+                                                                           */
 
-const HEADER_EXTENSIONS = new Set(['.h', '.hh', '.hpp', '.hxx', '.h++']);
 const SOURCE_EXTENSIONS = new Set(['.c', '.cc', '.cpp', '.cxx', '.c++', '.m', '.mm']);
 
 function isHeaderFile(filename) {

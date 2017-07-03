@@ -134,6 +134,7 @@ exports.addPath = addPath;
 exports.revertPath = revertPath;
 exports.confirmAndRevertPath = confirmAndRevertPath;
 exports.getHgRepositories = getHgRepositories;
+exports.getHgRepositoriesStream = getHgRepositoriesStream;
 exports.getHgRepositoryStream = getHgRepositoryStream;
 exports.repositoryForPath = repositoryForPath;
 exports.repositoryContainsPath = repositoryContainsPath;
@@ -350,10 +351,12 @@ function getHgRepositories() {
   .filter(repository => repository.getType() === 'hg'));
 }
 
-function getHgRepositoryStream() {
-  const currentRepositories = (0, (_event || _load_event()).observableFromSubscribeFunction)(atom.project.onDidChangePaths.bind(atom.project)).startWith(null).map(() => getHgRepositories());
+function getHgRepositoriesStream() {
+  return (0, (_event || _load_event()).observableFromSubscribeFunction)(atom.project.onDidChangePaths.bind(atom.project)).startWith(null).map(() => getHgRepositories());
+}
 
-  return (0, (_observable || _load_observable()).diffSets)(currentRepositories).flatMap(repoDiff => _rxjsBundlesRxMinJs.Observable.from(repoDiff.added));
+function getHgRepositoryStream() {
+  return (0, (_observable || _load_observable()).diffSets)(getHgRepositoriesStream()).flatMap(repoDiff => _rxjsBundlesRxMinJs.Observable.from(repoDiff.added));
 }
 
 /**
