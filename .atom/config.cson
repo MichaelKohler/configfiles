@@ -19,6 +19,8 @@
       compactList: true
     ui:
       panelShadows: true
+  "atom-package-deps":
+    ignored: []
   core:
     customFileTypes:
       "source.ini": [
