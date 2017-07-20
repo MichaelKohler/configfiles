@@ -12,19 +12,26 @@ function _load_UniversalDisposable() {
   return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
+var _OutlineViewPanel;
+
+function _load_OutlineViewPanel() {
+  return _OutlineViewPanel = require('atom-ide-ui/pkg/atom-ide-outline-view/lib/OutlineViewPanel');
+}
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const NUX_OUTLINE_VIEW_TOUR = 'nuclide_outline_view_nux'; /**
-                                                           * Copyright (c) 2015-present, Facebook, Inc.
-                                                           * All rights reserved.
-                                                           *
-                                                           * This source code is licensed under the license found in the LICENSE file in
-                                                           * the root directory of this source tree.
-                                                           *
-                                                           * 
-                                                           * @format
-                                                           */
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ * @format
+ */
 
+const NUX_OUTLINE_VIEW_TOUR = 'nuclide_outline_view_nux';
 const NUX_OUTLINE_VIEW_ID = 4342;
 const GK_NUX_OUTLINE_VIEW = 'mp_nuclide_outline_view_nux';
 
@@ -91,7 +98,8 @@ class Activation {
         icon: 'list-unordered',
         description: 'Displays major components of the current file (classes, methods, etc.)',
         command: () => {
-          atom.commands.dispatch(atom.views.getView(atom.workspace), 'nuclide-outline-view:toggle', { visible: true });
+          // eslint-disable-next-line nuclide-internal/atom-apis
+          atom.workspace.open((_OutlineViewPanel || _load_OutlineViewPanel()).WORKSPACE_VIEW_URI);
         }
       },
       priority: 2.5 };

@@ -55,12 +55,17 @@ class AttachProcessInfo extends (_nuclideDebuggerBase || _load_nuclideDebuggerBa
     return new AttachProcessInfo(this._targetUri, this._targetInfo);
   }
 
-  supportThreads() {
-    return true;
+  getDebuggerCapabilities() {
+    return Object.assign({}, super.getDebuggerCapabilities(), {
+      conditionalBreakpoints: true,
+      continueToLocation: true,
+      singleThreadStepping: true,
+      threads: true
+    });
   }
 
-  supportContinueToLocation() {
-    return true;
+  getDebuggerProps() {
+    return super.getDebuggerProps();
   }
 
   debug() {
@@ -104,10 +109,6 @@ class AttachProcessInfo extends (_nuclideDebuggerBase || _load_nuclideDebuggerBa
     }
 
     return new service.NativeDebuggerService(debuggerConfig);
-  }
-
-  supportSingleThreadStepping() {
-    return true;
   }
 }
 exports.AttachProcessInfo = AttachProcessInfo;

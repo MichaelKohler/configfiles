@@ -82,7 +82,8 @@ class FileReferencesView extends _react.default.Component {
         caller = _react.default.createElement(
           'span',
           null,
-          ' in ',
+          ' ',
+          'in ',
           _react.default.createElement(
             'code',
             null,
@@ -104,9 +105,7 @@ class FileReferencesView extends _react.default.Component {
           startRange.row + 1,
           ':',
           startRange.column + 1,
-          ' ',
-          '-',
-          ' ',
+          ' - ',
           endRange.row + 1,
           ':',
           endRange.column + 1,

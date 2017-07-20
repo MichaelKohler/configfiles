@@ -50,15 +50,16 @@ class CodeFormatProvider {
     this.name = name;
     this.grammarScopes = grammarScopes;
     this.priority = priority;
+    this._analyticsEventName = analyticsEventName;
     this._connectionToLanguageService = connectionToLanguageService;
     this._busySignalProvider = busySignalProvider;
   }
 
   static register(name, grammarScopes, config, connectionToLanguageService, busySignalProvider) {
-    const disposable = new (_UniversalDisposable || _load_UniversalDisposable()).default(config.canFormatRanges ? atom.packages.serviceHub.provide('atom-ide-code-format.range', config.version, new RangeFormatProvider(name, grammarScopes, config.priority, config.analyticsEventName, connectionToLanguageService, busySignalProvider).provide()) : atom.packages.serviceHub.provide('atom-ide-code-format.file', config.version, new FileFormatProvider(name, grammarScopes, config.priority, config.analyticsEventName, connectionToLanguageService, busySignalProvider).provide()));
+    const disposable = new (_UniversalDisposable || _load_UniversalDisposable()).default(config.canFormatRanges ? atom.packages.serviceHub.provide('code-format.range', config.version, new RangeFormatProvider(name, grammarScopes, config.priority, config.analyticsEventName, connectionToLanguageService, busySignalProvider).provide()) : atom.packages.serviceHub.provide('code-format.file', config.version, new FileFormatProvider(name, grammarScopes, config.priority, config.analyticsEventName, connectionToLanguageService, busySignalProvider).provide()));
 
     if (config.canFormatAtPosition) {
-      disposable.add(atom.packages.serviceHub.provide('atom-ide-code-format.onType', config.version, new PositionFormatProvider(name, grammarScopes, config.priority, config.analyticsEventName, connectionToLanguageService, busySignalProvider).provide()));
+      disposable.add(atom.packages.serviceHub.provide('code-format.onType', config.version, new PositionFormatProvider(name, grammarScopes, config.priority, config.analyticsEventName, connectionToLanguageService, busySignalProvider).provide()));
     }
 
     return disposable;

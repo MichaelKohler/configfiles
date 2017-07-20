@@ -261,29 +261,25 @@ class FileTreeController {
   }
 
   _revealFile(event) {
-    const path = (0, (_getElementFilePath || _load_getElementFilePath()).default)(event.target);
+    let path = (0, (_getElementFilePath || _load_getElementFilePath()).default)(event.target);
+
     if (path == null) {
-      this.revealActiveFile();
-    } else {
-      this._revealFilePath(path);
+      const editor = atom.workspace.getActiveTextEditor();
+      path = editor != null ? editor.getPath() : null;
+      if (path == null) {
+        return;
+      }
     }
+
+    this.revealFilePath(path);
   }
 
-  /**
-   * Reveal the file that currently has focus in the file tree. If showIfHidden is false,
-   * this will enqueue a pending reveal to be executed when the file tree is shown again.
-   */
-  revealActiveFile(showIfHidden = true) {
-    const editor = atom.workspace.getActiveTextEditor();
-    const filePath = editor != null ? editor.getPath() : null;
-    this._revealFilePath(filePath, showIfHidden);
-  }
-
-  _revealFilePath(filePath, showIfHidden = true) {
+  revealFilePath(filePath, showIfHidden = true) {
     if (showIfHidden) {
       // Ensure the file tree is visible before trying to reveal a file in it. Even if the currently
       // active pane is not an ordinary editor, we still at least want to show the tree.
       atom.commands.dispatch(atom.views.getView(atom.workspace), 'nuclide-file-tree:toggle', { visible: true });
+      this._actions.setFoldersExpanded(true);
     }
 
     if (!filePath) {

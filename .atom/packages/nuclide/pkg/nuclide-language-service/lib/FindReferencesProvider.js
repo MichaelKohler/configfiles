@@ -54,7 +54,7 @@ class FindReferencesProvider {
   }
 
   static register(name, grammarScopes, config, connectionToLanguageService) {
-    return atom.packages.serviceHub.provide('atom-ide-find-references', config.version, new FindReferencesProvider(name, grammarScopes, config.analyticsEventName, connectionToLanguageService));
+    return atom.packages.serviceHub.provide('find-references', config.version, new FindReferencesProvider(name, grammarScopes, config.analyticsEventName, connectionToLanguageService));
   }
 
   isEditorSupported(textEditor) {

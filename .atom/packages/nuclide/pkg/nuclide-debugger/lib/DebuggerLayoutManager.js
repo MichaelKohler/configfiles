@@ -506,16 +506,33 @@ class DebuggerLayoutManager {
         if (item instanceof (_DebuggerPaneContainerViewModel || _load_DebuggerPaneContainerViewModel()).DebuggerPaneContainerViewModel) {
           // Forward the destruction logic to the contianer.
           item.destroyWhere(innerItem => this._shouldDestroyPaneItem(mode, innerItem));
+
+          this._destroyContainerIfEmpty(item);
           return false;
         }
 
         return this._shouldDestroyPaneItem(mode, item);
       });
-    } else if (mode === (_DebuggerStore || _load_DebuggerStore()).DebuggerMode.STARTING) {
-      this.showDebuggerViews(api);
     }
 
     this._previousDebuggerMode = mode;
+  }
+
+  _countPanesForTargetDock(dockName, defaultDockName) {
+    const mode = this._model.getStore().getDebuggerMode();
+    return this._debuggerPanes.filter(
+    // Filter out any panes that the user has hidden or that aren't visible
+    // in the current debug mode.
+    debuggerPane => (debuggerPane.previousLocation == null || !debuggerPane.previousLocation.userHidden) && (debuggerPane.debuggerModeFilter == null || debuggerPane.debuggerModeFilter(mode))).map(debuggerPane => {
+      // Map each debugger pane to the name of the dock it will belong to.
+      if (debuggerPane.previousLocation != null) {
+        const previousDock = this._getWorkspaceDocks().find(d => debuggerPane.previousLocation != null && d.name === debuggerPane.previousLocation.dock);
+        if (previousDock != null) {
+          return previousDock.name;
+        }
+      }
+      return defaultDockName;
+    }).filter(targetDockName => targetDockName === dockName).length;
   }
 
   showDebuggerViews(api) {
@@ -536,8 +553,11 @@ class DebuggerLayoutManager {
       throw new Error('Invariant violation: "leftDock != null"');
     }
 
-    const leftPaneContainer = (0, (_createPaneContainer || _load_createPaneContainer()).default)();
-    this._leftPaneContainerModel = this._addPaneContainerToWorkspace(leftPaneContainer, leftDock.dock, addedItemsByDock);
+    let leftPaneContainer = null;
+    if (this._countPanesForTargetDock(leftDock.name, defaultDock.name) > 0) {
+      leftPaneContainer = (0, (_createPaneContainer || _load_createPaneContainer()).default)();
+      this._leftPaneContainerModel = this._addPaneContainerToWorkspace(leftPaneContainer, leftDock.dock, addedItemsByDock);
+    }
 
     const rightDock = this._getWorkspaceDocks().find(d => d.name === 'right');
 
@@ -545,8 +565,11 @@ class DebuggerLayoutManager {
       throw new Error('Invariant violation: "rightDock != null"');
     }
 
-    const rightPaneContainer = (0, (_createPaneContainer || _load_createPaneContainer()).default)();
-    this._rightPaneContainerModel = this._addPaneContainerToWorkspace(rightPaneContainer, rightDock.dock, addedItemsByDock);
+    let rightPaneContainer = null;
+    if (this._countPanesForTargetDock(rightDock.name, defaultDock.name) > 0) {
+      rightPaneContainer = (0, (_createPaneContainer || _load_createPaneContainer()).default)();
+      this._rightPaneContainerModel = this._addPaneContainerToWorkspace(rightPaneContainer, rightDock.dock, addedItemsByDock);
+    }
 
     // Lay out the remaining debugger panes according to their configurations.
     // Sort the debugger panes by the index at which they appeared the last
@@ -579,13 +602,13 @@ class DebuggerLayoutManager {
       }
 
       if (debuggerPane.debuggerModeFilter == null || debuggerPane.debuggerModeFilter(mode)) {
+        if (!(targetContainer != null)) {
+          throw new Error('Invariant violation: "targetContainer != null"');
+        }
+
         this._appendItemToDock(debuggerPane, targetContainer, new (_DebuggerPaneViewModel || _load_DebuggerPaneViewModel()).DebuggerPaneViewModel(debuggerPane, this._model, debuggerPane.isLifetimeView, pane => this._paneDestroyed(pane)), addedItemsByDock);
       }
     });
-
-    // If either container ended up not having any panes added to it, just destroy the container.
-    this._destroyContainerIfEmpty(this._leftPaneContainerModel);
-    this._destroyContainerIfEmpty(this._rightPaneContainerModel);
   }
 
   _addPaneContainerToWorkspace(container, dock, addedItemsByDock) {

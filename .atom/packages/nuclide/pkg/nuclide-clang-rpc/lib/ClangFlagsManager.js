@@ -38,10 +38,10 @@ function _load_log4js() {
   return _log4js = require('log4js');
 }
 
-var _nuclideBuckRpc;
+var _BuckServiceImpl;
 
-function _load_nuclideBuckRpc() {
-  return _nuclideBuckRpc = _interopRequireWildcard(require('../../nuclide-buck-rpc'));
+function _load_BuckServiceImpl() {
+  return _BuckServiceImpl = _interopRequireWildcard(require('../../nuclide-buck-rpc/lib/BuckServiceImpl'));
 }
 
 var _clangFlagsParser;
@@ -260,15 +260,16 @@ class ClangFlagsManager {
       if (compilationDB != null && compilationDB.file != null) {
         // Look for a compilation database provided by the client.
         dbDir = (_nuclideUri || _load_nuclideUri()).default.dirname(compilationDB.file);
-        dbFlags = yield _this4._loadFlagsFromCompilationDatabase(compilationDB);
+        dbFlags = yield _this4.loadFlagsFromCompilationDatabase(compilationDB);
       } else {
         // Look for a manually provided compilation database.
         dbDir = yield (_fsPromise || _load_fsPromise()).default.findNearestFile(COMPILATION_DATABASE_FILE, (_nuclideUri || _load_nuclideUri()).default.dirname(src));
         if (dbDir != null) {
           const dbFile = (_nuclideUri || _load_nuclideUri()).default.join(dbDir, COMPILATION_DATABASE_FILE);
-          dbFlags = yield _this4._loadFlagsFromCompilationDatabase({
+          dbFlags = yield _this4.loadFlagsFromCompilationDatabase({
             file: dbFile,
-            flagsFile: null
+            flagsFile: null,
+            libclangPath: null
           });
         }
       }
@@ -287,7 +288,7 @@ class ClangFlagsManager {
         }
       }
       // Try finding flags for a related source file.
-      const projectRoot = (yield (_nuclideBuckRpc || _load_nuclideBuckRpc()).getRootForPath(src)) || dbDir;
+      const projectRoot = (yield (_BuckServiceImpl || _load_BuckServiceImpl()).getRootForPath(src)) || dbDir;
       // If we don't have a .buckconfig or a compile_commands.json, we won't find flags regardless.
       if (projectRoot != null) {
         return ClangFlagsManager._findSourceFileForHeader(src, projectRoot);
@@ -384,20 +385,10 @@ class ClangFlagsManager {
     })();
   }
 
-  _loadFlagsFromCompilationDatabase(db) {
+  _loadFlagsFromCompilationDatabase(dbFile, flagsFile) {
     var _this9 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      if (db.file == null) {
-        return new Map();
-      }
-      const dbFile = db.file;
-      const key = _this9._cacheKeyForCompilationDatabase(db);
-      const cache = _this9._compilationDatabases.get(key);
-      if (cache != null) {
-        return cache;
-      }
-
       const flags = new Map();
       try {
         const contents = yield (_fsPromise || _load_fsPromise()).default.readFile(dbFile, 'utf8');
@@ -422,7 +413,7 @@ class ClangFlagsManager {
                   file,
                   directory
                 },
-                flagsFile: db.flagsFile || db.file
+                flagsFile: flagsFile || dbFile
               };
               flags.set(realpath, result);
               _this9._pathToFlags.set(realpath, Promise.resolve(result));
@@ -433,12 +424,28 @@ class ClangFlagsManager {
             return _ref.apply(this, arguments);
           };
         })()));
-        _this9._compilationDatabases.set(key, flags);
       } catch (e) {
         logger.error(`Error reading compilation flags from ${dbFile}`, e);
       }
       return flags;
     })();
+  }
+
+  loadFlagsFromCompilationDatabase(db) {
+    const dbFile = db.file;
+    if (dbFile == null) {
+      return Promise.resolve(new Map());
+    }
+    const key = this._cacheKeyForCompilationDatabase(db);
+    let cached = this._compilationDatabases.get(key);
+    if (cached == null) {
+      cached = this._loadFlagsFromCompilationDatabase(dbFile, db.flagsFile);
+      if (cached == null) {
+        cached = Promise.resolve(new Map());
+      }
+      this._compilationDatabases.set(key, cached);
+    }
+    return cached;
   }
 
   static sanitizeCommand(sourceFile, args_, basePath) {

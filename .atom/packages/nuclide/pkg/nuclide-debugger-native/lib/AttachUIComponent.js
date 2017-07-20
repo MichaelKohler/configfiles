@@ -47,7 +47,7 @@ function getColumns() {
   }, {
     title: 'PID',
     key: 'pid',
-    width: 0.10
+    width: 0.1
   }, {
     title: 'Command Name',
     key: 'command',

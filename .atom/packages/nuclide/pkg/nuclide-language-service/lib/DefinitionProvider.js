@@ -29,17 +29,16 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 class DefinitionProvider {
 
-  constructor(name, grammars, priority, definitionEventName, definitionByIdEventName, connectionToLanguageService) {
+  constructor(name, grammars, priority, definitionEventName, connectionToLanguageService) {
     this.name = name;
     this.priority = priority;
     this.grammarScopes = grammars;
     this._definitionEventName = definitionEventName;
-    this._definitionByIdEventName = definitionByIdEventName;
     this._connectionToLanguageService = connectionToLanguageService;
   }
 
   static register(name, grammars, config, connectionToLanguageService) {
-    return atom.packages.serviceHub.provide('atom-ide-definitions', config.version, new DefinitionProvider(name, grammars, config.priority, config.definitionEventName, config.definitionByIdEventName, connectionToLanguageService));
+    return atom.packages.serviceHub.provide('definitions', config.version, new DefinitionProvider(name, grammars, config.priority, config.definitionEventName, connectionToLanguageService));
   }
 
   getDefinition(editor, position) {

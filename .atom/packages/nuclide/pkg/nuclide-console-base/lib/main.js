@@ -46,9 +46,11 @@ function pipeProcessMessagesToConsole(processName, progressUpdates, showNotifica
           text: `${processName} completed successfully`,
           level: 'success'
         });
-        atom.notifications.addSuccess('Operation completed successfully', {
-          detail: `${processName} finished`
-        });
+        if (showNotificationOnCompletion) {
+          atom.notifications.addSuccess('Operation completed successfully', {
+            detail: `${processName} finished`
+          });
+        }
       } else {
         progressUpdates.next({
           text: `${processName} exited with non zero code`,

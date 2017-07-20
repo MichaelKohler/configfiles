@@ -36,7 +36,7 @@ let getIsDirectory = (() => {
 
 let main = (() => {
   var _ref3 = (0, _asyncToGenerator.default)(function* (argv) {
-    yield (0, (_errors || _load_errors()).setupLogging)();
+    (0, (_errors || _load_errors()).setupLogging)();
     (0, (_errors || _load_errors()).setupErrorHandling)();
 
     logger.debug(`nuclide-remote-atom with arguments: ${argv._}`);

@@ -23,6 +23,12 @@ function _load_process() {
   return _process = require('nuclide-commons/process');
 }
 
+var _string;
+
+function _load_string() {
+  return _string = require('nuclide-commons/string');
+}
+
 var _parseMessages;
 
 function _load_parseMessages() {
@@ -34,12 +40,6 @@ var _atom = require('atom');
 var _electron = _interopRequireDefault(require('electron'));
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
-
-var _shellQuote;
-
-function _load_shellQuote() {
-  return _shellQuote = require('shell-quote');
-}
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -179,7 +179,7 @@ function getPackagerObservable(projectRootPath) {
     }
     return (0, (_process || _load_process()).observeProcess)(command, args, {
       cwd,
-      env: Object.assign({}, process.env, { REACT_EDITOR: (0, (_shellQuote || _load_shellQuote()).quote)(editor) }),
+      env: Object.assign({}, process.env, { REACT_EDITOR: (0, (_string || _load_string()).shellQuote)(editor) }),
       killTreeWhenDone: true,
       /* TODO(T17353599) */isExitError: () => false
     }).catch(error => _rxjsBundlesRxMinJs.Observable.of({ kind: 'error', error })); // TODO(T17463635)
@@ -201,9 +201,8 @@ function getPackagerObservable(projectRootPath) {
         return _rxjsBundlesRxMinJs.Observable.of(event.data);
       case 'exit':
         if (event.exitCode !== 0) {
-          // Completely ignore EADDRINUSE errors since the packager is probably already running.
           if (!stderr.includes('Error: listen EADDRINUSE :::8081')) {
-            atom.notifications.addWarning('Packager failed to start - continuing anyway.', {
+            atom.notifications.addWarning('Packager failed to start - continuing anyway. This is expected if you ' + 'are intentionally running a packager in a separate terminal. If not, ' + '`lsof -i tcp:8081` might help you find the process using the packager port', {
               dismissable: true,
               detail: stderr.trim() === '' ? undefined : stderr
             });

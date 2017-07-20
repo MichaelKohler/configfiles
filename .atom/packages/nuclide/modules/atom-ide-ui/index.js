@@ -39,12 +39,18 @@ if (atom.packages.getAvailablePackageNames().includes('nuclide')) {
   const featureDir = _path.default.join(__dirname, 'pkg');
   const features = _fs.default.readdirSync(featureDir).map(item => {
     const dirname = _path.default.join(featureDir, item);
-    const pkgJson = _fs.default.readFileSync(_path.default.join(dirname, 'package.json'), 'utf8');
-    return {
-      dirname,
-      pkg: JSON.parse(pkgJson)
-    };
-  });
+    try {
+      const pkgJson = _fs.default.readFileSync(_path.default.join(dirname, 'package.json'), 'utf8');
+      return {
+        dirname,
+        pkg: JSON.parse(pkgJson)
+      };
+    } catch (err) {
+      if (err.code !== 'ENOENT') {
+        throw err;
+      }
+    }
+  }).filter(Boolean);
   const disposables = new (_UniversalDisposable || _load_UniversalDisposable()).default();
   const featureLoader = new (_FeatureLoader || _load_FeatureLoader()).default({
     pkgName: 'atom-ide-ui',

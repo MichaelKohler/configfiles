@@ -1,5 +1,34 @@
 # Nuclide Changelog
 
+## v0.240.0
+
+### Debugger
+
+* Added support for **conditional breakpoints **in Java, PHP/Hack, C++ and Python debuggers. Right click any breakpoint and choose “Edit Breakpoint...” to add conditions!
+* Fixed bug that caused the File Tree to open when starting the debugger, even if the file tree had previously been hidden
+* Removing request memory limit when debugging PHP with Nuclide to avoid OOM exceptions when using the debugger console. (Note: requires an HHVM patch: should be available with the next HHVM release)
+
+## v0.239.0
+
+### Hotfix Release
+* Revert Atom 1.19 buffer changeCount fix
+
+## v0.238.0
+
+### Hotfix Release
+* Fix build
+
+## v0.237.0
+
+### General
+
+* Fixed a regression that made the file-tree's selected element behavior erratic.
+* Updated Find in Project to search in your active Working Set (remote only) `Cmd-Ctrl-Shift-F` (windows: `Ctrl-Alt-Shift-F`) to try
+
+### Debugger
+
+* Strip ANSI codes from stdout/stderr debugger output.
+
 ## v0.236.0
 
 ### Highlights

@@ -159,12 +159,6 @@ function _load_idx() {
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
 
-var _shellQuote;
-
-function _load_shellQuote() {
-  return _shellQuote = require('shell-quote');
-}
-
 var _UniversalDisposable;
 
 function _load_UniversalDisposable() {
@@ -205,6 +199,12 @@ var _observable;
 
 function _load_observable() {
   return _observable = require('./observable');
+}
+
+var _string;
+
+function _load_string() {
+  return _string = require('./string');
 }
 
 var _whenShellEnvironmentLoaded;
@@ -514,9 +514,17 @@ function scriptifyCommand(command, args = [], options) {
     // On OS X, script takes the program to run and its arguments as varargs at the end.
     return ['script', ['-q', '/dev/null', command].concat(args), options];
   } else {
-    // On Linux, script takes the command to run as the -c parameter.
-    const allArgs = [command].concat(args);
-    return ['script', ['-q', '/dev/null', '-c', (0, (_shellQuote || _load_shellQuote()).quote)(allArgs)], options];
+    // On Linux, script takes the command to run as the -c parameter so we have to combine all of
+    // the arguments into a single string. Apparently, because of how `script` works, however, we
+    // wind up with double escapes. So we just strip one level of them.
+    const joined = (0, (_string || _load_string()).shellQuote)([command, ...args]).replace(/\\\\/g, '\\');
+    const opts = options || {};
+    const env = opts.env || {};
+    return ['script', ['-q', '/dev/null', '-c', joined],
+    // `script` will use `SHELL`, but shells have different behaviors with regard to escaping. To
+    // make sure that out escaping is correct, we need to force a particular shell.
+    // $FlowIssue: Adding SHELL here makes it no longer really T
+    Object.assign({}, opts, { env: Object.assign({}, env, { SHELL: '/bin/bash' }) })];
   }
 }
 

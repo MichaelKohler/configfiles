@@ -58,22 +58,18 @@ function _load_log4js() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const logger = (0, (_log4js || _load_log4js()).getLogger)('atom-ide-code-format');
-
 // Save events are critical, so don't allow providers to block them.
-/**
- * Copyright (c) 2017-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * 
- * @format
- */
-
-const SAVE_TIMEOUT = 2500;
+const SAVE_TIMEOUT = 2500; /**
+                            * Copyright (c) 2017-present, Facebook, Inc.
+                            * All rights reserved.
+                            *
+                            * This source code is licensed under the BSD-style license found in the
+                            * LICENSE file in the root directory of this source tree. An additional grant
+                            * of patent rights can be found in the PATENTS file in the same directory.
+                            *
+                            * 
+                            * @format
+                            */
 
 class CodeFormatManager {
 
@@ -93,7 +89,7 @@ class CodeFormatManager {
    */
   _subscribeToEvents() {
     // Events from the explicit Atom command.
-    const commandEvents = (0, (_event || _load_event()).observableFromSubscribeFunction)(callback => atom.commands.add('atom-text-editor', 'nuclide-code-format:format-code', callback)).switchMap(() => {
+    const commandEvents = (0, (_event || _load_event()).observableFromSubscribeFunction)(callback => atom.commands.add('atom-text-editor', 'code-format:format-code', callback)).switchMap(() => {
       const editor = atom.workspace.getActiveTextEditor();
       if (!editor) {
         return _rxjsBundlesRxMinJs.Observable.empty();
@@ -165,19 +161,19 @@ class CodeFormatManager {
             throw new Error('No code formatting providers found!');
           }
         }).catch(err => {
-          atom.notifications.addError('Failed to format code', {
-            description: err.message
+          atom.notifications.addError(`Failed to format code: ${err.message}`, {
+            detail: err.detail
           });
           return _rxjsBundlesRxMinJs.Observable.empty();
         });
       case 'type':
         return this._formatCodeOnTypeInTextEditor(editor, event.edit).catch(err => {
-          logger.warn('Failed to format code on type:', err);
+          (0, (_log4js || _load_log4js()).getLogger)('code-format').warn('Failed to format code on type:', err);
           return _rxjsBundlesRxMinJs.Observable.empty();
         });
       case 'save':
         return this._formatCodeOnSaveInTextEditor(editor).timeout(SAVE_TIMEOUT).catch(err => {
-          logger.warn('Failed to format code on save:', err);
+          (0, (_log4js || _load_log4js()).getLogger)('code-format').warn('Failed to format code on save:', err);
           return _rxjsBundlesRxMinJs.Observable.empty();
         })
         // Fire-and-forget the original save function.

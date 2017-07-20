@@ -341,7 +341,7 @@ class LspLanguageService {
             completion: {
               dynamicRegistration: false,
               completionItem: {
-                snippetSupport: false
+                snippetSupport: true
               }
             },
             hover: {

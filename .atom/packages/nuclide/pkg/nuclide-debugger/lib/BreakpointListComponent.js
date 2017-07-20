@@ -37,6 +37,12 @@ function _load_classnames() {
   return _classnames = _interopRequireDefault(require('classnames'));
 }
 
+var _Icon;
+
+function _load_Icon() {
+  return _Icon = require('nuclide-commons-ui/Icon');
+}
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
@@ -56,6 +62,7 @@ class BreakpointListComponent extends _react.default.Component {
     super(props);
     this._handleBreakpointEnabledChange = this._handleBreakpointEnabledChange.bind(this);
     this._handleBreakpointClick = this._handleBreakpointClick.bind(this);
+    this._debuggerSupportsConditionalBp = this._debuggerSupportsConditionalBp.bind(this);
     this.state = {
       breakpoints: this.props.breakpointStore.getAllBreakpoints()
     };
@@ -89,6 +96,10 @@ class BreakpointListComponent extends _react.default.Component {
     this.props.actions.openSourceLocation((_nuclideUri || _load_nuclideUri()).default.nuclideUriToUri(path), line);
   }
 
+  _debuggerSupportsConditionalBp(breakpoint) {
+    return this.props.breakpointStore.breakpointSupportsConditions(breakpoint);
+  }
+
   render() {
     const { breakpoints } = this.state;
     if (breakpoints == null || breakpoints.length === 0) {
@@ -98,6 +109,7 @@ class BreakpointListComponent extends _react.default.Component {
         '(no breakpoints)'
       );
     }
+
     const items = breakpoints.map(breakpoint => Object.assign({}, breakpoint, {
       // Calculate the basename exactly once for each breakpoint
       basename: (_nuclideUri || _load_nuclideUri()).default.basename(breakpoint.path)
@@ -107,11 +119,24 @@ class BreakpointListComponent extends _react.default.Component {
       const { basename, line, enabled, resolved, path } = breakpoint;
       const label = `${basename}:${line + 1}`;
       const title = !enabled ? 'Disabled breakpoint' : !resolved ? 'Unresolved Breakpoint' : `Breakpoint at ${label} (resolved)`;
+
+      const conditionElement = this._debuggerSupportsConditionalBp(breakpoint) && breakpoint.condition !== '' ? _react.default.createElement((_Icon || _load_Icon()).Icon, {
+        icon: 'question',
+        className: 'nuclide-debugger-breakpoint-condition',
+        title: `Breakpoint condition: ${breakpoint.condition}`,
+        'data-path': path,
+        'data-line': line,
+        onClick: event => {
+          atom.commands.dispatch(event.target, 'nuclide-debugger:edit-breakpoint');
+        }
+      }) : null;
+
       const content = _react.default.createElement(
         'div',
         {
           className: (0, (_classnames || _load_classnames()).default)('nuclide-debugger-breakpoint', {
-            'nuclide-debugger-breakpoint-disabled': !enabled
+            'nuclide-debugger-breakpoint-disabled': !enabled,
+            'nuclide-debugger-breakpoint-with-condition': breakpoint.condition !== ''
           }),
           key: i },
         _react.default.createElement((_Checkbox || _load_Checkbox()).Checkbox, {
@@ -131,7 +156,8 @@ class BreakpointListComponent extends _react.default.Component {
             'data-path': path,
             'data-line': line },
           label
-        )
+        ),
+        conditionElement
       );
       return _react.default.createElement(
         (_ListView || _load_ListView()).ListViewItem,

@@ -29,10 +29,10 @@ function _load_promise() {
   return _promise = require('nuclide-commons/promise');
 }
 
-var _shellQuote;
+var _string;
 
-function _load_shellQuote() {
-  return _shellQuote = require('shell-quote');
+function _load_string() {
+  return _string = require('nuclide-commons/string');
 }
 
 var _temp;
@@ -344,7 +344,7 @@ class SshHandshake {
         expiration: '7d',
         serverParams: this._config.remoteServerCustomParams
       };
-      const cmd = `${this._config.remoteServerCommand} ${(0, (_shellQuote || _load_shellQuote()).quote)([JSON.stringify(params)])}`;
+      const cmd = `${this._config.remoteServerCommand} ${(0, (_string || _load_string()).shellQuote)([JSON.stringify(params)])}`;
 
       this._connection.exec(cmd, { pty: { term: 'nuclide' } }, (err, stream) => {
         if (err) {

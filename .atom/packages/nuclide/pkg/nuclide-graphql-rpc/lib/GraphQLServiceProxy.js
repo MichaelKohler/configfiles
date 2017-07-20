@@ -79,7 +79,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 66
+            line: 64
           },
           name: "LanguageService"
         }).then(id => {
@@ -103,7 +103,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 66
+            line: 64
           },
           name: "LanguageService"
         }).then(id => {
@@ -114,7 +114,7 @@ module.exports = _client => {
           kind: "array",
           type: {
             kind: "named",
-            name: "FileDiagnosticUpdate"
+            name: "FileDiagnosticMessages"
           }
         });
       }).publish();
@@ -149,7 +149,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 66
+            line: 64
           },
           name: "LanguageService"
         }).then(id => {
@@ -185,7 +185,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 66
+            line: 64
           },
           name: "LanguageService"
         }).then(id => {
@@ -221,7 +221,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 66
+            line: 64
           },
           name: "LanguageService"
         }).then(id => {
@@ -251,7 +251,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 66
+            line: 64
           },
           name: "LanguageService"
         }).then(id => {
@@ -281,7 +281,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 66
+            line: 64
           },
           name: "LanguageService"
         }).then(id => {
@@ -317,7 +317,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 66
+            line: 64
           },
           name: "LanguageService"
         }).then(id => {
@@ -353,7 +353,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 66
+            line: 64
           },
           name: "LanguageService"
         }).then(id => {
@@ -392,7 +392,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 66
+            line: 64
           },
           name: "LanguageService"
         }).then(id => {
@@ -431,7 +431,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 66
+            line: 64
           },
           name: "LanguageService"
         }).then(id => {
@@ -484,7 +484,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 66
+            line: 64
           },
           name: "LanguageService"
         }).then(id => {
@@ -523,7 +523,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 66
+            line: 64
           },
           name: "LanguageService"
         }).then(id => {
@@ -556,7 +556,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 66
+            line: 64
           },
           name: "LanguageService"
         }).then(id => {
@@ -590,7 +590,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 66
+            line: 64
           },
           name: "LanguageService"
         }).then(id => {
@@ -623,7 +623,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 66
+            line: 64
           },
           name: "LanguageService"
         }).then(id => {
@@ -653,7 +653,7 @@ module.exports = _client => {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 66
+            line: 64
           },
           name: "LanguageService"
         }).then(id => {
@@ -934,14 +934,14 @@ Object.defineProperty(module.exports, "defs", {
         type: "builtin"
       }
     },
-    MessageType: {
+    DiagnosticMessageType: {
       kind: "alias",
       location: {
         type: "source",
-        fileName: "rpc-types.js",
-        line: 46
+        fileName: "types.js",
+        line: 64
       },
-      name: "MessageType",
+      name: "DiagnosticMessageType",
       definition: {
         kind: "union",
         types: [{
@@ -956,14 +956,14 @@ Object.defineProperty(module.exports, "defs", {
         }]
       }
     },
-    Trace: {
+    DiagnosticTrace: {
       kind: "alias",
       location: {
         type: "source",
-        fileName: "rpc-types.js",
-        line: 48
+        fileName: "types.js",
+        line: 66
       },
-      name: "Trace",
+      name: "DiagnosticTrace",
       definition: {
         kind: "object",
         fields: [{
@@ -1034,14 +1034,14 @@ Object.defineProperty(module.exports, "defs", {
         }]
       }
     },
-    Fix: {
+    DiagnosticFix: {
       kind: "alias",
       location: {
         type: "source",
-        fileName: "rpc-types.js",
-        line: 56
+        fileName: "types.js",
+        line: 74
       },
-      name: "Fix",
+      name: "DiagnosticFix",
       definition: {
         kind: "intersection",
         types: [{
@@ -1104,8 +1104,8 @@ Object.defineProperty(module.exports, "defs", {
       kind: "alias",
       location: {
         type: "source",
-        fileName: "rpc-types.js",
-        line: 65
+        fileName: "types.js",
+        line: 83
       },
       name: "FileDiagnosticMessage",
       definition: {
@@ -1127,7 +1127,7 @@ Object.defineProperty(module.exports, "defs", {
           name: "type",
           type: {
             kind: "named",
-            name: "MessageType"
+            name: "DiagnosticMessageType"
           },
           optional: false
         }, {
@@ -1162,7 +1162,7 @@ Object.defineProperty(module.exports, "defs", {
             kind: "array",
             type: {
               kind: "named",
-              name: "Trace"
+              name: "DiagnosticTrace"
             }
           },
           optional: true
@@ -1170,7 +1170,7 @@ Object.defineProperty(module.exports, "defs", {
           name: "fix",
           type: {
             kind: "named",
-            name: "Fix"
+            name: "DiagnosticFix"
           },
           optional: true
         }, {
@@ -1186,8 +1186,8 @@ Object.defineProperty(module.exports, "defs", {
       kind: "alias",
       location: {
         type: "source",
-        fileName: "rpc-types.js",
-        line: 80
+        fileName: "types.js",
+        line: 98
       },
       name: "ProjectDiagnosticMessage",
       definition: {
@@ -1209,7 +1209,7 @@ Object.defineProperty(module.exports, "defs", {
           name: "type",
           type: {
             kind: "named",
-            name: "MessageType"
+            name: "DiagnosticMessageType"
           },
           optional: false
         }, {
@@ -1237,7 +1237,7 @@ Object.defineProperty(module.exports, "defs", {
             kind: "array",
             type: {
               kind: "named",
-              name: "Trace"
+              name: "DiagnosticTrace"
             }
           },
           optional: true
@@ -1254,8 +1254,8 @@ Object.defineProperty(module.exports, "defs", {
       kind: "alias",
       location: {
         type: "source",
-        fileName: "rpc-types.js",
-        line: 36
+        fileName: "types.js",
+        line: 59
       },
       name: "DiagnosticProviderUpdate",
       definition: {
@@ -1659,14 +1659,14 @@ Object.defineProperty(module.exports, "defs", {
         }]
       }
     },
-    FileDiagnosticUpdate: {
+    FileDiagnosticMessages: {
       kind: "alias",
       location: {
         type: "source",
-        fileName: "rpc-types.js",
-        line: 41
+        fileName: "types.js",
+        line: 109
       },
-      name: "FileDiagnosticUpdate",
+      name: "FileDiagnosticMessages",
       definition: {
         kind: "object",
         fields: [{
@@ -1694,7 +1694,7 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "LanguageService.js",
-        line: 30
+        line: 28
       },
       name: "Completion",
       definition: {
@@ -1818,7 +1818,7 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "LanguageService.js",
-        line: 51
+        line: 49
       },
       name: "AutocompleteResult",
       definition: {
@@ -1939,7 +1939,7 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "types.js",
-        line: 15
+        line: 27
       },
       name: "Reference",
       definition: {
@@ -1975,7 +1975,7 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "types.js",
-        line: 21
+        line: 33
       },
       name: "FindReferencesData",
       definition: {
@@ -2018,7 +2018,7 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "types.js",
-        line: 28
+        line: 40
       },
       name: "FindReferencesError",
       definition: {
@@ -2044,7 +2044,7 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "types.js",
-        line: 33
+        line: 45
       },
       name: "FindReferencesReturn",
       definition: {
@@ -2161,8 +2161,8 @@ Object.defineProperty(module.exports, "defs", {
       kind: "alias",
       location: {
         type: "source",
-        fileName: "rpc-types.js",
-        line: 34
+        fileName: "types.js",
+        line: 46
       },
       name: "OutlineTreeKind",
       definition: {
@@ -2310,8 +2310,8 @@ Object.defineProperty(module.exports, "defs", {
       kind: "alias",
       location: {
         type: "source",
-        fileName: "rpc-types.js",
-        line: 15
+        fileName: "types.js",
+        line: 27
       },
       name: "OutlineTree",
       definition: {
@@ -2379,8 +2379,8 @@ Object.defineProperty(module.exports, "defs", {
       kind: "alias",
       location: {
         type: "source",
-        fileName: "rpc-types.js",
-        line: 29
+        fileName: "types.js",
+        line: 41
       },
       name: "Outline",
       definition: {
@@ -2455,7 +2455,7 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "LanguageService.js",
-        line: 56
+        line: 54
       },
       name: "SymbolResult",
       definition: {
@@ -2521,7 +2521,7 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "LanguageService.js",
-        line: 66
+        line: 64
       },
       constructorArgs: null,
       staticMethods: {},
@@ -2530,7 +2530,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 67
+            line: 65
           },
           kind: "function",
           argumentTypes: [{
@@ -2555,7 +2555,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 69
+            line: 67
           },
           kind: "function",
           argumentTypes: [],
@@ -2565,7 +2565,7 @@ Object.defineProperty(module.exports, "defs", {
               kind: "array",
               type: {
                 kind: "named",
-                name: "FileDiagnosticUpdate"
+                name: "FileDiagnosticMessages"
               }
             }
           }
@@ -2574,7 +2574,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 71
+            line: 69
           },
           kind: "function",
           argumentTypes: [{
@@ -2615,7 +2615,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 78
+            line: 76
           },
           kind: "function",
           argumentTypes: [{
@@ -2646,7 +2646,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 83
+            line: 81
           },
           kind: "function",
           argumentTypes: [{
@@ -2677,7 +2677,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 88
+            line: 86
           },
           kind: "function",
           argumentTypes: [{
@@ -2702,7 +2702,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 90
+            line: 88
           },
           kind: "function",
           argumentTypes: [{
@@ -2727,7 +2727,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 92
+            line: 90
           },
           kind: "function",
           argumentTypes: [{
@@ -2758,7 +2758,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 94
+            line: 92
           },
           kind: "function",
           argumentTypes: [{
@@ -2792,7 +2792,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 99
+            line: 97
           },
           kind: "function",
           argumentTypes: [{
@@ -2826,7 +2826,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 104
+            line: 102
           },
           kind: "function",
           argumentTypes: [{
@@ -2869,7 +2869,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 112
+            line: 110
           },
           kind: "function",
           argumentTypes: [{
@@ -2908,7 +2908,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 118
+            line: 116
           },
           kind: "function",
           argumentTypes: [{
@@ -2939,7 +2939,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 123
+            line: 121
           },
           kind: "function",
           argumentTypes: [{
@@ -2963,7 +2963,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 125
+            line: 123
           },
           kind: "function",
           argumentTypes: [{
@@ -2999,7 +2999,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 130
+            line: 128
           },
           kind: "function",
           argumentTypes: [{
@@ -3024,7 +3024,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 132
+            line: 130
           },
           kind: "function",
           argumentTypes: [{
@@ -3045,7 +3045,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "LanguageService.js",
-            line: 134
+            line: 132
           },
           kind: "function",
           argumentTypes: [],
@@ -3263,13 +3263,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "GraphQLService.js",
-        line: 34
+        line: 28
       },
       type: {
         location: {
           type: "source",
           fileName: "GraphQLService.js",
-          line: 34
+          line: 28
         },
         kind: "function",
         argumentTypes: [{

@@ -395,7 +395,7 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "ArcanistService.js",
-        line: 42
+        line: 38
       },
       name: "ArcDiagnostic",
       definition: {
@@ -468,13 +468,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "ArcanistService.js",
-        line: 61
+        line: 57
       },
       type: {
         location: {
           type: "source",
           fileName: "ArcanistService.js",
-          line: 61
+          line: 57
         },
         kind: "function",
         argumentTypes: [{
@@ -502,13 +502,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "ArcanistService.js",
-        line: 74
+        line: 70
       },
       type: {
         location: {
           type: "source",
           fileName: "ArcanistService.js",
-          line: 74
+          line: 70
         },
         kind: "function",
         argumentTypes: [{
@@ -535,13 +535,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "ArcanistService.js",
-        line: 92
+        line: 88
       },
       type: {
         location: {
           type: "source",
           fileName: "ArcanistService.js",
-          line: 92
+          line: 88
         },
         kind: "function",
         argumentTypes: [{
@@ -573,13 +573,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "ArcanistService.js",
-        line: 101
+        line: 97
       },
       type: {
         location: {
           type: "source",
           fileName: "ArcanistService.js",
-          line: 101
+          line: 97
         },
         kind: "function",
         argumentTypes: [{
@@ -606,13 +606,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "ArcanistService.js",
-        line: 108
+        line: 104
       },
       type: {
         location: {
           type: "source",
           fileName: "ArcanistService.js",
-          line: 108
+          line: 104
         },
         kind: "function",
         argumentTypes: [{
@@ -653,13 +653,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "ArcanistService.js",
-        line: 125
+        line: 121
       },
       type: {
         location: {
           type: "source",
           fileName: "ArcanistService.js",
-          line: 125
+          line: 121
         },
         kind: "function",
         argumentTypes: [{
@@ -686,13 +686,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "ArcanistService.js",
-        line: 132
+        line: 128
       },
       type: {
         location: {
           type: "source",
           fileName: "ArcanistService.js",
-          line: 132
+          line: 128
         },
         kind: "function",
         argumentTypes: [{
@@ -725,13 +725,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "ArcanistService.js",
-        line: 256
+        line: 252
       },
       type: {
         location: {
           type: "source",
           fileName: "ArcanistService.js",
-          line: 256
+          line: 252
         },
         kind: "function",
         argumentTypes: [{
@@ -781,13 +781,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "ArcanistService.js",
-        line: 265
+        line: 261
       },
       type: {
         location: {
           type: "source",
           fileName: "ArcanistService.js",
-          line: 265
+          line: 261
         },
         kind: "function",
         argumentTypes: [{
@@ -846,7 +846,7 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "process.js",
-        line: 574
+        line: 584
       },
       name: "ProcessExitMessage",
       definition: {
@@ -884,7 +884,7 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "process.js",
-        line: 580
+        line: 590
       },
       name: "ProcessMessage",
       definition: {
@@ -958,7 +958,7 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "process.js",
-        line: 593
+        line: 603
       },
       name: "LegacyProcessMessage",
       definition: {
@@ -1050,13 +1050,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "ArcanistService.js",
-        line: 281
+        line: 277
       },
       type: {
         location: {
           type: "source",
           fileName: "ArcanistService.js",
-          line: 281
+          line: 277
         },
         kind: "function",
         argumentTypes: [{
@@ -1091,13 +1091,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "ArcanistService.js",
-        line: 307
+        line: 303
       },
       type: {
         location: {
           type: "source",
           fileName: "ArcanistService.js",
-          line: 307
+          line: 303
         },
         kind: "function",
         argumentTypes: [{
@@ -1122,13 +1122,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "ArcanistService.js",
-        line: 323
+        line: 319
       },
       type: {
         location: {
           type: "source",
           fileName: "ArcanistService.js",
-          line: 323
+          line: 319
         },
         kind: "function",
         argumentTypes: [{

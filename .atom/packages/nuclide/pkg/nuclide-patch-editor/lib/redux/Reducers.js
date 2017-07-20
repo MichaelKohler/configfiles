@@ -142,7 +142,7 @@ function updateFileData(fileData, hunkOldStart, line) {
     // Update countEnabledChunks and countPartialChunks based on change in selected state
 
     if (!(!(oldHunk.selected === (_constants || _load_constants()).SelectedState.ALL && newHunk.selected === (_constants || _load_constants()).SelectedState.ALL) && !(oldHunk.selected === (_constants || _load_constants()).SelectedState.NONE && newHunk.selected === (_constants || _load_constants()).SelectedState.NONE))) {
-      throw new Error('Invariant violation: "!(oldHunk.selected === SelectedState.ALL &&\\n        newHunk.selected === SelectedState.ALL) &&\\n        !(oldHunk.selected === SelectedState.NONE &&\\n          newHunk.selected === SelectedState.NONE)"');
+      throw new Error('Invariant violation: "!(\\n        oldHunk.selected === SelectedState.ALL &&\\n        newHunk.selected === SelectedState.ALL\\n      ) &&\\n        !(\\n          oldHunk.selected === SelectedState.NONE &&\\n          newHunk.selected === SelectedState.NONE\\n        )"');
     }
 
     if (oldHunk.selected === (_constants || _load_constants()).SelectedState.ALL && newHunk.selected === (_constants || _load_constants()).SelectedState.SOME) {

@@ -7,12 +7,20 @@ exports.__test__ = undefined;
 
 var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
 
+var _child_process = _interopRequireDefault(require('child_process'));
+
 var _os = _interopRequireDefault(require('os'));
 
 var _process;
 
 function _load_process() {
   return _process = require('nuclide-commons/process');
+}
+
+var _once;
+
+function _load_once() {
+  return _once = _interopRequireDefault(require('./once'));
 }
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
@@ -51,16 +59,7 @@ class ScribeProcess {
   /**
    * Check if `scribe_cat` exists in PATH.
    */
-  static isScribeCatOnPath() {
-    return (0, _asyncToGenerator.default)(function* () {
-      try {
-        yield (0, (_process || _load_process()).runCommand)('which', [SCRIBE_CAT_COMMAND]).toPromise();
-        return true;
-      } catch (err) {
-        return false;
-      }
-    })();
-  }
+
 
   /**
    * Write a string to a Scribe category.
@@ -154,6 +153,14 @@ class ScribeProcess {
 }
 
 exports.default = ScribeProcess;
+ScribeProcess.isScribeCatOnPath = (0, (_once || _load_once()).default)(() => {
+  try {
+    const proc = _child_process.default.spawnSync('which', [SCRIBE_CAT_COMMAND]);
+    return proc.status === 0;
+  } catch (e) {
+    return false;
+  }
+});
 const __test__ = exports.__test__ = {
   setScribeCatCommand(newCommand) {
     const originalCommand = SCRIBE_CAT_COMMAND;

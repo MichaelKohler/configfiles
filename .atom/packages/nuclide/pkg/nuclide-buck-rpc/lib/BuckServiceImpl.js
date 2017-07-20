@@ -81,7 +81,7 @@ let _build = exports._build = (() => {
 
 let getOwners = exports.getOwners = (() => {
   var _ref3 = (0, _asyncToGenerator.default)(function* (rootPath, filePath, kindFilter) {
-    let queryString = `owner("${(0, (_shellQuote || _load_shellQuote()).quote)([filePath])}")`;
+    let queryString = `owner("${(0, (_string || _load_string()).shellQuote)([filePath])}")`;
     if (kindFilter != null) {
       queryString = `kind(${JSON.stringify(kindFilter)}, ${queryString})`;
     }
@@ -106,7 +106,7 @@ let runBuckCommandFromProjectRoot = exports.runBuckCommandFromProjectRoot = (() 
 
     const newArgs = addClientId ? args.concat(CLIENT_ID_ARGS) : args;
     return getPool(rootPath, readOnly).submit(function () {
-      logger.debug(`Running \`${pathToBuck} ${(0, (_shellQuote || _load_shellQuote()).quote)(args)}\``);
+      logger.debug(`Running \`${pathToBuck} ${(0, (_string || _load_string()).shellQuote)(args)}\``);
       return (0, (_process || _load_process()).runCommand)(pathToBuck, newArgs, options).toPromise();
     });
   });
@@ -176,10 +176,10 @@ function _load_fsPromise() {
   return _fsPromise = _interopRequireDefault(require('nuclide-commons/fsPromise'));
 }
 
-var _shellQuote;
+var _string;
 
-function _load_shellQuote() {
-  return _shellQuote = require('shell-quote');
+function _load_string() {
+  return _string = require('nuclide-commons/string');
 }
 
 var _nuclideUri;

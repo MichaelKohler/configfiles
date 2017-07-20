@@ -25,7 +25,7 @@ let tryCreateView = (() => {
       }
     } catch (e) {
       // TODO(peterhal): Remove this when unhandled rejections have a default handler.
-      logger.error('Exception in atom-ide-find-references', e);
+      (0, (_log4js || _load_log4js()).getLogger)('find-references').error('Erorr finding references', e);
       atom.notifications.addError(`Find References: ${e}`, {
         dismissable: true
       });
@@ -47,12 +47,6 @@ var _ContextMenu;
 
 function _load_ContextMenu() {
   return _ContextMenu = _interopRequireDefault(require('nuclide-commons-atom/ContextMenu'));
-}
-
-var _workspaceViewsCompat;
-
-function _load_workspaceViewsCompat() {
-  return _workspaceViewsCompat = require('nuclide-commons-atom/workspace-views-compat');
 }
 
 var _mouseToPosition;
@@ -99,17 +93,17 @@ function _load_FindReferencesModel() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const logger = (0, (_log4js || _load_log4js()).getLogger)('atom-ide-find-references'); /**
-                                                                                        * Copyright (c) 2017-present, Facebook, Inc.
-                                                                                        * All rights reserved.
-                                                                                        *
-                                                                                        * This source code is licensed under the BSD-style license found in the
-                                                                                        * LICENSE file in the root directory of this source tree. An additional grant
-                                                                                        * of patent rights can be found in the PATENTS file in the same directory.
-                                                                                        *
-                                                                                        * 
-                                                                                        * @format
-                                                                                        */
+/**
+ * Copyright (c) 2017-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ *
+ * 
+ * @format
+ */
 
 /* global getSelection */
 
@@ -135,7 +129,10 @@ class Activation {
     this._providers = [];
     this._supportedProviders = new Map();
 
-    this._subscriptions = new (_UniversalDisposable || _load_UniversalDisposable()).default((0, (_workspaceViewsCompat || _load_workspaceViewsCompat()).consumeWorkspaceViewsCompat)(service => this.consumeWorkspaceViewsService(service)));
+    this._subscriptions = new (_UniversalDisposable || _load_UniversalDisposable()).default();
+    // Add this seperately as registerOpenerAndCommand requires
+    // this._subscriptions to be initialized for observeTextEditors function.
+    this._subscriptions.add(this.registerOpenerAndCommand());
   }
 
   dispose() {
@@ -176,22 +173,22 @@ class Activation {
     });
   }
 
-  consumeWorkspaceViewsService(api) {
+  registerOpenerAndCommand() {
     var _this2 = this;
 
     let lastMouseEvent;
-    return new (_UniversalDisposable || _load_UniversalDisposable()).default(atom.commands.add('atom-text-editor', 'nuclide-find-references:activate', (() => {
+    return new (_UniversalDisposable || _load_UniversalDisposable()).default(atom.commands.add('atom-text-editor', 'find-references:activate', (() => {
       var _ref3 = (0, _asyncToGenerator.default)(function* (event) {
         const view = yield tryCreateView((yield _this2._getProviderData((_ContextMenu || _load_ContextMenu()).default.isEventFromContextMenu(event) ? lastMouseEvent : null)));
         if (view != null) {
-          const disposable = api.addOpener(function (newUri) {
+          const disposable = atom.workspace.addOpener(function (newUri) {
             if (view.getURI() === newUri) {
               return view;
             }
           });
           // not a file URI
           // eslint-disable-next-line nuclide-internal/atom-apis
-          api.open(view.getURI());
+          atom.workspace.open(view.getURI());
           // The new tab opens instantly, so this is no longer needed.
           disposable.dispose();
         }
@@ -223,6 +220,11 @@ class Activation {
             return _ref5.apply(this, arguments);
           };
         })()));
+        if (editor.isDestroyed()) {
+          // This is asynchronous, so the editor may have been destroyed!
+          _this2._supportedProviders.delete(editor);
+          return;
+        }
         const disposable = editor.onDidDestroy(function () {
           _this2._supportedProviders.delete(editor);
           _this2._subscriptions.remove(disposable);
@@ -246,7 +248,7 @@ class Activation {
     atom.contextMenu.add({
       'atom-text-editor:not(.mini).enable-atom-ide-find-references': [{
         label: 'Find References',
-        command: 'nuclide-find-references:activate',
+        command: 'find-references:activate',
         created: event => {
           lastMouseEvent = event;
         }

@@ -122,7 +122,7 @@ class ClangServerManager {
         return server;
       }
     }
-    server = new (_ClangServer || _load_ClangServer()).default(src, contents, (0, (_findClangServerArgs || _load_findClangServerArgs()).default)(src), this._getFlags(src, compilationDB, defaultFlags));
+    server = new (_ClangServer || _load_ClangServer()).default(src, contents, (0, (_findClangServerArgs || _load_findClangServerArgs()).default)(src, compilationDB == null ? null : compilationDB.libclangPath), this._getFlags(src, compilationDB, defaultFlags));
     server.waitForReady().then(() => this._checkMemoryUsage());
     this._servers.set(src, server);
     return server;

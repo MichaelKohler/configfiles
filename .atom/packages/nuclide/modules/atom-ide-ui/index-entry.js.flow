@@ -11,44 +11,9 @@
  */
 
 export type {
-  HyperclickProvider,
-  HyperclickSuggestion,
-} from './pkg/hyperclick/lib/types';
-
-export type {BusySignalService} from './pkg/atom-ide-busy-signal';
-
-export type {
-  Datatip,
-  DatatipProvider,
-  DatatipService,
-  MarkedString,
-  ModifierDatatipProvider,
-  ModifierKey,
-  PinnedDatatip,
-} from './pkg/atom-ide-datatip';
-
-export type {
-  CallbackDiagnosticProvider,
-  DiagnosticMessage,
-  DiagnosticProvider,
-  DiagnosticProviderUpdate,
-  FileDiagnosticMessage,
-  FileDiagnosticUpdate,
-  FileMessageUpdate,
-  Fix,
-  InvalidationMessage,
-  LinterMessage,
-  LinterMessageV1,
-  LinterMessageV2,
-  LinterProvider,
-  LinterTrace,
-  MessageInvalidationCallback,
-  MessageType,
-  MessageUpdateCallback,
-  ObservableDiagnosticProvider,
-  ProjectDiagnosticMessage,
-  Trace,
-} from './pkg/atom-ide-diagnostics';
+  BusySignalOptions,
+  BusySignalService,
+} from './pkg/atom-ide-busy-signal/lib/types';
 
 export type {
   CodeFormatProvider,
@@ -58,24 +23,62 @@ export type {
   OnSaveCodeFormatProvider,
 } from './pkg/atom-ide-code-format/lib/types';
 
-export type {CodeHighlightProvider} from './pkg/atom-ide-code-highlight';
+export type {
+  CodeHighlightProvider,
+} from './pkg/atom-ide-code-highlight/lib/types';
 
 export type {
-  FindReferencesProvider,
-  FindReferencesReturn,
-  Reference,
-} from './pkg/atom-ide-find-references';
-
-export type {
-  Outline,
-  OutlineProvider,
-  OutlineTree,
-  ResultsStreamProvider,
-} from './pkg/atom-ide-outline-view';
+  Datatip,
+  DatatipProvider,
+  DatatipService,
+  MarkedString,
+  ModifierDatatipProvider,
+  ModifierKey,
+} from './pkg/atom-ide-datatip/lib/types';
 
 export type {
   Definition,
   DefinitionProvider,
   DefinitionPreviewProvider,
   DefinitionQueryResult,
-} from './pkg/atom-ide-definitions';
+} from './pkg/atom-ide-definitions/lib/types';
+
+export type {
+  CallbackDiagnosticProvider,
+  DiagnosticFix,
+  DiagnosticInvalidationCallback,
+  DiagnosticInvalidationMessage,
+  DiagnosticMessage,
+  DiagnosticMessageType,
+  DiagnosticProvider,
+  DiagnosticProviderUpdate,
+  DiagnosticTrace,
+  DiagnosticUpdateCallback,
+  FileDiagnosticMessage,
+  FileDiagnosticMessages,
+  LinterMessage,
+  LinterMessageV1,
+  LinterMessageV2,
+  LinterProvider,
+  LinterTrace,
+  ObservableDiagnosticProvider,
+  ProjectDiagnosticMessage,
+} from './pkg/atom-ide-diagnostics/lib/types';
+
+export type {
+  FindReferencesProvider,
+  FindReferencesReturn,
+  Reference,
+} from './pkg/atom-ide-find-references/lib/types';
+
+export type {
+  Outline,
+  OutlineProvider,
+  OutlineTree,
+  ResultsStreamProvider,
+} from './pkg/atom-ide-outline-view/lib/types';
+
+export type {
+  HyperclickProvider,
+  HyperclickSuggestion,
+} from './pkg/hyperclick/lib/types';

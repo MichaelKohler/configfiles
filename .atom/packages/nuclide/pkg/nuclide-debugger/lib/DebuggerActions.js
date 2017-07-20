@@ -104,20 +104,22 @@ class DebuggerActions {
       _this.setDebuggerMode((_DebuggerStore || _load_DebuggerStore()).DebuggerMode.STARTING);
       _this.setDebugProcessInfo(processInfo);
       try {
+        const debuggerCapabilities = processInfo.getDebuggerCapabilities();
+        const debuggerProps = processInfo.getDebuggerProps();
         const debuggerInstance = yield processInfo.debug();
         yield _this._store.getBridge().setupNuclideChannel(debuggerInstance);
         _this._registerConsole();
-        const supportThreadsWindow = processInfo.supportThreads() && (yield _this._allowThreadsForPhp(processInfo));
+        const supportThreadsWindow = debuggerCapabilities.threads && (yield _this._allowThreadsForPhp(processInfo));
         _this._store.getSettings().set('SupportThreadsWindow', supportThreadsWindow);
         if (supportThreadsWindow) {
-          _this._store.getSettings().set('CustomThreadColumns', processInfo.getThreadColumns());
-          _this._store.getSettings().set('threadsComponentTitle', processInfo.getThreadsComponentTitle());
+          _this._store.getSettings().set('CustomThreadColumns', debuggerProps.threadColumns);
+          _this._store.getSettings().set('threadsComponentTitle', debuggerProps.threadsComponentTitle);
         }
-        const singleThreadStepping = processInfo.supportSingleThreadStepping();
+        const singleThreadStepping = debuggerCapabilities.singleThreadStepping;
         _this._store.getSettings().set('SingleThreadStepping', singleThreadStepping);
-        _this.toggleSingleThreadStepping(singleThreadStepping && processInfo.singleThreadSteppingEnabled());
+        _this.toggleSingleThreadStepping(singleThreadStepping);
         if (processInfo.getServiceName() !== 'hhvm' || (yield (0, (_passesGK || _load_passesGK()).default)(GK_DEBUGGER_REQUEST_SENDER))) {
-          const customControlButtons = processInfo.customControlButtons();
+          const customControlButtons = debuggerProps.customControlButtons;
           if (customControlButtons.length > 0) {
             _this.updateControlButtons(customControlButtons);
           } else {
@@ -125,7 +127,7 @@ class DebuggerActions {
           }
         }
 
-        if (processInfo.supportsConfigureSourcePaths()) {
+        if (debuggerCapabilities.customSourcePaths) {
           _this.updateConfigureSourcePathsCallback(processInfo.configureSourceFilePaths.bind(processInfo));
         } else {
           _this.updateConfigureSourcePathsCallback(null);
@@ -251,7 +253,6 @@ class DebuggerActions {
       throw new Error('Invariant violation: "newDebuggerInfo"');
     }
 
-    atom.notifications.addInfo('Restarting debugger...');
     this.startDebugging(newDebuggerInfo);
   }
 

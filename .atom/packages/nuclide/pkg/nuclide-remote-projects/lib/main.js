@@ -64,7 +64,7 @@ let createEditorForNuclide = (() => {
         return editor;
       }
     } catch (err) {
-      logger.warn('buffer load issue:', err);
+      (_constants || _load_constants()).logger.warn('buffer load issue:', err);
       atom.notifications.addError(`Failed to open ${uri}: ${err.message}`);
       throw err;
     }
@@ -95,7 +95,7 @@ let reloadRemoteProjects = (() => {
 
       const connection = yield remoteProjectsService.createRemoteConnection(config);
       if (!connection) {
-        logger.info('No RemoteConnection returned on restore state trial:', config.host, config.cwd);
+        (_constants || _load_constants()).logger.info('No RemoteConnection returned on restore state trial:', config.host, config.cwd);
 
         // Atom restores remote files with a malformed URIs, which somewhat resemble local paths.
         // If after an unsuccessful connection user modifies and saves them he's presented
@@ -152,17 +152,18 @@ exports.createRemoteDirectorySearcher = createRemoteDirectorySearcher;
 exports.getHomeFragments = getHomeFragments;
 exports.provideRemoteProjectsService = provideRemoteProjectsService;
 exports.consumeNotifications = consumeNotifications;
-
-var _log4js;
-
-function _load_log4js() {
-  return _log4js = require('log4js');
-}
+exports.consumeWorkingSetsStore = consumeWorkingSetsStore;
 
 var _nuclideRemoteConnection;
 
 function _load_nuclideRemoteConnection() {
   return _nuclideRemoteConnection = require('../../nuclide-remote-connection');
+}
+
+var _constants;
+
+function _load_constants() {
+  return _constants = require('./constants');
 }
 
 var _utils;
@@ -242,26 +243,22 @@ function _load_AtomNotifications() {
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
-
-const logger = (0, (_log4js || _load_log4js()).getLogger)('nuclide-remote-projects');
-
-/**
  * Stores the host and cwd of a remote connection.
  */
+let packageSubscriptions = null; /**
+                                  * Copyright (c) 2015-present, Facebook, Inc.
+                                  * All rights reserved.
+                                  *
+                                  * This source code is licensed under the license found in the LICENSE file in
+                                  * the root directory of this source tree.
+                                  *
+                                  * 
+                                  * @format
+                                  */
 
-
-let packageSubscriptions = null;
 let controller = null;
 let remoteProjectsService = null;
+let workingSetsStore = null;
 
 const CLOSE_PROJECT_DELAY_MS = 100;
 const pendingFiles = {};
@@ -311,7 +308,7 @@ function addRemoteFolderToProject(connection) {
     };
 
     if (!connection.isOnlyConnection()) {
-      logger.info('Remaining remote projects using Nuclide Server - no prompt to shutdown');
+      (_constants || _load_constants()).logger.info('Remaining remote projects using Nuclide Server - no prompt to shutdown');
       const shutdownIfLast = false;
       closeConnection(shutdownIfLast);
       return;
@@ -539,7 +536,7 @@ function createRemoteDirectoryProvider() {
 function createRemoteDirectorySearcher() {
   return new (_RemoteDirectorySearcher || _load_RemoteDirectorySearcher()).default(dir => {
     return (0, (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).getGrepServiceByNuclideUri)(dir.getPath());
-  });
+  }, () => workingSetsStore);
 }
 
 function getHomeFragments() {
@@ -564,4 +561,8 @@ function provideRemoteProjectsService() {
 
 function consumeNotifications(raiseNativeNotification) {
   (0, (_AtomNotifications || _load_AtomNotifications()).setNotificationService)(raiseNativeNotification);
+}
+
+function consumeWorkingSetsStore(store) {
+  workingSetsStore = store;
 }

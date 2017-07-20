@@ -6,12 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 
 var _react = _interopRequireDefault(require('react'));
 
-var _shellQuote;
-
-function _load_shellQuote() {
-  return _shellQuote = require('shell-quote');
-}
-
 var _string;
 
 function _load_string() {
@@ -44,25 +38,14 @@ function _load_Modal() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
-
 class BuckToolbarSettings extends _react.default.Component {
 
   constructor(props) {
     super(props);
     const { buildArguments, runArguments } = props.settings;
     this.state = {
-      buildArguments: buildArguments == null ? '' : (0, (_shellQuote || _load_shellQuote()).quote)(buildArguments),
-      runArguments: runArguments == null ? '' : (0, (_shellQuote || _load_shellQuote()).quote)(runArguments)
+      buildArguments: buildArguments == null ? '' : (0, (_string || _load_string()).shellQuote)(buildArguments),
+      runArguments: runArguments == null ? '' : (0, (_string || _load_string()).shellQuote)(runArguments)
     };
   }
 
@@ -169,4 +152,13 @@ class BuckToolbarSettings extends _react.default.Component {
     }
   }
 }
-exports.default = BuckToolbarSettings;
+exports.default = BuckToolbarSettings; /**
+                                        * Copyright (c) 2015-present, Facebook, Inc.
+                                        * All rights reserved.
+                                        *
+                                        * This source code is licensed under the license found in the LICENSE file in
+                                        * the root directory of this source tree.
+                                        *
+                                        * 
+                                        * @format
+                                        */

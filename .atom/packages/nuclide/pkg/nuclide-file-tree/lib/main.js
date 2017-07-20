@@ -82,23 +82,21 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * Minimum interval (in ms) between onChangeActivePaneItem events before revealing the active pane
  * item in the file tree.
  */
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
-
-const OPEN_FILES_UPDATE_DEBOUNCE_INTERVAL_MS = 150;
+const OPEN_FILES_UPDATE_DEBOUNCE_INTERVAL_MS = 150; /**
+                                                     * Copyright (c) 2015-present, Facebook, Inc.
+                                                     * All rights reserved.
+                                                     *
+                                                     * This source code is licensed under the license found in the LICENSE file in
+                                                     * the root directory of this source tree.
+                                                     *
+                                                     * 
+                                                     * @format
+                                                     */
 
 const DESERIALIZER_VERSION = atom.workspace.getLeftDock == null ? 1 : 2;
 
 class Activation {
-  // Has the package state been restored from a previous session?
+
   constructor(rawState) {
     let state = rawState || {};
     const serializedVersionMatches = (state.version || 1) === DESERIALIZER_VERSION;
@@ -131,7 +129,10 @@ class Activation {
     const allowPendingPaneItems = 'core.allowPendingPaneItems';
     const autoExpandSingleChild = 'nuclide-file-tree.autoExpandSingleChild';
 
-    this._disposables.add(this._fixContextMenuHighlight(), (_featureConfig || _load_featureConfig()).default.observe(prefixKeyNavSetting, x => this._setPrefixKeyNavSetting(x)), (_featureConfig || _load_featureConfig()).default.observe((_Constants || _load_Constants()).REVEAL_FILE_ON_SWITCH_SETTING, x => this._setRevealOnFileSwitch(x)), atom.config.observe(ignoredNamesSetting, x => this._setIgnoredNames(x)), (_featureConfig || _load_featureConfig()).default.observe(hideIgnoredNamesSetting, x => this._setHideIgnoredNames(x)), atom.config.observe(excludeVcsIgnoredPathsSetting, this._setExcludeVcsIgnoredPaths.bind(this)), atom.config.observe(allowPendingPaneItems, this._setUsePreviewTabs.bind(this)), (_featureConfig || _load_featureConfig()).default.observe(autoExpandSingleChild, this._setAutoExpandSingleChild.bind(this)), atom.commands.add('atom-workspace', 'nuclide-file-tree:toggle-focus', () => {
+    this._disposables.add(this._fixContextMenuHighlight(), (_featureConfig || _load_featureConfig()).default.observe(prefixKeyNavSetting, x => this._setPrefixKeyNavSetting(x)), (_featureConfig || _load_featureConfig()).default.observeAsStream((_Constants || _load_Constants()).REVEAL_FILE_ON_SWITCH_SETTING).switchMap(shouldReveal => {
+      return shouldReveal ? this._currentActiveFilePath() : _rxjsBundlesRxMinJs.Observable.empty();
+    }).subscribe(filePath => this._fileTreeController.revealFilePath(filePath,
+    /* showIfHidden */false)), atom.config.observe(ignoredNamesSetting, x => this._setIgnoredNames(x)), (_featureConfig || _load_featureConfig()).default.observe(hideIgnoredNamesSetting, x => this._setHideIgnoredNames(x)), atom.config.observe(excludeVcsIgnoredPathsSetting, this._setExcludeVcsIgnoredPaths.bind(this)), atom.config.observe(allowPendingPaneItems, this._setUsePreviewTabs.bind(this)), (_featureConfig || _load_featureConfig()).default.observe(autoExpandSingleChild, this._setAutoExpandSingleChild.bind(this)), atom.commands.add('atom-workspace', 'nuclide-file-tree:toggle-focus', () => {
       const component = this._fileTreeComponent;
       if (component == null) {
         return;
@@ -145,7 +146,8 @@ class Activation {
         component.focus();
       }
     }));
-  }
+  } // Has the package state been restored from a previous session?
+
 
   _fixContextMenuHighlight() {
     // Giant hack to fix the context menu highlight
@@ -255,23 +257,13 @@ class Activation {
     this._fileTreeController.setIgnoredNames(normalizedIgnoredNames);
   }
 
-  _setRevealOnFileSwitch(shouldReveal) {
-    if (shouldReveal) {
-      // Guard against this getting called multiple times
-      if (!this._paneItemSubscription) {
-        this._paneItemSubscription = atom.workspace.onDidStopChangingActivePaneItem(this._fileTreeController.revealActiveFile.bind(this._fileTreeController,
-        /* showIfHidden */false));
-        this._disposables.add(this._paneItemSubscription);
-      }
-    } else {
-      // Use a local so Flow can refine the type.
-      const paneItemSubscription = this._paneItemSubscription;
-      if (paneItemSubscription) {
-        this._disposables.remove(paneItemSubscription);
-        paneItemSubscription.dispose();
-        this._paneItemSubscription = null;
-      }
-    }
+  _currentActiveFilePath() {
+    const rawPathStream = (0, (_event || _load_event()).observableFromSubscribeFunction)(atom.workspace.onDidStopChangingActivePaneItem.bind(atom.workspace)).map(() => {
+      const editor = atom.workspace.getActiveTextEditor();
+      return editor != null ? editor.getPath() : null;
+    });
+
+    return (0, (_observable || _load_observable()).compact)(rawPathStream).distinctUntilChanged();
   }
 
   _setPrefixKeyNavSetting(usePrefixNav) {

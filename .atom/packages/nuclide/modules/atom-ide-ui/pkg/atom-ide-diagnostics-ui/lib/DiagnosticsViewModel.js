@@ -139,11 +139,11 @@ class DiagnosticsViewModel {
 
 exports.DiagnosticsViewModel = DiagnosticsViewModel;
 function getPropsStream(diagnosticsStream, warnAboutLinterStream, showTracesStream, onShowTracesChange, disableLinter, initialfilterByActiveTextEditor, onFilterByActiveTextEditorChange) {
-  const activeTextEditorPaths = (0, (_event || _load_event()).observableFromSubscribeFunction)(atom.workspace.observeActivePaneItem.bind(atom.workspace)).map(paneItem => {
-    if ((0, (_textEditor || _load_textEditor()).isValidTextEditor)(paneItem)) {
-      const textEditor = paneItem;
-      return textEditor ? textEditor.getPath() : null;
-    }
+  const center = atom.workspace.getCenter();
+  const activeTextEditorPaths = (0, (_event || _load_event()).observableFromSubscribeFunction)(center.observeActivePaneItem.bind(center)).filter(paneItem => (0, (_textEditor || _load_textEditor()).isValidTextEditor)(paneItem)).switchMap(textEditor_ => {
+    const textEditor = textEditor_;
+    // An observable that emits the editor path and then, when the editor's destroyed, null.
+    return _rxjsBundlesRxMinJs.Observable.concat(_rxjsBundlesRxMinJs.Observable.of(textEditor.getPath()), (0, (_event || _load_event()).observableFromSubscribeFunction)(textEditor.onDidDestroy.bind(textEditor)).take(1).mapTo(null));
   }).distinctUntilChanged();
 
   const sortedDiagnostics = _rxjsBundlesRxMinJs.Observable.concat(_rxjsBundlesRxMinJs.Observable.of([]), diagnosticsStream.debounceTime(RENDER_DEBOUNCE_TIME).map(diagnostics => diagnostics.slice().sort((_paneUtils || _load_paneUtils()).compareMessagesByFile)),

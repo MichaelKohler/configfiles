@@ -33,7 +33,7 @@ let getTopDatatipAndProvider = (() => {
           return result;
         } catch (e) {
           timingTracker.onError(e);
-          logger.error(`Error getting datatip from provider ${name}`, e);
+          (0, (_log4js || _load_log4js()).getLogger)('datatip').error(`Error getting datatip from provider ${name}`, e);
           return null;
         }
       });
@@ -159,15 +159,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 /* global performance */
 
-const logger = (0, (_log4js || _load_log4js()).getLogger)('atom-ide-datatip');
-
 const CUMULATIVE_WHEELX_THRESHOLD = 20;
 const DEFAULT_DATATIP_DEBOUNCE_DELAY = 1000;
 const DEFAULT_DATATIP_INTERACTED_DEBOUNCE_DELAY = 1000;
 
 function getProviderName(provider) {
   if (provider.providerName == null) {
-    logger.error('Datatip provider has no name', provider);
+    (0, (_log4js || _load_log4js()).getLogger)('datatip').error('Datatip provider has no name', provider);
     return 'unknown';
   }
   return provider.providerName;
@@ -355,7 +353,7 @@ class DatatipManagerForEditor {
       if (this._datatipState === DatatipState.VISIBLE) {
         this._setState(DatatipState.HIDDEN);
       }
-    }), atom.commands.add('atom-text-editor', 'nuclide-datatip:toggle', this._toggleDatatip), atom.commands.add('atom-text-editor', 'nuclide-datatip:copy-to-clipboard', this._copyDatatipToClipboard));
+    }), atom.commands.add('atom-text-editor', 'datatip:toggle', this._toggleDatatip), atom.commands.add('atom-text-editor', 'datatip:copy-to-clipboard', this._copyDatatipToClipboard));
   }
 
   _fetchInResponseToKeyPress() {
@@ -676,12 +674,12 @@ class DatatipManager {
     this._subscriptions.add((0, (_textEditor || _load_textEditor()).observeTextEditors)(editor => {
       const manager = new DatatipManagerForEditor(editor, this._datatipProviders, this._modifierDatatipProviders);
       this._editorManagers.set(editor, manager);
-      const dispose = () => {
+      const disposable = new (_UniversalDisposable || _load_UniversalDisposable()).default(() => {
         manager.dispose();
         this._editorManagers.delete(editor);
-      };
-      this._subscriptions.add(new (_UniversalDisposable || _load_UniversalDisposable()).default(dispose));
-      editor.onDidDestroy(dispose);
+      });
+      this._subscriptions.add(disposable);
+      editor.onDidDestroy(() => disposable.dispose());
     }));
   }
 

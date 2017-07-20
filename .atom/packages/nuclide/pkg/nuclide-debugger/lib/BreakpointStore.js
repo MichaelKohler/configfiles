@@ -18,18 +18,25 @@ function _load_DebuggerStore() {
   return _DebuggerStore = require('./DebuggerStore');
 }
 
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
+var _nuclideUri;
 
-const BREAKPOINT_NEED_UI_UPDATE = 'BREAKPOINT_NEED_UI_UPDATE';
+function _load_nuclideUri() {
+  return _nuclideUri = _interopRequireDefault(require('nuclide-commons/nuclideUri'));
+}
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const BREAKPOINT_NEED_UI_UPDATE = 'BREAKPOINT_NEED_UI_UPDATE'; /**
+                                                                * Copyright (c) 2015-present, Facebook, Inc.
+                                                                * All rights reserved.
+                                                                *
+                                                                * This source code is licensed under the license found in the LICENSE file in
+                                                                * the root directory of this source tree.
+                                                                *
+                                                                * 
+                                                                * @format
+                                                                */
+
 const BREAKPOINT_USER_CHANGED = 'breakpoint_user_changed';
 
 const ADDBREAKPOINT_ACTION = 'AddBreakpoint';
@@ -241,6 +248,21 @@ class BreakpointStore {
         this._updateBreakpoint(updatedBp);
       }
     }
+
+    const debuggerStore = this.getDebuggerStore();
+    if (debuggerStore != null) {
+      const currentInfo = debuggerStore.getDebugProcessInfo();
+      if (condition !== '' && currentInfo != null && !currentInfo.getDebuggerCapabilities().conditionalBreakpoints) {
+        // If the current debugger does not support conditional breakpoints, and the bp that
+        // was just bound has a condition on it, warn the user that the condition isn't going
+        // to be honored.
+        atom.notifications.addWarning('The current debugger does not support conditional breakpoints. The breakpoint at this location will hit without ' + 'evaluating the specified condition expression:\n' + `${(_nuclideUri || _load_nuclideUri()).default.basename(path)}:${line}`);
+        const updatedBp = this.getBreakpointAtLine(path, line);
+        if (updatedBp != null) {
+          this._updateBreakpointCondition(updatedBp.id, '');
+        }
+      }
+    }
   }
 
   _handleDebuggerModeChange(newMode) {
@@ -320,6 +342,22 @@ class BreakpointStore {
 
   getDebuggerStore() {
     return this._debuggerStore;
+  }
+
+  breakpointSupportsConditions(breakpoint) {
+    // If currently debugging, return whether or not the current debugger supports this.
+    const debuggerStore = this.getDebuggerStore();
+    if (debuggerStore != null && debuggerStore.getDebuggerMode() !== (_DebuggerStore || _load_DebuggerStore()).DebuggerMode.STOPPED) {
+      const currentDebugInfo = debuggerStore.getDebugProcessInfo();
+      if (currentDebugInfo != null) {
+        return currentDebugInfo.getDebuggerCapabilities().conditionalBreakpoints;
+      }
+    }
+
+    // If not currently debugging, return if any of the debuggers that support
+    // the file extension this bp is in support conditions.
+    // TODO: have providers register their file extensions and filter correctly here.
+    return true;
   }
 
   _deserializeBreakpoints(breakpoints) {

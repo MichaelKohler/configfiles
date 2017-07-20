@@ -142,14 +142,13 @@ let instance;
  * dispatcher is a mechanism through which FileTreeActions interfaces with FileTreeStore.
  */
 class FileTreeStore {
-
+  // The configuration for the file-tree. Avoid direct writing.
   static getInstance() {
     if (!instance) {
       instance = new FileTreeStore();
     }
     return instance;
-  } // The configuration for the file-tree. Avoid direct writing.
-
+  }
 
   static dispose() {
     if (instance != null) {
@@ -173,9 +172,9 @@ class FileTreeStore {
     this._repositories = new (_immutable || _load_immutable()).default.Set();
 
     this._conf = DEFAULT_CONF;
-    this._suppressChanges = false;
     this._filter = '';
     this._extraProjectSelectionContent = new (_immutable || _load_immutable()).default.List();
+    this.foldersExpanded = true;
     this.openFilesExpanded = true;
     this.uncommittedChangesExpanded = true;
     this._selectionRange = null;
@@ -228,7 +227,8 @@ class FileTreeStore {
       rootKeys,
       selectedKeysByRoot,
       openFilesExpanded: this.openFilesExpanded,
-      uncommittedChangesExpanded: this.uncommittedChangesExpanded
+      uncommittedChangesExpanded: this.uncommittedChangesExpanded,
+      foldersExpanded: this.foldersExpanded
     };
   }
 
@@ -274,6 +274,10 @@ class FileTreeStore {
 
     if (data.uncommittedChangesExpanded != null) {
       this.uncommittedChangesExpanded = data.uncommittedChangesExpanded;
+    }
+
+    if (data.foldersExpanded != null) {
+      this.foldersExpanded = data.foldersExpanded;
     }
 
     const normalizedAtomPaths = atom.project.getPaths().map((_nuclideUri || _load_nuclideUri()).default.ensureTrailingSeparator);
@@ -336,6 +340,9 @@ class FileTreeStore {
         break;
       case (_FileTreeDispatcher2 || _load_FileTreeDispatcher2()).ActionTypes.CLEAR_TRACKED_NODE:
         this._clearTrackedNode();
+        break;
+      case (_FileTreeDispatcher2 || _load_FileTreeDispatcher2()).ActionTypes.CLEAR_TRACKED_NODE_IF_NOT_LOADING:
+        this._clearTrackedNodeIfNotLoading();
         break;
       case (_FileTreeDispatcher2 || _load_FileTreeDispatcher2()).ActionTypes.MOVE_TO_NODE:
         this._moveToNode(payload.rootKey, payload.nodeKey);
@@ -461,6 +468,9 @@ class FileTreeStore {
       case (_FileTreeDispatcher2 || _load_FileTreeDispatcher2()).ActionTypes.SET_UNCOMMITTED_CHANGES_EXPANDED:
         this._setUncommittedChangesExpanded(payload.uncommittedChangesExpanded);
         break;
+      case (_FileTreeDispatcher2 || _load_FileTreeDispatcher2()).ActionTypes.SET_FOLDERS_EXPANDED:
+        this._setFoldersExpanded(payload.foldersExpanded);
+        break;
       case (_FileTreeDispatcher2 || _load_FileTreeDispatcher2()).ActionTypes.INVALIDATE_REMOVED_FOLDER:
         this._invalidateRemovedFolder();
         break;
@@ -567,10 +577,6 @@ class FileTreeStore {
   }
 
   _emitChange() {
-    if (this._suppressChanges) {
-      return;
-    }
-
     if (this._animationFrameRequestSubscription != null) {
       this._animationFrameRequestSubscription.unsubscribe();
     }
@@ -578,12 +584,9 @@ class FileTreeStore {
     this._animationFrameRequestSubscription = (_observable || _load_observable()).nextAnimationFrame.subscribe(() => {
       const { performance } = global;
       const renderStart = performance.now();
-      const childrenCount = this.roots.reduce((sum, root) => sum + root.shownChildrenBelow, 0);
+      const childrenCount = this.roots.reduce((sum, root) => sum + root.shownChildrenCount, 0);
 
       this._emitter.emit('change');
-      this._suppressChanges = true;
-      this._checkTrackedNode();
-      this._suppressChanges = false;
       this._animationFrameRequestSubscription = null;
 
       const duration = (performance.now() - renderStart).toString();
@@ -1109,7 +1112,7 @@ class FileTreeStore {
    * Resets the node to be kept in view if no more data is being awaited. Safe to call many times
    * because it only changes state if a node is being tracked.
    */
-  _checkTrackedNode() {
+  _clearTrackedNodeIfNotLoading() {
     if (
     /*
      * The loading map being empty is a heuristic for when loading has completed. It is inexact
@@ -1393,16 +1396,16 @@ class FileTreeStore {
       if (!node.shouldBeShown) {
         return node;
       }
-      if (node.shownChildrenBelow === 1) {
+      if (node.shownChildrenCount === 1) {
         beginIndex++;
         return node;
       }
-      const endIndex = beginIndex + node.shownChildrenBelow - 1;
+      const endIndex = beginIndex + node.shownChildrenCount - 1;
       if (beginIndex <= modMaxIndex && modMinIndex <= endIndex) {
         beginIndex++;
         return null;
       }
-      beginIndex += node.shownChildrenBelow;
+      beginIndex += node.shownChildrenCount;
       return node;
     },
     // flip the isSelected flag accordingly, based on previous and current range.
@@ -1410,7 +1413,7 @@ class FileTreeStore {
       if (!node.shouldBeShown) {
         return node;
       }
-      const curIndex = beginIndex - node.shownChildrenBelow;
+      const curIndex = beginIndex - node.shownChildrenCount;
       const inOldRange = Math.sign(curIndex - anchorIndex) * Math.sign(curIndex - rangeIndex) !== 1;
       const inNewRange = Math.sign(curIndex - anchorIndex) * Math.sign(curIndex - nextRangeIndex) !== 1;
       if (inOldRange && inNewRange || !inOldRange && !inNewRange) {
@@ -1631,7 +1634,7 @@ class FileTreeStore {
 
   /**
   * Makes sure a certain child node is present in the file tree, creating all its ancestors, if
-  * needed and scheduling a chilld key fetch. Used by the reveal active file functionality.
+  * needed and scheduling a child key fetch. Used by the reveal active file functionality.
   */
   _ensureChildNode(nodeKey) {
     let firstRootUri;
@@ -1695,6 +1698,7 @@ class FileTreeStore {
       return this._bubbleUp(deepest, deepest.set({
         isLoading: true,
         isExpanded: true,
+        isPendingLoad: true,
         children: deepest.children.set(currentChild.name, currentChild)
       }), expandNode);
     });
@@ -1832,6 +1836,11 @@ class FileTreeStore {
 
   _setUncommittedChangesExpanded(uncommittedChangesExpanded) {
     this.uncommittedChangesExpanded = uncommittedChangesExpanded;
+    this._emitChange();
+  }
+
+  _setFoldersExpanded(foldersExpanded) {
+    this.foldersExpanded = foldersExpanded;
     this._emitChange();
   }
 

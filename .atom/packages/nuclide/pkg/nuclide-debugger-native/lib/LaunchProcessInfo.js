@@ -44,12 +44,17 @@ class LaunchProcessInfo extends (_nuclideDebuggerBase || _load_nuclideDebuggerBa
     return new LaunchProcessInfo(this._targetUri, this._launchTargetInfo);
   }
 
-  supportThreads() {
-    return true;
+  getDebuggerCapabilities() {
+    return Object.assign({}, super.getDebuggerCapabilities(), {
+      conditionalBreakpoints: true,
+      continueToLocation: true,
+      singleThreadStepping: true,
+      threads: true
+    });
   }
 
-  supportContinueToLocation() {
-    return true;
+  getDebuggerProps() {
+    return super.getDebuggerProps();
   }
 
   debug() {
@@ -80,10 +85,6 @@ class LaunchProcessInfo extends (_nuclideDebuggerBase || _load_nuclideDebuggerBa
       }
       return debugSession;
     })();
-  }
-
-  supportSingleThreadStepping() {
-    return true;
   }
 
   getDebuggerConfig() {

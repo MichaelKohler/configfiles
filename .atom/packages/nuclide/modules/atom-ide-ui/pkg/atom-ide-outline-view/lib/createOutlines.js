@@ -35,6 +35,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 const LOADING_DELAY_MS = 500;
 
+/**
+ * Includes additional information that is useful to the UI, but redundant or nonsensical for
+ * providers to include in their responses.
+ */
 function createOutlines(editorService) {
   return outlinesForProviderResults(editorService.getResultsStream());
 }

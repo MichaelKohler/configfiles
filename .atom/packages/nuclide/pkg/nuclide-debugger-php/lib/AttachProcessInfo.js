@@ -65,6 +65,23 @@ class AttachProcessInfo extends (_nuclideDebuggerBase || _load_nuclideDebuggerBa
     return new AttachProcessInfo(this._targetUri);
   }
 
+  getDebuggerCapabilities() {
+    return Object.assign({}, super.getDebuggerCapabilities(), {
+      conditionalBreakpoints: true,
+      continueToLocation: true,
+      singleThreadStepping: true,
+      threads: true
+    });
+  }
+
+  getDebuggerProps() {
+    return Object.assign({}, super.getDebuggerProps(), {
+      customControlButtons: this._getCustomControlButtons(),
+      threadColumns: this._getThreadColumns(),
+      threadsComponentTitle: 'Requests'
+    });
+  }
+
   preAttachActions() {
     try {
       // TODO(t18124539) @nmote This should require FlowFB but when used flow
@@ -99,15 +116,7 @@ class AttachProcessInfo extends (_nuclideDebuggerBase || _load_nuclideDebuggerBa
     return new service.PhpDebuggerService();
   }
 
-  supportThreads() {
-    return true;
-  }
-
-  getThreadsComponentTitle() {
-    return 'Requests';
-  }
-
-  getThreadColumns() {
+  _getThreadColumns() {
     return [{
       key: 'id',
       title: 'ID',
@@ -123,19 +132,7 @@ class AttachProcessInfo extends (_nuclideDebuggerBase || _load_nuclideDebuggerBa
     }];
   }
 
-  supportSingleThreadStepping() {
-    return true;
-  }
-
-  singleThreadSteppingEnabled() {
-    return true;
-  }
-
-  supportContinueToLocation() {
-    return true;
-  }
-
-  customControlButtons() {
+  _getCustomControlButtons() {
     const customControlButtons = [{
       icon: 'link-external',
       title: 'Toggle HTTP Request Sender',

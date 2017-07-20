@@ -184,17 +184,23 @@ class DebuggerStore {
       case (_DebuggerDispatcher || _load_DebuggerDispatcher()).ActionTypes.TOGGLE_PAUSE_ON_EXCEPTION:
         const pauseOnException = payload.data;
         this._togglePauseOnException = pauseOnException;
-        this._model.getBridge().setPauseOnException(pauseOnException);
+        if (this.isDebugging()) {
+          this.getBridge().setPauseOnException(pauseOnException);
+        }
         break;
       case (_DebuggerDispatcher || _load_DebuggerDispatcher()).ActionTypes.TOGGLE_PAUSE_ON_CAUGHT_EXCEPTION:
         const pauseOnCaughtException = payload.data;
         this._togglePauseOnCaughtException = pauseOnCaughtException;
-        this._model.getBridge().setPauseOnCaughtException(pauseOnCaughtException);
+        if (this.isDebugging()) {
+          this.getBridge().setPauseOnCaughtException(pauseOnCaughtException);
+        }
         break;
       case (_DebuggerDispatcher || _load_DebuggerDispatcher()).ActionTypes.TOGGLE_SINGLE_THREAD_STEPPING:
         const singleThreadStepping = payload.data;
         this._enableSingleThreadStepping = singleThreadStepping;
-        this._model.getBridge().setSingleThreadStepping(singleThreadStepping);
+        if (this.isDebugging()) {
+          this.getBridge().setSingleThreadStepping(singleThreadStepping);
+        }
         break;
       case (_DebuggerDispatcher || _load_DebuggerDispatcher()).ActionTypes.DEBUGGER_MODE_CHANGE:
         this._debuggerMode = payload.data;

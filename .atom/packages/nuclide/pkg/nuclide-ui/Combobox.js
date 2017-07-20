@@ -57,6 +57,7 @@ class Combobox extends _react.default.Component {
     this.receiveUpdate = this.receiveUpdate.bind(this);
     this._handleTextInputChange = this._handleTextInputChange.bind(this);
     this._handleInputBlur = this._handleInputBlur.bind(this);
+    this._handleInputClick = this._handleInputClick.bind(this);
     this._handleInputFocus = this._handleInputFocus.bind(this);
     this._handleMoveDown = this._handleMoveDown.bind(this);
     this._handleMoveUp = this._handleMoveUp.bind(this);
@@ -132,6 +133,11 @@ class Combobox extends _react.default.Component {
 
   getText() {
     return this.refs.freeformInput.getText();
+  }
+
+  focus(showOptions) {
+    this.refs.freeformInput.focus();
+    this.setState({ optionsVisible: showOptions });
   }
 
   _getFilteredOptions(options, filterValue) {
@@ -233,6 +239,10 @@ class Combobox extends _react.default.Component {
     }
   }
 
+  _handleInputClick() {
+    this.setState({ optionsVisible: true });
+  }
+
   _handleItemClick(selectedValue, event) {
     this.selectValue(selectedValue, () => {
       // Focus the input again because the click will cause the input to blur. This mimics native
@@ -248,6 +258,12 @@ class Combobox extends _react.default.Component {
   }
 
   _handleMoveDown() {
+    // show the options but don't move the index
+    if (!this.state.optionsVisible) {
+      this.setState({ optionsVisible: true }, this._scrollSelectedOptionIntoViewIfNeeded);
+      return;
+    }
+
     this.setState({
       selectedIndex: Math.min(this.props.maxOptionCount - 1, this.state.selectedIndex + 1, this.state.filteredOptions.length - 1)
     }, this._scrollSelectedOptionIntoViewIfNeeded);
@@ -384,6 +400,7 @@ class Combobox extends _react.default.Component {
       _react.default.createElement((_AtomInput || _load_AtomInput()).AtomInput, {
         initialValue: initialTextInput,
         onBlur: this._handleInputBlur,
+        onClick: this._handleInputClick,
         onFocus: this._handleInputFocus,
         placeholderText: placeholderText,
         ref: 'freeformInput',

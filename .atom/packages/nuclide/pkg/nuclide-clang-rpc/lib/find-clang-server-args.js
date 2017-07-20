@@ -34,7 +34,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 let fbFindClangServerArgs;
 
 exports.default = (() => {
-  var _ref = (0, _asyncToGenerator.default)(function* (src) {
+  var _ref = (0, _asyncToGenerator.default)(function* (src, libclangPath = null) {
     if (fbFindClangServerArgs === undefined) {
       fbFindClangServerArgs = null;
       try {
@@ -66,17 +66,21 @@ exports.default = (() => {
       }
     }
 
-    const clangServerArgs = {
+    let clangServerArgs = {
       libClangLibraryFile,
       pythonExecutable: 'python2.7',
       pythonPathEnv: (_nuclideUri || _load_nuclideUri()).default.join(__dirname, '../VendorLib')
     };
+
     if (typeof fbFindClangServerArgs === 'function') {
       const clangServerArgsOverrides = yield fbFindClangServerArgs(src);
-      return Object.assign({}, clangServerArgs, clangServerArgsOverrides);
-    } else {
-      return clangServerArgs;
+      clangServerArgs = Object.assign({}, clangServerArgs, clangServerArgsOverrides);
     }
+
+    if (libclangPath != null) {
+      clangServerArgs.libClangLibraryFile = libclangPath;
+    }
+    return clangServerArgs;
   });
 
   function findClangServerArgs(_x) {

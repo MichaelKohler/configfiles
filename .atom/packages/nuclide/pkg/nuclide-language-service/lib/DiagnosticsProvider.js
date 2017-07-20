@@ -79,17 +79,6 @@ function _load_nuclideLanguageServiceRpc() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const diagnosticService = 'atom-ide-diagnostics'; /**
-                                                   * Copyright (c) 2015-present, Facebook, Inc.
-                                                   * All rights reserved.
-                                                   *
-                                                   * This source code is licensed under the license found in the LICENSE file in
-                                                   * the root directory of this source tree.
-                                                   *
-                                                   * 
-                                                   * @format
-                                                   */
-
 function registerDiagnostics(name, grammars, config, logger, connectionToLanguageService, busySignalProvider) {
   const result = new (_UniversalDisposable || _load_UniversalDisposable()).default();
   let provider;
@@ -104,9 +93,18 @@ function registerDiagnostics(name, grammars, config, logger, connectionToLanguag
     default:
       throw new Error('Unexpected diagnostics version');
   }
-  result.add(atom.packages.serviceHub.provide(diagnosticService, config.version, provider));
+  result.add(atom.packages.serviceHub.provide('diagnostics', config.version, provider));
   return result;
-}
+} /**
+   * Copyright (c) 2015-present, Facebook, Inc.
+   * All rights reserved.
+   *
+   * This source code is licensed under the license found in the LICENSE file in
+   * the root directory of this source tree.
+   *
+   * 
+   * @format
+   */
 
 class FileDiagnosticsProvider {
 

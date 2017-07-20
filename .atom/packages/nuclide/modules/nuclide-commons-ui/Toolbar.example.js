@@ -76,11 +76,9 @@ const ToolbarExampleLeft = () => _react.default.createElement(
     _react.default.createElement(
       'div',
       null,
-      'Be sure to use',
-      ' ',
+      'Be sure to use ',
       '<ToolbarLeft/>, <ToolbarLeft/>, and <ToolbarLeft/>',
-      ' ',
-      'as children.'
+      ' as children.'
     )
   )
 ); /**

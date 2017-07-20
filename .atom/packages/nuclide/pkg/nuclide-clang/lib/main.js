@@ -15,6 +15,7 @@ exports.provideCodeFormat = provideCodeFormat;
 exports.provideLinter = provideLinter;
 exports.provideOutlineView = provideOutlineView;
 exports.provideRefactoring = provideRefactoring;
+exports.provideDeclarationInfo = provideDeclarationInfo;
 exports.provideRelatedFiles = provideRelatedFiles;
 exports.consumeCompilationDatabase = consumeCompilationDatabase;
 exports.deactivate = deactivate;
@@ -209,6 +210,12 @@ function provideRefactoring() {
     refactor(request) {
       return (_Refactoring || _load_Refactoring()).default.refactor(request);
     }
+  };
+}
+
+function provideDeclarationInfo() {
+  return {
+    getDeclarationInfo: (_libclang || _load_libclang()).getDeclarationInfo
   };
 }
 

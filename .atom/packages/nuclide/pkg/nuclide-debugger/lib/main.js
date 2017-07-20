@@ -26,6 +26,12 @@ function _load_constants() {
   return _constants = require('./constants');
 }
 
+var _BreakpointConfigComponent;
+
+function _load_BreakpointConfigComponent() {
+  return _BreakpointConfigComponent = require('./BreakpointConfigComponent');
+}
+
 var _UniversalDisposable;
 
 function _load_UniversalDisposable() {
@@ -138,19 +144,26 @@ function _load_nullthrows() {
   return _nullthrows = _interopRequireDefault(require('nullthrows'));
 }
 
+var _ReactMountRootElement;
+
+function _load_ReactMountRootElement() {
+  return _ReactMountRootElement = _interopRequireDefault(require('nuclide-commons-ui/ReactMountRootElement'));
+}
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const DATATIP_PACKAGE_NAME = 'nuclide-debugger-datatip'; /**
-                                                          * Copyright (c) 2015-present, Facebook, Inc.
-                                                          * All rights reserved.
-                                                          *
-                                                          * This source code is licensed under the license found in the LICENSE file in
-                                                          * the root directory of this source tree.
-                                                          *
-                                                          * 
-                                                          * @format
-                                                          */
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ * @format
+ */
 
+const DATATIP_PACKAGE_NAME = 'nuclide-debugger-datatip';
 const NUX_NEW_DEBUGGER_UI_ID = 4377;
 const GK_NEW_DEBUGGER_UI_NUX = 'mp_nuclide_new_debugger_ui';
 const NUX_NEW_DEBUGGER_UI_NAME = 'nuclide_new_debugger_ui';
@@ -161,6 +174,13 @@ function getGutterLineNumber(target) {
   if (eventLine != null && eventLine >= 0 && !isNaN(Number(eventLine))) {
     return eventLine;
   }
+}
+
+function getBreakpointEventLocation(target) {
+  if (target != null && target.dataset != null && target.dataset.path != null && target.dataset.line != null) {
+    return { path: target.dataset.path, line: parseInt(target.dataset.line, 10) };
+  }
+  return null;
 }
 
 function getEditorLineNumber(editor, target) {
@@ -288,6 +308,8 @@ class Activation {
     }), atom.commands.add('atom-workspace', {
       'nuclide-debugger:toggle-breakpoint-enabled': this._toggleBreakpointEnabled.bind(this)
     }), atom.commands.add('atom-workspace', {
+      'nuclide-debugger:edit-breakpoint': this._configureBreakpoint.bind(this)
+    }), atom.commands.add('atom-workspace', {
       'nuclide-debugger:remove-all-breakpoints': this._deleteAllBreakpoints.bind(this)
     }), atom.commands.add('atom-workspace', {
       'nuclide-debugger:enable-all-breakpoints': this._enableAllBreakpoints.bind(this)
@@ -307,18 +329,29 @@ class Activation {
     // Context Menu Items.
     atom.contextMenu.add({
       '.nuclide-debugger-breakpoint': [{
+        label: 'Edit breakpoint...',
+        command: 'nuclide-debugger:edit-breakpoint',
+        shouldDisplay: event => {
+          const location = getBreakpointEventLocation(event.target);
+          if (location != null) {
+            const bp = this._getBreakpointForLine(location.path, location.line);
+            return bp != null && this.getModel().getBreakpointStore().breakpointSupportsConditions(bp);
+          }
+          return false;
+        }
+      }, {
+        label: 'Remove Breakpoint',
+        command: 'nuclide-debugger:remove-breakpoint'
+      }, { type: 'separator' }, {
         label: 'Enable All Breakpoints',
         command: 'nuclide-debugger:enable-all-breakpoints'
       }, {
         label: 'Disable All Breakpoints',
         command: 'nuclide-debugger:disable-all-breakpoints'
       }, {
-        label: 'Remove Breakpoint',
-        command: 'nuclide-debugger:remove-breakpoint'
-      }, {
         label: 'Remove All Breakpoints',
         command: 'nuclide-debugger:remove-all-breakpoints'
-      }],
+      }, { type: 'separator' }],
       '.nuclide-debugger-callstack-table': [{
         label: 'Copy Callstack',
         command: 'nuclide-debugger:copy-debugger-callstack'
@@ -336,7 +369,7 @@ class Activation {
             // Should also check for is paused.
             const store = this.getModel().getStore();
             const debuggerInstance = store.getDebuggerInstance();
-            if (store.getDebuggerMode() === (_DebuggerStore || _load_DebuggerStore()).DebuggerMode.PAUSED && debuggerInstance != null && debuggerInstance.getDebuggerProcessInfo().supportContinueToLocation()) {
+            if (store.getDebuggerMode() === (_DebuggerStore || _load_DebuggerStore()).DebuggerMode.PAUSED && debuggerInstance != null && debuggerInstance.getDebuggerProcessInfo().getDebuggerCapabilities().continueToLocation) {
               return true;
             }
             return false;
@@ -348,6 +381,13 @@ class Activation {
           label: 'Toggle Breakpoint enabled/disabled',
           command: 'nuclide-debugger:toggle-breakpoint-enabled',
           shouldDisplay: event => this._executeWithEditorPath(event, (filePath, line) => this.getModel().getBreakpointStore().getBreakpointAtLine(filePath, line) != null) || false
+        }, {
+          label: 'Edit Breakpoint...',
+          command: 'nuclide-debugger:edit-breakpoint',
+          shouldDisplay: event => this._executeWithEditorPath(event, (filePath, line) => {
+            const bp = this._getBreakpointForLine(filePath, line);
+            return bp != null && this.getModel().getBreakpointStore().breakpointSupportsConditions(bp);
+          }) || false
         }, {
           label: 'Add to Watch',
           command: 'nuclide-debugger:add-to-watch',
@@ -361,6 +401,11 @@ class Activation {
         }]
       }, { type: 'separator' }]
     }));
+  }
+
+  _getBreakpointForLine(path, line) {
+    const store = this.getModel().getBreakpointStore();
+    return store.getBreakpointAtLine(path, line);
   }
 
   _setProvidersForConnection(store, connection) {
@@ -478,6 +523,26 @@ class Activation {
         this._model.getActions().updateBreakpointEnabled(id, !enabled);
       }
     });
+  }
+
+  _configureBreakpoint(event) {
+    const location = getBreakpointEventLocation(event.target) || this._executeWithEditorPath(event, (path, line) => ({ path, line }));
+    if (location != null) {
+      const store = this.getModel().getBreakpointStore();
+      const bp = this._getBreakpointForLine(location.path, location.line);
+      if (bp != null && store.breakpointSupportsConditions(bp)) {
+        // Open the configuration dialog.
+        const container = new (_ReactMountRootElement || _load_ReactMountRootElement()).default();
+        _reactDom.default.render(_react.default.createElement((_BreakpointConfigComponent || _load_BreakpointConfigComponent()).BreakpointConfigComponent, {
+          breakpoint: bp,
+          actions: this.getModel().getActions(),
+          onDismiss: () => {
+            _reactDom.default.unmountComponentAtNode(container);
+          },
+          breakpointStore: store
+        }), container);
+      }
+    }
   }
 
   _runToLocation(event) {

@@ -9,6 +9,13 @@ exports.setNotificationService = setNotificationService;
 exports.getNotificationService = getNotificationService;
 exports.registerConsoleLogging = registerConsoleLogging;
 
+var _stripAnsi;
+
+function _load_stripAnsi() {
+  return _stripAnsi = _interopRequireDefault(require('strip-ansi'));
+}
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 let _outputServiceApi = null; /**
                                * Copyright (c) 2015-present, Facebook, Inc.
@@ -45,7 +52,11 @@ function registerConsoleLogging(sourceId, userOutputStream) {
   if (api != null) {
     outputDisposable = api.registerOutputProvider({
       id: sourceId,
-      messages: userOutputStream.map(message => JSON.parse(message))
+      messages: userOutputStream.map(rawMessage => {
+        const message = JSON.parse(rawMessage);
+        message.text = (0, (_stripAnsi || _load_stripAnsi()).default)(message.text);
+        return message;
+      })
     });
   }
   return outputDisposable;

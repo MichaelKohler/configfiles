@@ -184,10 +184,9 @@ class CommandDispatcher {
   }
 
   _sendViaNuclideChannel(...args) {
-    if (!(this._bridgeAdapter != null)) {
-      throw new Error('Invariant violation: "this._bridgeAdapter != null"');
+    if (this._bridgeAdapter == null) {
+      return;
     }
-
     switch (args[0]) {
       case 'Continue':
         this._bridgeAdapter.resume();

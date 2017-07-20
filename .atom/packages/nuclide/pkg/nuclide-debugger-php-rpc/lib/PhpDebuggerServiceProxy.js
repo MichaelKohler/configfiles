@@ -467,7 +467,7 @@ Object.defineProperty(module.exports, "defs", {
           location: {
             type: "source",
             fileName: "PhpDebuggerService.js",
-            line: 159
+            line: 160
           },
           kind: "function",
           argumentTypes: [],

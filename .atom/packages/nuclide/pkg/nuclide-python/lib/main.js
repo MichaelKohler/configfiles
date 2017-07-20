@@ -121,8 +121,7 @@ const atomConfig = {
   definition: {
     version: '0.1.0',
     priority: 20,
-    definitionEventName: 'python.get-definition',
-    definitionByIdEventName: 'python.get-definition-by-id'
+    definitionEventName: 'python.get-definition'
   }
 };
 

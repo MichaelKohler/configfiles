@@ -5,30 +5,33 @@ Object.defineProperty(exports, "__esModule", {
 });
 class Cache {
 
-  constructor(dispose) {
+  constructor(config = {}) {
     this.store = new Map();
 
-    if (dispose != null) {
-      this._dispose = dispose;
+    if (config.dispose != null) {
+      this._dispose = config.dispose;
     }
+    this._keyFactory = config.keyFactory != null ? config.keyFactory : keyArgs => keyArgs;
   }
 
-  _getWhenExists(key) {
+  _getUnsafe(key) {
     return this.store.get(key);
   }
 
-  getOrCreate(key, factory) {
+  getOrCreate(keyArgs, factory) {
+    const key = this._keyFactory(keyArgs);
     if (this.store.has(key)) {
-      return this._getWhenExists(key);
+      return this._getUnsafe(key);
     }
     const value = factory();
     this.store.set(key, value);
     return value;
   }
 
-  delete(key) {
+  delete(keyArgs) {
+    const key = this._keyFactory(keyArgs);
     if (this._dispose != null) {
-      this.ifHas(key, this._dispose);
+      this._ifHas(key, this._dispose);
     }
     this.store.delete(key);
   }
@@ -40,18 +43,26 @@ class Cache {
     this.store.clear();
   }
 
-  get(key) {
-    return this.store.get(key);
+  get(keyArgs) {
+    return this.store.get(this._keyFactory(keyArgs));
   }
 
-  set(key, value) {
-    this.store.set(key, value);
+  set(keyArgs, value) {
+    this.store.set(this._keyFactory(keyArgs), value);
   }
 
-  ifHas(key, callback) {
+  ifHas(keyArgs, callback) {
+    this._ifHas(this._keyFactory(keyArgs), callback);
+  }
+
+  _ifHas(key, callback) {
     if (this.store.has(key)) {
-      callback(this._getWhenExists(key));
+      callback(this._getUnsafe(key));
     }
+  }
+
+  keyForArgs(keyArgs) {
+    return this._keyFactory(keyArgs);
   }
 }
 exports.Cache = Cache; /**

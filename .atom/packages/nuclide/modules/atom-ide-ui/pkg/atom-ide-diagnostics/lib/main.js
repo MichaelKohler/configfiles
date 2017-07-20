@@ -18,12 +18,6 @@ function _load_event() {
   return _event = require('nuclide-commons/event');
 }
 
-var _log4js;
-
-function _load_log4js() {
-  return _log4js = require('log4js');
-}
-
 var _DiagnosticStore;
 
 function _load_DiagnosticStore() {
@@ -44,13 +38,16 @@ function _load_IndieLinterRegistry() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// TODO figure out how to allow the diagnostic consumer to poll (for example, if
-// it was just activated and wants diagnostic messages without having to wait
-// for an event to occur)
-
-
 /**
- * Linter APIs, for compatibility with the Atom linter package.
+ * Copyright (c) 2017-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ *
+ * 
+ * @format
  */
 
 class Activation {
@@ -149,36 +146,8 @@ class Activation {
   }
 
   consumeDiagnosticsProviderV2(provider) {
-    const store = this._diagnosticStore;
-
-    const subscriptions = new (_UniversalDisposable || _load_UniversalDisposable()).default(provider.updates.subscribe(update => store.updateMessages(provider, update), error => {
-      (0, (_log4js || _load_log4js()).getLogger)('atom-ide-diagnostics').error(`Error: updates.subscribe ${error}`);
-    }, () => {
-      (0, (_log4js || _load_log4js()).getLogger)('atom-ide-diagnostics').error('updates.subscribe completed');
-    }), provider.invalidations.subscribe(invalidation => store.invalidateMessages(provider, invalidation), error => {
-      (0, (_log4js || _load_log4js()).getLogger)('atom-ide-diagnostics').error(`Error: invalidations.subscribe ${error}`);
-    }, () => {
-      (0, (_log4js || _load_log4js()).getLogger)('atom-ide-diagnostics').error('invalidations.subscribe completed');
-    }));
-    this._disposables.add(subscriptions);
-
-    return new (_UniversalDisposable || _load_UniversalDisposable()).default(
-    // V1 providers have no way of terminating the streams, so unsubscribe just in case.
-    subscriptions, () => {
-      // When the provider package goes away, we need to invalidate its messages.
-      store.invalidateMessages(provider, { scope: 'all' });
-    });
+    return this._diagnosticStore.addProvider(provider);
   }
-} /**
-   * Copyright (c) 2017-present, Facebook, Inc.
-   * All rights reserved.
-   *
-   * This source code is licensed under the BSD-style license found in the
-   * LICENSE file in the root directory of this source tree. An additional grant
-   * of patent rights can be found in the PATENTS file in the same directory.
-   *
-   * 
-   * @format
-   */
+}
 
 (0, (_createPackage || _load_createPackage()).default)(module.exports, Activation);

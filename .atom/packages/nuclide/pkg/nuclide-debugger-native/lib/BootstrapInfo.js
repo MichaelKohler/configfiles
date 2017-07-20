@@ -44,8 +44,15 @@ class BootstrapInfo extends (_nuclideDebuggerBase || _load_nuclideDebuggerBase()
     return new BootstrapInfo(this._targetUri, this._bootstrapInfo);
   }
 
-  supportThreads() {
-    return true;
+  getDebuggerCapabilities() {
+    return Object.assign({}, super.getDebuggerCapabilities(), {
+      singleThreadStepping: true,
+      threads: true
+    });
+  }
+
+  getDebuggerProps() {
+    return super.getDebuggerProps();
   }
 
   debug() {
@@ -72,10 +79,6 @@ class BootstrapInfo extends (_nuclideDebuggerBase || _load_nuclideDebuggerBase()
       }
       return debugSession;
     })();
-  }
-
-  supportSingleThreadStepping() {
-    return true;
   }
 
   getDebuggerConfig() {

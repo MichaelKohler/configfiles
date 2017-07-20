@@ -42,6 +42,12 @@ function _load_installErrorReporter() {
   return _installErrorReporter = _interopRequireDefault(require('./installErrorReporter'));
 }
 
+var _patchEditors;
+
+function _load_patchEditors() {
+  return _patchEditors = _interopRequireDefault(require('./patchEditors'));
+}
+
 var _package;
 
 function _load_package() {
@@ -63,8 +69,6 @@ function _load_serviceManager() {
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // Install the error reporting even before Nuclide is activated.
-let errorReporterDisposable = (0, (_installErrorReporter || _load_installErrorReporter()).default)();
-// Install the logger config before Nuclide is activated.
 
 // eslint-disable-next-line nuclide-internal/prefer-nuclide-uri
 /**
@@ -88,7 +92,12 @@ let errorReporterDisposable = (0, (_installErrorReporter || _load_installErrorRe
  *
  */
 
+let errorReporterDisposable = (0, (_installErrorReporter || _load_installErrorReporter()).default)();
+// Install the logger config before Nuclide is activated.
 (0, (_nuclideLogging || _load_nuclideLogging()).initializeLogging)();
+
+// Patch Text editors to try to eliminate memory leaks.
+(0, (_patchEditors || _load_patchEditors()).default)();
 
 const { remote } = _electron.default;
 
@@ -164,17 +173,23 @@ const ATOM_IDE_DIR = _path.default.join(__dirname, '../modules/atom-ide-ui/pkg')
 _fs.default.readdirSync(ATOM_IDE_DIR).forEach(item => {
   const dirname = _path.default.join(ATOM_IDE_DIR, item);
   const filename = _path.default.join(dirname, 'package.json');
-  const src = _fs.default.readFileSync(filename, 'utf8');
-  const pkg = JSON.parse(src);
+  try {
+    const src = _fs.default.readFileSync(filename, 'utf8');
+    const pkg = JSON.parse(src);
 
-  if (!pkg.name) {
-    throw new Error('Invariant violation: "pkg.name"');
+    if (!pkg.name) {
+      throw new Error('Invariant violation: "pkg.name"');
+    }
+
+    features.push({
+      pkg,
+      dirname
+    });
+  } catch (err) {
+    if (err.code !== 'ENOENT') {
+      throw err;
+    }
   }
-
-  features.push({
-    pkg,
-    dirname
-  });
 });
 
 const featureLoader = new (_FeatureLoader || _load_FeatureLoader()).default({

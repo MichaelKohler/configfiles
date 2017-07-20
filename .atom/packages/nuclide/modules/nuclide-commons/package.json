@@ -1,6 +1,6 @@
 {
   "name": "nuclide-commons",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Common Nuclide node modules.",
   "license": "BSD-3-Clause",
   "homepage": "https://nuclide.io/",
@@ -10,7 +10,7 @@
     "test": "node ../../pkg/nuclide-jasmine/bin/jasmine-node-transpiled spec"
   },
   "dependencies": {
-    "async-to-generator": "1.0.0",
+    "async-to-generator": "1.1.0",
     "event-kit": "2.2.0",
     "fs-plus": "2.9.3",
     "glob": "7.1.1",

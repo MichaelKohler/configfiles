@@ -265,6 +265,19 @@ class BuckTaskRunner {
     return this._store;
   }
 
+  getCompilationDatabaseParamsForCurrentContext() {
+    const { selectedDeploymentTarget } = this._getStore().getState();
+    const empty = { flavorsForTarget: [], args: [] };
+    if (selectedDeploymentTarget == null) {
+      return empty;
+    }
+    const { platform } = selectedDeploymentTarget;
+    if (typeof platform.getCompilationDatabaseParams === 'function') {
+      return platform.getCompilationDatabaseParams();
+    }
+    return empty;
+  }
+
   runTask(taskType) {
     if (!(taskType === 'build' || taskType === 'test' || taskType === 'run' || taskType === 'debug')) {
       throw new Error('Invalid task type');

@@ -3,65 +3,10 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getDefaultConfig = exports.FileAppender = exports.getServerLogAppenderConfig = exports.LOG_FILE_PATH = undefined;
-
-var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
-
-let getServerLogAppenderConfig = exports.getServerLogAppenderConfig = (() => {
-  var _ref = (0, _asyncToGenerator.default)(function* () {
-    // Skip config scribe_cat logger if
-    // 1) or running in open sourced version of nuclide
-    // 2) or the scribe_cat command is missing.
-    if (!(yield (_fsPromise || _load_fsPromise()).default.exists(scribeAppenderPath)) || !(yield (_ScribeProcess || _load_ScribeProcess()).default.isScribeCatOnPath())) {
-      return null;
-    }
-
-    return {
-      type: 'logLevelFilter',
-      // Anything less than ERROR is ignored by the backend anyway.
-      level: 'ERROR',
-      appender: {
-        type: scribeAppenderPath,
-        scribeCategory: 'errorlog_arsenal'
-      }
-    };
-  });
-
-  return function getServerLogAppenderConfig() {
-    return _ref.apply(this, arguments);
-  };
-})();
-
-let getDefaultConfig = exports.getDefaultConfig = (() => {
-  var _ref2 = (0, _asyncToGenerator.default)(function* () {
-    if ((0, (_systemInfo || _load_systemInfo()).isRunningInClient)() || (0, (_systemInfo || _load_systemInfo()).isRunningInTest)()) {
-      return getDefaultConfigClient();
-    }
-
-    // Do not print server logs to stdout/stderr.
-    // These are normally just piped to a .nohup.out file, so doing this just causes
-    // the log files to be duplicated.
-    const serverLogAppenderConfig = yield getServerLogAppenderConfig();
-
-    if (!baseConfig.appenders) {
-      throw new Error('Invariant violation: "baseConfig.appenders"');
-    }
-
-    if (serverLogAppenderConfig) {
-      return Object.assign({}, baseConfig, {
-        appenders: [...baseConfig.appenders, serverLogAppenderConfig]
-      });
-    }
-
-    return baseConfig;
-  });
-
-  return function getDefaultConfig() {
-    return _ref2.apply(this, arguments);
-  };
-})();
-
+exports.FileAppender = exports.LOG_FILE_PATH = undefined;
+exports.getServerLogAppenderConfig = getServerLogAppenderConfig;
 exports.getPathToLogFile = getPathToLogFile;
+exports.getDefaultConfig = getDefaultConfig;
 exports.addAdditionalLogFile = addAdditionalLogFile;
 exports.getAdditionalLogFiles = getAdditionalLogFiles;
 
@@ -77,11 +22,7 @@ function _load_systemInfo() {
   return _systemInfo = require('../../commons-node/system-info');
 }
 
-var _fsPromise;
-
-function _load_fsPromise() {
-  return _fsPromise = _interopRequireDefault(require('nuclide-commons/fsPromise'));
-}
+var _fs = _interopRequireDefault(require('fs'));
 
 var _os = _interopRequireDefault(require('os'));
 
@@ -112,6 +53,25 @@ const additionalLogFiles = [];
 
 const MAX_LOG_SIZE = 1024 * 1024;
 const MAX_LOG_BACKUPS = 10;
+
+function getServerLogAppenderConfig() {
+  // Skip config scribe_cat logger if
+  // 1) or running in open sourced version of nuclide
+  // 2) or the scribe_cat command is missing.
+  if (!_fs.default.existsSync(scribeAppenderPath) || !(_ScribeProcess || _load_ScribeProcess()).default.isScribeCatOnPath()) {
+    return null;
+  }
+
+  return {
+    type: 'logLevelFilter',
+    // Anything less than ERROR is ignored by the backend anyway.
+    level: 'ERROR',
+    appender: {
+      type: scribeAppenderPath,
+      scribeCategory: 'errorlog_arsenal'
+    }
+  };
+}
 
 function getPathToLogFile() {
   return LOG_FILE_PATH;
@@ -158,6 +118,29 @@ function getDefaultConfigClient() {
       }
     }]
   });
+}
+
+function getDefaultConfig() {
+  if ((0, (_systemInfo || _load_systemInfo()).isRunningInClient)() || (0, (_systemInfo || _load_systemInfo()).isRunningInTest)()) {
+    return getDefaultConfigClient();
+  }
+
+  // Do not print server logs to stdout/stderr.
+  // These are normally just piped to a .nohup.out file, so doing this just causes
+  // the log files to be duplicated.
+  const serverLogAppenderConfig = getServerLogAppenderConfig();
+
+  if (!baseConfig.appenders) {
+    throw new Error('Invariant violation: "baseConfig.appenders"');
+  }
+
+  if (serverLogAppenderConfig) {
+    return Object.assign({}, baseConfig, {
+      appenders: [...baseConfig.appenders, serverLogAppenderConfig]
+    });
+  }
+
+  return baseConfig;
 }
 
 function addAdditionalLogFile(title, filename) {

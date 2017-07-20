@@ -8,17 +8,6 @@ var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
-
 class DebuggerProcessInfo {
 
   constructor(serviceName, targetUri) {
@@ -34,20 +23,22 @@ class DebuggerProcessInfo {
     return this._targetUri;
   }
 
-  getThreadsComponentTitle() {
-    return 'Threads';
+  getDebuggerCapabilities() {
+    return {
+      conditionalBreakpoints: false,
+      continueToLocation: false,
+      customSourcePaths: false,
+      singleThreadStepping: false,
+      threads: false
+    };
   }
 
-  getThreadColumns() {
-    // Use the debugger view's default columns.
-    return null;
-  }
-
-  // Whether or not this ProcessInfo supports threading or not.
-  // TODO: move this into chrome protocol after we move threads window
-  // to Nuclide UI.
-  supportThreads() {
-    return false;
+  getDebuggerProps() {
+    return {
+      customControlButtons: [],
+      threadColumns: null,
+      threadsComponentTitle: 'Threads'
+    };
   }
 
   configureSourceFilePaths() {
@@ -55,28 +46,8 @@ class DebuggerProcessInfo {
     throw new Error('Not supported');
   }
 
-  supportsConfigureSourcePaths() {
-    return false;
-  }
-
-  supportSingleThreadStepping() {
-    return false;
-  }
-
-  supportContinueToLocation() {
-    return false;
-  }
-
-  singleThreadSteppingEnabled() {
-    return false;
-  }
-
   clone() {
     throw new Error('abstract method');
-  }
-
-  customControlButtons() {
-    return [];
   }
 
   debug() {
@@ -87,4 +58,13 @@ class DebuggerProcessInfo {
 
   dispose() {}
 }
-exports.default = DebuggerProcessInfo;
+exports.default = DebuggerProcessInfo; /**
+                                        * Copyright (c) 2015-present, Facebook, Inc.
+                                        * All rights reserved.
+                                        *
+                                        * This source code is licensed under the license found in the LICENSE file in
+                                        * the root directory of this source tree.
+                                        *
+                                        * 
+                                        * @format
+                                        */

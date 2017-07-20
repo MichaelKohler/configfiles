@@ -31,8 +31,7 @@ let createLanguageService = (() => {
     const definitionConfig = {
       version: '0.1.0',
       priority: 1,
-      definitionEventName: 'graphql.definition',
-      definitionByIdEventName: 'graphql.definition-by-id'
+      definitionEventName: 'graphql.definition'
     };
 
     const autocompleteConfig = {

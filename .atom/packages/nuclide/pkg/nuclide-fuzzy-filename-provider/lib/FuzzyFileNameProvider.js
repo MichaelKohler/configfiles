@@ -38,13 +38,14 @@ exports.default = {
 
   executeQuery(query, directory) {
     return (0, _asyncToGenerator.default)(function* () {
-      if (query.length === 0) {
+      const { fileName, line, column } = (0, (_utils || _load_utils()).parseFileNameQuery)(query);
+      if (fileName.length === 0) {
         return [];
       }
 
       const directoryPath = directory.getPath();
       const service = (0, (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).getFuzzyFileSearchServiceByNuclideUri)(directoryPath);
-      const results = yield service.queryFuzzyFile(directoryPath, query, (0, (_utils || _load_utils()).getIgnoredNames)());
+      const results = yield service.queryFuzzyFile(directoryPath, fileName, (0, (_utils || _load_utils()).getIgnoredNames)());
 
       // Take the `nuclide://<host>` prefix into account for matchIndexes of remote files.
       if ((_nuclideRemoteConnection || _load_nuclideRemoteConnection()).RemoteDirectory.isRemoteDirectory(directory)) {
@@ -57,7 +58,15 @@ exports.default = {
         }
       }
 
-      return results;
+      return results.map(function (result) {
+        return {
+          path: result.path,
+          score: result.score,
+          matchIndexes: result.matchIndexes,
+          line,
+          column
+        };
+      });
     })();
   }
 }; /**

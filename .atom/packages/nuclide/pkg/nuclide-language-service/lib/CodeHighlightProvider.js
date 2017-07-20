@@ -72,7 +72,7 @@ class CodeHighlightProvider {
   }
 
   static register(name, grammarScopes, config, connectionToLanguageService) {
-    return atom.packages.serviceHub.provide('atom-ide-code-highlight', config.version, new CodeHighlightProvider(name, grammarScopes, config.priority, config.analyticsEventName, connectionToLanguageService));
+    return atom.packages.serviceHub.provide('code-highlight', config.version, new CodeHighlightProvider(name, grammarScopes, config.priority, config.analyticsEventName, connectionToLanguageService));
   }
 }
 

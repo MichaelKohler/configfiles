@@ -116,7 +116,7 @@ function parseRemoteUri(remoteUri) {
   const parsedUri = parse(remoteUri);
 
   if (!parsedUri.hostname) {
-    throw new Error(`Remote Nuclide URIs must contain hostnames, '${(0, (_string || _load_string()).maybeToString)(parsedUri.hostname)}' found ` + `while parsing '${remoteUri}'`);
+    throw new Error(`Remote Nuclide URIs must contain hostnames, '${(0, (_string || _load_string()).maybeToString)(parsedUri.hostname)}' found while parsing '${remoteUri}'`);
   }
 
   // Explicitly copying object properties appeases Flow's "maybe" type handling. Using the `...`

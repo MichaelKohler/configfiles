@@ -117,7 +117,7 @@ class Activation {
   }
 
   provideClangCompilationDatabase() {
-    return (0, (_BuckCompilationDatabaseProvider || _load_BuckCompilationDatabaseProvider()).getClangCompilationDatabaseProvider)();
+    return (0, (_BuckCompilationDatabaseProvider || _load_BuckCompilationDatabaseProvider()).getClangCompilationDatabaseProvider)(this._taskRunner);
   }
 }
 

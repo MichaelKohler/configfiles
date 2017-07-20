@@ -49,8 +49,8 @@ let main = (() => {
       logger.info(`Server ready time: ${process.uptime() * 1000}ms`);
     } catch (e) {
       // In case the exception occurred before logging initialization finished.
-      yield (0, (_nuclideLogging || _load_nuclideLogging()).initialUpdateConfig)();
-      yield serverStartTimer.onError(e);
+      (0, (_nuclideLogging || _load_nuclideLogging()).initialUpdateConfig)();
+      serverStartTimer.onError(e);
       logger.fatal(e);
       (0, (_nuclideLogging || _load_nuclideLogging()).flushLogsAndAbort)();
     }

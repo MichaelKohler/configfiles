@@ -16,18 +16,34 @@ let getDefinitionPreview = exports.getDefinitionPreview = (() => {
     const initialIndentLevel = getIndentLevel(lines[start]);
 
     const buffer = [];
-    for (let i = start, openParenCount = 0, closedParenCount = 0; i < start + MAX_PREVIEW_LINES && i < lines.length; i++) {
+    for (let i = start, openParenCount = 0, closedParenCount = 0, openCurlyCount = 0, closedCurlyCount = 0; i < start + MAX_PREVIEW_LINES && i < lines.length; i++) {
       const line = lines[i];
       const indentLevel = getIndentLevel(line);
       openParenCount += (0, (_string || _load_string()).countOccurrences)(line, '(');
       closedParenCount += (0, (_string || _load_string()).countOccurrences)(line, ')');
+      openCurlyCount += (0, (_string || _load_string()).countOccurrences)(line, '{');
+      closedCurlyCount += (0, (_string || _load_string()).countOccurrences)(line, '}');
 
       buffer.push(line.substr(Math.min(indentLevel, initialIndentLevel))); // dedent
 
-      // heuristic for the end of a function signature. // we've returned back to the original indentation level
-      // and we have balanced pairs of parens
-      if (indentLevel <= initialIndentLevel && openParenCount === closedParenCount) {
-        break;
+      // heuristic for the end of a function signature:
+      if (indentLevel <= initialIndentLevel) {
+        // we've returned back to the original indentation level
+        if (openParenCount > 0 && openParenCount === closedParenCount) {
+          // if we're in a fn definition, make sure we have balanced pairs of parens
+          break;
+        } else if (line.trim().endsWith(';')) {
+          // c-style statement ending
+          break;
+        } else if (
+        // end of a property definition
+        line.trim().endsWith(',') &&
+        // including complex types as values
+        openCurlyCount === closedCurlyCount &&
+        // but still not before function signatures are closed
+        openParenCount === closedParenCount) {
+          break;
+        }
       }
     }
 

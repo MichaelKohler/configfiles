@@ -188,14 +188,12 @@ function NoTaskRunnersMessage() {
   return _react.default.createElement(
     'span',
     { style: { 'white-space': 'nowrap' } },
-    'Install and enable a',
-    ' ',
+    'Install and enable a ',
     _react.default.createElement(
       'a',
       { href: featureLink },
       'task runner'
     ),
-    ' ',
-    'to use this toolbar'
+    ' to use this toolbar'
   );
 }

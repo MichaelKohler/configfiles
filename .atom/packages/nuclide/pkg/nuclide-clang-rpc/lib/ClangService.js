@@ -142,13 +142,8 @@ let formatCode = exports.formatCode = (() => {
   };
 })();
 
-/**
- * Kill the Clang server for a particular source file,
- * as well as all the cached compilation flags.
- */
-
-
 exports.compile = compile;
+exports.loadFlagsFromCompilationDatabaseAndCacheThem = loadFlagsFromCompilationDatabaseAndCacheThem;
 exports.resetForSource = resetForSource;
 exports.reset = reset;
 exports.dispose = dispose;
@@ -256,6 +251,34 @@ function compile(src, contents, compilationDB, defaultFlags) {
   return _rxjsBundlesRxMinJs.Observable.fromPromise(doCompile()).publish();
 }
 
+function loadFlagsFromCompilationDatabaseAndCacheThem(db) {
+  return serverManager.getClangFlagsManager().loadFlagsFromCompilationDatabase(db).then(fullFlags => (0, (_collection || _load_collection()).mapTransform)(fullFlags, flags => {
+    const { rawData } = flags;
+
+    if (!(rawData != null)) {
+      throw new Error('Invariant violation: "rawData != null"');
+    } // TODO(wallace): improve typing in clang-rpc so that this check is removed
+
+
+    const args = rawData.flags;
+
+    if (!Array.isArray(args)) {
+      throw new Error('Invariant violation: "Array.isArray(args)"');
+    } // TODO(wallace): improve clang-rpc so that it always return string[]
+
+
+    return {
+      arguments: args,
+      file: rawData.file,
+      directory: rawData.directory
+    };
+  }));
+}
+
+/**
+ * Kill the Clang server for a particular source file,
+ * as well as all the cached compilation flags.
+ */
 function resetForSource(src) {
   serverManager.reset(src);
 }

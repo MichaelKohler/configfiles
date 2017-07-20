@@ -107,11 +107,13 @@ function setDeviceEpic(actions, store) {
   });
 }
 
-const deviceTypeTaskCache = new (_cache || _load_cache()).Cache();
+const deviceTypeTaskCache = new (_cache || _load_cache()).Cache({
+  keyFactory: ([state, providerName]) => JSON.stringify([state.host, state.deviceType, providerName])
+});
 function setDeviceTypeEpic(actions, store) {
   return actions.ofType((_Actions || _load_Actions()).SET_DEVICE_TYPE).switchMap(action => {
     const state = store.getState();
-    return _rxjsBundlesRxMinJs.Observable.of(Array.from((0, (_providers || _load_providers()).getProviders)().deviceTypeTask).filter(provider => provider.getType() === state.deviceType).map(provider => deviceTypeTaskCache.getOrCreate(`${state.host}-${state.deviceType || ''}-${provider.getName()}`, () => new (_DeviceTask || _load_DeviceTask()).DeviceTask(() => provider.getTask(state.host), provider.getName())))).map(tasks => (_Actions || _load_Actions()).setDeviceTypeTasks(tasks));
+    return _rxjsBundlesRxMinJs.Observable.of(Array.from((0, (_providers || _load_providers()).getProviders)().deviceTypeTask).filter(provider => provider.getType() === state.deviceType).map(provider => deviceTypeTaskCache.getOrCreate([state, provider.getName()], () => new (_DeviceTask || _load_DeviceTask()).DeviceTask(() => provider.getTask(state.host), provider.getName())))).map(tasks => (_Actions || _load_Actions()).setDeviceTypeTasks(tasks));
   });
 }
 
@@ -164,7 +166,9 @@ function getProcessTasks(state) {
 
 // The actual device tasks are cached so that if a task is running when the store switches back and
 // forth from the device associated with that task, the same running task is used
-const deviceTaskCache = new (_cache || _load_cache()).Cache();
+const deviceTaskCache = new (_cache || _load_cache()).Cache({
+  keyFactory: ([state, providerName]) => JSON.stringify([state.host, state.deviceType, providerName])
+});
 function getDeviceTasks(state) {
   const device = state.device;
   if (device == null) {
@@ -175,7 +179,7 @@ function getDeviceTasks(state) {
       if (!isSupported) {
         return _rxjsBundlesRxMinJs.Observable.empty();
       }
-      return _rxjsBundlesRxMinJs.Observable.of(deviceTaskCache.getOrCreate(`${state.host}-${device.name}-${provider.getName()}`, () => new (_DeviceTask || _load_DeviceTask()).DeviceTask(() => provider.getTask(state.host, device.name), provider.getName())));
+      return _rxjsBundlesRxMinJs.Observable.of(deviceTaskCache.getOrCreate([state, provider.getName()], () => new (_DeviceTask || _load_DeviceTask()).DeviceTask(() => provider.getTask(state.host, device.name), provider.getName())));
     }).catch(() => _rxjsBundlesRxMinJs.Observable.empty());
   })).toArray().map(actions => actions.sort((a, b) => a.getName().localeCompare(b.getName())));
 }

@@ -34,7 +34,8 @@ const DiagnosticsTraceItem = exports.DiagnosticsTraceItem = props => {
     locSpan = _react.default.createElement(
       'span',
       null,
-      ': ',
+      ':',
+      ' ',
       _react.default.createElement(
         'a',
         { href: '#', onClick: onClick },

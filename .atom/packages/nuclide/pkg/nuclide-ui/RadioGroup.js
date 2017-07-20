@@ -33,8 +33,13 @@ class RadioGroup extends _react.default.Component {
   }
 
   render() {
-    const { onSelectedChange } = this.props;
-    const checkboxes = this.props.optionLabels.map((labelContent, i) => {
+    const {
+      className,
+      onSelectedChange,
+      optionLabels,
+      selectedIndex
+    } = this.props;
+    const checkboxes = optionLabels.map((labelContent, i) => {
       const id = 'nuclide-radiogroup-' + uid + '-' + i;
       return _react.default.createElement(
         'div',
@@ -42,7 +47,7 @@ class RadioGroup extends _react.default.Component {
         _react.default.createElement('input', {
           className: 'input-radio',
           type: 'radio',
-          checked: i === this.props.selectedIndex,
+          checked: i === selectedIndex,
           name: 'radiogroup-' + this.state.uid,
           id: id,
           onChange: () => {
@@ -60,7 +65,7 @@ class RadioGroup extends _react.default.Component {
     });
     return _react.default.createElement(
       'div',
-      null,
+      { className: className },
       checkboxes
     );
   }

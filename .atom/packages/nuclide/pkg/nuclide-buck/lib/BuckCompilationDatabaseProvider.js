@@ -31,76 +31,101 @@ function _load_SharedObservableCache() {
   return _SharedObservableCache = _interopRequireDefault(require('../../commons-node/SharedObservableCache'));
 }
 
+var _BuckTaskRunner;
+
+function _load_BuckTaskRunner() {
+  return _BuckTaskRunner = require('./BuckTaskRunner');
+}
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
+class Provider {
 
-const compilationDBCache = new (_cache || _load_cache()).Cache();
-function getCompilationDBCache(host) {
-  return compilationDBCache.getOrCreate((_nuclideUri || _load_nuclideUri()).default.getHostnameOpt(host) || '', () => new (_cache || _load_cache()).Cache());
+  constructor(host, params) {
+    this._compilationDBCache = new (_cache || _load_cache()).Cache();
+    this._buildFileForSourceCache = new (_cache || _load_cache()).Cache();
+    this._watchedFilesCache = new (_cache || _load_cache()).Cache({
+      dispose: subscription => subscription.unsubscribe()
+    });
+
+    this._host = host;
+    this._watchedFilesObservablesCache = this._createWatchedFilesObservablesCache();
+    this._params = params;
+  }
+
+  _createWatchedFilesObservablesCache() {
+    return new (_SharedObservableCache || _load_SharedObservableCache()).default(buildFile => (0, (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).getFileWatcherServiceByNuclideUri)(this._host).watchFileWithNode(buildFile).refCount().share().take(1));
+  }
+
+  watchBuildFile(buildFile, src) {
+    const watchedFile = this._buildFileForSourceCache.get(src);
+    if (watchedFile != null) {
+      return;
+    }
+    this._buildFileForSourceCache.set(src, buildFile);
+    this._watchedFilesCache.set(src, this._watchedFilesObservablesCache.get(buildFile).subscribe(() => {
+      try {
+        this.resetForSource(src);
+      } catch (_) {}
+    }));
+  }
+
+  getCompilationDatabase(src) {
+    return this._compilationDBCache.getOrCreate(src, () => {
+      return (0, (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).getBuckServiceByNuclideUri)(this._host).getCompilationDatabase(src, this._params).refCount().do(db => {
+        if (db != null && db.flagsFile != null) {
+          this.watchBuildFile(db.flagsFile, src);
+        }
+      }).toPromise();
+    });
+  }
+
+  resetForSource(src) {
+    this._compilationDBCache.delete(src);
+    (0, (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).getBuckServiceByNuclideUri)(this._host).resetCompilationDatabaseForSource(src, this._params);
+    this._buildFileForSourceCache.delete(src);
+    this._watchedFilesCache.delete(src);
+  }
+
+  reset() {
+    this._compilationDBCache.clear();
+    (0, (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).getBuckServiceByNuclideUri)(this._host).resetCompilationDatabase(this._params);
+    this._buildFileForSourceCache.clear();
+    this._watchedFilesCache.clear();
+  }
+} /**
+   * Copyright (c) 2015-present, Facebook, Inc.
+   * All rights reserved.
+   *
+   * This source code is licensed under the license found in the LICENSE file in
+   * the root directory of this source tree.
+   *
+   * 
+   * @format
+   */
+
+const providersCache = new (_cache || _load_cache()).Cache({
+  keyFactory: ([host, params]) => JSON.stringify([(_nuclideUri || _load_nuclideUri()).default.getHostnameOpt(host) || '', params]),
+  dispose: provider => provider.reset()
+});
+
+function getProvider(host, params) {
+  return providersCache.getOrCreate([host, params], () => new Provider(host, params));
 }
 
-const _buildFileForSource = new (_cache || _load_cache()).Cache();
-const _watchedFiles = new (_cache || _load_cache()).Cache();
-const _watchedFilesObservables = new (_cache || _load_cache()).Cache();
-
-function getWatchedFilesObservablesCache(host) {
-  return _watchedFilesObservables.getOrCreate(host, () => new (_SharedObservableCache || _load_SharedObservableCache()).default(buildFile => (0, (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).getFileWatcherServiceByNuclideUri)(host).watchFileWithNode(buildFile).refCount().share().take(1)));
-}
-
-function getBuildFilesForSourceCache(host) {
-  return _buildFileForSource.getOrCreate((_nuclideUri || _load_nuclideUri()).default.getHostnameOpt(host) || '', () => new (_cache || _load_cache()).Cache(buildFile => getWatchedFilesForSourceCache(host).delete(buildFile)));
-}
-
-function getWatchedFilesForSourceCache(host) {
-  return _watchedFiles.getOrCreate((_nuclideUri || _load_nuclideUri()).default.getHostnameOpt(host) || '', () => new (_cache || _load_cache()).Cache(subscription => subscription.unsubscribe()));
-}
-
-function getClangCompilationDatabaseProvider() {
+function getClangCompilationDatabaseProvider(taskRunner) {
   return {
-    watchBuildFile(buildFile, src) {
-      const host = src;
-      const buildFilesCache = getBuildFilesForSourceCache(host);
-      const watchedFile = buildFilesCache.get(src);
-      if (watchedFile != null) {
-        return;
-      }
-      buildFilesCache.set(src, buildFile);
-      getWatchedFilesForSourceCache(host).set(buildFile, getWatchedFilesObservablesCache(host).get(buildFile).subscribe(() => {
-        try {
-          this.resetForSource(src);
-        } catch (_) {}
-      }));
-    },
     getCompilationDatabase(src) {
-      return getCompilationDBCache(src).getOrCreate(src, () => {
-        return (0, (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).getBuckServiceByNuclideUri)(src).getCompilationDatabase(src).refCount().do(db => {
-          if (db != null && db.flagsFile != null) {
-            this.watchBuildFile(db.flagsFile, src);
-          }
-        }).toPromise();
-      });
+      const params = taskRunner.getCompilationDatabaseParamsForCurrentContext();
+      return getProvider(src, params).getCompilationDatabase(src);
     },
     resetForSource(src) {
-      const host = src;
-      getCompilationDBCache(host).delete(src);
-      (0, (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).getBuckServiceByNuclideUri)(host).resetCompilationDatabaseForSource(src);
-      getBuildFilesForSourceCache(host).delete(src);
+      const params = taskRunner.getCompilationDatabaseParamsForCurrentContext();
+      getProvider(src, params).resetForSource(src);
     },
     reset(host) {
-      getCompilationDBCache(host).clear();
-      (0, (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).getBuckServiceByNuclideUri)(host).resetCompilationDatabase();
-      getBuildFilesForSourceCache(host).clear();
-      getWatchedFilesForSourceCache(host).clear();
+      const params = taskRunner.getCompilationDatabaseParamsForCurrentContext();
+      providersCache.delete([host, params]);
     }
   };
 }

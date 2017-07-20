@@ -419,7 +419,7 @@ class HgService {
         return;
       } else if (mergeDirectoryExists) {
         // Detect if the repository is in a conflict state.
-        const mergeConflicts = yield _this4._fetchMergeConflictsWithDetails();
+        const mergeConflicts = yield _this4._fetchMergeConflicts();
         if (mergeConflicts != null) {
           _this4._isInConflict = true;
           _this4._hgConflictStateDidChangeObserver.next(true);
@@ -428,11 +428,11 @@ class HgService {
     })();
   }
 
-  _fetchMergeConflictsWithDetails() {
+  _fetchMergeConflicts() {
     var _this5 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      return _this5.fetchMergeConflictsWithDetails().refCount().toPromise();
+      return _this5.fetchMergeConflicts().refCount().toPromise();
     })();
   }
 
@@ -814,6 +814,14 @@ class HgService {
     return this._commitCode(message, args).publish();
   }
 
+  restack() {
+    const args = ['rebase', '--restack', '--config', 'ui.merge=:merge'];
+    const execOptions = {
+      cwd: this._workingDirectory
+    };
+    return this._hgObserveExecution(args, execOptions).publish();
+  }
+
   splitRevision() {
     // TODO(T17463635)
     let editMergeConfigs;
@@ -1073,7 +1081,7 @@ class HgService {
     })();
   }
 
-  fetchMergeConflictsWithDetails() {
+  fetchMergeConflicts() {
     const args = ['resolve', '--tool=internal:dumpjson', '--all'];
     const execOptions = {
       cwd: this._workingDirectory
@@ -1188,17 +1196,6 @@ class HgService {
         }
       }
     })();
-  }
-
-  /**
-   * Gets the current head revision id
-   */
-  getHeadId() {
-    const args = ['log', '--template', '{node}', '--limit', '1'];
-    const execOptions = {
-      cwd: this._workingDirectory
-    };
-    return this._hgRunCommand(args, execOptions).publish();
   }
 }
 exports.HgService = HgService;

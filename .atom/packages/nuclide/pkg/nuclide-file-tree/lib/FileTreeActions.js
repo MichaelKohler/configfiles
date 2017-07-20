@@ -248,6 +248,12 @@ class FileTreeActions {
     });
   }
 
+  clearTrackedNodeIfNotLoading() {
+    this._dispatcher.dispatch({
+      actionType: (_FileTreeDispatcher2 || _load_FileTreeDispatcher2()).ActionTypes.CLEAR_TRACKED_NODE_IF_NOT_LOADING
+    });
+  }
+
   moveToNode(rootKey, nodeKey) {
     this._dispatcher.dispatch({
       actionType: (_FileTreeDispatcher2 || _load_FileTreeDispatcher2()).ActionTypes.MOVE_TO_NODE,
@@ -315,7 +321,7 @@ class FileTreeActions {
   }
 
   openSelectedEntrySplit(nodeKey, orientation, side) {
-    const pane = atom.workspace.getActivePane();
+    const pane = atom.workspace.getCenter().getActivePane();
     atom.workspace.openURIInPane((_FileTreeHelpers || _load_FileTreeHelpers()).default.keyToPath(nodeKey), pane.split(orientation, side));
   }
 
@@ -546,6 +552,13 @@ class FileTreeActions {
     this._dispatcher.dispatch({
       actionType: (_FileTreeDispatcher2 || _load_FileTreeDispatcher2()).ActionTypes.SET_UNCOMMITTED_CHANGES_EXPANDED,
       uncommittedChangesExpanded
+    });
+  }
+
+  setFoldersExpanded(foldersExpanded) {
+    this._dispatcher.dispatch({
+      actionType: (_FileTreeDispatcher2 || _load_FileTreeDispatcher2()).ActionTypes.SET_FOLDERS_EXPANDED,
+      foldersExpanded
     });
   }
 

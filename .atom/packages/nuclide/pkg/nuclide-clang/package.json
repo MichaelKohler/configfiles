@@ -66,6 +66,11 @@
     }
   },
   "providedServices": {
+    "nuclide.clang.declaration-info": {
+      "versions": {
+        "0.0.0": "provideDeclarationInfo"
+      }
+    },
     "nuclide.related-files.provider": {
       "versions": {
         "0.0.0": "provideRelatedFiles"
@@ -76,12 +81,12 @@
         "2.0.0": "createAutocompleteProvider"
       }
     },
-    "atom-ide-code-format.file": {
+    "code-format.file": {
       "versions": {
         "0.1.0": "provideCodeFormat"
       }
     },
-    "atom-ide-definitions": {
+    "definitions": {
       "versions": {
         "0.1.0": "provideDefinitions"
       }
@@ -96,7 +101,7 @@
         "0.0.0": "createTypeHintProvider"
       }
     },
-    "atom-ide-outline-view": {
+    "outline-view": {
       "versions": {
         "0.1.0": "provideOutlineView"
       }

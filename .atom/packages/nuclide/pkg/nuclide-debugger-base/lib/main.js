@@ -137,6 +137,24 @@ Object.defineProperty(exports, 'DebuggerConfigAction', {
     return (_types || _load_types()).DebuggerConfigAction;
   }
 });
+Object.defineProperty(exports, 'DebuggerCapabilities', {
+  enumerable: true,
+  get: function () {
+    return (_types || _load_types()).DebuggerCapabilities;
+  }
+});
+Object.defineProperty(exports, 'DebuggerProperties', {
+  enumerable: true,
+  get: function () {
+    return (_types || _load_types()).DebuggerProperties;
+  }
+});
+Object.defineProperty(exports, 'ThreadColumn', {
+  enumerable: true,
+  get: function () {
+    return (_types || _load_types()).ThreadColumn;
+  }
+});
 
 var _AtomServiceContainer;
 

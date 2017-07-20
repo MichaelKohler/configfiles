@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.wordAtPositionFromBuffer = wordAtPositionFromBuffer;
 exports.matchRegexEndingAt = matchRegexEndingAt;
+exports.isPositionInRange = isPositionInRange;
 /**
  * Copyright (c) 2017-present, Facebook, Inc.
  * All rights reserved.
@@ -49,4 +50,8 @@ function matchRegexEndingAt(buffer, endPosition, regex) {
   const line = buffer.getTextInRange([[endPosition.row, 0], endPosition]);
   const match = regex.exec(line);
   return match == null ? null : match[0];
+}
+
+function isPositionInRange(position, range) {
+  return Array.isArray(range) ? range.some(r => r.containsPoint(position)) : range.containsPoint(position);
 }

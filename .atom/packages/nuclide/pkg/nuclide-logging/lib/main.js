@@ -4,9 +4,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.initialUpdateConfig = exports.getAdditionalLogFiles = exports.addAdditionalLogFile = exports.getServerLogAppenderConfig = exports.FileAppender = exports.getPathToLogFile = exports.getDefaultConfig = undefined;
-
-var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
-
 exports.flushLogsAndExit = flushLogsAndExit;
 exports.flushLogsAndAbort = flushLogsAndAbort;
 exports.initializeLogging = initializeLogging;
@@ -73,18 +70,9 @@ function flushLogsAndAbort() {
  * Push initial default config to log4js.
  * Execute only once.
  */
-const initialUpdateConfig = exports.initialUpdateConfig = (0, (_once || _load_once()).default)((() => {
-  var _ref = (0, _asyncToGenerator.default)(function* () {
-    const defaultConfig = yield (0, (_config || _load_config()).getDefaultConfig)();
-    (_log4js || _load_log4js()).default.configure(defaultConfig);
-  });
-
-  function initialUpdateConfig() {
-    return _ref.apply(this, arguments);
-  }
-
-  return initialUpdateConfig;
-})());
+const initialUpdateConfig = exports.initialUpdateConfig = (0, (_once || _load_once()).default)(() => {
+  (_log4js || _load_log4js()).default.configure((0, (_config || _load_config()).getDefaultConfig)());
+});
 
 function initializeLogging() {
   (0, (_stacktrace || _load_stacktrace()).default)();

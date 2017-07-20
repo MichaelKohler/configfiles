@@ -68,10 +68,10 @@ function _load_featureConfig() {
   return _featureConfig = _interopRequireDefault(require('nuclide-commons-atom/feature-config'));
 }
 
-var _workspaceViewsCompat;
+var _destroyItemWhere;
 
-function _load_workspaceViewsCompat() {
-  return _workspaceViewsCompat = require('nuclide-commons-atom/workspace-views-compat');
+function _load_destroyItemWhere() {
+  return _destroyItemWhere = require('nuclide-commons-atom/destroyItemWhere');
 }
 
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
@@ -104,8 +104,7 @@ class Activation {
 
   constructor(state_) {
     this._diagnosticUpdaters = new _rxjsBundlesRxMinJs.BehaviorSubject(null);
-    this._subscriptions = new (_UniversalDisposable || _load_UniversalDisposable()).default();
-    this._subscriptions.add((0, (_workspaceViewsCompat || _load_workspaceViewsCompat()).consumeWorkspaceViewsCompat)(this.consumeWorkspaceViewsService.bind(this)));
+    this._subscriptions = new (_UniversalDisposable || _load_UniversalDisposable()).default(this.registerOpenerAndCommand());
     const state = state_ || {};
     this._state = {
       filterByActiveTextEditor: state.filterByActiveTextEditor === true
@@ -219,16 +218,17 @@ class Activation {
     });
   }
 
-  consumeWorkspaceViewsService(api) {
-    const commandDisposable = atom.commands.add('atom-workspace', 'nuclide-diagnostics-ui:toggle-table', event => {
-      api.toggle((_DiagnosticsViewModel || _load_DiagnosticsViewModel()).WORKSPACE_VIEW_URI, event.detail);
+  registerOpenerAndCommand() {
+    const commandDisposable = atom.commands.add('atom-workspace', 'diagnostics:toggle-table', () => {
+      atom.workspace.toggle((_DiagnosticsViewModel || _load_DiagnosticsViewModel()).WORKSPACE_VIEW_URI);
     });
-    this._subscriptions.add(api.addOpener(uri => {
+    return new (_UniversalDisposable || _load_UniversalDisposable()).default(atom.workspace.addOpener(uri => {
       if (uri === (_DiagnosticsViewModel || _load_DiagnosticsViewModel()).WORKSPACE_VIEW_URI) {
         return this._createDiagnosticsViewModel();
       }
-    }), () => api.destroyWhere(item => item instanceof (_DiagnosticsViewModel || _load_DiagnosticsViewModel()).DiagnosticsViewModel), commandDisposable);
-    return commandDisposable;
+    }), () => {
+      (0, (_destroyItemWhere || _load_destroyItemWhere()).destroyItemWhere)(item => item instanceof (_DiagnosticsViewModel || _load_DiagnosticsViewModel()).DiagnosticsViewModel);
+    }, commandDisposable);
   }
 
   _getStatusBarTile() {
@@ -287,7 +287,7 @@ function addAtomCommands(diagnosticUpdater) {
     });
   };
 
-  return new (_UniversalDisposable || _load_UniversalDisposable()).default(atom.commands.add('atom-workspace', 'nuclide-diagnostics-ui:fix-all-in-current-file', fixAllInCurrentFile), atom.commands.add('atom-workspace', 'nuclide-diagnostics-ui:open-all-files-with-errors', openAllFilesWithErrors), new KeyboardShortcuts(diagnosticUpdater));
+  return new (_UniversalDisposable || _load_UniversalDisposable()).default(atom.commands.add('atom-workspace', 'diagnostics:fix-all-in-current-file', fixAllInCurrentFile), atom.commands.add('atom-workspace', 'diagnostics:open-all-files-with-errors', openAllFilesWithErrors), new KeyboardShortcuts(diagnosticUpdater));
 }
 
 function getTopMostErrorLocationsByFilePath(messages) {
@@ -328,13 +328,13 @@ class KeyboardShortcuts {
       this._diagnostics = diagnostics.filter(diagnostic => diagnostic.scope === 'file');
       this._index = null;
       this._traceIndex = null;
-    }), atom.commands.add('atom-workspace', 'nuclide-diagnostics-ui:go-to-first-diagnostic', first), atom.commands.add('atom-workspace', 'nuclide-diagnostics-ui:go-to-last-diagnostic', last), atom.commands.add('atom-workspace', 'nuclide-diagnostics-ui:go-to-next-diagnostic', () => {
+    }), atom.commands.add('atom-workspace', 'diagnostics:go-to-first-diagnostic', first), atom.commands.add('atom-workspace', 'diagnostics:go-to-last-diagnostic', last), atom.commands.add('atom-workspace', 'diagnostics:go-to-next-diagnostic', () => {
       this._index == null ? first() : this.setIndex(this._index + 1);
-    }), atom.commands.add('atom-workspace', 'nuclide-diagnostics-ui:go-to-previous-diagnostic', () => {
+    }), atom.commands.add('atom-workspace', 'diagnostics:go-to-previous-diagnostic', () => {
       this._index == null ? last() : this.setIndex(this._index - 1);
-    }), atom.commands.add('atom-workspace', 'nuclide-diagnostics-ui:go-to-next-diagnostic-trace', () => {
+    }), atom.commands.add('atom-workspace', 'diagnostics:go-to-next-diagnostic-trace', () => {
       this.nextTrace();
-    }), atom.commands.add('atom-workspace', 'nuclide-diagnostics-ui:go-to-previous-diagnostic-trace', () => {
+    }), atom.commands.add('atom-workspace', 'diagnostics:go-to-previous-diagnostic-trace', () => {
       this.previousTrace();
     }));
   }

@@ -43,9 +43,6 @@ function _load_DiagnosticsPopup() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const GUTTER_ID = 'nuclide-diagnostics-gutter';
-
-// Needs to be the same as glyph-height in gutter.atom-text-editor.less.
 /**
  * Copyright (c) 2017-present, Facebook, Inc.
  * All rights reserved.
@@ -58,6 +55,9 @@ const GUTTER_ID = 'nuclide-diagnostics-gutter';
  * @format
  */
 
+const GUTTER_ID = 'nuclide-diagnostics-gutter';
+
+// Needs to be the same as glyph-height in gutter.atom-text-editor.less.
 const GLYPH_HEIGHT = 15; // px
 
 const POPUP_DISPOSE_TIMEOUT = 100;

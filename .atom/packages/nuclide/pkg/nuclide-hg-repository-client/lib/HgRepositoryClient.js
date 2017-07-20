@@ -51,6 +51,18 @@ function _load_featureConfig() {
   return _featureConfig = _interopRequireDefault(require('nuclide-commons-atom/feature-config'));
 }
 
+var _observePaneItemVisibility;
+
+function _load_observePaneItemVisibility() {
+  return _observePaneItemVisibility = _interopRequireDefault(require('nuclide-commons-atom/observePaneItemVisibility'));
+}
+
+var _textEditor;
+
+function _load_textEditor() {
+  return _textEditor = require('nuclide-commons-atom/text-editor');
+}
+
 var _textBuffer;
 
 function _load_textBuffer() {
@@ -139,7 +151,7 @@ function getRevisionStatusCache(revisionsCache, workingDirectoryPath) {
  */
 
 class HgRepositoryClient {
-
+  // legacy, only for uncommitted
   constructor(repoPath, hgService, options) {
     this._path = repoPath;
     this._workingDirectory = options.workingDirectory;
@@ -172,24 +184,29 @@ class HgRepositoryClient {
         return _rxjsBundlesRxMinJs.Observable.empty();
       }
 
-      return (0, (_textBuffer || _load_textBuffer()).observeBufferOpen)().filter(buffer => {
-        const filePath = buffer.getPath();
-        return filePath != null && filePath.length !== 0 && this.isPathRelevant(filePath);
-      }).flatMap(buffer => {
-        const filePath = buffer.getPath();
+      return (0, (_event || _load_event()).observableFromSubscribeFunction)(atom.workspace.observePaneItems.bind(atom.workspace)).flatMap(paneItem => {
+        const item = paneItem;
+        return this._observePaneItemVisibility(item).switchMap(visible => {
+          if (!visible || !(0, (_textEditor || _load_textEditor()).isValidTextEditor)(item)) {
+            return _rxjsBundlesRxMinJs.Observable.empty();
+          }
 
-        if (!filePath) {
-          throw new Error('already filtered empty and non-relevant file paths');
-        }
-
-        return (0, (_event || _load_event()).observableFromSubscribeFunction)(buffer.onDidSave.bind(buffer)).map(() => filePath).startWith(filePath).takeUntil((0, (_textBuffer || _load_textBuffer()).observeBufferCloseOrRename)(buffer).do(() => {
-          // TODO(most): rewrite to be simpler and avoid side effects.
-          // Remove the file from the diff stats cache when the buffer is closed.
-          this._hgDiffCacheFilesToClear.add(filePath);
-        }));
+          const textEditor = item;
+          const buffer = textEditor.getBuffer();
+          const filePath = buffer.getPath();
+          if (filePath == null || filePath.length === 0 || !this.isPathRelevant(filePath)) {
+            return _rxjsBundlesRxMinJs.Observable.empty();
+          }
+          return _rxjsBundlesRxMinJs.Observable.combineLatest((0, (_event || _load_event()).observableFromSubscribeFunction)(buffer.onDidSave.bind(buffer)).startWith(''), this._hgUncommittedStatusChanges.statusChanges).filter(([_, statusChanges]) => {
+            return statusChanges.has(filePath);
+          }).map(() => filePath).takeUntil(_rxjsBundlesRxMinJs.Observable.merge((0, (_textBuffer || _load_textBuffer()).observeBufferCloseOrRename)(buffer), this._observePaneItemVisibility(item).filter(v => !v)).do(() => {
+            // TODO(most): rewrite to be simpler and avoid side effects.
+            // Remove the file from the diff stats cache when the buffer is closed.
+            this._hgDiffCacheFilesToClear.add(filePath);
+          }));
+        });
       });
-    }).subscribe(filePath => this._updateDiffInfo([filePath]).toPromise());
-
+    }).flatMap(filePath => this._updateDiffInfo([filePath])).subscribe();
     this._subscriptions.add(diffStatsSubscription);
 
     this._initializationPromise = this._service.waitForWatchmanSubscriptions();
@@ -224,9 +241,12 @@ class HgRepositoryClient {
       return _rxjsBundlesRxMinJs.Observable.empty();
     }));
 
-    this._subscriptions.add(statusChangesSubscription, bookmarksUpdates.subscribe(bookmarks => this._bookmarks.next({ isLoading: false, bookmarks })), conflictStateChanges.subscribe(this._conflictStateChanged.bind(this)), shouldRevisionsUpdate.subscribe(() => this._revisionsCache.refreshRevisions()));
-  } // legacy, only for uncommitted
-
+    this._subscriptions.add(statusChangesSubscription, bookmarksUpdates.subscribe(bookmarks => this._bookmarks.next({ isLoading: false, bookmarks })), conflictStateChanges.subscribe(this._conflictStateChanged.bind(this)), shouldRevisionsUpdate.subscribe(() => {
+      this._revisionsCache.refreshRevisions();
+      this._fileContentsAtHead.reset();
+      this._hgDiffCache = new Map();
+    }));
+  }
 
   _observeStatus(fileChanges, repoStateChanges, fetchStatuses) {
     const triggers = _rxjsBundlesRxMinJs.Observable.merge(fileChanges, repoStateChanges).debounceTime(STATUS_DEBOUNCE_DELAY_MS).share().startWith(null);
@@ -301,6 +321,10 @@ class HgRepositoryClient {
 
   observeStackStatusChanges() {
     return this._hgStackStatusChanges;
+  }
+
+  _observePaneItemVisibility(item) {
+    return (0, (_observePaneItemVisibility || _load_observePaneItemVisibility()).default)(item);
   }
 
   onDidChangeStatuses(callback) {
@@ -618,34 +642,34 @@ class HgRepositoryClient {
       }
     });
 
-    if (pathsToFetch.length === 0) {
+    const currentHead = this._revisionsCache.getCachedRevisions().find(revision => revision.isHead);
+
+    if (pathsToFetch.length === 0 || currentHead == null) {
       return _rxjsBundlesRxMinJs.Observable.of(new Map());
     }
 
-    return this._getCurrentHeadId().switchMap(currentHeadId => {
-      return this._getFileDiffs(pathsToFetch, currentHeadId).do(pathsToDiffInfo => {
-        if (pathsToDiffInfo) {
-          for (const [filePath, diffInfo] of pathsToDiffInfo) {
-            this._hgDiffCache.set(filePath, diffInfo);
-          }
+    return this._getFileDiffs(pathsToFetch, currentHead.hash).do(pathsToDiffInfo => {
+      if (pathsToDiffInfo) {
+        for (const [filePath, diffInfo] of pathsToDiffInfo) {
+          this._hgDiffCache.set(filePath, diffInfo);
         }
+      }
 
-        // Remove files marked for deletion.
-        this._hgDiffCacheFilesToClear.forEach(fileToClear => {
-          this._hgDiffCache.delete(fileToClear);
-        });
-        this._hgDiffCacheFilesToClear.clear();
-
-        // The fetched files can now be updated again.
-        for (const pathToFetch of pathsToFetch) {
-          this._hgDiffCacheFilesUpdating.delete(pathToFetch);
-        }
-
-        // TODO (t9113913) Ideally, we could send more targeted events that better
-        // describe what change has occurred. Right now, GitRepository dictates either
-        // 'did-change-status' or 'did-change-statuses'.
-        this._emitter.emit('did-change-statuses');
+      // Remove files marked for deletion.
+      this._hgDiffCacheFilesToClear.forEach(fileToClear => {
+        this._hgDiffCache.delete(fileToClear);
       });
+      this._hgDiffCacheFilesToClear.clear();
+
+      // The fetched files can now be updated again.
+      for (const pathToFetch of pathsToFetch) {
+        this._hgDiffCacheFilesUpdating.delete(pathToFetch);
+      }
+
+      // TODO (t9113913) Ideally, we could send more targeted events that better
+      // describe what change has occurred. Right now, GitRepository dictates either
+      // 'did-change-status' or 'did-change-statuses'.
+      this._emitter.emit('did-change-statuses');
     });
   }
 
@@ -671,27 +695,19 @@ class HgRepositoryClient {
     const diffs = _rxjsBundlesRxMinJs.Observable.merge(...fileContents).map(({ filePath, diff }) => {
       // This is to differentiate between diff delimiter and the source
       // eslint-disable-next-line no-useless-escape
-      const toParse = diff.split('\-\-\- ');
+      const toParse = diff.split('--- ');
       const lineDiff = (0, (_hgDiffOutputParser || _load_hgDiffOutputParser()).parseHgDiffUnifiedOutput)(toParse[1]);
       return [filePath, lineDiff];
     }).toArray().map(contents => new Map(contents));
     return diffs;
   }
 
-  _getCurrentHeadId() {
-    if (this._currentHeadId != null) {
-      return _rxjsBundlesRxMinJs.Observable.of(this._currentHeadId);
-    }
-
-    return this._service.getHeadId().refCount().do(headId => this._currentHeadId = headId);
-  }
-
   _updateInteractiveMode(isInteractiveMode) {
     this._emitter.emit('did-change-interactive-mode', isInteractiveMode);
   }
 
-  fetchMergeConflictsWithDetails() {
-    return this._service.fetchMergeConflictsWithDetails().refCount();
+  fetchMergeConflicts() {
+    return this._service.fetchMergeConflicts().refCount();
   }
 
   markConflictedFile(filePath, resolved) {
@@ -903,6 +919,10 @@ class HgRepositoryClient {
     return this._service.amend(message, amendMode, filePaths).refCount().do(processMessage => this._clearOnSuccessExit(processMessage, filePaths));
   }
 
+  restack() {
+    return this._service.restack().refCount();
+  }
+
   editCommitMessage(revision, message) {
     return this._service.editCommitMessage(revision, message).refCount();
   }
@@ -954,7 +974,6 @@ class HgRepositoryClient {
       this._hgDiffCache = new Map();
       this._hgStatusCache = new Map();
       this._fileContentsAtHead.reset();
-      this._currentHeadId = null;
     } else {
       this._hgDiffCache = new Map(this._hgDiffCache);
       this._hgStatusCache = new Map(this._hgStatusCache);

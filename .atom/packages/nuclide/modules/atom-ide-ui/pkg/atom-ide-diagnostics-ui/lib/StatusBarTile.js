@@ -207,7 +207,7 @@ class StatusBarTileComponent extends _react.default.Component {
 
   _onClick() {
     const target = atom.views.getView(atom.workspace);
-    atom.commands.dispatch(target, 'nuclide-diagnostics-ui:toggle-table');
+    atom.commands.dispatch(target, 'diagnostics:toggle-table');
     (_analytics || _load_analytics()).default.track('diagnostics-show-table-from-status-bar');
   }
 }

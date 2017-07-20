@@ -45,17 +45,6 @@ function _load_utils2() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
-
 class LaunchProcessInfo extends (_nuclideDebuggerBase || _load_nuclideDebuggerBase()).DebuggerProcessInfo {
 
   constructor(targetUri, launchTarget, launchWrapperCommand) {
@@ -66,6 +55,19 @@ class LaunchProcessInfo extends (_nuclideDebuggerBase || _load_nuclideDebuggerBa
 
   clone() {
     return new LaunchProcessInfo(this._targetUri, this._launchTarget, this._launchWrapperCommand);
+  }
+
+  getDebuggerCapabilities() {
+    return Object.assign({}, super.getDebuggerCapabilities(), {
+      conditionalBreakpoints: true,
+      continueToLocation: true,
+      singleThreadStepping: true,
+      threads: true
+    });
+  }
+
+  getDebuggerProps() {
+    return super.getDebuggerProps();
   }
 
   debug() {
@@ -95,21 +97,14 @@ class LaunchProcessInfo extends (_nuclideDebuggerBase || _load_nuclideDebuggerBa
     const service = (0, (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).getPhpDebuggerServiceByNuclideUri)(this.getTargetUri());
     return new service.PhpDebuggerService();
   }
-
-  supportThreads() {
-    return true;
-  }
-
-  supportSingleThreadStepping() {
-    return true;
-  }
-
-  singleThreadSteppingEnabled() {
-    return true;
-  }
-
-  supportContinueToLocation() {
-    return true;
-  }
 }
-exports.LaunchProcessInfo = LaunchProcessInfo;
+exports.LaunchProcessInfo = LaunchProcessInfo; /**
+                                                * Copyright (c) 2015-present, Facebook, Inc.
+                                                * All rights reserved.
+                                                *
+                                                * This source code is licensed under the license found in the LICENSE file in
+                                                * the root directory of this source tree.
+                                                *
+                                                * 
+                                                * @format
+                                                */

@@ -28,29 +28,50 @@ function _load_MarkerTracker() {
   return _MarkerTracker = require('./MarkerTracker');
 }
 
+var _log4js;
+
+function _load_log4js() {
+  return _log4js = require('log4js');
+}
+
 var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 class DiagnosticStore {
-  // A map from each file that has messages from any diagnostic provider
-  // to the set of diagnostic providers that have messages for it.
-  constructor() {
-    this._providerToFileToMessages = new Map();
-    this._fileToProviders = new (_collection || _load_collection()).MultiMap();
-    this._providerToProjectDiagnostics = new Map();
-
-    this._fileChanges = new _rxjsBundlesRxMinJs.Subject();
-    this._projectChanges = new _rxjsBundlesRxMinJs.BehaviorSubject([]);
-    this._allChanges = new _rxjsBundlesRxMinJs.BehaviorSubject([]);
-
-    this._markerTracker = new (_MarkerTracker || _load_MarkerTracker()).MarkerTracker();
-  }
 
   // A map from each diagnostic provider to the array of project messages from it.
 
   // A map from each diagnostic provider to:
   // a map from each file it has messages for to the array of messages for that file.
+  constructor() {
+    this._providerToFileToMessages = new Map();
+    this._fileToProviders = new (_collection || _load_collection()).MultiMap();
+    this._providerToProjectDiagnostics = new Map();
+
+    this._providersAdded = new _rxjsBundlesRxMinJs.Subject();
+    this._providersRemoved = new _rxjsBundlesRxMinJs.Subject();
+    this._fileChanges = new _rxjsBundlesRxMinJs.Subject();
+    this._projectChanges = new _rxjsBundlesRxMinJs.BehaviorSubject([]);
+    this._allChanges = new _rxjsBundlesRxMinJs.BehaviorSubject([]);
+
+    this._markerTracker = new (_MarkerTracker || _load_MarkerTracker()).MarkerTracker();
+
+    const whenRemoved = provider => this._providersRemoved.filter(p => p === provider);
+
+    this._disposables = new (_UniversalDisposable || _load_UniversalDisposable()).default(
+    // Update the messages whenever the provider has some.
+    this._providersAdded.mergeMap(provider => logEndings(provider.updates, 'Updates').takeUntil(whenRemoved(provider)).map(update => ({ provider, update }))).subscribe(({ provider, update }) => {
+      this.updateMessages(provider, update);
+    }),
+    // Trigger invalidations.
+    this._providersAdded.mergeMap(provider => logEndings(provider.invalidations, 'Invalidations').takeUntil(whenRemoved(provider)).map(invalidation => ({ provider, invalidation })).finally(() => {
+      // When the provider goes away, we need to invalidate its messages.
+      this.invalidateMessages(provider, { scope: 'all' });
+    })).subscribe(({ provider, invalidation }) => this.invalidateMessages(provider, invalidation)));
+  }
+  // A map from each file that has messages from any diagnostic provider
+  // to the set of diagnostic providers that have messages for it.
 
 
   dispose() {
@@ -65,6 +86,13 @@ class DiagnosticStore {
   /**
    * Section: Methods to modify the store.
    */
+
+  addProvider(provider) {
+    this._providersAdded.next(provider);
+    return new (_UniversalDisposable || _load_UniversalDisposable()).default(() => {
+      this._providersRemoved.next(provider);
+    });
+  }
 
   /**
    * Update the messages from the given provider.
@@ -390,4 +418,15 @@ exports.default = DiagnosticStore; /**
 
 function notifyFixFailed() {
   atom.notifications.addWarning('Failed to apply fix. Try saving to get fresh results and then try again.');
+}
+
+function logEndings(input, name) {
+  return input.do({
+    error(err) {
+      (0, (_log4js || _load_log4js()).getLogger)('atom-ide-diagnostics').error(`Error: ${name}: ${err}`);
+    },
+    complete() {
+      (0, (_log4js || _load_log4js()).getLogger)('atom-ide-diagnostics').error(`${name} completed unexpectedly`);
+    }
+  });
 }

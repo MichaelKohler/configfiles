@@ -81,6 +81,12 @@ const TextDocumentSyncKind = exports.TextDocumentSyncKind = {
 // Represents a collection of [completion items](#CompletionItem) to be presented in the editor.
 
 
+// Defines whether the insert text in a completion item should be interpreted as plain text or a snippet.
+const InsertTextFormat = exports.InsertTextFormat = {
+  PlainText: 1,
+  Snippet: 2
+};
+
 // The kind of a completion entry.
 const CompletionItemKind = exports.CompletionItemKind = {
   Text: 1,

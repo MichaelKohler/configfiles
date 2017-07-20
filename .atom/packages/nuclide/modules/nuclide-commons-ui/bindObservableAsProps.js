@@ -41,6 +41,10 @@ function bindObservableAsProps(stream, ComposedComponent) {
       this._resolved = false;
     }
 
+    getWrappedComponent() {
+      return this._wrappedComponent;
+    }
+
     componentDidMount() {
       this._subscription = stream.subscribe(newState => {
         this._resolved = true;
@@ -59,7 +63,9 @@ function bindObservableAsProps(stream, ComposedComponent) {
         return null;
       }
       const props = Object.assign({}, this.props, this.state);
-      return _react.default.createElement(ComposedComponent, props);
+      return _react.default.createElement(ComposedComponent, Object.assign({
+        ref: component => this._wrappedComponent = component
+      }, props));
     }
   };
 }

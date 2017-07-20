@@ -117,11 +117,16 @@ class AtomTextEditor extends _react.default.Component {
 
     if (this.props.correctContainerWidth) {
       this._editorDisposables.add(textEditorElement.onDidAttach(() => {
-        const correctlySizedElement = textEditorElement.querySelector('* /deep/ .lines > :first-child > :first-child');
+        const correctlySizedElement = textEditorElement.querySelector('* /deep/ .lines > :first-child');
         if (correctlySizedElement == null) {
           return;
         }
-        const { width } = correctlySizedElement.style;
+        let { width } = correctlySizedElement.style;
+        // For compatibility with Atom < 1.19.
+        // TODO(#19829039): Remove this after upgrading.
+        if (!width && correctlySizedElement.children.length > 0) {
+          width = correctlySizedElement.children[0].style.width;
+        }
         // $FlowFixMe
         container.style.width = width;
       }));

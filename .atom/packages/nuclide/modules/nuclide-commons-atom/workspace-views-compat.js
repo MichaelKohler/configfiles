@@ -78,14 +78,10 @@ function getDocksWorkspaceViewsService() {
           // Atom version <1.17
           const hasItem = atom.workspace.getPaneItems().some(item => typeof item.getURI === 'function' && item.getURI() === uri);
           if (hasItem) {
-            // TODO(matthewwithanm): Add this to the Flow defs once docks land
-            // $FlowIgnore
             atom.workspace.toggle(uri);
           }
         }
       } else {
-        // TODO(matthewwithanm): Add this to the Flow defs once docks land
-        // $FlowIgnore
         atom.workspace.toggle(uri);
       }
     }

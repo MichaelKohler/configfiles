@@ -152,13 +152,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "DefinitionPreviewService.js",
-        line: 18
+        line: 16
       },
       type: {
         location: {
           type: "source",
           fileName: "DefinitionPreviewService.js",
-          line: 18
+          line: 16
         },
         kind: "function",
         argumentTypes: [{

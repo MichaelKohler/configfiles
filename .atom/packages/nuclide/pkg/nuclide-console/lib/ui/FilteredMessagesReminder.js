@@ -38,8 +38,7 @@ class FilteredMessagesReminder extends _react.default.Component {
           filteredRecordCount,
           ' ',
           filteredRecordCount === 1 ? 'message is' : 'messages are',
-          ' ',
-          'hidden by filters.'
+          ' hidden by filters.'
         )
       ),
       _react.default.createElement(

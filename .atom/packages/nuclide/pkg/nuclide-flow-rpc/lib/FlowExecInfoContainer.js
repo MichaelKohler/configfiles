@@ -105,12 +105,9 @@ const FLOW_BIN_PATH = 'node_modules/.bin/flow';
  */
 
 class FlowExecInfoContainer {
-
-  // Map from Flow root directory (or null for "no root" e.g. files outside of a Flow root, or
-  // unsaved files. Useful for outline view) to FlowExecInfo. A null value means that the Flow
-  // binary cannot be found for that root. It is possible for Flow to be available in some roots but
-  // not others because we will support root-specific installations of flow-bin.
-  constructor() {
+  // Map from file path to the closest ancestor directory containing a .flowconfig file (the file's
+  // Flow root)
+  constructor(versionInfo) {
     this._flowConfigDirCache = new (_ConfigCache || _load_ConfigCache()).ConfigCache('.flowconfig');
 
     this._flowExecInfoCache = (0, (_lruCache || _load_lruCache()).default)({
@@ -118,11 +115,15 @@ class FlowExecInfoContainer {
       maxAge: 1000 * 30 });
 
     this._disposables = new (_eventKit || _load_eventKit()).CompositeDisposable();
+    this._versionInfo = versionInfo;
 
     this._observeSettings();
   }
-  // Map from file path to the closest ancestor directory containing a .flowconfig file (the file's
-  // Flow root)
+
+  // Map from Flow root directory (or null for "no root" e.g. files outside of a Flow root, or
+  // unsaved files. Useful for outline view) to FlowExecInfo. A null value means that the Flow
+  // binary cannot be found for that root. It is possible for Flow to be available in some roots but
+  // not others because we will support root-specific installations of flow-bin.
 
 
   dispose() {
@@ -153,19 +154,23 @@ class FlowExecInfoContainer {
     var _this2 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      const flowPath = yield _this2._getPathToFlow(root);
-      if (flowPath == null) {
-        return null;
+      let versionInfo;
+      if (_this2._versionInfo == null) {
+        const flowPath = yield _this2._getPathToFlow(root);
+        if (flowPath == null) {
+          return null;
+        }
+        versionInfo = yield getFlowVersionInformation(flowPath, root);
+        if (versionInfo == null) {
+          return null;
+        }
+      } else {
+        versionInfo = _this2._versionInfo;
       }
-      const versionInfo = yield getFlowVersionInformation(flowPath, root);
-      if (versionInfo == null) {
-        return null;
-      }
-      return {
-        pathToFlow: versionInfo.pathToFlow,
-        flowVersion: versionInfo.flowVersion,
+
+      return Object.assign({}, versionInfo, {
         execOptions: getFlowExecOptions(root)
-      };
+      });
     })();
   }
 

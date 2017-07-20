@@ -31,12 +31,6 @@ function _load_goToLocation() {
   return _goToLocation = require('nuclide-commons-atom/go-to-location');
 }
 
-var _log4js;
-
-function _load_log4js() {
-  return _log4js = require('log4js');
-}
-
 var _LoadingSpinner;
 
 function _load_LoadingSpinner() {
@@ -47,12 +41,6 @@ var _PanelComponentScroller;
 
 function _load_PanelComponentScroller() {
   return _PanelComponentScroller = require('nuclide-commons-ui/PanelComponentScroller');
-}
-
-var _Message;
-
-function _load_Message() {
-  return _Message = require('nuclide-commons-ui/Message');
 }
 
 var _EmptyState;
@@ -93,7 +81,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @format
  */
 
-const logger = (0, (_log4js || _load_log4js()).getLogger)('atom-ide-outline-view');
 const SEARCH_ENABLED_DEFAULT = true;
 
 const TOKEN_KIND_TO_CLASS_NAME_MAP = {
@@ -220,15 +207,7 @@ class OutlineViewComponent extends _react.default.Component {
           renderTrees(outline.editor, outline.outlineTrees, this.state.searchResults)
         );
       default:
-        const errorText = `Encountered unexpected outline kind ${outline.kind}`;
-        logger.error(errorText);
-        return _react.default.createElement(
-          (_Message || _load_Message()).Message,
-          { type: (_Message || _load_Message()).MessageTypes.error },
-          'Internal Error:',
-          _react.default.createElement('br', null),
-          errorText
-        );
+        outline;
     }
   }
 }

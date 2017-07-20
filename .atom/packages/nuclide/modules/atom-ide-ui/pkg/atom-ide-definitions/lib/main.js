@@ -50,6 +50,12 @@ function _load_goToLocation() {
   return _goToLocation = require('nuclide-commons-atom/go-to-location');
 }
 
+var _DefinitionCache;
+
+function _load_DefinitionCache() {
+  return _DefinitionCache = _interopRequireDefault(require('./DefinitionCache'));
+}
+
 var _getPreviewDatatipFromDefinitionResult;
 
 function _load_getPreviewDatatipFromDefinitionResult() {
@@ -58,10 +64,26 @@ function _load_getPreviewDatatipFromDefinitionResult() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+/**
+ * Copyright (c) 2017-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ *
+ * 
+ * @format
+ */
+
+// This package provides Hyperclick results for any language which provides a
+// DefinitionProvider.
+
 class Activation {
 
   constructor() {
     this._providers = new (_ProviderRegistry || _load_ProviderRegistry()).default();
+    this._definitionCache = new (_DefinitionCache || _load_DefinitionCache()).default();
     this._triggerKeys = new Set();
 
     this._disposables = new (_UniversalDisposable || _load_UniversalDisposable()).default((_featureConfig || _load_featureConfig()).default.observe(getPlatformKeys(process.platform), newValue => {
@@ -96,7 +118,9 @@ class Activation {
     var _this2 = this;
 
     return (0, _asyncToGenerator.default)(function* () {
-      const result = yield _this2._getDefinition(editor, position);
+      const result = yield _this2._definitionCache.get(editor, position, function () {
+        return _this2._getDefinition(editor, position);
+      });
 
       if (result == null) {
         return null;
@@ -202,20 +226,7 @@ class Activation {
       getSuggestion: (editor, position) => this.getSuggestion(editor, position)
     };
   }
-} /**
-   * Copyright (c) 2017-present, Facebook, Inc.
-   * All rights reserved.
-   *
-   * This source code is licensed under the BSD-style license found in the
-   * LICENSE file in the root directory of this source tree. An additional grant
-   * of patent rights can be found in the PATENTS file in the same directory.
-   *
-   * 
-   * @format
-   */
-
-// This package provides Hyperclick results for any language which provides a
-// DefinitionProvider.
+}
 
 function getPlatformKeys(platform) {
   if (platform === 'darwin') {

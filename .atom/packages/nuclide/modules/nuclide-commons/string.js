@@ -9,6 +9,7 @@ exports.maybeToString = maybeToString;
 exports.relativeDate = relativeDate;
 exports.countOccurrences = countOccurrences;
 exports.shellParse = shellParse;
+exports.shellQuote = shellQuote;
 exports.removeCommonPrefix = removeCommonPrefix;
 exports.removeCommonSuffix = removeCommonSuffix;
 exports.shorten = shorten;
@@ -19,7 +20,7 @@ exports.pluralize = pluralize;
 var _shellQuote;
 
 function _load_shellQuote() {
-  return _shellQuote = require('shell-quote');
+  return _shellQuote = require('./_shell-quote');
 }
 
 /**
@@ -111,17 +112,29 @@ function countOccurrences(haystack, char) {
 }
 
 /**
- * shell-quote's parse allows pipe operators.
+ * shell-quote's parse allows pipe operators and comments.
  * Generally users don't care about this, so throw if we encounter any operators.
  */
 function shellParse(str, env) {
   const result = (0, (_shellQuote || _load_shellQuote()).parse)(str, env);
   for (let i = 0; i < result.length; i++) {
     if (typeof result[i] !== 'string') {
-      throw new Error(`Unexpected operator "${result[i].op}" provided to shellParse`);
+      if (result[i].op != null) {
+        throw new Error(`Unexpected operator "${result[i].op}" provided to shellParse`);
+      } else {
+        throw new Error(`Unexpected comment "${result[i].comment}" provided to shellParse`);
+      }
     }
   }
   return result;
+}
+
+/**
+ * Technically you can pass in { operator: string } here,
+ * but we don't use that in most APIs.
+ */
+function shellQuote(args) {
+  return (0, (_shellQuote || _load_shellQuote()).quote)(args);
 }
 
 function removeCommonPrefix(a, b) {

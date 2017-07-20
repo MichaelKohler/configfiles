@@ -3,6 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.DecorationIcons = undefined;
 
 var _react = _interopRequireDefault(require('react'));
 
@@ -20,6 +21,12 @@ function _load_UniversalDisposable() {
   return _UniversalDisposable = _interopRequireDefault(require('nuclide-commons/UniversalDisposable'));
 }
 
+var _Icon;
+
+function _load_Icon() {
+  return _Icon = require('nuclide-commons-ui/Icon');
+}
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; } /**
@@ -32,6 +39,49 @@ function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in ob
                                                                                                                                                                                                                               * 
                                                                                                                                                                                                                               * @format
                                                                                                                                                                                                                               */
+
+function WarningIconWithShadow() {
+  return _react.default.createElement(
+    'div',
+    null,
+    _react.default.createElement(
+      'svg',
+      {
+        className: 'nuclide-ui-path-with-file-icon-warning-icon-background',
+        width: '20',
+        height: '18',
+        viewBox: '0 0 20 20',
+        xmlns: 'http://www.w3.org/2000/svg' },
+      _react.default.createElement('polygon', { points: '10,2 0,18 20,18' })
+    ),
+    _react.default.createElement((_Icon || _load_Icon()).Icon, { className: 'text-warning', icon: 'alert' })
+  );
+}
+
+function ErrorIconWithShadow() {
+  return _react.default.createElement(
+    'div',
+    null,
+    _react.default.createElement(
+      'svg',
+      {
+        className: 'nuclide-ui-path-with-file-icon-error-icon-background',
+        width: '16',
+        height: '16',
+        viewBox: '0 0 16 16',
+        xmlns: 'http://www.w3.org/2000/svg' },
+      _react.default.createElement('circle', { cx: '10', cy: '10', r: '8' })
+    ),
+    _react.default.createElement((_Icon || _load_Icon()).Icon, { className: 'text-error', icon: 'stop' })
+  );
+}
+
+// The decoration icons require a backdrop to be fully visible,
+// so we only allow the following, blessed decorations:
+const DecorationIcons = exports.DecorationIcons = Object.freeze({
+  Warning: WarningIconWithShadow,
+  Error: ErrorIconWithShadow
+});
 
 class PathWithFileIcon extends _react.default.Component {
 
@@ -122,18 +172,25 @@ class PathWithFileIcon extends _react.default.Component {
           {
       className,
       children,
+      decorationIcon: DecorationIcon,
       isFolder,
       path
     } = _props,
-          rest = _objectWithoutProperties(_props, ['className', 'children', 'isFolder', 'path']);
+          rest = _objectWithoutProperties(_props, ['className', 'children', 'decorationIcon', 'isFolder', 'path']);
     const displayPath = children == null ? path : children;
+    const decoration = DecorationIcon == null ? null : _react.default.createElement(
+      'div',
+      { className: 'nuclide-ui-path-with-file-icon-decoration-icon' },
+      _react.default.createElement(DecorationIcon, null)
+    );
     return _react.default.createElement(
       'div',
       Object.assign({
         className: this._getDefaultClassName(),
         ref: this._handleRef
       }, rest),
-      displayPath
+      displayPath,
+      decoration
     );
   }
 }

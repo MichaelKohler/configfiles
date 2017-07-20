@@ -20,6 +20,12 @@ function _load_range() {
   return _range = require('nuclide-commons-atom/range');
 }
 
+var _range2;
+
+function _load_range2() {
+  return _range2 = require('nuclide-commons/range');
+}
+
 var _showTriggerConflictWarning;
 
 function _load_showTriggerConflictWarning() {
@@ -34,12 +40,6 @@ function _load_log4js() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const WARN_ABOUT_TRIGGER_CONFLICT_KEY = 'hyperclick.warnAboutTriggerConflict';
-
-/**
- * Construct this object to enable Hyperclick in a text editor.
- * Call `dispose` to disable the feature.
- */
 /**
  * Copyright (c) 2017-present, Facebook, Inc.
  * All rights reserved.
@@ -54,6 +54,12 @@ const WARN_ABOUT_TRIGGER_CONFLICT_KEY = 'hyperclick.warnAboutTriggerConflict';
 
 /* global localStorage */
 
+const WARN_ABOUT_TRIGGER_CONFLICT_KEY = 'hyperclick.warnAboutTriggerConflict';
+
+/**
+ * Construct this object to enable Hyperclick in a text editor.
+ * Call `dispose` to disable the feature.
+ */
 class HyperclickForTextEditor {
 
   constructor(textEditor, hyperclick) {
@@ -113,17 +119,6 @@ class HyperclickForTextEditor {
         return component.linesComponent.getDomNode();
       }
     };
-    const removeMouseListeners = () => {
-      if (this._textEditorView.component == null) {
-        return;
-      }
-      const linesDomNode = getLinesDomNode();
-      if (linesDomNode == null) {
-        return;
-      }
-      linesDomNode.removeEventListener('mousedown', this._onMouseDown);
-      linesDomNode.removeEventListener('mousemove', this._onMouseMove);
-    };
     const addMouseListeners = () => {
       const { component } = this._textEditorView;
 
@@ -137,11 +132,18 @@ class HyperclickForTextEditor {
       }
       linesDomNode.addEventListener('mousedown', this._onMouseDown);
       linesDomNode.addEventListener('mousemove', this._onMouseMove);
+      const removalDisposable = new _atom.Disposable(() => {
+        linesDomNode.removeEventListener('mousedown', this._onMouseDown);
+        linesDomNode.removeEventListener('mousemove', this._onMouseMove);
+      });
+      this._subscriptions.add(removalDisposable);
+      this._subscriptions.add(this._textEditorView.onDidDetach(() => removalDisposable.dispose()));
     };
-    this._subscriptions.add(new _atom.Disposable(removeMouseListeners));
-    this._subscriptions.add(this._textEditorView.onDidDetach(removeMouseListeners));
-    this._subscriptions.add(this._textEditorView.onDidAttach(addMouseListeners));
-    addMouseListeners();
+    if (this._textEditorView.component && this._textEditorView.parentNode != null) {
+      addMouseListeners();
+    } else {
+      this._subscriptions.add(this._textEditorView.onDidAttach(addMouseListeners));
+    }
   }
 
   _confirmSuggestion(suggestion) {
@@ -277,7 +279,7 @@ class HyperclickForTextEditor {
           throw new Error('Hyperclick result must have a valid Range');
         }
 
-        if (_this._isPositionInRange(position, range)) {
+        if ((0, (_range2 || _load_range2()).isPositionInRange)(position, range)) {
           return;
         }
       }
@@ -351,7 +353,7 @@ class HyperclickForTextEditor {
       throw new Error('Hyperclick result must have a valid Range');
     }
 
-    return this._isPositionInRange(this._getMousePositionAsBufferPosition(), range);
+    return (0, (_range2 || _load_range2()).isPositionInRange)(this._getMousePositionAsBufferPosition(), range);
   }
 
   _isMouseAtLastWordRange() {
@@ -359,11 +361,7 @@ class HyperclickForTextEditor {
     if (lastWordRange == null) {
       return false;
     }
-    return this._isPositionInRange(this._getMousePositionAsBufferPosition(), lastWordRange);
-  }
-
-  _isPositionInRange(position, range) {
-    return Array.isArray(range) ? range.some(r => r.containsPoint(position)) : range.containsPoint(position);
+    return (0, (_range2 || _load_range2()).isPositionInRange)(this._getMousePositionAsBufferPosition(), lastWordRange);
   }
 
   _clearSuggestion() {

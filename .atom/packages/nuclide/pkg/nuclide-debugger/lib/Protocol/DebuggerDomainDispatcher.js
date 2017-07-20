@@ -160,8 +160,9 @@ class DebuggerDomainDispatcher {
   }
 
   getFileUriFromScriptId(scriptId) {
-    // TODO: think about how to better deal with scriptId never parsed before.
-    return this._parsedFiles.get(scriptId) || 'Unknown';
+    // Fallback to treat scriptId as url. Some engines(like MobileJS) uses
+    // scriptId as file url.
+    return this._parsedFiles.get(scriptId) || scriptId;
   }
 
   _raiseProtocolEvent(event) {

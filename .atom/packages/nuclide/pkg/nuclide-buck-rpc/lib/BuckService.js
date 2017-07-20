@@ -289,21 +289,21 @@ let getLastCommandInfo = exports.getLastCommandInfo = (() => {
 })();
 
 let resetCompilationDatabaseForSource = exports.resetCompilationDatabaseForSource = (() => {
-  var _ref11 = (0, _asyncToGenerator.default)(function* (src) {
-    (_BuckClangCompilationDatabase || _load_BuckClangCompilationDatabase()).resetForSource(src);
+  var _ref11 = (0, _asyncToGenerator.default)(function* (src, params) {
+    (0, (_BuckClangCompilationDatabase || _load_BuckClangCompilationDatabase()).getCompilationDatabaseHandler)(params).resetForSource(src);
   });
 
-  return function resetCompilationDatabaseForSource(_x20) {
+  return function resetCompilationDatabaseForSource(_x20, _x21) {
     return _ref11.apply(this, arguments);
   };
 })();
 
 let resetCompilationDatabase = exports.resetCompilationDatabase = (() => {
-  var _ref12 = (0, _asyncToGenerator.default)(function* () {
-    (_BuckClangCompilationDatabase || _load_BuckClangCompilationDatabase()).reset();
+  var _ref12 = (0, _asyncToGenerator.default)(function* (params) {
+    (0, (_BuckClangCompilationDatabase || _load_BuckClangCompilationDatabase()).getCompilationDatabaseHandler)(params).reset();
   });
 
-  return function resetCompilationDatabase() {
+  return function resetCompilationDatabase(_x22) {
     return _ref12.apply(this, arguments);
   };
 })();
@@ -356,7 +356,7 @@ function _load_ini() {
 var _BuckClangCompilationDatabase;
 
 function _load_BuckClangCompilationDatabase() {
-  return _BuckClangCompilationDatabase = _interopRequireWildcard(require('./BuckClangCompilationDatabase'));
+  return _BuckClangCompilationDatabase = require('./BuckClangCompilationDatabase');
 }
 
 var _BuckServiceImpl;
@@ -369,16 +369,18 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const MULTIPLE_TARGET_RULE_TYPE = exports.MULTIPLE_TARGET_RULE_TYPE = 'multiple_targets'; /**
-                                                                                           * Copyright (c) 2015-present, Facebook, Inc.
-                                                                                           * All rights reserved.
-                                                                                           *
-                                                                                           * This source code is licensed under the license found in the LICENSE file in
-                                                                                           * the root directory of this source tree.
-                                                                                           *
-                                                                                           * 
-                                                                                           * @format
-                                                                                           */
+/**
+ * Copyright (c) 2015-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the license found in the LICENSE file in
+ * the root directory of this source tree.
+ *
+ * 
+ * @format
+ */
+
+const MULTIPLE_TARGET_RULE_TYPE = exports.MULTIPLE_TARGET_RULE_TYPE = 'multiple_targets';
 
 /**
  * Given a file path, returns path to the Buck project root i.e. the directory containing
@@ -553,6 +555,6 @@ function stripBrackets(str) {
   return str.substring(1, str.length - 1);
 }
 
-function getCompilationDatabase(src) {
-  return _rxjsBundlesRxMinJs.Observable.fromPromise((_BuckClangCompilationDatabase || _load_BuckClangCompilationDatabase()).getCompilationDatabase(src)).publish();
+function getCompilationDatabase(src, params) {
+  return _rxjsBundlesRxMinJs.Observable.fromPromise((0, (_BuckClangCompilationDatabase || _load_BuckClangCompilationDatabase()).getCompilationDatabaseHandler)(params).getCompilationDatabase(src)).publish();
 }

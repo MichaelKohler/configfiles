@@ -36,10 +36,10 @@ function _load_analytics() {
   return _analytics = _interopRequireDefault(require('nuclide-commons-atom/analytics'));
 }
 
-var _workspaceViewsCompat;
+var _destroyItemWhere;
 
-function _load_workspaceViewsCompat() {
-  return _workspaceViewsCompat = require('nuclide-commons-atom/workspace-views-compat');
+function _load_destroyItemWhere() {
+  return _destroyItemWhere = require('nuclide-commons-atom/destroyItemWhere');
 }
 
 var _OutlineViewPanel;
@@ -59,10 +59,6 @@ var _rxjsBundlesRxMinJs = require('rxjs/bundles/Rx.min.js');
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
- * Includes additional information that is useful to the UI, but redundant or nonsensical for
- * providers to include in their responses.
- */
-/**
  * Copyright (c) 2017-present, Facebook, Inc.
  * All rights reserved.
  *
@@ -77,8 +73,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 class Activation {
 
   constructor() {
-    this._disposables = new (_UniversalDisposable || _load_UniversalDisposable()).default();
-    this._disposables.add((0, (_workspaceViewsCompat || _load_workspaceViewsCompat()).consumeWorkspaceViewsCompat)(service => this.consumeWorkspaceViewsService(service)));
+    this._disposables = new (_UniversalDisposable || _load_UniversalDisposable()).default(this.registerOpenerAndCommand());
 
     this._editorService = new (_ActiveEditorRegistry || _load_ActiveEditorRegistry()).default((provider, editor) => {
       (_analytics || _load_analytics()).default.track('nuclide-outline-view-getoutline');
@@ -98,7 +93,7 @@ class Activation {
     const toolBar = getToolBar('nuclide-outline-view');
     const { element } = toolBar.addButton({
       icon: 'list-unordered',
-      callback: 'nuclide-outline-view:toggle',
+      callback: 'outline-view:toggle',
       tooltip: 'Toggle Outline View',
       priority: 200
     });
@@ -116,16 +111,17 @@ class Activation {
     return new (_OutlineViewPanel || _load_OutlineViewPanel()).OutlineViewPanelState((0, (_createOutlines || _load_createOutlines()).createOutlines)(this._editorService));
   }
 
-  consumeWorkspaceViewsService(api) {
-    const commandDisposable = atom.commands.add('atom-workspace', 'nuclide-outline-view:toggle', event => {
-      api.toggle((_OutlineViewPanel || _load_OutlineViewPanel()).WORKSPACE_VIEW_URI, event.detail);
+  registerOpenerAndCommand() {
+    const commandDisposable = atom.commands.add('atom-workspace', 'outline-view:toggle', () => {
+      atom.workspace.toggle((_OutlineViewPanel || _load_OutlineViewPanel()).WORKSPACE_VIEW_URI);
     });
-    this._disposables.add(api.addOpener(uri => {
+    return new (_UniversalDisposable || _load_UniversalDisposable()).default(atom.workspace.addOpener(uri => {
       if (uri === (_OutlineViewPanel || _load_OutlineViewPanel()).WORKSPACE_VIEW_URI) {
         return this._createOutlineViewPanelState();
       }
-    }), () => api.destroyWhere(item => item instanceof (_OutlineViewPanel || _load_OutlineViewPanel()).OutlineViewPanelState), commandDisposable);
-    return commandDisposable;
+    }), () => {
+      (0, (_destroyItemWhere || _load_destroyItemWhere()).destroyItemWhere)(item => item instanceof (_OutlineViewPanel || _load_OutlineViewPanel()).OutlineViewPanelState);
+    }, commandDisposable);
   }
 
   deserializeOutlineViewPanelState() {

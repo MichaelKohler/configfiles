@@ -9,6 +9,10 @@ var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
 
 let getInstance = exports.getInstance = (() => {
   var _ref4 = (0, _asyncToGenerator.default)(function* (file) {
+    if (yield (0, (_OCamlService || _load_OCamlService()).getUseLspConnection)()) {
+      return null;
+    }
+
     if (merlinProcessInstance && merlinProcessInstance.isRunning()) {
       return merlinProcessInstance;
     }
@@ -117,6 +121,12 @@ function _load_nuclideUri() {
 
 var _readline = _interopRequireDefault(require('readline'));
 
+var _OCamlService;
+
+function _load_OCamlService() {
+  return _OCamlService = require('./OCamlService');
+}
+
 var _fsPromise;
 
 function _load_fsPromise() {
@@ -143,18 +153,16 @@ function _load_log4js() {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the license found in the LICENSE file in
- * the root directory of this source tree.
- *
- * 
- * @format
- */
-
-const logger = (0, (_log4js || _load_log4js()).getLogger)('nuclide-ocaml-rpc');
+const logger = (0, (_log4js || _load_log4js()).getLogger)('nuclide-ocaml-rpc'); /**
+                                                                                 * Copyright (c) 2015-present, Facebook, Inc.
+                                                                                 * All rights reserved.
+                                                                                 *
+                                                                                 * This source code is licensed under the license found in the LICENSE file in
+                                                                                 * the root directory of this source tree.
+                                                                                 *
+                                                                                 * 
+                                                                                 * @format
+                                                                                 */
 
 const ERROR_RESPONSES = new Set(['failure', 'error', 'exception']);
 
