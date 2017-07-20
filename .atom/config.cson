@@ -50,6 +50,8 @@
       "node_modules"
       "test.out"
       "coverage"
+      ".tmp"
+      "data"
     ]
     packagesWithKeymapsDisabled: []
     telemetryConsent: "no"
@@ -86,6 +88,9 @@
     leftEditorColor: "red"
     rightEditorColor: "green"
     syncHorizontalScroll: true
+  "todo-show":
+    sortAscending: false
+    sortBy: "Type"
   welcome:
     showOnStartup: false
   whitespace:
