@@ -2,39 +2,39 @@
   "_args": [
     [
       {
-        "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117620-46078-c9s5tp.xcna7wg66r/package.tgz",
+        "raw": "/private/var/folders/rc/pbsjktx16ns1x5nysj8k2lhw0000gn/T/d-117625-68540-1cmrvbk.qj6fetgldi/package.tgz",
         "scope": null,
         "escapedName": null,
         "name": null,
-        "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117620-46078-c9s5tp.xcna7wg66r/package.tgz",
-        "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117620-46078-c9s5tp.xcna7wg66r/package.tgz",
+        "rawSpec": "/private/var/folders/rc/pbsjktx16ns1x5nysj8k2lhw0000gn/T/d-117625-68540-1cmrvbk.qj6fetgldi/package.tgz",
+        "spec": "/private/var/folders/rc/pbsjktx16ns1x5nysj8k2lhw0000gn/T/d-117625-68540-1cmrvbk.qj6fetgldi/package.tgz",
         "type": "local"
       },
-      "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-117620-46078-wt86k6.dsxada38fr"
+      "/private/var/folders/rc/pbsjktx16ns1x5nysj8k2lhw0000gn/T/apm-install-dir-117625-68540-augepi.d810mgqfr"
     ]
   ],
-  "_from": "../d-117620-46078-c9s5tp.xcna7wg66r/package.tgz",
-  "_id": "linter-markdown@4.1.0",
+  "_from": "../d-117625-68540-1cmrvbk.qj6fetgldi/package.tgz",
+  "_id": "linter-markdown@5.1.0",
   "_inCache": true,
   "_location": "/linter-markdown",
   "_phantomChildren": {},
   "_requested": {
-    "raw": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117620-46078-c9s5tp.xcna7wg66r/package.tgz",
+    "raw": "/private/var/folders/rc/pbsjktx16ns1x5nysj8k2lhw0000gn/T/d-117625-68540-1cmrvbk.qj6fetgldi/package.tgz",
     "scope": null,
     "escapedName": null,
     "name": null,
-    "rawSpec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117620-46078-c9s5tp.xcna7wg66r/package.tgz",
-    "spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117620-46078-c9s5tp.xcna7wg66r/package.tgz",
+    "rawSpec": "/private/var/folders/rc/pbsjktx16ns1x5nysj8k2lhw0000gn/T/d-117625-68540-1cmrvbk.qj6fetgldi/package.tgz",
+    "spec": "/private/var/folders/rc/pbsjktx16ns1x5nysj8k2lhw0000gn/T/d-117625-68540-1cmrvbk.qj6fetgldi/package.tgz",
     "type": "local"
   },
   "_requiredBy": [
     "#USER"
   ],
-  "_resolved": "file:../d-117620-46078-c9s5tp.xcna7wg66r/package.tgz",
-  "_shasum": "6693e3f64e867fcb137ccfd86d1a49c284c758be",
+  "_resolved": "file:../d-117625-68540-1cmrvbk.qj6fetgldi/package.tgz",
+  "_shasum": "82e948b55b2b59c4b8806040334fadf628bfb5ea",
   "_shrinkwrap": null,
-  "_spec": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/d-117620-46078-c9s5tp.xcna7wg66r/package.tgz",
-  "_where": "/private/var/folders/ky/_z01dmh57tl_ttdcvqbwmg8r0000gn/T/apm-install-dir-117620-46078-wt86k6.dsxada38fr",
+  "_spec": "/private/var/folders/rc/pbsjktx16ns1x5nysj8k2lhw0000gn/T/d-117625-68540-1cmrvbk.qj6fetgldi/package.tgz",
+  "_where": "/private/var/folders/rc/pbsjktx16ns1x5nysj8k2lhw0000gn/T/apm-install-dir-117625-68540-augepi.d810mgqfr",
   "bugs": {
     "url": "https://github.com/AtomLinter/linter-markdown/issues"
   },
@@ -79,19 +79,19 @@
   },
   "dependencies": {
     "atom-package-deps": "^4.6.0",
-    "remark": "7.0.1",
+    "remark": "8.0.0",
     "remark-preset-lint-consistent": "^2.0.0",
-    "remark-preset-lint-markdown-style-guide": "^1.0.0",
-    "remark-preset-lint-recommended": "^2.0.0",
+    "remark-preset-lint-markdown-style-guide": "^2.0.0",
+    "remark-preset-lint-recommended": "^3.0.0",
     "unified-engine-atom": "^5.0.0"
   },
   "description": "Lint markdown on the fly, using remark-lint",
   "devDependencies": {
-    "eslint": "^3.13.0",
-    "eslint-config-airbnb-base": "^11.0.1",
-    "eslint-plugin-import": "^2.2.0",
+    "eslint": "^4.3.0",
+    "eslint-config-airbnb-base": "^11.3.1",
+    "eslint-plugin-import": "^2.7.0",
     "jasmine-fix": "^1.0.1",
-    "remark-cli": "^3.0.0"
+    "remark-cli": "^4.0.0"
   },
   "engines": {
     "atom": ">=1.7.0 <2.0.0"
@@ -154,7 +154,7 @@
     "lint": "remark README.md LICENSE.md && eslint lib spec",
     "test": "apm test"
   },
-  "version": "4.1.0",
+  "version": "5.1.0",
   "_atomModuleCache": {
     "version": 1,
     "dependencies": [
@@ -555,7 +555,7 @@
       },
       {
         "name": "remark",
-        "version": "7.0.1",
+        "version": "8.0.0",
         "path": "node_modules/remark/index.js"
       },
       {
@@ -655,7 +655,7 @@
       },
       {
         "name": "remark-lint-list-item-spacing",
-        "version": "1.0.0",
+        "version": "1.1.0",
         "path": "node_modules/remark-lint-list-item-spacing/index.js"
       },
       {
@@ -674,9 +674,9 @@
         "path": "node_modules/remark-lint-no-auto-link-without-protocol/index.js"
       },
       {
-        "name": "remark-lint-no-blockquote-without-caret",
-        "version": "1.0.0",
-        "path": "node_modules/remark-lint-no-blockquote-without-caret/index.js"
+        "name": "remark-lint-no-blockquote-without-marker",
+        "version": "2.0.0",
+        "path": "node_modules/remark-lint-no-blockquote-without-marker/index.js"
       },
       {
         "name": "remark-lint-no-consecutive-blank-lines",
@@ -720,7 +720,7 @@
       },
       {
         "name": "remark-lint-no-file-name-outer-dashes",
-        "version": "1.0.0",
+        "version": "1.0.1",
         "path": "node_modules/remark-lint-no-file-name-outer-dashes/index.js"
       },
       {
@@ -825,7 +825,7 @@
       },
       {
         "name": "remark-parse",
-        "version": "3.0.1",
+        "version": "4.0.0",
         "path": "node_modules/remark-parse/index.js"
       },
       {
@@ -835,17 +835,17 @@
       },
       {
         "name": "remark-preset-lint-markdown-style-guide",
-        "version": "1.0.0",
+        "version": "2.0.0",
         "path": "node_modules/remark-preset-lint-markdown-style-guide/index.js"
       },
       {
         "name": "remark-preset-lint-recommended",
-        "version": "2.0.0",
+        "version": "3.0.0",
         "path": "node_modules/remark-preset-lint-recommended/index.js"
       },
       {
         "name": "remark-stringify",
-        "version": "3.0.1",
+        "version": "4.0.0",
         "path": "node_modules/remark-stringify/index.js"
       },
       {
@@ -900,7 +900,7 @@
       },
       {
         "name": "semver",
-        "version": "5.3.0",
+        "version": "5.4.1",
         "path": "node_modules/semver/semver.js"
       },
       {
@@ -955,7 +955,7 @@
       },
       {
         "name": "supports-color",
-        "version": "4.2.0",
+        "version": "4.2.1",
         "path": "node_modules/supports-color/index.js"
       },
       {
@@ -1293,7 +1293,7 @@
         "node_modules/remark-lint-maximum-heading-length/index.js",
         "node_modules/remark-lint-maximum-line-length/index.js",
         "node_modules/remark-lint-no-auto-link-without-protocol/index.js",
-        "node_modules/remark-lint-no-blockquote-without-caret/index.js",
+        "node_modules/remark-lint-no-blockquote-without-marker/index.js",
         "node_modules/remark-lint-no-consecutive-blank-lines/index.js",
         "node_modules/remark-lint-no-duplicate-definitions/index.js",
         "node_modules/remark-lint-no-duplicate-headings/index.js",
@@ -1363,7 +1363,6 @@
         "node_modules/remark-parse/lib/tokenize/text.js",
         "node_modules/remark-parse/lib/tokenize/thematic-break.js",
         "node_modules/remark-parse/lib/tokenize/url.js",
-        "node_modules/remark-parse/lib/tokenize/yaml.js",
         "node_modules/remark-parse/lib/tokenizer.js",
         "node_modules/remark-parse/lib/unescape.js",
         "node_modules/remark-parse/lib/util/get-indentation.js",
@@ -1418,7 +1417,6 @@
         "node_modules/remark-stringify/lib/visitors/table.js",
         "node_modules/remark-stringify/lib/visitors/text.js",
         "node_modules/remark-stringify/lib/visitors/thematic-break.js",
-        "node_modules/remark-stringify/lib/visitors/yaml.js",
         "node_modules/repeat-string/index.js",
         "node_modules/replace-ext/index.js",
         "node_modules/resolve-from/index.js",
@@ -1626,7 +1624,7 @@
         "node_modules/remark-lint-maximum-heading-length/package.json",
         "node_modules/remark-lint-maximum-line-length/package.json",
         "node_modules/remark-lint-no-auto-link-without-protocol/package.json",
-        "node_modules/remark-lint-no-blockquote-without-caret/package.json",
+        "node_modules/remark-lint-no-blockquote-without-marker/package.json",
         "node_modules/remark-lint-no-consecutive-blank-lines/package.json",
         "node_modules/remark-lint-no-duplicate-definitions/package.json",
         "node_modules/remark-lint-no-duplicate-headings/package.json",
@@ -1729,10 +1727,10 @@
         ],
         "dependencies": {
           "atom-package-deps": "^4.6.0",
-          "remark": "7.0.1",
+          "remark": "8.0.0",
           "remark-preset-lint-consistent": "^2.0.0",
-          "remark-preset-lint-markdown-style-guide": "^1.0.0",
-          "remark-preset-lint-recommended": "^2.0.0",
+          "remark-preset-lint-markdown-style-guide": "^2.0.0",
+          "remark-preset-lint-recommended": "^3.0.0",
           "unified-engine-atom": "^5.0.0"
         }
       },
@@ -1998,8 +1996,8 @@
           "node_modules/remark"
         ],
         "dependencies": {
-          "remark-parse": "^3.0.0",
-          "remark-stringify": "^3.0.0",
+          "remark-parse": "^4.0.0",
+          "remark-stringify": "^4.0.0",
           "unified": "^6.0.0"
         }
       },
@@ -2256,7 +2254,7 @@
       },
       {
         "paths": [
-          "node_modules/remark-lint-no-blockquote-without-caret"
+          "node_modules/remark-lint-no-blockquote-without-marker"
         ],
         "dependencies": {
           "unified-lint-rule": "^1.0.0",
@@ -2348,12 +2346,7 @@
           "node_modules/remark-lint-no-file-name-outer-dashes"
         ],
         "dependencies": {
-          "mdast-util-to-string": "^1.0.2",
-          "plur": "^2.1.2",
-          "unified-lint-rule": "^1.0.0",
-          "unist-util-generated": "^1.1.0",
-          "unist-util-position": "^3.0.0",
-          "unist-util-visit": "^1.1.1"
+          "unified-lint-rule": "^1.0.0"
         }
       },
       {
@@ -2584,7 +2577,6 @@
         ],
         "dependencies": {
           "collapse-white-space": "^1.0.2",
-          "has": "^1.0.1",
           "is-alphabetical": "^1.0.0",
           "is-decimal": "^1.0.0",
           "is-whitespace-character": "^1.0.0",
@@ -2646,7 +2638,7 @@
           "remark-lint-maximum-heading-length": "^1.0.0",
           "remark-lint-maximum-line-length": "^1.0.0",
           "remark-lint-no-auto-link-without-protocol": "^1.0.0",
-          "remark-lint-no-blockquote-without-caret": "^1.0.0",
+          "remark-lint-no-blockquote-without-marker": "^2.0.0",
           "remark-lint-no-consecutive-blank-lines": "^1.0.0",
           "remark-lint-no-duplicate-headings": "^1.0.0",
           "remark-lint-no-emphasis-as-heading": "^1.0.0",
@@ -2684,7 +2676,7 @@
           "remark-lint-list-item-bullet-indent": "^1.0.0",
           "remark-lint-list-item-indent": "^1.0.0",
           "remark-lint-no-auto-link-without-protocol": "^1.0.0",
-          "remark-lint-no-blockquote-without-caret": "^1.0.0",
+          "remark-lint-no-blockquote-without-marker": "^2.0.0",
           "remark-lint-no-duplicate-definitions": "^1.0.0",
           "remark-lint-no-heading-content-indent": "^1.0.0",
           "remark-lint-no-inline-padding": "^1.0.0",

@@ -132,11 +132,8 @@ class LspLanguageService {
   // tracks which fileversions we've sent to LSP
 
   // tracks which fileversions we've received from Nuclide client
-  // tracks which fileversions we've sent to LSP
-  // tracks which fileversions we've received from Nuclide client
-
-  // These fields are provided upon construction
-  constructor(logger, fileCache, host, languageId, command, args, projectRoot, fileExtensions, initializationOptions) {
+  // supplies the options for spawning a process
+  constructor(logger, fileCache, host, languageId, command, args, spawnOptions = {}, projectRoot, fileExtensions, initializationOptions) {
     this._state = 'Initial';
     this._recentRestarts = [];
     this._diagnosticUpdates = new _rxjsBundlesRxMinJs.Subject();
@@ -150,6 +147,7 @@ class LspLanguageService {
     this._languageId = languageId;
     this._command = command;
     this._args = args;
+    this._spawnOptions = spawnOptions;
     this._fileExtensions = fileExtensions;
     this._initializationOptions = initializationOptions;
   } // is really "?LspConnection"
@@ -161,6 +159,10 @@ class LspLanguageService {
 
   // These fields reflect our own state.
   // (Most should be nullable types, but it's not worth the bother.)
+  // tracks which fileversions we've sent to LSP
+  // tracks which fileversions we've received from Nuclide client
+
+  // These fields are provided upon construction
 
 
   dispose() {
@@ -202,9 +204,9 @@ class LspLanguageService {
             // if we try to spawn an empty command, node itself throws a "bad
             // type" error, which is jolly confusing. So we catch it ourselves.
           }
-          const childProcessStream = (0, (_process || _load_process()).spawn)(_this._command, _this._args, {
+          const childProcessStream = (0, (_process || _load_process()).spawn)(_this._command, _this._args, Object.assign({}, _this._spawnOptions, {
             killTreeWhenDone: true
-          }).publish();
+          })).publish();
           // disposing of the stream will kill the process, if it still exists
           const processPromise = childProcessStream.take(1).toPromise();
           perConnectionDisposables.add(childProcessStream.connect());
@@ -937,6 +939,10 @@ class LspLanguageService {
         response = yield _this5._lspConnection.completion(params);
       } catch (e) {
         _this5._logLspException(e);
+        return null;
+      }
+
+      if (response == null) {
         return null;
       }
 

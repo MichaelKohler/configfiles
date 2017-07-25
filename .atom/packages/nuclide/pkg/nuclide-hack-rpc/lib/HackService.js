@@ -26,7 +26,7 @@ let initializeLsp = exports.initializeLsp = (() => {
 
     (_hackConfig || _load_hackConfig()).logger.setLevel(logLevel);
     const cmd = command === '' ? yield (0, (_hackConfig || _load_hackConfig()).getHackCommand)() : command;
-    return (0, (_nuclideVscodeLanguageService || _load_nuclideVscodeLanguageService()).createMultiLspLanguageService)((_hackConfig || _load_hackConfig()).logger, fileNotifier, host, 'hack', cmd, args, projectFileName, fileExtensions, {});
+    return (0, (_nuclideVscodeLanguageService || _load_nuclideVscodeLanguageService()).createMultiLspLanguageService)((_hackConfig || _load_hackConfig()).logger, fileNotifier, host, 'hack', cmd, args, {}, projectFileName, fileExtensions, {});
   });
 
   return function initializeLsp(_x, _x2, _x3, _x4, _x5, _x6, _x7) {

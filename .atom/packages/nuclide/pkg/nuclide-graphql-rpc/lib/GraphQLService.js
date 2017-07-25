@@ -8,17 +8,17 @@ exports.initializeLsp = undefined;
 var _asyncToGenerator = _interopRequireDefault(require('async-to-generator'));
 
 let initializeLsp = exports.initializeLsp = (() => {
-  var _ref = (0, _asyncToGenerator.default)(function* (command, args, projectFileName, fileExtensions, logLevel, fileNotifier, host) {
+  var _ref = (0, _asyncToGenerator.default)(function* (command, args, spawnOptions, projectFileName, fileExtensions, logLevel, fileNotifier, host) {
     if (!(fileNotifier instanceof (_nuclideOpenFilesRpc || _load_nuclideOpenFilesRpc()).FileCache)) {
       throw new Error('Invariant violation: "fileNotifier instanceof FileCache"');
     }
 
     (_config || _load_config()).logger.setLevel(logLevel);
 
-    return (0, (_nuclideVscodeLanguageService || _load_nuclideVscodeLanguageService()).createMultiLspLanguageService)((_config || _load_config()).logger, fileNotifier, host, 'graphql', require.resolve(command), args, projectFileName, fileExtensions, {});
+    return (0, (_nuclideVscodeLanguageService || _load_nuclideVscodeLanguageService()).createMultiLspLanguageService)((_config || _load_config()).logger, fileNotifier, host, 'graphql', process.execPath, [require.resolve(command), ...args], spawnOptions, projectFileName, fileExtensions, {});
   });
 
-  return function initializeLsp(_x, _x2, _x3, _x4, _x5, _x6, _x7) {
+  return function initializeLsp(_x, _x2, _x3, _x4, _x5, _x6, _x7, _x8) {
     return _ref.apply(this, arguments);
   };
 })();

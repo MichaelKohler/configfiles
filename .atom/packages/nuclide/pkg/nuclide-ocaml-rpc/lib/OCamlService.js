@@ -35,7 +35,7 @@ let initializeLsp = exports.initializeLsp = (() => {
     }
 
     logger.setLevel(logLevel);
-    return (0, (_nuclideVscodeLanguageService || _load_nuclideVscodeLanguageService()).createMultiLspLanguageService)(logger, fileNotifier, host, 'ocaml', command, args, projectFileName, fileExtensions, {
+    return (0, (_nuclideVscodeLanguageService || _load_nuclideVscodeLanguageService()).createMultiLspLanguageService)(logger, fileNotifier, host, 'ocaml', command, args, {}, projectFileName, fileExtensions, {
       codelens: {
         unicode: true
       },

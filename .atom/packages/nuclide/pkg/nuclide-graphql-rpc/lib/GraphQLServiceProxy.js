@@ -812,7 +812,7 @@ module.exports = _client => {
 
   };
 
-  remoteModule.initializeLsp = function (arg0, arg1, arg2, arg3, arg4, arg5, arg6) {
+  remoteModule.initializeLsp = function (arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7) {
     return _client.marshalArguments(Array.from(arguments), [{
       name: "command",
       type: {
@@ -825,6 +825,12 @@ module.exports = _client => {
         type: {
           kind: "string"
         }
+      }
+    }, {
+      name: "spawnOptions",
+      type: {
+        kind: "named",
+        name: "Object"
       }
     }, {
       name: "projectFileName",
@@ -3284,6 +3290,12 @@ Object.defineProperty(module.exports, "defs", {
             type: {
               kind: "string"
             }
+          }
+        }, {
+          name: "spawnOptions",
+          type: {
+            kind: "named",
+            name: "Object"
           }
         }, {
           name: "projectFileName",

@@ -12,8 +12,11 @@ let connectionToGraphQLService = (() => {
     const graphqlService = (0, (_nuclideRemoteConnection || _load_nuclideRemoteConnection()).getServiceByConnection)(GRAPHQL_SERVICE_NAME, connection);
     const [fileNotifier, host] = yield Promise.all([(0, (_nuclideOpenFiles || _load_nuclideOpenFiles()).getNotifierByConnection)(connection), (0, (_nuclideLanguageService || _load_nuclideLanguageService()).getHostServices)()]);
     const graphqlCommand = 'graphql-language-service/bin/graphql.js';
+    const options = {
+      env: Object.assign({}, process.env, { ELECTRON_RUN_AS_NODE: '1' })
+    };
 
-    return graphqlService.initializeLsp(graphqlCommand, ['server', '--method', 'stream'], '.graphqlconfig', ['.js', '.graphql'], 'INFO', fileNotifier, host);
+    return graphqlService.initializeLsp(graphqlCommand, ['server', '--method', 'stream'], options, '.graphqlconfig', ['.js', '.graphql'], 'INFO', fileNotifier, host);
   });
 
   return function connectionToGraphQLService(_x) {

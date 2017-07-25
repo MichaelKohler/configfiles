@@ -3505,13 +3505,13 @@ Object.defineProperty(module.exports, "defs", {
       location: {
         type: "source",
         fileName: "HackService.js",
-        line: 114
+        line: 115
       },
       type: {
         location: {
           type: "source",
           fileName: "HackService.js",
-          line: 114
+          line: 115
         },
         kind: "function",
         argumentTypes: [{
