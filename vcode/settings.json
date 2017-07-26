@@ -1,0 +1,6 @@
+{
+    "workbench.colorTheme": "Nord",
+    "workbench.iconTheme": "vscode-icons",
+    "editor.minimap.enabled": false,
+    "workbench.startupEditor": "newUntitledFile"
+}
