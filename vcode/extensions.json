@@ -1,5 +1,6 @@
 {
     "extensions": [
+        "EditorConfig.EditorConfig",
         "HookyQR.beautify",
         "PeterJausovec.vscode-docker",
         "Shan.code-settings-sync",

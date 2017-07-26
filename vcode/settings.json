@@ -1,6 +1,15 @@
 {
+    "editor.minimap.enabled": false,
     "workbench.colorTheme": "Nord",
     "workbench.iconTheme": "vscode-icons",
-    "editor.minimap.enabled": false,
-    "workbench.startupEditor": "newUntitledFile"
+    "workbench.startupEditor": "newUntitledFile",
+    "search.exclude": {
+        "**/node_modules": true,
+        "**/bower_components": true,
+        "**/report-html": true,
+        "**/test.out": true,
+        "**/.tmp": true,
+        "**/data": true,
+        "**/dist": true
+    }
 }
