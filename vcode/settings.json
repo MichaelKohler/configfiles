@@ -1,5 +1,11 @@
 {
+    "editor.autoIndent": true,
     "editor.minimap.enabled": false,
+    "editor.renderWhitespace": "all",
+    "editor.tabSize": 2,
+    "editor.trimAutoWhitespace": true,
+    "explorer.openEditors.visible": 0,
+    "files.trimTrailingWhitespace": true,
     "workbench.colorTheme": "Nord",
     "workbench.iconTheme": "vscode-icons",
     "workbench.startupEditor": "newUntitledFile",
@@ -12,5 +18,7 @@
         "**/data": true,
         "**/dist": true,
         "**/coverage": true
-    }
+    },
+    "window.openFoldersInNewWindow": "on",
+    "window.restoreWindows": "folders"
 }
