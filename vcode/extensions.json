@@ -21,6 +21,7 @@
         "nodesource.vscode-for-node-js-development-pack",
         "robertohuertasm.vscode-icons",
         "wayou.vscode-todo-highlight",
+        "wix.vscode-import-cost",
         "xabikos.JavaScriptSnippets"
     ]
 }
