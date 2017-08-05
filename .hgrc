@@ -1,6 +1,7 @@
+%include ~/.hgrcbugzilla
+
 [ui]
-username = Michael Kohler <mkohler@picobudget.com>
-ignore = ~/.hgignore
+username = Michael Kohler <me@michaelkohler.info>
 interface = curses
 
 [defaults]
