@@ -20,5 +20,6 @@
         "**/coverage": true
     },
     "window.openFoldersInNewWindow": "on",
-    "window.restoreWindows": "folders"
+    "window.restoreWindows": "folders",
+    "codemetrics.basics.DecorationModeEnabled": false
 }
