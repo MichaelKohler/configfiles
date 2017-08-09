@@ -17,7 +17,9 @@
         "**/.tmp": true,
         "**/data": true,
         "**/dist": true,
-        "**/coverage": true
+        "**/coverage": true,
+        "**/www": true,
+        "**/_site": true
     },
     "window.openFoldersInNewWindow": "on",
     "window.restoreWindows": "folders",
