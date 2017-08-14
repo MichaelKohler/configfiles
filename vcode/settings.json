@@ -1,8 +1,10 @@
 {
+    "codemetrics.basics.DecorationModeEnabled": false,
     "editor.autoIndent": true,
     "editor.minimap.enabled": false,
     "editor.renderWhitespace": "all",
     "editor.tabSize": 2,
+    "editor.fontSize": 13,
     "editor.trimAutoWhitespace": true,
     "explorer.openEditors.visible": 0,
     "files.trimTrailingWhitespace": true,
@@ -23,5 +25,5 @@
     },
     "window.openFoldersInNewWindow": "on",
     "window.restoreWindows": "folders",
-    "codemetrics.basics.DecorationModeEnabled": false
+    "window.zoomLevel": -1
 }
