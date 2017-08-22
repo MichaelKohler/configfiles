@@ -1,0 +1,8 @@
+setopt auto_cd
+setopt append_history
+setopt hist_reduce_blanks
+setopt extended_history
+setopt hist_find_no_dups
+setopt hist_ignore_all_dups
+setopt complete_in_word
+setopt prompt_subst
