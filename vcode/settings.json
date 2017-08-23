@@ -5,6 +5,9 @@
     "editor.renderWhitespace": "all",
     "editor.tabSize": 2,
     "editor.fontSize": 13,
+    "editor.tokenColorCustomizations": {
+        "comments": "#BF616A"
+    },
     "editor.trimAutoWhitespace": true,
     "explorer.openEditors.visible": 0,
     "files.trimTrailingWhitespace": true,
