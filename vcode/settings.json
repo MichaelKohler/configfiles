@@ -1,5 +1,7 @@
 {
     "codemetrics.basics.DecorationModeEnabled": false,
+    "codemetrics.basics.CodeLensEnabled": false,
+    "codemetrics.basics.DiagnosticsEnabled": false,
     "editor.autoIndent": true,
     "editor.minimap.enabled": false,
     "editor.renderWhitespace": "all",
