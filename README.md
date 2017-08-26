@@ -1,5 +1,6 @@
 ## Creating symlinks
 
 ```
-ln -s /Users/mkohler/configfiles/vcode/settings.json "$HOME/Library/Application Support/Code/User/settings.json"
+ln -s ~/configfiles/vcode/settings.json "~/Library/Application Support/Code/User/settings.json"
+ln -s ~/configfiles/.ssh_config ~/.ssh/config
 ```
