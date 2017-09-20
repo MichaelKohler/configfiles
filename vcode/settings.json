@@ -31,5 +31,5 @@
     },
     "window.openFoldersInNewWindow": "on",
     "window.restoreWindows": "folders",
-    "window.zoomLevel": -1
+    "window.zoomLevel": 0
 }
