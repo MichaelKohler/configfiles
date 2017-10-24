@@ -1,7 +1,7 @@
 export NVM_DIR="/Users/mkohler/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 export EDITOR='vi'
-export PATH=/usr/local/bin:$PATH
+export PATH=$HOME/.cargo/bin:/usr/local/bin:$PATH
 
 alias proxy='~/configfiles/proxy.sh'
 alias proxydown='~/configfiles/proxydown.sh'
