@@ -27,7 +27,8 @@
         "**/dist": true,
         "**/coverage": true,
         "**/www": true,
-        "**/_site": true
+        "**/_site": true,
+        "**/.tox": true
     },
     "window.openFoldersInNewWindow": "on",
     "window.restoreWindows": "folders",
