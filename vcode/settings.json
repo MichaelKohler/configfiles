@@ -32,5 +32,6 @@
     },
     "window.openFoldersInNewWindow": "on",
     "window.restoreWindows": "folders",
-    "window.zoomLevel": 0
+    "window.zoomLevel": 0,
+    "explorer.confirmDragAndDrop": false
 }
