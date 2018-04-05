@@ -33,5 +33,6 @@
     "window.openFoldersInNewWindow": "on",
     "window.restoreWindows": "folders",
     "window.zoomLevel": 0,
-    "explorer.confirmDragAndDrop": false
+    "explorer.confirmDragAndDrop": false,
+    "gitlens.keymap": "alternate"
 }

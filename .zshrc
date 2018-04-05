@@ -19,3 +19,6 @@ if [ -n "$(/bin/ls ${ZSH_CONFIG_DIR})" ]; then
     fi
   done
 fi
+
+# added by travis gem
+[ -f /Users/mkohler/.travis/travis.sh ] && source /Users/mkohler/.travis/travis.sh
