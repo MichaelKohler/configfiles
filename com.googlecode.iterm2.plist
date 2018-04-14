@@ -708,7 +708,7 @@
 	<key>NSWindow Frame SUUpdateAlert</key>
 	<string>410 364 620 392 0 0 1440 878 </string>
 	<key>NSWindow Frame SessionsPreferences</key>
-	<string>269 149 599 388 0 0 1440 878 </string>
+	<string>269 149 606 469 0 0 1440 878 </string>
 	<key>NSWindow Frame SharedPreferences</key>
 	<string>279 365 796 473 0 0 1440 878 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
@@ -1695,13 +1695,13 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2018-01-18T00:40:36Z</date>
+	<date>2018-04-01T12:10:03Z</date>
 	<key>SavePasteHistory</key>
 	<false/>
 	<key>ShowBookmarkName</key>
 	<true/>
 	<key>ShowFullScreenTabBar</key>
-	<false/>
+	<true/>
 	<key>ShowPaneTitles</key>
 	<true/>
 	<key>SmartPlacement</key>
