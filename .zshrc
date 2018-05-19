@@ -7,7 +7,7 @@ export PATH="$PATH:/Users/mkohler/development/arcanist/bin/"
 alias proxy='~/configfiles/proxy.sh'
 alias proxydown='~/configfiles/proxydown.sh'
 
-ZSH_CONFIG_DIR=~/.zsh
+ZSH_CONFIG_DIR=~/configfiles/.zsh
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=4'
 export HOMEBREW_NO_ANALYTICS=1
 
