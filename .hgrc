@@ -3,6 +3,7 @@
 [ui]
 username = Michael Kohler <me@michaelkohler.info>
 interface = curses
+tweakdefaults = true
 
 [defaults]
 diff = -U 8 -p
@@ -18,11 +19,9 @@ prechangegroup.mq-no-pull = ! hg qtop > /dev/null 2>&1
 mq = 
 hgext.purge = 
 hgext.hbisect = 
-color = 
 hgext.fetch = 
 progress = 
 rebase = 
-pager = 
 histedit = 
 fsmonitor = 
 blackbox = 
@@ -30,7 +29,8 @@ firefoxtree = /Users/mkohler/.mozbuild/version-control-tools/hgext/firefoxtree
 push-to-try = /Users/mkohler/.mozbuild/version-control-tools/hgext/push-to-try
 reviewboard = /Users/mkohler/.mozbuild/version-control-tools/hgext/reviewboard/client.py
 bzexport = /Users/mkohler/.mozbuild/version-control-tools/hgext/bzexport
-shelve =
+shelve = 
+evolve = /Users/mkohler/.mozbuild/evolve/hgext3rd/evolve
 
 [diff]
 git = 1
@@ -46,11 +46,6 @@ review = https://reviewboard-hg.mozilla.org/autoreview
 
 [pager]
 pager = LESS=FRSXQ less
-attend-help = true
-attend-incoming = true
-attend-outgoing = true
-attend-status = true
-attend-wip = true
 
 [alias]
 wip = log --graph --rev=wip --template=wip
