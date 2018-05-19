@@ -2,6 +2,14 @@ autoload -Uz promptinit
 promptinit
 autoload -Uz vcs_info
 
+RPROMPT='[%D{%L:%M:%S %p}]'
+
+TMOUT=1
+
+TRAPALRM() {
+    zle reset-prompt
+}
+
 _newline=$'\n'
 branch_name="${PR_BOLD_WHITE}%b%f"
 
