@@ -45,5 +45,6 @@
         "suppressResultsExplorerNotice": false,
         "suppressShowKeyBindingsNotice": true
     },
-    "vsicons.projectDetection.autoReload": true
+    "vsicons.projectDetection.autoReload": true,
+    "gitlens.historyExplorer.enabled": true
 }
