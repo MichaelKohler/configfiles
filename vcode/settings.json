@@ -32,7 +32,7 @@
     },
     "window.openFoldersInNewWindow": "on",
     "window.restoreWindows": "folders",
-    "window.zoomLevel": 0,
+    "window.zoomLevel": -1,
     "explorer.confirmDragAndDrop": false,
     "gitlens.keymap": "alternate",
     "gitlens.advanced.messages": {
