@@ -1,6 +1,8 @@
 autoload -Uz promptinit
 promptinit
 autoload -Uz vcs_info
+autoload -U compinit
+compinit
 
 RPROMPT='[%D{%L:%M:%S %p}]'
 
