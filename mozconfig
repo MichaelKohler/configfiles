@@ -6,3 +6,6 @@ mk_add_options AUTOCLOBBER=1
 
 # Write build artifacts to:
 mk_add_options MOZ_OBJDIR=./objdir-frontend
+
+# For building Dev Edition branding...
+# ac_add_options --with-branding=browser/branding/aurora
