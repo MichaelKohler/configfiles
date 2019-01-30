@@ -52,5 +52,7 @@
     "breadcrumbs.enabled": true,
     "files.autoSave": "afterDelay",
     "merge-conflict.autoNavigateNextConflict.enabled": true,
-    "debug.node.autoAttach": "on"
+    "debug.node.autoAttach": "on",
+    "workbench.statusBar.feedback.visible": false,
+    "terminal.integrated.rendererType": "dom"
 }
