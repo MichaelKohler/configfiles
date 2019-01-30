@@ -3,11 +3,13 @@ NathanRidley.autotrim
 arcticicestudio.nord-visual-studio-code
 christian-kohler.npm-intellisense
 CoenraadS.bracket-pair-colorizer
+DavidAnson.vscode-markdownlint
 dbaeumer.vscode-eslint
 dzannotti.vscode-babel-coloring
 eamodio.gitlens
 ecmel.vscode-html-css
 EditorConfig.EditorConfig
+eg2.tslint
 eg2.vscode-npm-script
 formulahendry.auto-close-tag
 HookyQR.beautify
@@ -15,6 +17,8 @@ joelday.docthis
 kalitaalexey.vscode-rust
 kisstkondoros.vscode-codemetrics
 lextudio.restructuredtext
+maty.vscode-mocha-sidebar
+mechatroner.rainbow-csv
 mikestead.dotenv
 mrcrowl.hg
 ms-azuretools.vscode-azurefunctions
@@ -27,10 +31,14 @@ msjsdiag.debugger-for-chrome
 nodesource.vscode-for-node-js-development-pack
 octref.vetur
 PeterJausovec.vscode-docker
+prashaantt.node-tdd
+redhat.vscode-yaml
 robertohuertasm.vscode-icons
 rust-lang.rust
+samverschueren.ava
 searKing.preview-vscode
 Shan.code-settings-sync
+sumneko.lua
 wayou.vscode-todo-highlight
 wholroyd.jinja
 wix.vscode-import-cost
