@@ -1,6 +1,5 @@
 2gua.rainbow-brackets
 NathanRidley.autotrim
-Zignd.html-css-class-completion
 arcticicestudio.nord-visual-studio-code
 christian-kohler.npm-intellisense
 CoenraadS.bracket-pair-colorizer
@@ -16,6 +15,7 @@ joelday.docthis
 kalitaalexey.vscode-rust
 kisstkondoros.vscode-codemetrics
 lextudio.restructuredtext
+mikestead.dotenv
 mrcrowl.hg
 ms-azuretools.vscode-azurefunctions
 ms-python.python
@@ -35,3 +35,4 @@ wayou.vscode-todo-highlight
 wholroyd.jinja
 wix.vscode-import-cost
 xabikos.JavaScriptSnippets
+Zignd.html-css-class-completion
