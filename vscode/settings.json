@@ -50,5 +50,7 @@
     "gitlens.views.fileHistory.enabled": true,
     "gitlens.views.lineHistory.enabled": true,
     "breadcrumbs.enabled": true,
-    "files.autoSave": "afterDelay"
+    "files.autoSave": "afterDelay",
+    "merge-conflict.autoNavigateNextConflict.enabled": true,
+    "debug.node.autoAttach": "on"
 }
