@@ -4,3 +4,5 @@ alias flushnetwork="sudo ifconfig en0 down && sudo route flush && sudo ifconfig 
 
 alias enc="tar -cvf enc.tar.gz enc && gpg -c enc.tar.gz && rm -rf enc enc.tar.gz"
 alias dec="gpg -d enc.tar.gz.gpg > enc.tar.gz && tar -xvf enc.tar.gz"
+
+alias bear="cd 🐻"

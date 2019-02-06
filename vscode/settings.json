@@ -54,5 +54,6 @@
     "merge-conflict.autoNavigateNextConflict.enabled": true,
     "debug.node.autoAttach": "on",
     "workbench.statusBar.feedback.visible": false,
-    "terminal.integrated.rendererType": "dom"
+    "terminal.integrated.rendererType": "dom",
+    "javascript.updateImportsOnFileMove.enabled": true
 }
