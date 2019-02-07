@@ -55,5 +55,6 @@
     "debug.node.autoAttach": "on",
     "workbench.statusBar.feedback.visible": false,
     "terminal.integrated.rendererType": "dom",
-    "javascript.updateImportsOnFileMove.enabled": true
+    "javascript.updateImportsOnFileMove.enabled": true,
+    "workbench.useExperimentalGridLayout": true
 }
