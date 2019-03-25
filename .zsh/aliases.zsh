@@ -7,3 +7,5 @@ alias dec="gpg -d enc.tar.gz.gpg > enc.tar.gz && tar -xvf enc.tar.gz && rm -f en
 
 alias bear="cd 🐻"
 alias gitstats="_GIT_PATHSPEC=':!**/*/package-lock.json,!package-lock.json' ~/tools/git-quick-stats/git-quick-stats -T"
+
+alias k="kubectl"
