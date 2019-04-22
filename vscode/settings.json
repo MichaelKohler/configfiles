@@ -56,5 +56,6 @@
     "workbench.statusBar.feedback.visible": false,
     "terminal.integrated.rendererType": "dom",
     "javascript.updateImportsOnFileMove.enabled": true,
-    "workbench.useExperimentalGridLayout": true
+    "workbench.useExperimentalGridLayout": true,
+    "rust.mode": "legacy"
 }
