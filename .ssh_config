@@ -3,10 +3,5 @@ Host hg.mozilla.org
 	User me@michaelkohler.info
 	IdentityFile ~/.ssh/id_rsa
 
-Host reviewboard-hg.mozilla.org
-	HostName reviewboard-hg.mozilla.org
-	User me@michaelkohler.info
-	IdentityFile ~/.ssh/id_rsa
-
 Host *
 	UseKeychain yes
