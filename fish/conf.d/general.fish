@@ -7,4 +7,4 @@ set -g theme_show_exit_status yes
 
 set -g fish_prompt_pwd_dir_length 0
 
-nvm use 11.10.0
+nvm use 12.0.0
