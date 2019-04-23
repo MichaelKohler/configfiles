@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>AdjustWindowForFontSizeChange</key>
-	<true/>
+	<false/>
 	<key>AllowClipboardAccess</key>
 	<false/>
 	<key>AnimateDimming</key>
@@ -710,7 +710,7 @@
 	<key>NSWindow Frame SharedPreferences</key>
 	<string>491 524 770 429 0 0 1680 1027 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>0 42 1680 985 0 0 1680 1027 </string>
+	<string>0 42 1676 985 0 0 1680 1027 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>0 42 1680 985 0 0 1680 1027 </string>
 	<key>NeverWarnAboutShortLivedSessions_FD5C2234-1D93-4931-9B2A-183ED689CDD8</key>
@@ -989,7 +989,7 @@
 			<key>Blur</key>
 			<false/>
 			<key>Blur Radius</key>
-			<real>2</real>
+			<real>14.991898001269034</real>
 			<key>Bold Color</key>
 			<dict>
 				<key>Alpha Component</key>
@@ -1468,7 +1468,7 @@
 			<key>Show Status Bar</key>
 			<true/>
 			<key>Silence Bell</key>
-			<false/>
+			<true/>
 			<key>Smart Cursor Color</key>
 			<true/>
 			<key>Smart Selection Rules</key>
@@ -1797,7 +1797,7 @@
 			<key>Title Components</key>
 			<integer>7</integer>
 			<key>Transparency</key>
-			<real>0.044299120841142146</real>
+			<real>0.030647074521345193</real>
 			<key>Triggers</key>
 			<array/>
 			<key>Unlimited Scrollback</key>
@@ -1830,7 +1830,7 @@
 		<key>screenFrame</key>
 		<string>{{0, 0}, {1680, 1050}}</string>
 		<key>topLeft</key>
-		<string>{347, 1006}</string>
+		<string>{439, 963}</string>
 	</dict>
 	<key>NoSyncHaveRequestedFullDiskAccess</key>
 	<true/>
@@ -1839,7 +1839,7 @@
 	<key>NoSyncInstallationId</key>
 	<string>787B940A-FB28-48AB-A3CF-3E7CA124CE6D</string>
 	<key>NoSyncLaunchExperienceControllerRunCount</key>
-	<integer>15</integer>
+	<integer>16</integer>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
@@ -2420,7 +2420,7 @@
 	<key>NoSyncTimeOfFirstLaunchOfVersionWithTip</key>
 	<real>548435082.27265096</real>
 	<key>OnlyWhenMoreTabs</key>
-	<false/>
+	<true/>
 	<key>OpenArrangementAtStartup</key>
 	<false/>
 	<key>OpenBookmark</key>
@@ -2471,7 +2471,7 @@
 	<key>PrefsCustomFolder</key>
 	<string>/Users/mkohler/configfiles</string>
 	<key>PromptOnQuit</key>
-	<false/>
+	<true/>
 	<key>QuitWhenAllWindowsClosed</key>
 	<true/>
 	<key>RightCommand</key>
@@ -2487,7 +2487,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2019-04-20T21:10:25Z</date>
+	<date>2019-04-23T23:08:45Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>SUUpdateRelaunchingMarker</key>
