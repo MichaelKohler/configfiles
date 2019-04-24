@@ -4,23 +4,29 @@ function fish-apple-touchbar
     end
     function __fish_apple_touchbar_first_view
         function bind_keys_function
-            __fish_apple_touchbar_bind_key 1 'Node' '__fish_apple_touchbar_second_view'
-            __fish_apple_touchbar_bind_key 2 '👉 BEAR' "cd /Volumes/Dev/bear" '-s'
-            __fish_apple_touchbar_bind_key 3 '👉 CB' "cd /Volumes/Dev/bear/brain/cerebellum" '-s'
-            __fish_apple_touchbar_bind_key 4 '👉 TR2' "cd /Volumes/Dev/bear/tr2" '-s'
-            __fish_apple_touchbar_bind_key 5 'Test' "npm test" '-s'
+            __fish_apple_touchbar_bind_key 1 '👉 pwd' "pwd" '-s'
+            __fish_apple_touchbar_bind_key 2 'second view' '__fish_apple_touchbar_second_view'
+            __fish_apple_touchbar_bind_key 3 'third view' '__fish_apple_touchbar_third_view'
         end
 
-        __fish_apple_touchbar_create_view 'HOME' bind_keys_function
+        __fish_apple_touchbar_create_view 'first' bind_keys_function
     end
 
     function __fish_apple_touchbar_second_view
         function bind_keys_function
             __fish_apple_touchbar_bind_key 1 '👈 back' '__fish_apple_touchbar_first_view'
-            __fish_apple_touchbar_bind_key 2 'Restart pm2' "pm2 restart all" '-s'
-            __fish_apple_touchbar_bind_key 3 'Logs' "pm2 logs" '-s'
+            __fish_apple_touchbar_bind_key 2 'current path' "pwd" '-s'
         end
 
-        __fish_apple_touchbar_create_view 'BEAR' bind_keys_function
+        __fish_apple_touchbar_create_view 'second' bind_keys_function
+    end
+
+    function __fish_apple_touchbar_third_view
+        function bind_keys_function
+            __fish_apple_touchbar_bind_key 1 '👈 back' '__fish_apple_touchbar_first_view'
+            __fish_apple_touchbar_bind_key 2 'ls' "ls -la" '-s'
+        end
+
+        __fish_apple_touchbar_create_view 'third' bind_keys_function
     end
 end
