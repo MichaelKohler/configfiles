@@ -5,7 +5,9 @@ echo '/usr/local/bin/fish' | sudo tee -a /etc/shells
 chsh -s /usr/local/bin/fish
 
 rm -rf ~/.config/fish/conf.d
+rm -rf ~/.config/fish/functions
 ln -s ~/configfiles/fish/conf.d ~/.config/fish/conf.d
+ln -s ~/configfiles/fish/functions ~/.config/fish/functions
 
 curl -L https://get.oh-my.fish | fish
 curl https://git.io/fisher --create-dirs -sLo ~/.config/fish/functions/fisher.fish
