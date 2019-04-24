@@ -21,6 +21,13 @@ fisher add franciscolourenco/done
 omf install bobthefish
 fisher add brigand/fast-nvm-fish
 fisher add rodrigobdz/fish-apple-touchbar
+fisher add oh-my-fish/plugin-bang-bang
+
+brew install fzf
+fisher add jethrokuan/fzf
+
+fisher add edc/bass
+fisher add jethrokuan/z
 
 echo "function fish_greeting; end" > ~/.config/fish/functions/fish_greeting.fish
 
