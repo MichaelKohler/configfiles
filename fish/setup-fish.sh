@@ -6,7 +6,6 @@ chsh -s /usr/local/bin/fish
 
 rm -rf ~/.config/fish/conf.d
 ln -s ~/configfiles/fish/conf.d ~/.config/fish/conf.d
-ln -s ~/configfiles/fish/
 
 curl -L https://get.oh-my.fish | fish
 curl https://git.io/fisher --create-dirs -sLo ~/.config/fish/functions/fisher.fish
