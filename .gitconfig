@@ -1,8 +1,13 @@
 [user]
     name = Michael Kohler
     email = me@michaelkohler.info
+    signingkey = B4831E2E85D4EB1A81BB83D9083291B032073D6C
 [core]
     whitespace = cr-at-eol
+[commit]
+    gpgsign = true
+[gpg]
+    program = /usr/local/bin/gpg
 [diff]
     algorithm = patience
 [alias]
