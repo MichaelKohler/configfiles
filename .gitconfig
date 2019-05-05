@@ -6,6 +6,8 @@
     whitespace = cr-at-eol
 [commit]
     gpgsign = true
+[tag]
+    forceSignAnnotated = true
 [gpg]
     program = /usr/local/bin/gpg
 [diff]
