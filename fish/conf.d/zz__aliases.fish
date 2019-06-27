@@ -8,3 +8,4 @@ alias dec="gpg -d enc.tar.gz.gpg > enc.tar.gz && tar -xvf enc.tar.gz && rm -f en
 
 alias bear="cd 🐻"
 alias k="kubectl"
+alias weather="curl -4 http://wttr.in/Berlin\?m"
