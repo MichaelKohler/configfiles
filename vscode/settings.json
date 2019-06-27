@@ -15,7 +15,6 @@
     "explorer.openEditors.visible": 0,
     "files.trimTrailingWhitespace": true,
     "workbench.colorTheme": "Nord",
-    "workbench.iconTheme": "vscode-icons",
     "workbench.startupEditor": "newUntitledFile",
     "search.exclude": {
         "**/node_modules": true,
@@ -45,7 +44,6 @@
         "suppressResultsExplorerNotice": false,
         "suppressShowKeyBindingsNotice": true
     },
-    "vsicons.projectDetection.autoReload": true,
     "gitlens.historyExplorer.enabled": true,
     "gitlens.views.fileHistory.enabled": true,
     "gitlens.views.lineHistory.enabled": true,
@@ -57,5 +55,6 @@
     "terminal.integrated.rendererType": "dom",
     "javascript.updateImportsOnFileMove.enabled": true,
     "workbench.useExperimentalGridLayout": true,
-    "rust.mode": "legacy"
+    "rust.mode": "legacy",
+    "editor.gotoLocation.multiple": "goto"
 }
