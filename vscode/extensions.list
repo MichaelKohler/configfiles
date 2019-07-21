@@ -14,6 +14,7 @@ eg2.vscode-npm-script
 formulahendry.auto-close-tag
 HookyQR.beautify
 joelday.docthis
+johnpapa.vscode-peacock
 kalitaalexey.vscode-rust
 kisstkondoros.vscode-codemetrics
 lextudio.restructuredtext
@@ -22,6 +23,8 @@ maty.vscode-mocha-sidebar
 mechatroner.rainbow-csv
 mikestead.dotenv
 mrcrowl.hg
+ms-azuretools.vscode-docker
+ms-kubernetes-tools.vscode-kubernetes-tools
 ms-python.python
 ms-vscode.azure-account
 ms-vscode.cpptools
@@ -30,14 +33,16 @@ ms-vsliveshare.vsliveshare-audio
 msjsdiag.debugger-for-chrome
 nodesource.vscode-for-node-js-development-pack
 octref.vetur
-PeterJausovec.vscode-docker
 prashaantt.node-tdd
 redhat.vscode-yaml
+royaction.color-manager
 rust-lang.rust
 samverschueren.ava
 searKing.preview-vscode
+SimonSiefke.svg-preview
 skyapps.fish-vscode
 sumneko.lua
+VisualStudioExptTeam.vscodeintellicode
 vscode-icons-team.vscode-icons
 wayou.vscode-todo-highlight
 wholroyd.jinja
