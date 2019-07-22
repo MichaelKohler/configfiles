@@ -1,5 +1,4 @@
 2gua.rainbow-brackets
-NathanRidley.autotrim
 arcticicestudio.nord-visual-studio-code
 christian-kohler.npm-intellisense
 CoenraadS.bracket-pair-colorizer
@@ -19,7 +18,6 @@ kalitaalexey.vscode-rust
 kisstkondoros.vscode-codemetrics
 lextudio.restructuredtext
 lunaryorn.fish-ide
-maty.vscode-mocha-sidebar
 mechatroner.rainbow-csv
 mikestead.dotenv
 mrcrowl.hg
@@ -31,6 +29,7 @@ ms-vscode.cpptools
 ms-vsliveshare.vsliveshare
 ms-vsliveshare.vsliveshare-audio
 msjsdiag.debugger-for-chrome
+NathanRidley.autotrim
 nodesource.vscode-for-node-js-development-pack
 octref.vetur
 prashaantt.node-tdd
@@ -41,7 +40,6 @@ samverschueren.ava
 searKing.preview-vscode
 SimonSiefke.svg-preview
 skyapps.fish-vscode
-sumneko.lua
 VisualStudioExptTeam.vscodeintellicode
 vscode-icons-team.vscode-icons
 wayou.vscode-todo-highlight
