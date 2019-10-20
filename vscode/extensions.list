@@ -1,4 +1,5 @@
 2gua.rainbow-brackets
+NathanRidley.autotrim
 alefragnani.Bookmarks
 arcticicestudio.nord-visual-studio-code
 asvetliakov.run-current-test
@@ -14,12 +15,14 @@ EditorConfig.EditorConfig
 eg2.tslint
 eg2.vscode-npm-script
 eskimoblood.create-test
+firefox-devtools.vscode-firefox-debug
 formulahendry.auto-close-tag
 HookyQR.beautify
 joelday.docthis
 johnpapa.vscode-peacock
 jrebocho.vscode-random
 kalitaalexey.vscode-rust
+kisstkondoros.vscode-codemetrics
 lextudio.restructuredtext
 lunaryorn.fish-ide
 mechatroner.rainbow-csv
@@ -33,7 +36,7 @@ ms-vscode.cpptools
 ms-vsliveshare.vsliveshare
 ms-vsliveshare.vsliveshare-audio
 msjsdiag.debugger-for-chrome
-NathanRidley.autotrim
+mythmon.idl
 nodesource.vscode-for-node-js-development-pack
 octref.vetur
 pranaygp.vscode-css-peek
