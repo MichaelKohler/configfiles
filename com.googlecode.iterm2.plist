@@ -702,7 +702,7 @@
 		<integer>1</integer>
 	</dict>
 	<key>NSWindow Frame SUStatusFrame</key>
-	<string>1117 526 400 129 0 0 1680 1027 </string>
+	<string>640 684 400 129 0 0 1680 1027 </string>
 	<key>NSWindow Frame SUUpdateAlert</key>
 	<string>530 486 620 392 0 0 1680 1027 </string>
 	<key>NSWindow Frame SessionsPreferences</key>
@@ -1823,6 +1823,7 @@
 	<key>NoSyncAllAppVersions</key>
 	<array>
 		<string>3.3.4beta1</string>
+		<string>3.3.5beta3</string>
 		<string>3.3.0beta13</string>
 		<string>3.3.0beta7</string>
 		<string>3.3.3beta1</string>
@@ -1847,7 +1848,7 @@
 	<key>NoSyncInstallationId</key>
 	<string>787B940A-FB28-48AB-A3CF-3E7CA124CE6D</string>
 	<key>NoSyncLaunchExperienceControllerRunCount</key>
-	<integer>52</integer>
+	<integer>55</integer>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
@@ -2653,17 +2654,17 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2019-10-04T12:17:12Z</date>
+	<date>2019-10-10T17:37:09Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>SUUpdateRelaunchingMarker</key>
-	<false/>
+	<true/>
 	<key>SavePasteHistory</key>
 	<false/>
 	<key>ShowBookmarkName</key>
 	<true/>
 	<key>ShowFullScreenTabBar</key>
-	<true/>
+	<false/>
 	<key>ShowPaneTitles</key>
 	<true/>
 	<key>SmartPlacement</key>
@@ -4925,7 +4926,7 @@
 	<key>findRegex_iTerm</key>
 	<false/>
 	<key>iTerm Version</key>
-	<string>3.3.5beta2</string>
+	<string>3.3.5beta3</string>
 	<key>kCPKSelectionViewPreferredModeKey</key>
 	<integer>0</integer>
 	<key>kCPKSelectionViewShowHSBTextFieldsKey</key>
