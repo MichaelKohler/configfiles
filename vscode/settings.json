@@ -117,5 +117,6 @@
     "vs-kubernetes": {
         "vs-kubernetes.minikube-path": "/Users/mkohler/.vs-kubernetes/tools/minikube/darwin-amd64/minikube"
     },
-    "workbench.iconTheme": "vscode-icons"
+    "workbench.iconTheme": "vscode-icons",
+    "vsicons.dontShowNewVersionMessage": true
 }
