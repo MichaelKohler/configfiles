@@ -119,5 +119,10 @@
     },
     "workbench.iconTheme": "vscode-icons",
     "vsicons.dontShowNewVersionMessage": true,
-    "python.jediEnabled": false
+    "python.jediEnabled": false,
+    "rust-client.updateOnStartup": true,
+    "rust.all_features": true,
+    "rust.rustup": {
+        "toolchain": "nightly-x86_64-apple-darwin"
+    }
 }
