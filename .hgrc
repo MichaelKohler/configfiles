@@ -16,21 +16,17 @@ qnew = -Ue
 prechangegroup.mq-no-pull = ! hg qtop > /dev/null 2>&1
 
 [extensions]
-mq = 
-hgext.purge = 
-hgext.hbisect = 
-hgext.fetch = 
-progress = 
-rebase = 
-histedit = 
-fsmonitor = 
-blackbox = 
+hgext.purge =
+hgext.hbisect =
+hgext.fetch =
+progress =
+rebase =
+histedit =
+blackbox =
 firefoxtree = /Users/mkohler/.mozbuild/version-control-tools/hgext/firefoxtree
 push-to-try = /Users/mkohler/.mozbuild/version-control-tools/hgext/push-to-try
-bzexport = /Users/mkohler/.mozbuild/version-control-tools/hgext/bzexport
-shelve = 
-evolve = /Users/mkohler/.mozbuild/evolve/hgext3rd/evolve
-absorb = 
+shelve =
+absorb =
 clang-format = /Users/mkohler/.mozbuild/version-control-tools/hgext/clang-format
 js-format = /Users/mkohler/.mozbuild/version-control-tools/hgext/js-format
 
@@ -74,3 +70,5 @@ wip.user = magenta
 graphshorten = true
 [extdata]
 get_ignored_changesets = shell:cat `hg root`/.hg-annotate-ignore-revs 2> /dev/null || true
+[rebase]
+experimental.inmemory = yes
