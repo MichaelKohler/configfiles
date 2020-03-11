@@ -1,5 +1,4 @@
 2gua.rainbow-brackets
-NathanRidley.autotrim
 alefragnani.Bookmarks
 arcticicestudio.nord-visual-studio-code
 asvetliakov.run-current-test
@@ -33,10 +32,12 @@ ms-kubernetes-tools.vscode-kubernetes-tools
 ms-python.python
 ms-vscode.azure-account
 ms-vscode.cpptools
+ms-vscode.Go
 ms-vsliveshare.vsliveshare
 ms-vsliveshare.vsliveshare-audio
 msjsdiag.debugger-for-chrome
 mythmon.idl
+NathanRidley.autotrim
 nodesource.vscode-for-node-js-development-pack
 octref.vetur
 pranaygp.vscode-css-peek
