@@ -128,5 +128,14 @@
     "rust.all_features": true,
     "rust.rustup": {
         "toolchain": "nightly-x86_64-apple-darwin"
-    }
+    },
+    "createTest.testFolder": "brain/cerebellum/test",
+    "createTest.testFileExtension": ".test.js",
+    "createTest.srcFileExtension": ".js",
+    "createTest.srcFolder": "brain/cerebellum",
+    "createTest.testFileTemplate": [
+        "import test from 'ava';",
+        "import ${moduleName} from '${modulePath}';"
+    ],
+    "javascript.implicitProjectConfig.checkJs": true
 }
