@@ -2,6 +2,3 @@ Host hg.mozilla.org
 	HostName hg.mozilla.org
 	User me@michaelkohler.info
 	IdentityFile ~/.ssh/id_rsa
-
-Host *
-	UseKeychain yes
