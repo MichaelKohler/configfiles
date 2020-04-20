@@ -119,7 +119,11 @@
         "vs-kubernetes.helm-path": "/Users/mkohler/.vs-kubernetes/tools/helm/darwin-amd64/helm",
         "vs-kubernetes.draft-path": "/Users/mkohler/.vs-kubernetes/tools/draft/darwin-amd64/draft",
         "vs-kubernetes.kubectl-path": "/Users/mkohler/.vs-kubernetes/tools/kubectl/kubectl",
-        "vs-kubernetes.minikube-path.mac": "/Users/mkohler/.vs-kubernetes/tools/minikube/darwin-amd64/minikube"
+        "vs-kubernetes.minikube-path.mac": "/Users/mkohler/.vs-kubernetes/tools/minikube/darwin-amd64/minikube",
+        "vs-kubernetes.kubectl-path.linux": "/home/michael/.vs-kubernetes/tools/kubectl/kubectl",
+        "vs-kubernetes.helm-path.linux": "/home/michael/.vs-kubernetes/tools/helm/linux-amd64/helm",
+        "vs-kubernetes.minikube-path.linux": "/home/michael/.vs-kubernetes/tools/minikube/linux-amd64/minikube",
+        "vs-kubernetes.draft-path.linux": "/home/michael/.vs-kubernetes/tools/draft/linux-amd64/draft"
     },
     "workbench.iconTheme": "vscode-icons",
     "vsicons.dontShowNewVersionMessage": true,
