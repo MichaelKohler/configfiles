@@ -141,5 +141,6 @@
         "import test from 'ava';",
         "import ${moduleName} from '${modulePath}';"
     ],
-    "javascript.implicitProjectConfig.checkJs": true
+    "javascript.implicitProjectConfig.checkJs": true,
+    "editor.multiCursorModifier": "ctrlCmd"
 }
