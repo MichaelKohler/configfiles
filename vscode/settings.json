@@ -123,7 +123,11 @@
         "vs-kubernetes.kubectl-path.linux": "/home/michael/.vs-kubernetes/tools/kubectl/kubectl",
         "vs-kubernetes.helm-path.linux": "/home/michael/.vs-kubernetes/tools/helm/linux-amd64/helm",
         "vs-kubernetes.minikube-path.linux": "/home/michael/.vs-kubernetes/tools/minikube/linux-amd64/minikube",
-        "vs-kubernetes.draft-path.linux": "/home/michael/.vs-kubernetes/tools/draft/linux-amd64/draft"
+        "vs-kubernetes.draft-path.linux": "/home/michael/.vs-kubernetes/tools/draft/linux-amd64/draft",
+        "vs-kubernetes.kubectl-path.windows": "C:\\Users\\me\\.vs-kubernetes\\tools\\kubectl\\kubectl.exe",
+        "vs-kubernetes.minikube-path.windows": "C:\\Users\\me\\.vs-kubernetes\\tools\\minikube\\windows-amd64\\minikube.exe",
+        "vs-kubernetes.helm-path.windows": "C:\\Users\\me\\.vs-kubernetes\\tools\\helm\\windows-amd64\\helm.exe",
+        "vs-kubernetes.draft-path.windows": "C:\\Users\\me\\.vs-kubernetes\\tools\\draft\\windows-amd64\\draft.exe"
     },
     "workbench.iconTheme": "vscode-icons",
     "vsicons.dontShowNewVersionMessage": true,
