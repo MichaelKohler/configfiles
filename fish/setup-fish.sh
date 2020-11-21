@@ -7,7 +7,6 @@ rm fisher
 
 omf install bobthefish
 fisher add brigand/fast-nvm-fish
-fisher add rodrigobdz/fish-apple-touchbar
 fisher add oh-my-fish/plugin-bang-bang
 fisher add jethrokuan/fzf
 fisher add edc/bass
