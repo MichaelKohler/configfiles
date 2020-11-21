@@ -15,3 +15,5 @@ fisher add jethrokuan/z
 echo "function fish_greeting; end" > ~/.config/fish/functions/fish_greeting.fish
 
 set -U fish_user_paths
+
+echo "" > ~/.config/fish/setup_done
