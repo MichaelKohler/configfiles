@@ -5,7 +5,7 @@ chmod +x fisher
 fish -c "./fisher install jorgebucaran/fisher"
 rm fisher
 
-omf install bobthefish
+omf install eden
 fisher add brigand/fast-nvm-fish
 fisher add oh-my-fish/plugin-bang-bang
 fisher add jethrokuan/fzf
