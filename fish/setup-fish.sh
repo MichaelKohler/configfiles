@@ -1,37 +1,18 @@
-#!/bin/bash
+#!/bin/fish
 
-brew install fish
-echo '/usr/local/bin/fish' | sudo tee -a /etc/shells
-chsh -s /usr/local/bin/fish
+curl -sL git.io/fisher -o fisher
+chmod +x fisher
+fish -c "./fisher install jorgebucaran/fisher"
+rm fisher
 
-rm -rf ~/.config/fish/conf.d
-rm -rf ~/.config/fish/functions
-ln -s ~/configfiles/fish/conf.d ~/.config/fish/conf.d
-ln -s ~/configfiles/fish/functions ~/.config/fish/functions
-
-curl -L https://get.oh-my.fish | fish
-curl https://git.io/fisher --create-dirs -sLo ~/.config/fish/functions/fisher.fish
-
-pip install --user powerline-status
-brew tap caskroom/fonts
-brew cask install font-hack-nerd-font
-
-brew install terminal-notifier
-fisher add franciscolourenco/done
 omf install bobthefish
 fisher add brigand/fast-nvm-fish
 fisher add rodrigobdz/fish-apple-touchbar
 fisher add oh-my-fish/plugin-bang-bang
-
-brew install fzf
 fisher add jethrokuan/fzf
-
 fisher add edc/bass
 fisher add jethrokuan/z
 
 echo "function fish_greeting; end" > ~/.config/fish/functions/fish_greeting.fish
 
-fish
 set -U fish_user_paths
-
-echo "Don't forget to install the Hack font!"
