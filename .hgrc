@@ -23,13 +23,13 @@ progress =
 rebase = 
 histedit = 
 blackbox = 
-firefoxtree = /home/michael/.mozbuild/version-control-tools/hgext/firefoxtree
-push-to-try = /home/michael/.mozbuild/version-control-tools/hgext/push-to-try
+firefoxtree = /home/mkohler/.mozbuild/version-control-tools/hgext/firefoxtree
+push-to-try = /home/mkohler/.mozbuild/version-control-tools/hgext/push-to-try
 shelve = 
 absorb = 
-clang-format = /home/michael/.mozbuild/version-control-tools/hgext/clang-format
-js-format = /home/michael/.mozbuild/version-control-tools/hgext/js-format
-evolve = /home/michael/.mozbuild/evolve/hgext3rd/evolve
+clang-format = /home/mkohler/.mozbuild/version-control-tools/hgext/clang-format
+js-format = /home/mkohler/.mozbuild/version-control-tools/hgext/js-format
+evolve = /home/mkohler/.mozbuild/evolve/hgext3rd/evolve
 
 [diff]
 git = 1
