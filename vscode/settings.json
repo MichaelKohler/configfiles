@@ -152,5 +152,6 @@
     "IoTWorkbench.workbench": "C:\\Users\\me\\Documents\\IoTWorkbenchProjects",
     "C_Cpp.updateChannel": "Insiders",
     "terminal.integrated.shell.windows": "C:\\WINDOWS\\System32\\wsl.exe",
-    "tabnine.experimentalAutoImports": true
+    "tabnine.experimentalAutoImports": true,
+    "workbench.activityBar.visible": false
 }
