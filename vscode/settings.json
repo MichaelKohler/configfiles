@@ -151,5 +151,6 @@
     "arduino.additionalUrls": "https://raw.githubusercontent.com/VSChina/azureiotdevkit_tools/master/package_azureboard_index.json",
     "IoTWorkbench.workbench": "C:\\Users\\me\\Documents\\IoTWorkbenchProjects",
     "C_Cpp.updateChannel": "Insiders",
-    "terminal.integrated.shell.windows": "C:\\WINDOWS\\System32\\wsl.exe"
+    "terminal.integrated.shell.windows": "C:\\WINDOWS\\System32\\wsl.exe",
+    "tabnine.experimentalAutoImports": true
 }
