@@ -87,5 +87,11 @@
     "C_Cpp.updateChannel": "Insiders",
     "terminal.integrated.shell.windows": "C:\\WINDOWS\\System32\\wsl.exe",
     "tabnine.experimentalAutoImports": true,
-    "workbench.activityBar.visible": false
+    "workbench.activityBar.visible": false,
+    "terminal.integrated.copyOnSelection": true,
+    "terminal.integrated.cursorStyle": "line",
+    "terminal.integrated.minimumContrastRatio": 4.5,
+    "terminal.integrated.scrollback": 1000000,
+    "workbench.panel.defaultLocation": "right",
+    "terminal.integrated.cursorBlinking": true
 }
