@@ -1,7 +1,4 @@
 {
-    "codemetrics.basics.DecorationModeEnabled": false,
-    "codemetrics.basics.CodeLensEnabled": false,
-    "codemetrics.basics.DiagnosticsEnabled": false,
     "debug.inlineValues": true,
     "editor.autoIndent": true,
     "editor.minimap.enabled": false,
@@ -54,66 +51,11 @@
     "workbench.statusBar.feedback.visible": false,
     "terminal.integrated.rendererType": "dom",
     "javascript.updateImportsOnFileMove.enabled": true,
-    "workbench.useExperimentalGridLayout": true,
     "rust.mode": "legacy",
     "editor.gotoLocation.multiple": "goto",
     "workbench.tree.renderIndentGuides": "always",
     "editor.suggestSelection": "first",
     "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
-    "peacock.favoriteColors": [
-        {
-            "name": "Angular Red",
-            "value": "#b52e31"
-        },
-        {
-            "name": "Auth0 Orange",
-            "value": "#eb5424"
-        },
-        {
-            "name": "Azure Blue",
-            "value": "#007fff"
-        },
-        {
-            "name": "C# Purple",
-            "value": "#68217A"
-        },
-        {
-            "name": "Gatsby Purple",
-            "value": "#639"
-        },
-        {
-            "name": "Go Cyan",
-            "value": "#5dc9e2"
-        },
-        {
-            "name": "Java Blue-Gray",
-            "value": "#557c9b"
-        },
-        {
-            "name": "JavaScript Yellow",
-            "value": "#f9e64f"
-        },
-        {
-            "name": "Mandalorian Blue",
-            "value": "#1857a4"
-        },
-        {
-            "name": "Node Green",
-            "value": "#215732"
-        },
-        {
-            "name": "React Blue",
-            "value": "#00b3e6"
-        },
-        {
-            "name": "Something Different",
-            "value": "#832561"
-        },
-        {
-            "name": "Vue Green",
-            "value": "#42b883"
-        }
-    ],
     "vs-kubernetes": {
         "vs-kubernetes.minikube-path": "/Users/mkohler/.vs-kubernetes/tools/minikube/darwin-amd64/minikube",
         "vs-kubernetes.helm-path": "/Users/mkohler/.vs-kubernetes/tools/helm/darwin-amd64/helm",
@@ -137,14 +79,6 @@
     "rust.rustup": {
         "toolchain": "nightly-x86_64-apple-darwin"
     },
-    "createTest.testFolder": "brain/cerebellum/test",
-    "createTest.testFileExtension": ".test.js",
-    "createTest.srcFileExtension": ".js",
-    "createTest.srcFolder": "brain/cerebellum",
-    "createTest.testFileTemplate": [
-        "import test from 'ava';",
-        "import ${moduleName} from '${modulePath}';"
-    ],
     "javascript.implicitProjectConfig.checkJs": true,
     "editor.multiCursorModifier": "ctrlCmd",
     "arduino.path": "C:\\Program Files (x86)\\Arduino",
