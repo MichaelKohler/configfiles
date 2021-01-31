@@ -3,9 +3,3 @@
 ```
 ./create_symlinks.sh
 ```
-
-## Install Fish
-
-```
-./fish/setup-fish.sh
-```
