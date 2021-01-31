@@ -78,7 +78,7 @@
     // To learn more about color schemes, visit https://aka.ms/terminal-color-schemes
     "schemes": [{
         "name" : "nord",
-        "background" : "#2e3440",
+        "background" : "#20242c",
         "foreground" : "#d8dee9",
         "black": "#3b4252",
         "blue": "#81a1c1",
