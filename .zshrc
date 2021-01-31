@@ -21,6 +21,11 @@ autoload -U compinit
 compinit
 
 
+# PLUGINS
+fpath+=$HOME/.zsh/zsh-completions
+source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+
 # ALIAS
 
 alias enc="pushd ~/Desktop && tar -cvf enc.tar.gz enc && gpg -c enc.tar.gz && rm -rf enc enc.tar.gz && popd && mv -f ~/Desktop/enc.tar.gz.gpg ."
