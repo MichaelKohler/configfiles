@@ -5,3 +5,4 @@ ln -s ~/configfiles/.ssh_config ~/.ssh/config
 ln -s ~/configfiles/.gitconfig ~/.gitconfig
 ln -s ~/configfiles/.hgrc ~/.hgrc
 ln -s ~/configfiles/.vimrc ~/.vimrc
+ln -s ~/configfiles/.zshrc ~/.zshrc
