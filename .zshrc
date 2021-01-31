@@ -17,14 +17,13 @@ setopt hist_save_no_dups
 
 setopt autocd autopushd
 
-autoload -U compinit
-compinit
-
 
 # PLUGINS
 fpath+=$HOME/.zsh/zsh-completions
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 
+autoload -U compinit
+compinit
 
 # ALIAS
 
