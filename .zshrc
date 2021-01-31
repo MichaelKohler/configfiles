@@ -4,6 +4,18 @@ autoload -U promptinit; promptinit
 prompt pure
 
 
+# ZSH OPTIONS
+
+setopt hist_ignore_all_dups
+setopt hist_reduce_blanks
+setopt inc_append_history
+setopt share_history
+setopt autocd autopushd
+
+autoload -U compinit
+compinit
+
+
 # ALIAS
 
 alias enc="pushd ~/Desktop && tar -cvf enc.tar.gz enc && gpg -c enc.tar.gz && rm -rf enc enc.tar.gz && popd && mv -f ~/Desktop/enc.tar.gz.gpg ."
