@@ -1,7 +1,33 @@
 # PURE
+
+## Halloween Theme..
+# typeset -A pure_halloween_scheme=(
+# 	color1 "#D94E49" # English Vermillion
+# 	color2 "#f2f1e8" # Onyx
+# 	color3 "#EE7867" # Coral Reef
+# 	color4 "#F2C359" # Maize (Crayola)
+# 	color5 "#E2B44E" # Sunray
+# 	color6 "#494F55" # Quartz
+# )
+
+# zstyle :prompt:pure:execution_time      color $pure_halloween_scheme[color3]
+# zstyle :prompt:pure:git:arrow           color $pure_halloween_scheme[color5]
+# zstyle :prompt:pure:git:branch          color $pure_halloween_scheme[color2]
+# zstyle :prompt:pure:git:branch:cached   color $pure_halloween_scheme[color1]
+# zstyle :prompt:pure:git:dirty           color $pure_halloween_scheme[color4]
+# zstyle :prompt:pure:host                color $pure_halloween_scheme[color6]
+# zstyle :prompt:pure:path                color $pure_halloween_scheme[color1]
+# zstyle :prompt:pure:prompt:error        color $pure_halloween_scheme[color1]
+# zstyle :prompt:pure:prompt:success      color $pure_halloween_scheme[color4]
+# zstyle :prompt:pure:user                color $pure_halloween_scheme[color4]
+# zstyle :prompt:pure:user:root           color $pure_halloween_scheme[color3]
+# zstyle :prompt:pure:virtualenv          color $pure_halloween_scheme[color6]
+
 fpath+=$HOME/.zsh/pure
 autoload -U promptinit; promptinit
 prompt pure
+prompt_newline='%666v'
+PROMPT=" $PROMPT"
 
 
 # ZSH OPTIONS
@@ -21,6 +47,15 @@ setopt autocd autopushd
 # PLUGINS
 fpath+=$HOME/.zsh/zsh-completions
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+kubectl () {
+    command kubectl $*
+    if [[ -z $KUBECTL_COMPLETE ]]
+    then
+        source <(command kubectl completion zsh)
+        KUBECTL_COMPLETE=1
+    fi
+}
 
 autoload -U compinit
 compinit
