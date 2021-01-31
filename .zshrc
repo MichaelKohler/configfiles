@@ -6,10 +6,15 @@ prompt pure
 
 # ZSH OPTIONS
 
-setopt hist_ignore_all_dups
-setopt hist_reduce_blanks
+export HISTFILE=~/.zsh_history
+export HISTSIZE=90000000000
+export SAVEHIST=$HISTSIZE
 setopt inc_append_history
 setopt share_history
+setopt hist_find_no_dups
+setopt hist_ignore_space
+setopt hist_save_no_dups
+
 setopt autocd autopushd
 
 autoload -U compinit
