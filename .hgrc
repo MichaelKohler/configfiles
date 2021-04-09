@@ -1,19 +1,11 @@
-%include ~/.hgrcbugzilla
-
 [ui]
 username = Michael Kohler <me@michaelkohler.info>
 interface = curses
 tweakdefaults = true
+merge= :merge
 
 [defaults]
 diff = -U 8 -p
-qdiff = -U 8 -p
-qseries = -v
-qnew = -Ue
-
-[hooks]
-# Prevent "hg pull" if MQ patches are applied.
-prechangegroup.mq-no-pull = ! hg qtop > /dev/null 2>&1
 
 [extensions]
 hgext.purge = 
@@ -35,9 +27,6 @@ evolve = /home/mkohler/.mozbuild/evolve/hgext3rd/evolve
 git = 1
 showfunc = 1
 unified = 8
-
-[mozilla]
-ircnick = mkohler
 
 [paths]
 try = ssh://hg.mozilla.org/try
@@ -68,7 +57,9 @@ wip.user = magenta
 
 [experimental]
 graphshorten = true
+
 [extdata]
 get_ignored_changesets = shell:cat `hg root`/.hg-annotate-ignore-revs 2> /dev/null || true
+
 [rebase]
 experimental.inmemory = yes
