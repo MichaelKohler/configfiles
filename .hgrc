@@ -22,6 +22,7 @@ absorb =
 clang-format = /home/mkohler/.mozbuild/version-control-tools/hgext/clang-format
 js-format = /home/mkohler/.mozbuild/version-control-tools/hgext/js-format
 evolve = /home/mkohler/.mozbuild/evolve/hgext3rd/evolve
+strip =
 
 [diff]
 git = 1
