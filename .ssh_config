@@ -3,9 +3,6 @@ Host hg.mozilla.org
 	User me@michaelkohler.info
 	IdentityFile ~/.ssh/id_rsa
 
-Host *
-	UseKeychain yes
-
 Host mk-dev-env.michael.network
 	HostName mk-dev-env.michael.network
 	IdentityFile ~/Documents/mk-dev-env.pem
