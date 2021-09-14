@@ -1,27 +1,17 @@
 # PURE
 
-## Halloween Theme..
-# typeset -A pure_halloween_scheme=(
-# 	color1 "#D94E49" # English Vermillion
-# 	color2 "#f2f1e8" # Onyx
-# 	color3 "#EE7867" # Coral Reef
-# 	color4 "#F2C359" # Maize (Crayola)
-# 	color5 "#E2B44E" # Sunray
-# 	color6 "#494F55" # Quartz
-# )
-
-# zstyle :prompt:pure:execution_time      color $pure_halloween_scheme[color3]
-# zstyle :prompt:pure:git:arrow           color $pure_halloween_scheme[color5]
-# zstyle :prompt:pure:git:branch          color $pure_halloween_scheme[color2]
-# zstyle :prompt:pure:git:branch:cached   color $pure_halloween_scheme[color1]
-# zstyle :prompt:pure:git:dirty           color $pure_halloween_scheme[color4]
-# zstyle :prompt:pure:host                color $pure_halloween_scheme[color6]
-# zstyle :prompt:pure:path                color $pure_halloween_scheme[color1]
-# zstyle :prompt:pure:prompt:error        color $pure_halloween_scheme[color1]
-# zstyle :prompt:pure:prompt:success      color $pure_halloween_scheme[color4]
-# zstyle :prompt:pure:user                color $pure_halloween_scheme[color4]
-# zstyle :prompt:pure:user:root           color $pure_halloween_scheme[color3]
-# zstyle :prompt:pure:virtualenv          color $pure_halloween_scheme[color6]
+zstyle :prompt:pure:execution_time      color "#A7BBEC"
+zstyle :prompt:pure:git:arrow           color "#EE7867"
+zstyle :prompt:pure:git:branch          color "#EFE9F4"
+zstyle :prompt:pure:git:branch:cached   color "#EE7867"
+zstyle :prompt:pure:git:dirty           color "#EE7867"
+zstyle :prompt:pure:host                color "#BEE7E8"
+zstyle :prompt:pure:path                color "#A7BBEC"
+zstyle :prompt:pure:prompt:error        color "#EE7867"
+zstyle :prompt:pure:prompt:success      color "#DDF8E8"
+zstyle :prompt:pure:user                color "#AE8799"
+zstyle :prompt:pure:user:root           color "#DB2763"
+zstyle :prompt:pure:virtualenv          color "#BEE7E8"
 
 fpath+=$HOME/.zsh/pure
 autoload -U promptinit; promptinit
