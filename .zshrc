@@ -50,6 +50,7 @@ kubectl () {
 autoload -U compinit
 compinit
 
+
 # ALIAS
 
 alias enc="pushd ~/Desktop && tar -cvf enc.tar.gz enc && gpg -c enc.tar.gz && rm -rf enc enc.tar.gz && popd && mv -f ~/Desktop/enc.tar.gz.gpg ."
@@ -61,6 +62,8 @@ alias kmini="kubectl config use-context minikube"
 
 alias weather="curl -4 http://wttr.in/Berlin\?m"
 alias metar="curl -4 'https://www.aviationweather.gov/adds/dataserver_current/httpparam?dataSource=metars&requestType=retrieve&format=xml&stationString=EDDT&hoursBeforeNow=1'"
+
+alias ll="ls -al"
 
 
 # EXPORTS
