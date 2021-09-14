@@ -23,7 +23,7 @@ PROMPT=" $PROMPT"
 # ZSH OPTIONS
 
 export HISTFILE=~/.zsh_history
-export HISTSIZE=90000000000
+export HISTSIZE=999999
 export SAVEHIST=$HISTSIZE
 setopt inc_append_history
 setopt share_history
