@@ -2,7 +2,7 @@
 username = Michael Kohler <me@michaelkohler.info>
 interface = curses
 tweakdefaults = true
-merge= :merge
+merge = :merge
 
 [defaults]
 diff = -U 8 -p
@@ -22,7 +22,8 @@ absorb =
 clang-format = /home/mkohler/.mozbuild/version-control-tools/hgext/clang-format
 js-format = /home/mkohler/.mozbuild/version-control-tools/hgext/js-format
 evolve = /home/mkohler/.mozbuild/evolve/hgext3rd/evolve
-strip =
+strip = 
+show = 
 
 [diff]
 git = 1
