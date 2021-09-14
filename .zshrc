@@ -61,7 +61,7 @@ alias kdo="kubectl config use-context do"
 alias kmini="kubectl config use-context minikube"
 
 alias weather="curl -4 http://wttr.in/Berlin\?m"
-alias metar="curl -4 'https://www.aviationweather.gov/adds/dataserver_current/httpparam?dataSource=metars&requestType=retrieve&format=xml&stationString=EDDT&hoursBeforeNow=1'"
+alias metar="curl -4 'https://www.aviationweather.gov/adds/dataserver_current/httpparam?dataSource=metars&requestType=retrieve&format=xml&stationString=EDDB&hoursBeforeNow=1'"
 
 alias ll="ls -al --color=auto"
 
