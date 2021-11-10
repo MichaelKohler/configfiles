@@ -2,7 +2,9 @@
     "breadcrumbs.enabled": true,
     "debug.inlineValues": true,
     "editor.autoIndent": "full",
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.fontSize": 13,
+    "editor.formatOnSave": true,
     "editor.minimap.enabled": false,
     "editor.multiCursorModifier": "ctrlCmd",
     "editor.renderWhitespace": "all",
@@ -27,6 +29,8 @@
     "gitlens.keymap": "alternate",
     "javascript.updateImportsOnFileMove.enabled": "always",
     "merge-conflict.autoNavigateNextConflict.enabled": true,
+    "prettier.requireConfig": true,
+    "redhat.telemetry.enabled": false,
     "rust.all_features": true,
     "rust-client.updateOnStartup": true,
     "search.exclude": {
@@ -53,11 +57,10 @@
     "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
     "window.openFoldersInNewWindow": "on",
     "window.restoreWindows": "folders",
-    "window.zoomLevel": 0,
     "workbench.activityBar.visible": false,
     "workbench.colorTheme": "Nord",
     "workbench.iconTheme": "vscode-icons",
     "workbench.panel.defaultLocation": "right",
     "workbench.startupEditor": "newUntitledFile",
-    "workbench.tree.renderIndentGuides": "always",
+    "workbench.tree.renderIndentGuides": "always"
 }
