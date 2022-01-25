@@ -67,9 +67,7 @@ alias ll="ls -al --color=auto"
 
 
 # EXPORTS
+export VOLTA_HOME="$HOME/.volta"
 
-export PATH="$PATH:$HOME/.cargo/bin:/usr/local/bin:$HOME/.local/bin:/snap/bin"
+export PATH="$PATH:$VOLTA_HOME/bin:$HOME/.cargo/bin:/usr/local/bin:$HOME/.local/bin:/snap/bin"
 export GPG_TTY=$(tty)
-
-export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
