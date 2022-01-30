@@ -68,5 +68,5 @@ alias ll="ls -al --color=auto"
 # EXPORTS
 export VOLTA_HOME="$HOME/.volta"
 
-export PATH="$PATH:$VOLTA_HOME/bin:$HOME/.cargo/bin:/usr/local/bin:$HOME/.local/bin:/snap/bin"
+export PATH="$VOLTA_HOME/bin:$HOME/.cargo/bin:/usr/local/bin:$HOME/.local/bin:/snap/bin:$PATH"
 export GPG_TTY=$(tty)
