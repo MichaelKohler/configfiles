@@ -30,6 +30,7 @@
     "javascript.updateImportsOnFileMove.enabled": "always",
     "merge-conflict.autoNavigateNextConflict.enabled": true,
     "prettier.requireConfig": true,
+    "prettier.useEditorConfig": false,
     "redhat.telemetry.enabled": false,
     "rust.all_features": true,
     "rust-client.updateOnStartup": true,
