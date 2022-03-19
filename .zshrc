@@ -71,3 +71,7 @@ export VOLTA_HOME="$HOME/.volta"
 export PATH="$VOLTA_HOME/bin:$HOME/.cargo/bin:/usr/local/bin:/sbin:$HOME/.local/bin:/snap/bin:$PATH"
 export PATH="/home/mkohler/.mozbuild/git-cinnabar:$PATH"
 export GPG_TTY=$(tty)
+
+export FLYCTL_INSTALL="/home/mkohler/.fly"
+export PATH="$FLYCTL_INSTALL/bin:$PATH"
+
