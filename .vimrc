@@ -37,8 +37,8 @@ set autoindent           " I don't want to indent on every line manually
 set copyindent           " I want the same amount of spaces/tabs on each line
 set linebreak            " Lines should be broken at the end of words
 
-color forest-night
-colorscheme forest-night
+color everforest
+colorscheme everforest
 set background=dark
 
 " ------------------------------------------------------------------------------
