@@ -1,9 +1,24 @@
-" .vimrc file
-" created by Ayekat in 2010-01
-" source: http://www.vi-improved.org/vimrc.php
-"         http://www.apaulodesign.com/vimrc.html
-"         http://phd.pp.ru/Software/dotfiles/vimrc.html
+" initially created by Ayekat in 2010-01
+" further adjusted by Michael
 
+call plug#begin()
+Plug 'arcticicestudio/nord-vim'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'scrooloose/nerdtree'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+call plug#end()
+
+" ------------------------------------------------------------------------------
+"  NERDTREE
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * NERDTree | if argc() > 0 || exists("s:std_in") | wincmd p | endif
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+nnoremap <C-n> :NERDTree<CR>
+nnoremap <C-t> :NERDTreeToggle<CR>
+nnoremap <C-f> :NERDTreeFind<CR>
+let NERDTreeShowHidden=1
+let g:NERDTreeWinSize=50
 
 " ------------------------------------------------------------------------------
 " LOOK'N'FEEL
@@ -22,6 +37,9 @@ set autoindent           " I don't want to indent on every line manually
 set copyindent           " I want the same amount of spaces/tabs on each line
 set linebreak            " Lines should be broken at the end of words
 
+color forest-night
+colorscheme forest-night
+set background=dark
 
 " ------------------------------------------------------------------------------
 " CONTROLLING
@@ -36,6 +54,9 @@ set smartcase            " ... except majuscule in search term
 
 set nrformats+=alpha     " Letters can also be manipulated with Ctrl-X/Ctrl-A
 
+" ------------------------------------------------------------------------------
+"  KEYMAPPING
+
 " For long, wrapped lines the 'j' and 'k' buttons are a bit irritating. They
 " ignore the visual next/former line, causing the cursor to jump several lines
 " at once. To get to the next visual line, the 'gj' and 'gk' buttons exist.
@@ -46,3 +67,4 @@ map <Up> gk
 map <Down> gj
 imap <Up> <Esc>gka
 imap <Down> <Esc>gja
+
