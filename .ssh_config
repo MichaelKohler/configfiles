@@ -3,7 +3,7 @@ Host hg.mozilla.org
 	User me@michaelkohler.info
 	IdentityFile ~/.ssh/id_rsa
 
-Host mk-dev-env.michael.network
-	HostName mk-dev-env.michael.network
-	IdentityFile ~/Documents/mk-dev-env.pem
-	User ubuntu
+Host mk-private-env.michael.network
+	HostName mk-private-env.michael.network
+	User admin
+	IdentityFile ~/Documents/private-env.pem
