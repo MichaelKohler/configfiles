@@ -1,8 +1,9 @@
 {
     "breadcrumbs.enabled": true,
-    "debug.inlineValues": true,
+    "debug.inlineValues": "on",
     "editor.autoIndent": "full",
     "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.experimental.stickyScroll.enabled": true,
     "editor.fontSize": 13,
     "editor.formatOnSave": true,
     "editor.inlineSuggest.enabled": true,
