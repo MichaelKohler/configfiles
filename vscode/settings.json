@@ -49,7 +49,6 @@
       "**/_site": true,
       "**/.tox": true
     },
-    "tabnine.experimentalAutoImports": true,
     "terminal.integrated.copyOnSelection": true,
     "terminal.integrated.cursorBlinking": true,
     "terminal.integrated.cursorStyle": "line",
@@ -66,4 +65,4 @@
     "workbench.panel.defaultLocation": "right",
     "workbench.startupEditor": "newUntitledFile",
     "workbench.tree.renderIndentGuides": "always"
-  }
+}
