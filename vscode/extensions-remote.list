@@ -1,23 +1,21 @@
+Extensions installed on WSL: Ubuntu:
 DavidAnson.vscode-markdownlint
 dbaeumer.vscode-eslint
 eamodio.gitlens
 EditorConfig.EditorConfig
 esbenp.prettier-vscode
 firsttris.vscode-jest-runner
-HookyQR.beautify
+hashicorp.terraform
 ms-azuretools.vscode-azurefunctions
 ms-azuretools.vscode-azureresourcegroups
 ms-dotnettools.vscode-dotnet-runtime
 ms-python.python
 ms-python.vscode-pylance
-ms-toolsai.jupyter
-ms-toolsai.jupyter-renderers
 ms-vscode.azure-account
 Prisma.prisma
 redhat.vscode-yaml
-royaction.color-manager
-rust-lang.rust
 rust-lang.rust-analyzer
 searKing.preview-vscode
-streetsidesoftware.code-spell-checker
+VisualStudioExptTeam.intellicode-api-usage-examples
 VisualStudioExptTeam.vscodeintellicode
+ZixuanChen.vitest-explorer
