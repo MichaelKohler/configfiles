@@ -14,27 +14,32 @@ foreach ($uwp in $uwpRubbishApps) {
     Get-AppxPackage -Name $uwp | Remove-AppxPackage
 }
 
-Write-Host "Installing Chocolatey"
-Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-
-Write-Host "Installing Applications"
-
 $apps = @(
-    "winrar",
-    "googlechrome",
-    "vlc",
-    "wget",
-    "vscode",
-    "sysinternals",
-    "insomnia-rest-api-client",
-    "nodejs",
-    "docker-desktop",
-    "spotify",
-    "protonvpn"
+    "Docker.DockerDesktop",
+    "Git.Git",
+    "Google.Chrome",
+    "Insomnia.Insomnia",
+    "Joplin.Joplin",
+    "KDE.Krita",
+    "Microsoft.PowerToys"
+    "Microsoft.VisualStudio.2019.Community",
+    "Microsoft.VisualStudioCode",
+    "Mozilla.Firefox.Nightly",
+    "Mozilla.VPN",
+    "Nextcloud.NextcloudDesktop",
+    "OBSProject.OBSStudio",
+    "OpenJS.NodeJS",
+    "ProtonTechnologies.ProtonVPN",
+    "RARLab.WinRAR",
+    "RaspberryPiFoundation.RaspberryPiImager",
+    "VideoLAN.VLC",
+    "VMware.WorkstationPlayer",
+    "ZeroTier.ZeroTierOne",
+    "Zoom.Zoom"
 )
 
 foreach ($app in $apps) {
-    choco install $app -y
+    winget install $app
 }
 
 Write-Host "TODO:"
@@ -44,5 +49,3 @@ Write-Host "    - Remove unwanted programs"
 Write-Host "    - Windows Update Channel"
 Write-Host "    - General Windows settings"
 Write-Host "    - Windows Features -> WSL + wsl --set-default-version 2"
-Write-Host ""
-Write-Host "Don't forget to install Firefox, Tresorit and some Linux magic!"
