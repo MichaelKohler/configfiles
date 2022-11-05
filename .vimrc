@@ -43,9 +43,10 @@ set autoindent           " I don't want to indent on every line manually
 set copyindent           " I want the same amount of spaces/tabs on each line
 set linebreak            " Lines should be broken at the end of words
 
-color everforest
-colorscheme everforest
+color nord
+colorscheme nord
 set background=dark
+let g:airline_theme='deus'
 
 " ------------------------------------------------------------------------------
 " CONTROLLING
