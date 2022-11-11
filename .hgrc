@@ -35,9 +35,6 @@ unified = 8
 [paths]
 try = ssh://hg.mozilla.org/try
 
-[pager]
-pager = LESS=FRSXQ less
-
 [alias]
 wip = log --graph --rev=wip --template=wip
 smart-annotate = annotate -w --skip ignored_changesets
