@@ -1,8 +1,8 @@
 [ui]
 username = Michael Kohler <me@michaelkohler.info>
-interface = curses
+interface = text
 tweakdefaults = true
-merge = :merge
+merge = code
 
 [defaults]
 diff = -U 8 -p
@@ -24,6 +24,8 @@ js-format = /home/mkohler/.mozbuild/version-control-tools/hgext/js-format
 evolve = /home/mkohler/.mozbuild/evolve/hgext3rd/evolve
 strip = 
 show = 
+extdiff = 
+fsmonitor = 
 
 [diff]
 git = 1
@@ -65,3 +67,12 @@ get_ignored_changesets = shell:cat `hg root`/.hg-annotate-ignore-revs 2> /dev/nu
 
 [rebase]
 experimental.inmemory = yes
+
+[merge-tools]
+code.priority = 100
+code.premerge = True
+code.args = --wait --merge $other $local $base $output
+
+[extdiff]
+cmd.vsd = code
+opts.vsd = --wait --diff
