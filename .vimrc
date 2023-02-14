@@ -74,4 +74,3 @@ map <Up> gk
 map <Down> gj
 imap <Up> <Esc>gka
 imap <Down> <Esc>gja
-

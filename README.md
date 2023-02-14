@@ -12,3 +12,7 @@ ln -s ~/configfiles/.hgrc ~/.hgrc
 ln -s ~/configfiles/.vimrc ~/.vimrc
 ln -s ~/configfiles/.zshrc ~/.zshrc
 ```
+
+## Vim
+
+Remember: `Ctrl+W Ctrl+W` to switch between panes
