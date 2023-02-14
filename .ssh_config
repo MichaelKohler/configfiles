@@ -1,9 +1,9 @@
 Host hg.mozilla.org
-	HostName hg.mozilla.org
-	User me@michaelkohler.info
-	IdentityFile ~/.ssh/id_rsa
+  HostName hg.mozilla.org
+  User me@michaelkohler.info
+  IdentityFile ~/.ssh/id_rsa
 
 Host mk-private-env.michael.network
-	HostName mk-private-env.michael.network
-	User admin
-	IdentityFile ~/Documents/private-env.pem
+  HostName mk-private-env.michael.network
+  User admin
+  IdentityFile ~/Documents/private-env.pem
