@@ -13,16 +13,9 @@
     lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
     ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
     last = log -1 HEAD
-    puma = pull origin master
-    st = status
-    co = commit -m
-    fe = fetch
-    me = merge
     adda = add --all
-    unstage = reset HEAD --
     filelog = log -u
     findfile = "!git ls-files | grep -i"
-    grep = grep -Ii
     listalias = "!git config -l | grep alias | cut -c 7-"
 [color]
     branch = auto
@@ -35,4 +28,4 @@
 [difftool "vscode"]
     cmd = code --wait --diff $LOCAL $REMOTE
 [pull]
-	rebase = false
+    rebase = false
