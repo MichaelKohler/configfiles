@@ -33,7 +33,7 @@ $apps = @(
     "RARLab.WinRAR",
     "RaspberryPiFoundation.RaspberryPiImager",
     "VideoLAN.VLC",
-    "VMware.WorkstationPlayer",
+    "Oracle.VirtualBox",
     "ZeroTier.ZeroTierOne",
     "Zoom.Zoom"
 )
