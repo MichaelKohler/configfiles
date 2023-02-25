@@ -110,5 +110,14 @@
     "key": "shift+ctrl+n",
     "command": "explorer.newFolder",
     "when": "explorerViewletVisible && filesExplorerFocus  && !inputFocus"
+  },
+
+  {
+    "key": "shift+alt+l",
+    "command": "editor.action.insertSnippet",
+    "when": "editorFocus",
+    "args": {
+      "snippet": "console.log('🚀🚀🕵️ ${TM_SELECTED_TEXT}$1 🕵️🚀🚀', ${TM_SELECTED_TEXT}$2);"
+    }
   }
 ]
