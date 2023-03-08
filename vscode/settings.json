@@ -61,6 +61,7 @@
   "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
   "window.openFoldersInNewWindow": "on",
   "window.restoreWindows": "folders",
+  "window.titleBarStyle": "custom",
   "workbench.activityBar.visible": false,
   "workbench.colorTheme": "Nord",
   "workbench.editor.showTabs": false,
