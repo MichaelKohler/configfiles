@@ -1,6 +1,5 @@
 [ui]
 username = Michael Kohler <me@michaelkohler.info>
-interface = text
 tweakdefaults = true
 merge = code
 
