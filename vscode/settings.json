@@ -22,6 +22,10 @@
   "editor.trimAutoWhitespace": true,
   "explorer.confirmDragAndDrop": false,
   "explorer.openEditors.visible": 0,
+  "files.associations": {
+    "*.jsm": "javascript",
+    "*.sjs": "javascript"
+  },
   "files.autoSave": "afterDelay",
   "files.exclude": {
     "obj-*": true
