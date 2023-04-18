@@ -23,6 +23,12 @@
   "explorer.confirmDragAndDrop": false,
   "explorer.openEditors.visible": 0,
   "files.autoSave": "afterDelay",
+  "files.exclude": {
+    "obj-*": true
+  },
+  "files.watcherExclude": {
+    "obj-*": true
+  },
   "gitlens.advanced.messages": {
     "suppressCommitHasNoPreviousCommitWarning": false,
     "suppressCommitNotFoundWarning": false,
@@ -48,7 +54,8 @@
     "**/coverage": true,
     "**/www": true,
     "**/_site": true,
-    "**/.tox": true
+    "**/.tox": true,
+    "**/obj-*": true
   },
   "terminal.integrated.copyOnSelection": true,
   "terminal.integrated.cursorBlinking": true,
