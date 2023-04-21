@@ -5,6 +5,7 @@ eamodio.gitlens
 EditorConfig.EditorConfig
 esbenp.prettier-vscode
 GitHub.github-vscode-theme
+github.vscode-github-actions
 mikestead.dotenv
 ms-azuretools.vscode-azureresourcegroups
 ms-playwright.playwright
@@ -19,7 +20,6 @@ ms-toolsai.vscode-jupyter-slideshow
 ms-vscode-remote.remote-containers
 ms-vscode-remote.remote-ssh
 ms-vscode-remote.remote-ssh-edit
-ms-vscode-remote.remote-wsl
 ms-vscode-remote.vscode-remote-extensionpack
 ms-vscode.azure-account
 ms-vscode.remote-explorer
