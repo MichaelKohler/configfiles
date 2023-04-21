@@ -1,11 +1,13 @@
 alefragnani.Bookmarks
 arcticicestudio.nord-visual-studio-code
 DavidAnson.vscode-markdownlint
+dbaeumer.vscode-eslint
 eamodio.gitlens
 EditorConfig.EditorConfig
 esbenp.prettier-vscode
 GitHub.github-vscode-theme
 github.vscode-github-actions
+hashicorp.terraform
 mikestead.dotenv
 ms-azuretools.vscode-azureresourcegroups
 ms-playwright.playwright
