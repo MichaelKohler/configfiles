@@ -4,6 +4,7 @@
   "diffEditor.ignoreTrimWhitespace": false,
   "editor.autoIndent": "full",
   "editor.copyWithSyntaxHighlighting": false,
+  "editor.defaultColorDecorators": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.emptySelectionClipboard": false,
   "editor.fontFamily": "'Source Code Pro Regular'",
