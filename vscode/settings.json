@@ -54,7 +54,6 @@
     "**/_site": true,
     "**/bower_components": true,
     "**/coverage": true,
-    "**/data": true,
     "**/dist": true,
     "**/node_modules": true,
     "**/report-html": true,
