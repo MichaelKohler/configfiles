@@ -1,12 +1,12 @@
 # PURE
 
-zstyle :prompt:pure:execution_time      color "#A7BBEC"
+zstyle :prompt:pure:execution_time      color "#88C0D0"
 zstyle :prompt:pure:git:arrow           color "#EE7867"
 zstyle :prompt:pure:git:branch          color "#EFE9F4"
 zstyle :prompt:pure:git:branch:cached   color "#EE7867"
 zstyle :prompt:pure:git:dirty           color "#EE7867"
 zstyle :prompt:pure:host                color "#AE8799"
-zstyle :prompt:pure:path                color "#A7BBEC"
+zstyle :prompt:pure:path                color "#88C0D0"
 zstyle :prompt:pure:prompt:error        color "#EE7867"
 zstyle :prompt:pure:prompt:success      color "#DDF8E8"
 zstyle :prompt:pure:user                color "#AE8799"
