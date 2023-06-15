@@ -11,6 +11,7 @@
   "editor.fontSize": 13,
   "editor.formatOnSave": true,
   "editor.inlineSuggest.enabled": true,
+  "editor.linkedEditing": true,
   "editor.minimap.enabled": false,
   "editor.multiCursorModifier": "ctrlCmd",
   "editor.renderWhitespace": "all",
@@ -22,7 +23,6 @@
   },
   "editor.trimAutoWhitespace": true,
   "explorer.confirmDragAndDrop": false,
-  "explorer.openEditors.visible": 0,
   "files.associations": {
     "*.jsm": "javascript",
     "*.sjs": "javascript"
