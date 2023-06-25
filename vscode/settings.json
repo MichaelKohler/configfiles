@@ -1,5 +1,6 @@
 {
   "breadcrumbs.enabled": true,
+  "debug.allowBreakpointsEverywhere": true,
   "debug.inlineValues": "on",
   "diffEditor.ignoreTrimWhitespace": false,
   "editor.autoIndent": "full",
