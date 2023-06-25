@@ -30,6 +30,7 @@ mythmon.idl
 PKief.material-icon-theme
 Prisma.prisma
 redhat.vscode-yaml
+rust-lang.rust-analyzer
 searKing.preview-vscode
 SimonSiefke.svg-preview
 TabNine.tabnine-vscode
