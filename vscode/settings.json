@@ -49,6 +49,7 @@
   "prettier.requireConfig": true,
   "prettier.useEditorConfig": false,
   "redhat.telemetry.enabled": false,
+  "rust-analyzer.inlayHints.typeHints.enable": false,
   "search.exclude": {
     "**/.tmp": true,
     "**/.tox": true,
