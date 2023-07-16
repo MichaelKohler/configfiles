@@ -8,8 +8,8 @@
   "editor.defaultColorDecorators": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.emptySelectionClipboard": false,
-  "editor.fontFamily": "'Source Code Pro Regular'",
-  "editor.fontSize": 13,
+  "editor.fontFamily": "'IntelOne Mono Light'",
+  "editor.fontSize": 14,
   "editor.formatOnSave": true,
   "editor.inlineSuggest.enabled": true,
   "editor.linkedEditing": true,
@@ -19,9 +19,6 @@
   "editor.stickyScroll.enabled": true,
   "editor.suggestSelection": "first",
   "editor.tabSize": 2,
-  "editor.tokenColorCustomizations": {
-    "comments": "#BF616A"
-  },
   "editor.trimAutoWhitespace": true,
   "explorer.confirmDragAndDrop": false,
   "files.associations": {
@@ -77,7 +74,7 @@
   "window.restoreWindows": "folders",
   "window.titleBarStyle": "custom",
   "workbench.activityBar.visible": false,
-  "workbench.colorTheme": "Nord",
+  "workbench.colorTheme": "Night Owl Light",
   "workbench.iconTheme": "material-icon-theme",
   "workbench.panel.defaultLocation": "right",
   "workbench.sideBar.location": "right",

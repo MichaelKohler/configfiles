@@ -8,6 +8,7 @@ esbenp.prettier-vscode
 GitHub.github-vscode-theme
 github.vscode-github-actions
 hashicorp.terraform
+merithayan.polar
 mikestead.dotenv
 ms-azuretools.vscode-azureresourcegroups
 ms-playwright.playwright
@@ -31,6 +32,7 @@ PKief.material-icon-theme
 Prisma.prisma
 redhat.vscode-yaml
 rust-lang.rust-analyzer
+sdras.night-owl
 searKing.preview-vscode
 SimonSiefke.svg-preview
 TabNine.tabnine-vscode
