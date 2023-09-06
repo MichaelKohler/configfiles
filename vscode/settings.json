@@ -83,5 +83,6 @@
   "[python]": {
     "editor.formatOnType": true
   },
+  "editor.inlayHints.enabled": "off",
   "window.zoomLevel": 1
 }
