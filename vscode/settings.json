@@ -11,6 +11,7 @@
   "editor.fontFamily": "'IntelOne Mono Light'",
   "editor.fontSize": 14,
   "editor.formatOnSave": true,
+  "editor.inlayHints.enabled": "off",
   "editor.inlineSuggest.enabled": true,
   "editor.linkedEditing": true,
   "editor.minimap.enabled": false,
@@ -31,6 +32,12 @@
   },
   "files.watcherExclude": {
     "obj-*": true
+  },
+  "github.copilot.enable": {
+    "*": true,
+    "plaintext": false,
+    "markdown": false,
+    "scminput": false
   },
   "gitlens.advanced.messages": {
     "suppressCommitHasNoPreviousCommitWarning": false,
@@ -73,7 +80,8 @@
   "window.openFoldersInNewWindow": "on",
   "window.restoreWindows": "folders",
   "window.titleBarStyle": "custom",
-  "workbench.activityBar.visible": false,
+  "window.zoomLevel": 1,
+  "workbench.activityBar.location": "top",
   "workbench.colorTheme": "Night Owl Light",
   "workbench.iconTheme": "material-icon-theme",
   "workbench.panel.defaultLocation": "right",
@@ -82,7 +90,5 @@
   "workbench.tree.renderIndentGuides": "always",
   "[python]": {
     "editor.formatOnType": true
-  },
-  "editor.inlayHints.enabled": "off",
-  "window.zoomLevel": 1
+  }
 }
