@@ -80,7 +80,6 @@
   "window.openFoldersInNewWindow": "on",
   "window.restoreWindows": "folders",
   "window.titleBarStyle": "custom",
-  "window.zoomLevel": 1,
   "workbench.activityBar.location": "top",
   "workbench.colorTheme": "Night Owl Light",
   "workbench.iconTheme": "material-icon-theme",
@@ -90,5 +89,7 @@
   "workbench.tree.renderIndentGuides": "always",
   "[python]": {
     "editor.formatOnType": true
-  }
+  },
+  "window.newWindowDimensions": "inherit",
+  "window.zoomLevel": 1
 }
