@@ -1,10 +1,14 @@
 alefragnani.Bookmarks
 arcticicestudio.nord-visual-studio-code
+bierner.lit-html
+bradlc.vscode-tailwindcss
 DavidAnson.vscode-markdownlint
 dbaeumer.vscode-eslint
 eamodio.gitlens
 EditorConfig.EditorConfig
 esbenp.prettier-vscode
+GitHub.copilot
+GitHub.copilot-chat
 GitHub.github-vscode-theme
 github.vscode-github-actions
 hashicorp.terraform
@@ -31,6 +35,7 @@ mythmon.idl
 PKief.material-icon-theme
 Prisma.prisma
 redhat.vscode-yaml
+runem.lit-plugin
 rust-lang.rust-analyzer
 sdras.night-owl
 searKing.preview-vscode
