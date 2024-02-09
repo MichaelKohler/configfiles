@@ -87,6 +87,7 @@
   "workbench.sideBar.location": "right",
   "workbench.startupEditor": "newUntitledFile",
   "workbench.tree.renderIndentGuides": "always",
+  "workbench.tree.enableStickyScroll": true,
   "[python]": {
     "editor.formatOnType": true
   },
