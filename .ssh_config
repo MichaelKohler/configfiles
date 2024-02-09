@@ -3,37 +3,14 @@ Host hg.mozilla.org
   User me@michaelkohler.info
   IdentityFile ~/.ssh/id_rsa
 
-Host pi.michael.network
-  HostName pi.michael.network
+Host 192.168.0.105
   User pi
   IdentityFile ~/.ssh/id_rsa
 
-Host pi-zt.michael.network
-  HostName pi-zt.michael.network
+Host 192.168.0.103
   User pi
   IdentityFile ~/.ssh/id_rsa
 
-Host secondary.michael.network
-  HostName secondary.michael.network
-  User pi
-  IdentityFile ~/.ssh/id_rsa
-
-Host secondary-zt.michael.network
-  HostName secondary-zt.michael.network
-  User pi
-  IdentityFile ~/.ssh/id_rsa
-
-Host pine.michael.network
-  HostName pine.michael.network
+Host 192.168.0.104
   User pine
   IdentityFile ~/.ssh/id_rsa
-
-Host pine-zt.michael.network
-  HostName pine-zt.michael.network
-  User pine
-  IdentityFile ~/.ssh/id_rsa
-
-Host mk-private-env.michael.network
-  HostName mk-private-env.michael.network
-  User admin
-  IdentityFile ~/Documents/private-env.pem
