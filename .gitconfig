@@ -25,9 +25,16 @@
     ui = auto
 [diff]
     tool = vscode
+    colorMoved = zebra
 [difftool "vscode"]
     cmd = code --wait --diff $LOCAL $REMOTE
 [pull]
-    rebase = false
+    rebase = true
 [branch]
     sort = -committerdate
+[rerere]
+    enabled = true
+[column]
+    ui = auto
+[fetch]
+    prune = true
