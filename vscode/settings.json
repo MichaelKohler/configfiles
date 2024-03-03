@@ -67,7 +67,6 @@
     "**/test.out": true,
     "**/www": true
   },
-  "tabnine.experimentalAutoImports": true,
   "terminal.integrated.copyOnSelection": true,
   "terminal.integrated.cursorBlinking": true,
   "terminal.integrated.cursorStyle": "line",
