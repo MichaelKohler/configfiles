@@ -56,3 +56,6 @@ export PATH="$VOLTA_HOME/bin:$HOME/.cargo/bin:/usr/local/bin:/sbin:/usr/sbin:$HO
 export PATH="/home/mkohler/.mozbuild/git-cinnabar:$PATH"
 
 export GPG_TTY=$(tty)
+
+# Turso
+export PATH="/home/mkohler/.turso:$PATH"
