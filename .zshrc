@@ -52,10 +52,8 @@ alias ll="ls -al --color=auto"
 # EXPORTS
 export VOLTA_HOME="$HOME/.volta"
 
-export PATH="$VOLTA_HOME/bin:$HOME/.cargo/bin:/usr/local/bin:/sbin:/usr/sbin:$HOME/.local/bin:/snap/bin:$PATH"
+export PATH="$VOLTA_HOME/bin:$HOME/.cargo/bin:/usr/local/bin:/sbin:/usr/sbin:/usr/bin:$HOME/.local/bin:/snap/bin:$PATH"
 export PATH="/home/mkohler/.mozbuild/git-cinnabar:$PATH"
 
 export GPG_TTY=$(tty)
 
-# Turso
-export PATH="/home/mkohler/.turso:$PATH"
