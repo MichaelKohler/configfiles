@@ -82,7 +82,6 @@
   "workbench.activityBar.location": "top",
   "workbench.colorTheme": "Night Owl Light",
   "workbench.iconTheme": "material-icon-theme",
-  "workbench.panel.defaultLocation": "right",
   "workbench.sideBar.location": "right",
   "workbench.startupEditor": "newUntitledFile",
   "workbench.tree.renderIndentGuides": "always",
