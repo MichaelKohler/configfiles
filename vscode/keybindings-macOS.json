@@ -12,36 +12,6 @@
     "command": "workbench.action.focusActiveEditorGroup",
     "when": "terminalFocus"
   },
-  {
-    "key": "alt+w",
-    "command": "workbench.action.joinAllGroups",
-    "when": "editorFocus"
-  },
-  {
-    "key": "alt+n",
-    "command": "workbench.action.splitEditor",
-    "when": "editorFocus"
-  },
-  {
-    "key": "alt+l",
-    "command": "workbench.action.navigateRight",
-    "when": "editorFocus"
-  },
-  {
-    "key": "alt+h",
-    "command": "workbench.action.navigateLeft",
-    "when": "editorFocus"
-  },
-  {
-    "key": "alt++",
-    "command": "workbench.action.increaseViewSize",
-    "when": "editorFocus"
-  },
-  {
-    "key": "alt+-",
-    "command": "workbench.action.decreaseViewSize",
-    "when": "editorFocus"
-  },
 
   {
     "key": "cmd+l",
@@ -55,7 +25,7 @@
   },
 
   {
-    "key": "cmd+backspace",
+    "key": "cmd+k cmd+e",
     "command": "editor.action.moveSelectionToPreviousFindMatch",
     "when": "editorFocus && editorHasMultipleSelections"
   },
@@ -109,7 +79,7 @@
   {
     "key": "shift+cmd+n",
     "command": "explorer.newFolder",
-    "when": "explorerViewletVisible && filesExplorerFocus  && !inputFocus"
+    "when": "explorerViewletVisible && filesExplorerFocus && !inputFocus"
   },
 
   {
