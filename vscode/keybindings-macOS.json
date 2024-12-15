@@ -89,5 +89,13 @@
     "args": {
       "snippet": "console.log('🚀🚀🕵️ ${TM_SELECTED_TEXT}$1 🕵️🚀🚀', ${TM_SELECTED_TEXT}$2);"
     }
+  },
+
+  {
+    "key": "cmd+shift+v",
+    "command": "editor.action.pasteAs",
+    "args": {
+      "preferences": ["text.updateImports"]
+    }
   }
 ]
