@@ -5,12 +5,12 @@ Host hg.mozilla.org
 
 Host 192.168.0.105
   User pi
-  IdentityFile ~/.ssh/id_rsa
+  IdentityFile ~/.ssh/id_ed25519
 
 Host 192.168.0.103
   User pi
-  IdentityFile ~/.ssh/id_rsa
+  IdentityFile ~/.ssh/id_ed25519
 
 Host 192.168.0.104
   User pine
-  IdentityFile ~/.ssh/id_rsa
+  IdentityFile ~/.ssh/id_ed25519
