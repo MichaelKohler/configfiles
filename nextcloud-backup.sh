@@ -10,18 +10,10 @@ gpg -c /Volumes/MK/incremental.snar
 
 rm /Volumes/MK/incremental.snar
 
-# Incremental
+# Somewhat incremental... using --listed-incremental did not really work as it backed up everything...
 
-gpg -d /Volumes/MK/incremental.snar.gpg > /Volumes/MK/incremental.snar
+gtar --create --verbose -z --file=/Volumes/MK/2025-01-04-incremental-nextcloud-backup.tar.gz --newer-mtime="29 Dec 2024" Nextcloud
 
-rm /Volumes/MK/incremental.snar.gpg
+gpg -c /Volumes/MK/2025-01-04-incremental-nextcloud-backup.tar.gz
 
-gtar --create --verbose -z --file=/Volumes/MK/2024-12-30-incremental-nextcloud-backup.tar.gz --listed-incremental="/Volumes/MK/incremental.snar" Nextcloud
-
-gpg -c /Volumes/MK/2024-12-30-incremental-nextcloud-backup.tar.gz
-
-rm  /Volumes/MK/2024-12-30-incremental-nextcloud-backup.tar.gz
-
-gpg -c /Volumes/MK/incremental.snar
-
-rm /Volumes/MK/incremental.snar
+rm  /Volumes/MK/2025-01-04-incremental-nextcloud-backup.tar.gz
