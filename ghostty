@@ -1,0 +1,16 @@
+# Window
+macos-titlebar-style = hidden
+window-height = 1000
+window-width = 3000
+window-padding-x = 10
+window-padding-y = 10
+
+# Theme
+background-opacity = 0.95
+theme = Nord
+unfocused-split-opacity = 0.5
+
+# General
+scrollback-limit = 1000000000
+copy-on-select = true
+quit-after-last-window-closed = true

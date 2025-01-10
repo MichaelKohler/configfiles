@@ -10,6 +10,8 @@ ln -s ~/configfiles/.gitconfig ~/.gitconfig
 ln -s ~/configfiles/.hgrc ~/.hgrc
 ln -s ~/configfiles/.vimrc ~/.vimrc
 ln -s ~/configfiles/.zshrc ~/.zshrc
+ln -s ~/configfiles/starship.toml ~/.config/starship.toml
+ln -s ~/configfiles/ghostty ~/.config/ghostty/config
 ```
 
 ## vim
