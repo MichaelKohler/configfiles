@@ -1,24 +1,3 @@
-# PURE
-
-zstyle :prompt:pure:execution_time      color "#88C0D0"
-zstyle :prompt:pure:git:arrow           color "#EE7867"
-zstyle :prompt:pure:git:branch          color "#EFE9F4"
-zstyle :prompt:pure:git:branch:cached   color "#EE7867"
-zstyle :prompt:pure:git:dirty           color "#EE7867"
-zstyle :prompt:pure:host                color "#AE8799"
-zstyle :prompt:pure:path                color "#88C0D0"
-zstyle :prompt:pure:prompt:error        color "#EE7867"
-zstyle :prompt:pure:prompt:success      color "#DDF8E8"
-zstyle :prompt:pure:user                color "#AE8799"
-zstyle :prompt:pure:user:root           color "#AE8799"
-zstyle :prompt:pure:virtualenv          color "#BEE7E8"
-
-fpath+=$HOME/.zsh/pure
-autoload -U promptinit; promptinit
-prompt pure
-prompt_newline='%666v'
-PROMPT=" $PROMPT"
-
 # ZSH OPTIONS
 
 export HISTFILE=~/.zsh_history
@@ -57,3 +36,5 @@ export PATH="/home/mkohler/.mozbuild/git-cinnabar:$PATH"
 
 export GPG_TTY=$(tty)
 
+# STARSHIP
+eval "$(starship init zsh)"
