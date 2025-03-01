@@ -15,24 +15,45 @@
     interactive = auto
     status = auto
     ui = auto
+[commit]
+    verbose = true
 [column]
     ui = auto
 [core]
     whitespace = cr-at-eol
 [diff]
-    algorithm = patience
+    algorithm = histogram
+    colorMoved = plain
+    mnemonicPrefix = true
+    renames = true
     tool = vscode
-    colorMoved = zebra
 [difftool "vscode"]
     cmd = code --wait --diff $LOCAL $REMOTE
 [fetch]
+    all = true
     prune = true
+    pruneTags = true
 [gpg]
     program = /usr/local/bin/gpg
+[help]
+    autocorrect = prompt
+[merge]
+    conflictstyle = zdiff3
 [pull]
     rebase = true
+[push]
+    default = simple
+    autoSetupRemote = true
+    followTags = true
+[rebase]
+    autoSquash = true
+    autoStash = true
+    updateRefs = true
 [rerere]
     enabled = true
+    autoupdate = true
+[tag]
+    sort = version:refname
 [user]
     name = Michael Kohler
     email = me@michaelkohler.info
