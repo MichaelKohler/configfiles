@@ -1,13 +1,3 @@
-[user]
-    name = Michael Kohler
-    email = me@michaelkohler.info
-    signingkey = B4831E2E85D4EB1A81BB83D9083291B032073D6C
-[core]
-    whitespace = cr-at-eol
-[gpg]
-    program = /usr/local/bin/gpg
-[diff]
-    algorithm = patience
 [alias]
     lol = log --graph --decorate --pretty=oneline --abbrev-commit
     lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
@@ -17,24 +7,34 @@
     filelog = log -u
     findfile = "!git ls-files | grep -i"
     listalias = "!git config -l | grep alias | cut -c 7-"
+[branch]
+    sort = -committerdate
 [color]
     branch = auto
     diff = auto
     interactive = auto
     status = auto
     ui = auto
+[column]
+    ui = auto
+[core]
+    whitespace = cr-at-eol
 [diff]
+    algorithm = patience
     tool = vscode
     colorMoved = zebra
 [difftool "vscode"]
     cmd = code --wait --diff $LOCAL $REMOTE
-[pull]
-    rebase = true
-[branch]
-    sort = -committerdate
-[rerere]
-    enabled = true
-[column]
-    ui = auto
 [fetch]
     prune = true
+[gpg]
+    program = /usr/local/bin/gpg
+[pull]
+    rebase = true
+[rerere]
+    enabled = true
+[user]
+    name = Michael Kohler
+    email = me@michaelkohler.info
+    signingkey = B4831E2E85D4EB1A81BB83D9083291B032073D6C
+
