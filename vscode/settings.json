@@ -33,6 +33,7 @@
   "files.watcherExclude": {
     "obj-*": true
   },
+  "git.blame.editorDecoration.enabled": false,
   "github.copilot.enable": {
     "*": true,
     "plaintext": false,
@@ -49,6 +50,7 @@
   },
   "gitlens.keymap": "alternate",
   "javascript.updateImportsOnFileMove.enabled": "always",
+  "lldb.suppressUpdateNotifications": true,
   "merge-conflict.autoNavigateNextConflict.enabled": true,
   "prettier.requireConfig": true,
   "prettier.useEditorConfig": false,
