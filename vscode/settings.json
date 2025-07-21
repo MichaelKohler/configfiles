@@ -4,6 +4,7 @@
   "debug.allowBreakpointsEverywhere": true,
   "debug.inlineValues": "on",
   "diffEditor.ignoreTrimWhitespace": false,
+  "docker.extension.enableComposeLanguageServer": true,
   "editor.autoIndent": "full",
   "editor.copyWithSyntaxHighlighting": false,
   "editor.defaultColorDecorators": "auto",
@@ -95,5 +96,11 @@
     "editor.formatOnType": true
   },
   "window.newWindowDimensions": "inherit",
-  "window.zoomLevel": 0.8
+  "window.zoomLevel": 0.8,
+  "yaml.schemas": {
+    // this tells Red Hat's YAML extension to consider Compose YAML
+    // files as not having a schema so it will stop suggesting code
+    // completion items, hover tooltips, and so on
+    "https://raw.githubusercontent.com/docker/vscode-extension/6a88caada42b57090df7ce91ec2a6561b422afe1/misc/empty.json": ["compose*y*ml", "docker-compose*y*ml"]
+  }
 }
