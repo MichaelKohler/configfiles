@@ -35,6 +35,7 @@
   "files.watcherExclude": {
     "obj-*": true
   },
+  "git.autofetch": true,
   "git.blame.editorDecoration.enabled": false,
   "github.copilot.enable": {
     "*": true,
