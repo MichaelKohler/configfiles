@@ -1,4 +1,5 @@
 {
+  "biome.suggestInstallingGlobally": false,
   "breadcrumbs.enabled": true,
   "debug.allowBreakpointsEverywhere": true,
   "debug.inlineValues": "on",
