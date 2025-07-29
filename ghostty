@@ -1,12 +1,12 @@
 # Window
-macos-titlebar-style = hidden
-window-height = 1000
+# macos-titlebar-style = hidden
+window-height = 2000
 window-width = 3000
 window-padding-x = 10
 window-padding-y = 10
 
 # Theme
-background-opacity = 0.95
+background-opacity = 0.90
 theme = Nord
 unfocused-split-opacity = 0.5
 
