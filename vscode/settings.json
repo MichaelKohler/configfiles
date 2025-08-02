@@ -37,10 +37,6 @@
   },
   "git.autofetch": true,
   "git.blame.editorDecoration.enabled": false,
-  "github.copilot.chat.agent.terminal.allowList": {
-    "/^git (status|log)$/": true,
-    "/^npm run test.*$/": true
-  },
   "github.copilot.enable": {
     "*": true,
     "plaintext": false,
