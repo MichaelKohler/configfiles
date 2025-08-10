@@ -3,14 +3,12 @@ Host hg.mozilla.org
   User me@michaelkohler.info
   IdentityFile ~/.ssh/id_rsa
 
-Host 192.168.0.105
+Host pi.local
   User pi
   IdentityFile ~/.ssh/id_ed25519
+  SetEnv TERM=xterm-256color
 
-Host 192.168.0.103
-  User pi
-  IdentityFile ~/.ssh/id_ed25519
-
-Host 192.168.0.104
+Host pine.local
   User pine
   IdentityFile ~/.ssh/id_ed25519
+  SetEnv TERM=xterm-256color
