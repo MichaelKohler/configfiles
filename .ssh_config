@@ -12,3 +12,8 @@ Host pine.local
   User pine
   IdentityFile ~/.ssh/id_ed25519
   SetEnv TERM=xterm-256color
+
+Host strato.michael.network
+  User michael
+  IdentityFile ~/.ssh/id_ed25519
+  SetEnv TERM=xterm-256color
