@@ -1,5 +1,11 @@
 {
   "biome.suggestInstallingGlobally": false,
+  "chat.tools.terminal.autoApprove": {
+    "npm run test:e2e:run": true,
+    "npm test": true,
+    "npm run lint": true,
+    "npm run typecheck": true
+  },
   "debug.inlineValues": "on",
   "diffEditor.ignoreTrimWhitespace": false,
   "docker.extension.enableComposeLanguageServer": true,
