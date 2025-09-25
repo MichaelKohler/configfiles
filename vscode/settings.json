@@ -5,8 +5,8 @@
   "docker.extension.enableComposeLanguageServer": true,
   "editor.autoIndent": "full",
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.fontFamily": "'Maple Mono'",
-  "editor.fontSize": 13,
+  "editor.fontFamily": "'Source Code Pro'",
+  "editor.fontSize": 14,
   "editor.formatOnSave": true,
   "editor.inlineSuggest.enabled": true,
   "editor.linkedEditing": true,
@@ -36,7 +36,7 @@
     "**/obj-*": true
   },
   "terminal.integrated.copyOnSelection": true,
-  "terminal.integrated.fontSize": 12,
+  "terminal.integrated.fontSize": 14,
   "terminal.integrated.scrollback": 1000000,
   "window.openFoldersInNewWindow": "on",
   "window.restoreWindows": "folders",
@@ -47,7 +47,7 @@
   "workbench.panel.defaultLocation": "bottom",
   "workbench.sideBar.location": "right",
   "window.newWindowDimensions": "inherit",
-  "window.zoomLevel": 0.8,
+  "window.zoomLevel": 0.6,
   "yaml.schemas": {
     // this tells Red Hat's YAML extension to consider Compose YAML
     // files as not having a schema so it will stop suggesting code
