@@ -54,6 +54,7 @@
   "workbench.sideBar.location": "right",
   "window.newWindowDimensions": "inherit",
   "window.zoomLevel": 0.6,
+  "workbench.startupEditor": "none",
   "yaml.schemas": {
     // this tells Red Hat's YAML extension to consider Compose YAML
     // files as not having a schema so it will stop suggesting code
