@@ -10,6 +10,7 @@
   "diffEditor.ignoreTrimWhitespace": false,
   "docker.extension.enableComposeLanguageServer": true,
   "editor.autoIndent": "full",
+  "editor.bracketPairColorization.enabled": false,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.fontFamily": "'Source Code Pro'",
   "editor.fontSize": 14,
