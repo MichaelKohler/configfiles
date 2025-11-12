@@ -48,7 +48,7 @@
   "window.openFoldersInNewWindow": "on",
   "window.restoreWindows": "folders",
   "workbench.activityBar.location": "top",
-  "workbench.colorTheme": "Shale",
+  "workbench.colorTheme": "Nord",
   "workbench.iconTheme": "eyecons",
   "workbench.navigationControl.enabled": false,
   "workbench.panel.defaultLocation": "bottom",
