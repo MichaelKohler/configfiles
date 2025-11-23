@@ -16,10 +16,8 @@ github.copilot-chat
 github.github-vscode-theme
 github.vscode-github-actions
 hashicorp.terraform
-mechatroner.rainbow-csv
 merithayan.polar
 mikestead.dotenv
-ms-azuretools.vscode-azureresourcegroups
 ms-azuretools.vscode-containers
 ms-azuretools.vscode-docker
 ms-playwright.playwright
@@ -40,7 +38,6 @@ ms-vscode-remote.remote-wsl
 ms-vscode-remote.vscode-remote-extensionpack
 ms-vscode.remote-explorer
 ms-vscode.remote-server
-mullakhmetov.shale
 mythmon.idl
 pkief.material-icon-theme
 prisma.prisma
@@ -52,6 +49,4 @@ searking.preview-vscode
 simonsiefke.svg-preview
 usernamehw.errorlens
 vadimcn.vscode-lldb
-visualstudioexptteam.intellicode-api-usage-examples
-visualstudioexptteam.vscodeintellicode
 wayou.vscode-todo-highlight
