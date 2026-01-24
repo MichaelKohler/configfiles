@@ -75,5 +75,7 @@
   },
   "[github-actions-workflow]": {
     "editor.defaultFormatter": "redhat.vscode-yaml"
-  }
+  },
+  "claudeCode.preferredLocation": "panel",
+  "chat.useAgentSkills": true
 }
