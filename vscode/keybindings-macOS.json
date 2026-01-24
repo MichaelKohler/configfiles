@@ -23,17 +23,6 @@
     "command": "editor.action.joinLines",
     "when": "editorTextFocus"
   },
-
-  {
-    "key": "cmd+k cmd+e",
-    "command": "editor.action.moveSelectionToPreviousFindMatch",
-    "when": "editorFocus && editorHasMultipleSelections"
-  },
-  {
-    "key": "cmd+k cmd+d",
-    "command": "editor.action.moveSelectionToNextFindMatch",
-    "when": "editorFocus && editorHasMultipleSelections"
-  },
   {
     "key": "cmd+right",
     "command": "editor.action.insertCursorAtEndOfEachLineSelected",
@@ -47,28 +36,6 @@
     "key": "cmd+k cmd+enter",
     "command": "editor.action.goToDeclaration",
     "when": "editorTextFocus"
-  },
-
-  {
-    "key": "alt+n",
-    "command": "workbench.action.terminal.split",
-    "when": "terminalFocus"
-  },
-  {
-    "key": "alt+l",
-    "command": "workbench.action.terminal.focusNextPane",
-    "when": "terminalFocus"
-  },
-  {
-    "key": "alt+h",
-    "command":
-    "workbench.action.terminal.focusPreviousPane",
-    "when": "terminalFocus"
-  },
-  {
-    "key": "alt+w",
-    "command": "workbench.action.terminal.kill",
-    "when": "terminalFocus"
   },
 
   {
@@ -88,14 +55,6 @@
     "when": "editorFocus",
     "args": {
       "snippet": "console.log('🚀🚀🕵️ ${TM_SELECTED_TEXT}$1 🕵️🚀🚀', ${TM_SELECTED_TEXT}$2);"
-    }
-  },
-
-  {
-    "key": "cmd+shift+v",
-    "command": "editor.action.pasteAs",
-    "args": {
-      "preferences": ["text.updateImports"]
     }
   }
 ]
