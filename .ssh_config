@@ -8,6 +8,11 @@ Host pi.local
   IdentityFile ~/.ssh/id_ed25519
   SetEnv TERM=xterm-256color
 
+Host pi-ai.local
+  User pi
+  IdentityFile ~/.ssh/id_ed25519
+  SetEnv TERM=xterm-256color
+
 Host pine.local
   User pine
   IdentityFile ~/.ssh/id_ed25519
