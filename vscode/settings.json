@@ -6,6 +6,8 @@
     "npm run lint": true,
     "npm run typecheck": true
   },
+  "chat.useAgentSkills": true,
+  "claudeCode.preferredLocation": "panel",
   "debug.inlineValues": "on",
   "diffEditor.ignoreTrimWhitespace": false,
   "docker.extension.enableComposeLanguageServer": true,
@@ -31,8 +33,7 @@
     "obj-*": true
   },
   "git.autofetch": true,
-  "github.copilot.nextEditSuggestions.enabled": true,
-  "javascript.updateImportsOnFileMove.enabled": "always",
+  "github.copilot.nextEditSuggestions.enabled": false,
   "prettier.requireConfig": true,
   "prettier.useEditorConfig": false,
   "search.exclude": {
@@ -45,6 +46,8 @@
   "terminal.integrated.copyOnSelection": true,
   "terminal.integrated.fontSize": 14,
   "terminal.integrated.scrollback": 1000000,
+  "terminal.integrated.sendKeybindingsToShell": true,
+  "ts.updateImportsOnFileMove.enabled": "always",
   "window.openFoldersInNewWindow": "on",
   "window.restoreWindows": "folders",
   "workbench.activityBar.location": "top",
@@ -75,7 +78,5 @@
   },
   "[github-actions-workflow]": {
     "editor.defaultFormatter": "redhat.vscode-yaml"
-  },
-  "claudeCode.preferredLocation": "panel",
-  "chat.useAgentSkills": true
+  }
 }
