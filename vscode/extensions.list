@@ -1,5 +1,7 @@
 alefragnani.bookmarks
+anthropic.claude-code
 arcticicestudio.nord-visual-studio-code
+astro-build.astro-vscode
 azat-io.eyecons
 bierner.lit-html
 biomejs.biome
@@ -11,10 +13,10 @@ docker.docker
 eamodio.gitlens
 editorconfig.editorconfig
 esbenp.prettier-vscode
-github.copilot
 github.copilot-chat
 github.github-vscode-theme
 github.vscode-github-actions
+golang.go
 hashicorp.terraform
 merithayan.polar
 mikestead.dotenv
