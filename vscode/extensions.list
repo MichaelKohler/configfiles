@@ -13,9 +13,9 @@ docker.docker
 eamodio.gitlens
 editorconfig.editorconfig
 esbenp.prettier-vscode
-github.copilot-chat
 github.github-vscode-theme
 github.vscode-github-actions
+gleam.gleam
 golang.go
 hashicorp.terraform
 merithayan.polar
@@ -49,6 +49,8 @@ rust-lang.rust-analyzer
 sdras.night-owl
 searking.preview-vscode
 simonsiefke.svg-preview
+teabyii.ayu
+trag1c.gleam-theme
 usernamehw.errorlens
 vadimcn.vscode-lldb
 wayou.vscode-todo-highlight
